@@ -1,0 +1,161 @@
+/**
+ * #.# Styles
+ *
+ * CSS for both Frontend+Backend.
+ */
+
+.wp-block-wpzoom-recipe-card-block-recipe-card {
+	&.header-content-align-left {
+		.recipe-card-heading {
+			text-align: left;
+		}
+	}
+	&.header-content-align-center {
+		.recipe-card-heading {
+			text-align: center;
+		}
+	}
+	&.header-content-align-right {
+		.recipe-card-heading {
+			text-align: right;
+		}
+	}
+	.recipe-card-heading {
+		.recipe-card-author {
+			margin-bottom: 10px;
+		}
+		.recipe-card-title + p {
+			margin-bottom: 0;
+		}
+		&::after {
+			content: '';
+			clear: both;
+			display: table;
+		}
+	}
+	.recipe-card-image figure img {
+		width: 100%;
+	}
+	.recipe-card-details {
+		margin-bottom: 15px;
+		clear: both;
+		.detail-item {
+			> p:not(.detail-item-label):not(.detail-item-value):not(.detail-item-unit) {
+				display: none;
+			}
+			.detail-item-label {
+				margin-bottom: 5px;
+			}
+			.detail-item-unit {
+				margin-bottom: 0;
+			}
+		}
+	}
+	.recipe-card-ingredients {
+		.ingredients-list {
+			margin: 0;
+			padding: 0;
+		}
+	}
+	.recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link i,
+	.recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link i::before ,
+	.recipe-card-image .wpzoom-recipe-card-pinit .btn-pinit-link i,
+	.recipe-card-image .wpzoom-recipe-card-pinit .btn-pinit-link i::before {
+		font-family: 'FontAwesome';
+	}
+    .hidden {
+        display: none !important;
+    }
+
+	.recipe-card-directions + .footer-copyright {
+        margin-top: 30px;
+    }
+    
+    .recipe-card-directions .directions-list .direction-step-group::before {
+        content: '';
+        counter-increment: none;
+    }
+
+    .direction-step img {
+    	display: block;
+    	clear: both;
+    }
+
+    .wpzoom-rating-stars-container {
+    	float: right;
+
+    	-webkit-transition: opacity .25s linear;
+    	-o-transition: opacity .25s linear;
+    	transition: opacity .25s linear;
+
+    	&.is-loading {
+	    	opacity: 0.7;
+	    }
+    }
+    &.header-content-align-center .wpzoom-rating-stars-container {
+    	float: none;
+    }
+    ul.wpzoom-rating-stars {
+    	list-style: none;
+    	margin: 0;
+    	padding: 0;
+    	display: inline-block;
+
+    	> li {
+	    	display: inline-block;
+	    	margin: 0;
+	    	padding: 0;
+	    	padding-right: 4px;
+	    	cursor: pointer;
+	    	color: inherit;
+
+			&:last-child {
+				padding-right: 0;
+			}
+	    	&.fa-star {
+	    		color: #F2A123;
+	    	}
+	    	&.fa-star-o {
+	    		color: #DBDBDB;
+	    	}
+	    }
+    }
+    .wpzoom-rating-stars-average {
+    	color: #a0a0a0;
+    	margin-left: 10px;
+    	.wpzoom-rating-average,
+    	.wpzoom-rating-total-votes {
+    		font-weight: 500;
+    	}
+    	small {
+    		font-size: 13px;
+	    	margin-right: 4px;
+	    }
+    }
+    .footer-copyright p {
+        margin-bottom: 0;
+        text-align: center;
+        font-size: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #ababab;
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+
+        a {
+            color: #222;
+            text-decoration: none;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #eee;
+
+            &:hover {
+                ext-decoration: none;
+                border-bottom-color: #ccc;
+            }
+        }
+    }
+}
+
+@import "./skins/snippets";
+@import "./skins/default";
+@import "./skins/newdesign";
+@import "./skins/simple";
