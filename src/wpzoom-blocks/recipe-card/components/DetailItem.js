@@ -9,7 +9,7 @@ import isUndefined from "lodash/isUndefined";
 /* WordPress dependencies */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { RichText } = wp.editor;
+const { RichText } = wp.blockEditor;
 const { IconButton, Button, Popover, MenuItemsChoice, MenuGroup } = wp.components;
 const { withState } = wp.compose;
 

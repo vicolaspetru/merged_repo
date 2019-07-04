@@ -243,20 +243,20 @@ class FlatTermSelector extends Component {
 
 export default compose(
 	withSelect( ( select, { slug } ) => {
-		const { getCurrentPost } = select( 'core/editor' );
+		const { getCurrentPost } = select( 'core/block-editor' );
 		const { getTaxonomy } = select( 'core' );
 		const taxonomy = getTaxonomy( slug );
 		return {
 			hasCreateAction: taxonomy ? get( getCurrentPost(), [ '_links', 'wp:action-create-' + taxonomy.rest_base ], false ) : false,
 			hasAssignAction: taxonomy ? get( getCurrentPost(), [ '_links', 'wp:action-assign-' + taxonomy.rest_base ], false ) : false,
-			terms: taxonomy ? select( 'core/editor' ).getEditedPostAttribute( taxonomy.rest_base ) : [],
+			terms: taxonomy ? select( 'core/block-editor' ).getEditedPostAttribute( taxonomy.rest_base ) : [],
 			taxonomy,
 		};
 	} ),
 	withDispatch( ( dispatch ) => {
 		return {
 			onUpdateTerms( terms, restBase ) {
-				dispatch( 'core/editor' ).editPost( { [ restBase ]: terms } );
+				dispatch( 'core/block-editor' ).editPost( { [ restBase ]: terms } );
 			},
 		};
 	} ),

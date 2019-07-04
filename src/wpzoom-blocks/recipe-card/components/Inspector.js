@@ -16,7 +16,7 @@ import { getBlockStyle } from "../../../helpers/getBlockStyle";
 /* WordPress dependencies */
 const { __, _n } = wp.i18n;
 const { Component, renderToString, Fragment } = wp.element;
-const { RichText, InspectorControls, MediaUpload } = wp.editor;
+const { RichText, InspectorControls, MediaUpload } = wp.blockEditor;
 const { 
 	BaseControl,
 	PanelBody,
@@ -806,7 +806,7 @@ const applyWithSelect = withSelect( ( select, props ) => {
 	const {
 		getEditedPostAttribute,
 		getEditorSettings
-	} = select( 'core/editor' );
+	} = select( 'core/block-editor' );
 	const {
 		maxWidth,
 		isRTL,

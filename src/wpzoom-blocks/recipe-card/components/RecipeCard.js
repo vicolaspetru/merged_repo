@@ -32,7 +32,12 @@ const {
 	Dashicon, 
 	Spinner
 } = wp.components;
-const { RichText, MediaUpload, InnerBlocks, BlockControls } = wp.editor;
+const {
+	RichText,
+	MediaUpload,
+	InnerBlocks,
+	BlockControls
+} = wp.blockEditor;
 const { apiFetch } = wp;
 const { addQueryArgs } = wp.url;
 const { withSelect } = wp.data;
@@ -271,7 +276,8 @@ class RecipeCard extends Component {
 
 		let style = getBlockStyle( className );
 		let pin_description = recipeTitle;
-		let headerContentAlign, customAuthorName;
+		let headerContentAlign = headerAlign;
+		let customAuthorName;
 		const loadingClass = this.state.isLoading ? 'is-loading-block' : '';
 
 		if ( settingOptions.wpzoom_rcb_settings_pin_description === 'recipe_summary' ) {
@@ -635,7 +641,7 @@ class RecipeCard extends Component {
 
 const applyWithSelect = withSelect( ( select, props ) => {
 	const { getMedia, getTaxonomy, getPostType, getAuthors } = select( 'core' );
-	const { getEditedPostAttribute, getEditorSettings, getPermalink } = select( 'core/editor' );
+	const { getEditedPostAttribute, getEditorSettings, getPermalink } = select( 'core/block-editor' );
 	const { license_status, setting_options } = wpzoomRecipeCard;
 	const postType = getPostType( getEditedPostAttribute( 'type' ) );
 	const postPermalink = getPermalink();
