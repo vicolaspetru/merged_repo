@@ -19,9 +19,13 @@ class WPZOOM_Plugin_Activator {
 	 * @since 1.2.0
 	 */
 	public static function activate() {
+		add_option( 'wpzoom_rcb_do_activation_redirect', true );
+		set_transient( 'wpzoom_rcb_welcome_banner', true, 12 * HOUR_IN_SECONDS );
+
 		// Set up recipe taxonomies.
 		WPZOOM_Taxonomies::register_taxonomies();
 		WPZOOM_Taxonomies::insert_default_taxonomy_terms();
+		
 		flush_rewrite_rules();
 	}
 

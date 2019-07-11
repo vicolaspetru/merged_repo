@@ -11,7 +11,7 @@
  *
  * @since 1.2.0
  */
-class WPZOOM_Taxonomies {
+final class WPZOOM_Taxonomies {
 
 	/**
 	 * Register actions and filters.
@@ -19,8 +19,9 @@ class WPZOOM_Taxonomies {
 	 * @since 1.2.0
 	 */
 	public static function init() {
-		add_action( 'init', array( __CLASS__, 'register_taxonomies' ) );
-		add_filter( 'wpzoom_rcb_get_settings', array( __CLASS__, 'omit_taxonomies' ), 10, 1 );
+		add_action( 'init', 						__CLASS__ . 'register_taxonomies' );
+		add_filter( 'template_include', 			__CLASS__ . 'set_template' );
+		add_filter( 'wpzoom_rcb_get_settings', 		__CLASS__ . 'omit_taxonomies', 10, 1 );
 	}
 
 	/**
@@ -45,7 +46,7 @@ class WPZOOM_Taxonomies {
 	 */
 	public static function register_taxonomies() {
 		$options = WPZOOM_Settings::get_settings();
-		$taxonomies = WPZOOM_Taxonomies::get_taxonomies_to_register();
+		$taxonomies = self::get_taxonomies_to_register();
 
 		if ( ! taxonomy_exists( 'wpzoom_rcb_courses' ) || ! taxonomy_exists( 'wpzoom_rcb_cuisines' ) || ! taxonomy_exists( 'wpzoom_rcb_difficulties' ) ) {
 			foreach ( $taxonomies as $taxonomy => $labels ) {

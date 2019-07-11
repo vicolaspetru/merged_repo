@@ -43,14 +43,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		}
 
 		/**
-		 * The WPZOOM_Recipe_Card_Block_Gutenberg_PRO instance.
-		 *
-		 * @var WPZOOM_Recipe_Card_Block_Gutenberg_PRO
-		 * @since 1.1.0
-		 */
-		private $_recipe_card_block;
-
-		/**
 		 * The base directory path.
 		 *
 		 * @var string $_dir
@@ -84,8 +76,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		private function __construct() {
 			$this->_slug = 'wpzoom-rcb-block';
 			$this->_url  = untrailingslashit( WPZOOM_RCB_PLUGIN_URL );
-
-			$this->_recipe_card_block = WPZOOM_Recipe_Card_Block_Gutenberg_PRO::instance();
 
 			add_action( 'enqueue_block_assets', array( $this, 'block_assets' ) );
 			add_action( 'enqueue_block_assets', array( $this, 'load_icon_fonts' ) );
@@ -183,7 +173,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		    		'post_thumbnail_id' => get_post_thumbnail_id( $this->post ),
 		    		'post_title' => $this->post->post_title,
 		    		'post_author_name' => get_the_author_meta( 'display_name', $this->post->post_author ),
-		    		'is_pro' => WPZOOM_Recipe_Card_Block_Gutenberg_PRO::is_pro(),
+		    		'is_pro' => WPZOOM_Recipe_Card_Block_Gutenberg::is_pro(),
 		    		'license_status' => WPZOOM_Settings::get_license_status(),
 		    		'setting_options' => ( ! empty( $options ) ? $options : WPZOOM_Settings::get_defaults() ),
 		    		'availableTerms' => array()
@@ -248,7 +238,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     'post_thumbnail_id' => get_post_thumbnail_id( $this->post ),
                     'post_title' => $this->post->post_title,
                     'post_author_name' => get_the_author_meta( 'display_name', $this->post->post_author ),
-                    'is_pro' => WPZOOM_Recipe_Card_Block_Gutenberg_PRO::is_pro(),
+                    'is_pro' => WPZOOM_Recipe_Card_Block_Gutenberg::is_pro(),
                     'license_status' => WPZOOM_Settings::get_license_status(),
                     'setting_options' => ( !empty( $options ) ? $options : WPZOOM_Settings::get_defaults() ),
                     'availableTerms' => array()

@@ -49,14 +49,6 @@ class WPZOOM_Settings {
 	public static $active_tab;
 
 	/**
-	 * The WPZOOM_Recipe_Card_Block_Gutenberg_PRO instance.
-	 *
-	 * @var WPZOOM_Recipe_Card_Block_Gutenberg_PRO
-	 * @since 1.1.0
-	 */
-	private $_recipe_card_block;
-
-	/**
 	 * Class WPZOOM_Settings_Fields instance.
 	 */
 	public $_fields;
@@ -116,7 +108,6 @@ class WPZOOM_Settings {
                 add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
             }
 
-		    $this->_recipe_card_block = WPZOOM_Recipe_Card_Block_Gutenberg_PRO::instance();
 		    $this->_fields = new WPZOOM_Settings_Fields();
 		}
 	}
