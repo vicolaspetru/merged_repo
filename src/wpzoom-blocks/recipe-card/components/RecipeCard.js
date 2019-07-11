@@ -234,8 +234,7 @@ class RecipeCard extends Component {
 			postPermalink,
 			postMedia,
 			authorName,
-			settingOptions,
-			licenseStatus
+			settingOptions
 		} = this.props;
 
 		const {
@@ -280,11 +279,11 @@ class RecipeCard extends Component {
 		let customAuthorName;
 		const loadingClass = this.state.isLoading ? 'is-loading-block' : '';
 
-		if ( settingOptions.wpzoom_rcb_settings_pin_description === 'recipe_summary' ) {
+		if ( get( settingOptions, 'wpzoom_rcb_settings_pin_description' ) === 'recipe_summary' ) {
 			pin_description = jsonSummary;
 		}
 		if ( isUndefined( headerAlign ) ) {
-			headerContentAlign = settingOptions.wpzoom_rcb_settings_heading_content_align;
+			headerContentAlign = get( settingOptions, 'wpzoom_rcb_settings_heading_content_align' );
 		}
 		if ( 'simple' === style ) {
 			headerContentAlign = 'left';
@@ -415,17 +414,17 @@ class RecipeCard extends Component {
 							<Fragment key="recipe-card-metadata">
 								{ 
 									displayCourse && 
-									'1' !== settingOptions['wpzoom_rcb_settings_course_taxonomy'] &&
+									'1' !== get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
 									<span className="recipe-card-course">{ __( "Course", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty(course) ? course.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span> 
 								}
 								{ 
 									displayCuisine && 
-									'1' !== settingOptions['wpzoom_rcb_settings_cuisine_taxonomy'] &&
+									'1' !== get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
 									<span className="recipe-card-cuisine">{ __( "Cuisine", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty(cuisine) ? cuisine.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span> 
 								}
 								{ 
 									displayDifficulty && 
-									'1' !== settingOptions['wpzoom_rcb_settings_difficulty_taxonomy'] &&
+									'1' !== get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
 									<span className="recipe-card-difficulty">{ __( "Difficulty", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty(difficulty) ? difficulty.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span> 
 								}
 							</Fragment>
@@ -434,17 +433,17 @@ class RecipeCard extends Component {
 							<Fragment key="recipe-card-terms">
 								{
 									displayCourse && 
-									'1' === settingOptions['wpzoom_rcb_settings_course_taxonomy'] &&
+									'1' === get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
 									<span className="recipe-card-course">{ __( "Course", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_courses' ) }</mark></span> 
 								}
 								{
 									displayCuisine && 
-									'1' === settingOptions['wpzoom_rcb_settings_cuisine_taxonomy'] &&
+									'1' === get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
 									<span className="recipe-card-cuisine">{ __( "Cuisine", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_cuisines' ) }</mark></span> 
 								}
 								{
 									displayDifficulty && 
-									'1' === settingOptions['wpzoom_rcb_settings_difficulty_taxonomy'] &&
+									'1' === get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
 									<span className="recipe-card-difficulty">{ __( "Difficulty", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_difficulties' ) }</mark></span> 
 								}
 							</Fragment>
@@ -544,17 +543,17 @@ class RecipeCard extends Component {
 								<Fragment key="recipe-card-metadata">
 									{ 
 										displayCourse && 
-										'1' !== settingOptions['wpzoom_rcb_settings_course_taxonomy'] &&
+										'1' !== get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy') &&
 										<span className="recipe-card-course">{ __( "Course", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty(course) ? course.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span> 
 									}
 									{ 
 										displayCuisine && 
-										'1' !== settingOptions['wpzoom_rcb_settings_cuisine_taxonomy'] &&
+										'1' !== get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy') &&
 										<span className="recipe-card-cuisine">{ __( "Cuisine", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty(cuisine) ? cuisine.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span> 
 									}
 									{ 
 										displayDifficulty && 
-										'1' !== settingOptions['wpzoom_rcb_settings_difficulty_taxonomy'] &&
+										'1' !== get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy') &&
 										<span className="recipe-card-difficulty">{ __( "Difficulty", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty(difficulty) ? difficulty.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span> 
 									}
 								</Fragment>
@@ -563,17 +562,17 @@ class RecipeCard extends Component {
 								<Fragment key="recipe-card-terms">
 									{
 										displayCourse && 
-										'1' === settingOptions['wpzoom_rcb_settings_course_taxonomy'] &&
+										'1' === get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy') &&
 										<span className="recipe-card-course">{ __( "Course", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_courses' ) }</mark></span> 
 									}
 									{
 										displayCuisine && 
-										'1' === settingOptions['wpzoom_rcb_settings_cuisine_taxonomy'] &&
+										'1' === get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy') &&
 										<span className="recipe-card-cuisine">{ __( "Cuisine", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_cuisines' ) }</mark></span> 
 									}
 									{
 										displayDifficulty && 
-										'1' === settingOptions['wpzoom_rcb_settings_difficulty_taxonomy'] &&
+										'1' === get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy') &&
 										<span className="recipe-card-difficulty">{ __( "Difficulty", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_difficulties' ) }</mark></span> 
 									}
 								</Fragment>
@@ -675,21 +674,21 @@ const applyWithSelect = withSelect( ( select, props ) => {
 	let difficultiesTaxonomy = {};
 
 	if ( 'valid' === license_status ) {
-		if ( '1' === setting_options['wpzoom_rcb_settings_course_taxonomy'] ) {
+		if ( '1' === get( setting_options, 'wpzoom_rcb_settings_course_taxonomy') ) {
 			coursesTaxonomy = getTaxonomy( 'wpzoom_rcb_courses' );
 			if ( !isUndefined( coursesTaxonomy ) ) {
 				coursesTaxonomy['visibility']['custom_show_ui'] = true;
 				terms[coursesTaxonomy.rest_base] = getEditedPostAttribute( coursesTaxonomy.rest_base );
 			}
 		}
-		if ( '1' === setting_options['wpzoom_rcb_settings_cuisine_taxonomy'] ) {
+		if ( '1' === get( setting_options, 'wpzoom_rcb_settings_cuisine_taxonomy') ) {
 			cuisinesTaxonomy = getTaxonomy( 'wpzoom_rcb_cuisines' );
 			if ( !isUndefined( cuisinesTaxonomy ) ) {
 				cuisinesTaxonomy['visibility']['custom_show_ui'] = true;
 				terms[cuisinesTaxonomy.rest_base] = getEditedPostAttribute( cuisinesTaxonomy.rest_base );
 			}
 		}
-		if ( '1' === setting_options['wpzoom_rcb_settings_difficulty_taxonomy'] ) {
+		if ( '1' === get( setting_options, 'wpzoom_rcb_settings_difficulty_taxonomy') ) {
 			difficultiesTaxonomy = getTaxonomy( 'wpzoom_rcb_difficulties' );
 			if ( !isUndefined( difficultiesTaxonomy ) ) {
 				difficultiesTaxonomy['visibility']['custom_show_ui'] = true;
