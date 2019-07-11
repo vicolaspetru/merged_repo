@@ -19,9 +19,9 @@ final class WPZOOM_Taxonomies {
 	 * @since 1.2.0
 	 */
 	public static function init() {
-		add_action( 'init', 						__CLASS__ . 'register_taxonomies' );
-		add_filter( 'template_include', 			__CLASS__ . 'set_template' );
-		add_filter( 'wpzoom_rcb_get_settings', 		__CLASS__ . 'omit_taxonomies', 10, 1 );
+		add_action( 'init', 						__CLASS__ . '::register_taxonomies' );
+		add_filter( 'template_include', 			__CLASS__ . '::set_template' );
+		add_filter( 'wpzoom_rcb_get_settings', 		__CLASS__ . '::omit_taxonomies', 10, 1 );
 	}
 
 	/**

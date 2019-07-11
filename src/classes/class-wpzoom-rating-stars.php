@@ -132,7 +132,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			    'wpzoom-rating-stars-script',
 			    $this->assets_manager->asset_source( 'js', 'wpzoom-rating-stars.js' ),
 			    $this->assets_manager->get_dependencies( 'wpzoom-rating-stars-script' ),
-			    $this->assets_manager->_version,
+			    WPZOOM_RCB_VERSION,
 			    true
 			);
 
