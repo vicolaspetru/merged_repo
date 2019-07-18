@@ -797,20 +797,24 @@ const applyWithSelect = withSelect( ( select, props ) => {
 			hasImage
 		}
 	} = props;
+	
 	const {
 		getMedia,
 		getTaxonomy,
 		getPostType
 	} = select( 'core' );
+
 	const {
 		getEditedPostAttribute,
 		getEditorSettings
-	} = select( 'core/block-editor' );
+	} = select( 'core/editor' );
+
 	const {
 		maxWidth,
 		isRTL,
 		imageSizes
 	} = getEditorSettings();
+
 	const {
 		license_status,
 		setting_options

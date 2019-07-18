@@ -639,9 +639,24 @@ class RecipeCard extends Component {
 }
 
 const applyWithSelect = withSelect( ( select, props ) => {
-	const { getMedia, getTaxonomy, getPostType, getAuthors } = select( 'core' );
-	const { getEditedPostAttribute, getEditorSettings, getPermalink } = select( 'core/block-editor' );
-	const { license_status, setting_options } = wpzoomRecipeCard;
+	const {
+		getMedia,
+		getTaxonomy,
+		getPostType,
+		getAuthors
+	} = select( 'core' );
+
+	const {
+		getEditedPostAttribute,
+		getEditorSettings,
+		getPermalink
+	} = select( 'core/editor' );
+
+	const {
+		license_status,
+		setting_options
+	} = wpzoomRecipeCard;
+	
 	const postType = getPostType( getEditedPostAttribute( 'type' ) );
 	const postPermalink = getPermalink();
 	const postTitle = getEditedPostAttribute( 'title' );
