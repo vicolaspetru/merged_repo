@@ -11,8 +11,6 @@ import { stripHTML } from "../../../helpers/stringHelpers";
 
 /* WordPress dependencies */
 const { __ } = wp.i18n;
-const { speak } = wp.a11y;
-const { IconButton } = wp.components;
 const { Component, renderToString } = wp.element;
 
 /* Import CSS. */

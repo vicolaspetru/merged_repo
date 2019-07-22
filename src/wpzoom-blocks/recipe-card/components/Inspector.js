@@ -145,6 +145,7 @@ class Inspector extends Component {
 
 	getImageSizeOptions() {
 		const { imageSizes, media } = this.props;
+
 		return compact( map( imageSizes, ( { name, slug } ) => {
 			const sizeUrl = get( media, [ 'media_details', 'sizes', slug, 'source_url' ] );
 			if ( ! sizeUrl ) {
@@ -178,7 +179,6 @@ class Inspector extends Component {
 			coursesTaxonomy,
 			cuisinesTaxonomy,
 			difficultiesTaxonomy,
-			licenseStatus,
 			settingOptions
 		} = this.props;
 
@@ -223,7 +223,6 @@ class Inspector extends Component {
 		} = attributes;
 
 		let style = getBlockStyle( className );
-
 		const imageSizeOptions = this.getImageSizeOptions();
 		
 		const coursesToken = [
@@ -489,7 +488,7 @@ class Inspector extends Component {
 	        		</BaseControl>
 	        		{	
 	        			pin_btn &&
-	        			'custom_image' === settingOptions['wpzoom_rcb_settings_pin_image'] &&
+	        			'custom_image' === get( settingOptions, 'wpzoom_rcb_settings_pin_image' ) &&
 				    	<BaseControl
 							id={ `${ id }-pinit-custom-image` }
 							label={ __( "Pinterest Custom Image", "wpzoom-recipe-card" ) }
@@ -519,7 +518,7 @@ class Inspector extends Component {
 		        	}
 		        	{
 		        		pin_btn &&
-	        			'custom_text' === settingOptions['wpzoom_rcb_settings_pin_description'] &&
+	        			'custom_text' === get( settingOptions, 'wpzoom_rcb_settings_pin_description' ) &&
 				    	<TextareaControl
 				    	    id={ `${ id }-pinit-custom-text` }
 				    	    instanceId={ `${ id }-pinit-custom-text` }
@@ -610,14 +609,14 @@ class Inspector extends Component {
 						/>
 						{
 							displayCourse && 
-							'1' === settingOptions['wpzoom_rcb_settings_course_taxonomy'] &&
+							'1' === get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
 							<PostTaxonomies
 								taxonomies={ [ coursesTaxonomy ] }
 							/>
 						}
 						{
 							displayCourse && 
-							'1' !== settingOptions['wpzoom_rcb_settings_course_taxonomy'] &&
+							'1' !== get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
 				    		<FormTokenField 
 				    			label={ __( "Add course", "wpzoom-recipe-card" ) }
 								value={ course } 
@@ -638,14 +637,14 @@ class Inspector extends Component {
 						/>
 						{
 							displayCuisine && 
-							'1' === settingOptions['wpzoom_rcb_settings_cuisine_taxonomy'] &&
+							'1' === get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
 							<PostTaxonomies
 								taxonomies={ [ cuisinesTaxonomy ] }
 							/>
 						}
 						{
 							displayCuisine && 
-							'1' !== settingOptions['wpzoom_rcb_settings_cuisine_taxonomy'] &&
+							'1' !== get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
 	    		    		<FormTokenField 
 	    		    			label={ __( "Add cuisine", "wpzoom-recipe-card" ) }
 	    						value={ cuisine } 
@@ -666,14 +665,14 @@ class Inspector extends Component {
 						/>
 						{
 							displayDifficulty && 
-							'1' === settingOptions['wpzoom_rcb_settings_difficulty_taxonomy'] &&
+							'1' === get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
 							<PostTaxonomies
 								taxonomies={ [ difficultiesTaxonomy ] }
 							/>
 						}
 						{
 							displayDifficulty && 
-							'1' !== settingOptions['wpzoom_rcb_settings_difficulty_taxonomy'] &&
+							'1' !== get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
 	    		    		<FormTokenField 
 	    		    			label={ __( "Add difficulty level", "wpzoom-recipe-card" ) }
 	    						value={ difficulty } 
@@ -798,20 +797,24 @@ const applyWithSelect = withSelect( ( select, props ) => {
 			hasImage
 		}
 	} = props;
+	
 	const {
 		getMedia,
 		getTaxonomy,
 		getPostType
 	} = select( 'core' );
+
 	const {
 		getEditedPostAttribute,
 		getEditorSettings
-	} = select( 'core/block-editor' );
+	} = select( 'core/editor' );
+
 	const {
 		maxWidth,
 		isRTL,
 		imageSizes
 	} = getEditorSettings();
+
 	const {
 		license_status,
 		setting_options
