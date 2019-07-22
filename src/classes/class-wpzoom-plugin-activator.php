@@ -11,7 +11,21 @@
  *
  * @since 1.2.0
  */
-class WPZOOM_Plugin_Activator {
+final class WPZOOM_Plugin_Activator {
+
+	/**
+	 * Initialize hooks.
+	 *
+	 * @since 2.2.0
+	 * @return void
+	 */
+	static public function init() {
+		// Activation
+		register_activation_hook( WPZOOM_RCB_PLUGIN_FILE, __CLASS__ . '::activate' );
+
+		// Deactivation
+		register_deactivation_hook( WPZOOM_RCB_PLUGIN_FILE, __CLASS__ . '::deactivate' );
+	}
 
 	/**
 	 * Execute this on activation of the plugin.
@@ -19,14 +33,22 @@ class WPZOOM_Plugin_Activator {
 	 * @since 1.2.0
 	 */
 	public static function activate() {
-		add_option( 'wpzoom_rcb_do_activation_redirect', true );
-		set_transient( 'wpzoom_rcb_welcome_banner', true, 12 * HOUR_IN_SECONDS );
+		/**
+		 * Allow developers to hook activation.
+		 * @see wpzoom_recipe_card_activate
+		 */
+		$activate = apply_filters( 'wpzoom_recipe_card_activate', true );
 
-		// Set up recipe taxonomies.
-		WPZOOM_Taxonomies::register_taxonomies();
-		WPZOOM_Taxonomies::insert_default_taxonomy_terms();
-		
-		flush_rewrite_rules();
+		if ( $activate ) {
+			add_option( 'wpzoom_rcb_do_activation_redirect', true );
+			set_transient( 'wpzoom_rcb_welcome_banner', true, 12 * HOUR_IN_SECONDS );
+
+			// Set up recipe taxonomies.
+			WPZOOM_Taxonomies::register_taxonomies();
+			WPZOOM_Taxonomies::insert_default_taxonomy_terms();
+			
+			flush_rewrite_rules();
+		}
 	}
 
 	/**
@@ -35,6 +57,19 @@ class WPZOOM_Plugin_Activator {
 	 * @since 2.2.0
 	 */
 	public static function deactivate() {
-		flush_rewrite_rules();
+		/**
+		 * Allow developers to hook deactivation.
+		 * @see wpzoom_recipe_card_deactivate
+		 */
+		$deactivate = apply_filters( 'wpzoom_recipe_card_deactivate', true );
+
+		if ( $deactivate ) {
+			delete_option( 'wpzoom_rcb_do_activation_redirect' );
+			delete_transient( 'wpzoom_rcb_welcome_banner' );
+
+			flush_rewrite_rules();
+		}
 	}
 }
+
+WPZOOM_Plugin_Activator::init();

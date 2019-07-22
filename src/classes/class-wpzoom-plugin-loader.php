@@ -47,23 +47,6 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 		 * @return void
 		 */
 		private static function define_constants() {
-			/**
-			 * Parses the plugin contents to retrieve plugin’s metadata.
-			 * @since 2.1.1
-			 */
-			if ( function_exists( 'get_plugin_data' ) ) {
-				$plugin_data = get_plugin_data( __FILE__ );
-			}
-			else {
-				$plugin_data = get_file_data( __FILE__, array(
-					'Version' => 'Version',
-				    'TextDomain' => 'Text Domain',
-				    'AuthorURI' => 'Author URI'
-				), 'plugin' );
-			}
-
-			define( 'WPZOOM_RCB_VERSION', $plugin_data['Version'] );
-			define( 'WPZOOM_RCB_TEXT_DOMAIN', $plugin_data['TextDomain'] );
 			define( 'WPZOOM_RCB_HAS_PRO', true );
 			define( 'WPZOOM_RCB_PLUGIN_FILE', trailingslashit( dirname( dirname( dirname( __FILE__ ) ) ) ) . 'wpzoom-recipe-card.php' );
 			define( 'WPZOOM_RCB_PLUGIN_DIR', plugin_dir_path( WPZOOM_RCB_PLUGIN_FILE ) );
@@ -73,6 +56,25 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 
 			// settings page url attribute
 			define( 'WPZOOM_RCB_SETTINGS_PAGE', 'wpzoom-recipe-card-settings' );
+
+			/**
+			 * Parses the plugin contents to retrieve plugin’s metadata.
+			 * @since 2.1.1
+			 */
+			if ( function_exists( 'get_plugin_data' ) ) {
+				$plugin_data = get_plugin_data( WPZOOM_RCB_PLUGIN_FILE );
+			}
+			else {
+				$plugin_data = get_file_data( WPZOOM_RCB_PLUGIN_FILE, array(
+					'Version' => 'Version',
+				    'TextDomain' => 'Text Domain',
+				    'AuthorURI' => 'Author URI'
+				), 'plugin' );
+			}
+
+			define( 'WPZOOM_RCB_VERSION', $plugin_data['Version'] );
+			define( 'WPZOOM_RCB_TEXT_DOMAIN', $plugin_data['TextDomain'] );
+			
 			// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 			define( 'WPZOOM_RCB_STORE_URL', $plugin_data['AuthorURI'] );
 			define( 'WPZOOM_RCB_RENEW_URL', $plugin_data['AuthorURI'].'/account/licenses/' );
