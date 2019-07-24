@@ -7,6 +7,7 @@ import includes from "lodash/includes";
 import uniqueId from "lodash/uniqueId";
 import invoke from "lodash/invoke";
 import isUndefined from "lodash/isUndefined";
+import ReactPlayer from "react-player";
 
 import Detail from "./Detail";
 import DetailItem from "./DetailItem";
@@ -247,6 +248,9 @@ class RecipeCard extends Component {
 			course,
 			cuisine,
 			difficulty,
+			hasVideo,
+			video,
+			videoTitle,
 			hasImage,
 			image,
 			settings: {
@@ -273,11 +277,12 @@ class RecipeCard extends Component {
 			},
 		} = attributes;
 
-		let style = getBlockStyle( className );
+		const style = getBlockStyle( className );
+		const loadingClass = this.state.isLoading ? 'is-loading-block' : '';
+		const videoType = get( video, 'type' );
 		let pin_description = recipeTitle;
 		let headerContentAlign = headerAlign;
 		let customAuthorName;
-		const loadingClass = this.state.isLoading ? 'is-loading-block' : '';
 
 		if ( get( settingOptions, 'wpzoom_rcb_settings_pin_description' ) === 'recipe_summary' ) {
 			pin_description = jsonSummary;
@@ -598,6 +603,53 @@ class RecipeCard extends Component {
 				/>
 				<Ingredient { ...{ attributes, setAttributes, className, clientId } } />
 				<Direction { ...{ attributes, setAttributes, className, clientId } } />
+				<div class="recipe-card-video">
+					<RichText
+						tagName="h3"
+						className="video-title"
+						format="string"
+						value={ videoTitle }
+						unstableOnFocus={ () => this.setFocus( "videoTitle" ) }
+						onChange={ ( videoTitle ) => setAttributes( { videoTitle } ) }
+						onSetup={ ( ref ) => {
+							this.editorRefs.videoTitle = ref;
+						} }
+						placeholder={ __( "Write Recipe Video title", "wpzoom-recipe-card" ) }
+						formattingControls={ [] }
+						keepPlaceholderOnFocus={ true }
+					/>
+					{
+						! hasVideo &&
+						<Placeholder
+							icon="video-alt3"
+							className="wpzoom-recipe-card-video-placeholder"
+							instructions={ __( "You can add Recipe Video from block settings on right sidebar", "wpzoom-recipe-card" ) }
+							label={ __( "Recipe Card Video", "wpzoom-recipe-card" ) }
+						/>
+					}
+					{
+						hasVideo &&
+						'embed' === videoType &&
+						<Fragment>
+							<ReactPlayer
+								width="100%"
+								height="340px"
+								url={ get( video, 'url' ) }
+							/>
+						</Fragment>
+					}
+					{
+						hasVideo &&
+						'self-hosted' === videoType &&
+						<Fragment>
+							<video
+								controls={ get( video, 'settings.controls' ) }
+								poster={ get( video, 'poster.url' ) }
+								src={ get( video, 'url' ) }
+							/>
+						</Fragment>
+					}
+				</div>
 				<div className="recipe-card-notes">
 					<RichText
 						tagName="h3"
