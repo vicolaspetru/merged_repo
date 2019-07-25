@@ -364,8 +364,8 @@ class Inspector extends Component {
 					<PanelRow>
 						<span>{ __( "Legend:", "wpzoom-recipe-card" ) }</span>
 					</PanelRow>
-					<PanelRow className="text-color-red">
-						<ColorIndicator aria-label={ __( "Required fields", "wpzoom-recipe-card" ) } colorValue="#ff2725" />
+					<PanelRow className={ check.errors.length === 0 ? `text-color-green` : `text-color-red` }>
+						<ColorIndicator aria-label={ __( "Required fields", "wpzoom-recipe-card" ) } colorValue={ check.errors.length === 0 ? `#29a740` : `#ff2725` } />
 						<strong>{ `${ check.errors.length } ` + _n( "error", "errors", `${ check.errors.length }`, "wpzoom-recipe-card" ) }</strong>
 					</PanelRow>
 					<PanelRow className="text-color-orange">
@@ -539,7 +539,7 @@ class Inspector extends Component {
 		                			</Button>
 		                		) }
 		                	/>
-		                	{ pin_has_custom_image ? <Button isLink="true" isDestructive="true" onClick={ onRemovePinImage }>{ __( "Remove Image", "wpzoom-recipe-card" ) }</Button> : '' }
+		                	{ pin_has_custom_image ? <Button isLink="true" isDestructive="true" onClick={ this.onRemovePinImage }>{ __( "Remove Image", "wpzoom-recipe-card" ) }</Button> : '' }
 		        		</BaseControl>
 		        	}
 		        	{
@@ -551,7 +551,7 @@ class Inspector extends Component {
 				    	    type="text"
 				    	    label={ __( "Pinterest Custom Description", "wpzoom-recipe-card" ) }
 				    	    value={ pin_custom_text }
-				    	    onChange={ customText => onChangeSettings( customText, 0, 'pin_custom_text' ) }
+				    	    onChange={ customText => this.onChangeSettings( customText, 'pin_custom_text' ) }
 				    	/>
 	        		}
 	        		{
@@ -601,7 +601,7 @@ class Inspector extends Component {
     		        	<ColorPalette 
     						colors={ colors } 
     						value={ primary_color }
-    						onChange={ color => onChangeSettings( color, 0, 'primary_color' ) }
+    						onChange={ color => this.onChangeSettings( color, 'primary_color' ) }
     					/>
 	        		</BaseControl>
    	        		{

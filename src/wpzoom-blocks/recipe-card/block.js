@@ -93,7 +93,7 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
                 settings[0]['primary_color'] = '#222222';
             }
 
-            setAttributes( { settings } );
+            setAttributes( { settings, hasInstance: true } );
         }
 
         return <RecipeCard { ...{ attributes, setAttributes, className, clientId } } />;
