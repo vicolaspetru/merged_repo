@@ -514,12 +514,13 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			    'ratingValue' => self::$wpzoom_rating->get_rating_average( $this->recipe->ID ),
 			    'reviewCount' => self::$wpzoom_rating->get_total_votes( $this->recipe->ID )
 			),
-			'name'			=> $this->recipe->post_title,
-			'description' 	=> $this->recipe->post_excerpt,
+			'name'			=> isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : $this->recipe->post_title,
+			'description' 	=> isset( $attributes['summary'] ) ? $attributes['summary'] : $this->recipe->post_excerpt,
 			'image'			=> '',
 			'video'			=> array(
-				'name'  		=> $this->recipe->post_title,
-				'description' 	=> $this->recipe->post_excerpt,
+				'@type'			=> 'CreativeWork',
+				'name'  		=> isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : $this->recipe->post_title,
+				'description' 	=> isset( $attributes['summary'] ) ? $attributes['summary'] : $this->recipe->post_excerpt,
 				'thumbnailUrl' 	=> '',
 				'contentUrl' 	=> '',
 				'embedUrl' 		=> '',
@@ -571,7 +572,22 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					unset( $json_ld['video']['embedUrl'] );
 				}
 				elseif ( 'embed' === $video_type ) {
-					$json_ld['video']['embedUrl'] = esc_url( $video['url'] );
+					$video_embed_url = $video['url'];
+
+					$json_ld['video']['@type'] = 'VideoObject';
+
+					if ( ! empty( $attributes['image'] ) && isset( $attributes['hasImage'] ) && $attributes['hasImage'] ) {
+						$json_ld['video']['thumbnailUrl'] = $attributes['image']['url'];
+					}
+
+					if ( strpos( $video['url'], 'youtu' ) ) {
+						$video_embed_url = self::$helpers->convert_youtube_url_to_embed( $video['url'] );
+					}
+					elseif ( strpos( $video['url'] , 'vimeo' ) ) {
+						$video_embed_url = self::$helpers->convert_vimeo_url_to_embed( $video['url'] );
+					}
+
+					$json_ld['video']['embedUrl'] = esc_url( $video_embed_url );
 					unset($json_ld['video']['contentUrl']);
 				}
 			}
@@ -1168,7 +1184,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			);
 		}
 
-		return sprintf( '<div class="recipe-card-video"><h3 class="video-title">%s</h3>%s</div>', $attributes['videoTitle'], $output );
+		return sprintf( '<div class="recipe-card-video no-print"><h3 class="video-title">%s</h3>%s</div>', $attributes['videoTitle'], $output );
 	}
 
 	/**

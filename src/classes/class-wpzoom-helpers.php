@@ -71,6 +71,16 @@ class WPZOOM_Helpers {
 		if ( $blockStyle === 'simple' ) {
 			$settings['headerAlign'] = 'left';
 		}
+
+		if ( !isset( $settings['primary_color'] ) ) {
+			if ( 'default' === $blockStyle ) {
+				$settings['primary_color'] = '#222';
+			} elseif ( 'newdesign' === $blockStyle ) {
+				$settings['primary_color'] = '#FFA921';
+			} elseif ( 'simple' === $blockStyle ) {
+				$settings['primary_color'] = '#222';
+			}
+		}
 		
 		if ( !isset( $settings['custom_author_name'] ) ) {
 			$settings['custom_author_name'] = '';
@@ -158,6 +168,16 @@ class WPZOOM_Helpers {
 		}
 
 		return $output;
+	}
+
+	public function convert_youtube_url_to_embed( $url ) {
+		$embed_url = preg_replace("/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","https://www.youtube.com/embed/$1?feature=oembed", $url );
+		return $embed_url;
+	}
+
+	public function convert_vimeo_url_to_embed( $url ) {
+		$embed_url = preg_replace("/\s*[a-zA-Z\/\/:\.]*vimeo.com\/([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","https://player.vimeo.com/video/$1", $url );
+		return $embed_url;
 	}
 }
 
