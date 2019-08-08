@@ -79,7 +79,7 @@ class WPZOOM_Helpers {
 			} elseif ( 'newdesign' === $blockStyle ) {
 				$settings['primary_color'] = '#FFA921';
 			} elseif ( 'simple' === $blockStyle ) {
-				$settings['primary_color'] = '#6d767f';
+				$settings['primary_color'] = '';
 			}
 		}
 		

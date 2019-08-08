@@ -363,7 +363,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		$styles = '';
 
-		if ( $hasInstance ) {
+		if ( $hasInstance && '' != self::$settings['primary_color'] ) {
 			if ( 'default' === self::$style ) {
 				$styles = array(
 					'background-color' => self::$settings['primary_color'],
@@ -777,18 +777,20 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$itemIconClasses = implode( ' ', array( 'detail-item-icon', $detail['iconSet'], $detail['iconSet'] . '-' . $detail['icon'] ) );
 				$styles = array();
 
-				if ( 'default' === self::$style ) {
-					$styles = array(
-						'color' => @self::$settings['primary_color']
-					);
-				} elseif ( 'newdesign' === self::$style ) {
-					$styles = array(
-						'color' => self::$settings['primary_color']
-					);
-				} elseif ( 'simple' === self::$style ) {
-					$styles = array(
-						'color' => self::$settings['primary_color']
-					);
+				if ( '' != self::$settings['primary_color'] ) {
+					if ( 'default' === self::$style ) {
+						$styles = array(
+							'color' => @self::$settings['primary_color']
+						);
+					} elseif ( 'newdesign' === self::$style ) {
+						$styles = array(
+							'color' => self::$settings['primary_color']
+						);
+					} elseif ( 'simple' === self::$style ) {
+						$styles = array(
+							'color' => self::$settings['primary_color']
+						);
+					}
 				}
 				$iconStyles = self::$helpers->render_styles_attributes( $styles );
 
@@ -885,13 +887,18 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		foreach ( $ingredients as $index => $ingredient ) {
 			$tick = $name = '';
+			$styles = array();
 			$isGroup = isset($ingredient['isGroup']) ? $ingredient['isGroup'] : false;
 
 			if ( !$isGroup ) {
 				if ( 'newdesign' === self::$style || 'simple' === self::$style ) {
-					$styles = array(
-						'border' => '2px solid ' . self::$settings['primary_color']
-					);
+
+					if ( '' != self::$settings['primary_color'] ) {
+						$styles = array(
+							'border' => '2px solid ' . self::$settings['primary_color']
+						);
+					}
+
 					$tickStyles = self::$helpers->render_styles_attributes( $styles );
 
 					$tick = sprintf(
