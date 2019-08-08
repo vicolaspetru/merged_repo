@@ -304,15 +304,18 @@ class RecipeCard extends Component {
 		let classNames = m !== null ? [ className, `header-content-align-${ headerContentAlign }`, loadingClass ] : [ className, `is-style-${ style }`, `header-content-align-${ headerContentAlign }`, loadingClass ];
 
 		let printStyles = [];
-		if ( 'default' === style || 'simple' === style ) {
-			printStyles = {
-				'background-color': `${ primary_color }`,
-			};
-		} else if ( 'newdesign' === style ) {
-			printStyles = {
-				'background-color': `${ primary_color }`,
-				'box-shadow': `0 5px 40px ${ primary_color }`
-			};
+
+		if ( '' != primary_color ) {
+			if ( 'default' === style || 'simple' === style ) {
+				printStyles = {
+					'background-color': `${ primary_color }`,
+				};
+			} else if ( 'newdesign' === style ) {
+				printStyles = {
+					'background-color': `${ primary_color }`,
+					'box-shadow': `0 5px 40px ${ primary_color }`
+				};
+			}
 		}
 
 		const RecipeCardClassName = classNames.filter( ( item ) => item ).join( " " );

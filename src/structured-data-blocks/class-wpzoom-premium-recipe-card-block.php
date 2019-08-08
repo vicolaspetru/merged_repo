@@ -362,19 +362,22 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$RecipeCardClassName 	= implode( ' ', array( $class, $className ) );
 
 		$styles = '';
-		if ( 'default' === self::$style ) {
-			$styles = array(
-				'background-color' => self::$settings['primary_color'],
-			);
-		} else if ( 'newdesign' === self::$style ) {
-			$styles = array(
-				'background-color' => self::$settings['primary_color'],
-				'box-shadow' => '0 5px 40px '. self::$settings['primary_color'] . ''
-			);
-		} else if ( 'simple' === self::$style ) {
-			$styles = array(
-				'background-color' => self::$settings['primary_color'],
-			);
+
+		if ( $hasInstance ) {
+			if ( 'default' === self::$style ) {
+				$styles = array(
+					'background-color' => self::$settings['primary_color'],
+				);
+			} else if ( 'newdesign' === self::$style ) {
+				$styles = array(
+					'background-color' => self::$settings['primary_color'],
+					'box-shadow' => '0 5px 40px '. self::$settings['primary_color'] . ''
+				);
+			} else if ( 'simple' === self::$style ) {
+				$styles = array(
+					'background-color' => self::$settings['primary_color'],
+				);
+			}
 		}
 		$printStyles = self::$helpers->render_styles_attributes( $styles );
 

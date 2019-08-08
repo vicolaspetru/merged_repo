@@ -210,8 +210,10 @@ export default class IngredientItem extends Component {
 		let tickStyles = [];
 		let style = getBlockStyle( className );
 
-		if ( 'newdesign' === style || 'simple' === style ) {
-			tickStyles = { 'border': `2px solid ${ primary_color }` };
+		if ( '' != primary_color ) {
+			if ( 'newdesign' === style || 'simple' === style ) {
+				tickStyles = { 'border': `2px solid ${ primary_color }` };
+			}
 		}
 
 		const isSelectedName = isSelected && subElement === "name";

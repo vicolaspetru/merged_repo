@@ -89,8 +89,12 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
         if ( ! hasInstance ) {
             if ( 'newdesign' === style ) {
                 settings[0]['primary_color'] = '#FFA921';
-            } else {
+            }
+            else if ( 'default' === style ) {
                 settings[0]['primary_color'] = '#222222';
+            }
+            else if ( 'simple' === style ) {
+                settings[0]['primary_color'] = '';
             }
 
             setAttributes( { settings, hasInstance: true } );
