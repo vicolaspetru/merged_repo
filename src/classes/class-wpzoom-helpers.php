@@ -62,6 +62,7 @@ class WPZOOM_Helpers {
 	}
 
 	public function parse_block_settings( $attrs ) {
+		$hasInstance = isset( $attrs['hasInstance'] ) ? $attrs['hasInstance'] : false;
 		$settings = isset( $attrs['settings'][0] ) ? $attrs['settings'][0] : array();
 		$blockStyle = isset($attrs['className']) ? $this->get_block_style( $attrs['className'] ) : WPZOOM_Settings::get( 'wpzoom_rcb_settings_template' );
 
@@ -72,13 +73,13 @@ class WPZOOM_Helpers {
 			$settings['headerAlign'] = 'left';
 		}
 
-		if ( !isset( $settings['primary_color'] ) ) {
+		if ( ! $hasInstance || !isset( $settings['primary_color'] ) ) {
 			if ( 'default' === $blockStyle ) {
 				$settings['primary_color'] = '#222';
 			} elseif ( 'newdesign' === $blockStyle ) {
 				$settings['primary_color'] = '#FFA921';
 			} elseif ( 'simple' === $blockStyle ) {
-				$settings['primary_color'] = '#222';
+				$settings['primary_color'] = '#6d767f';
 			}
 		}
 		
