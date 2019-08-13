@@ -78,6 +78,8 @@ class WPZOOM_Settings {
 	 * The Constructor.
 	 */
 	public function __construct() {
+		global $pagenow;
+
 		self::$options 			= get_option( self::$option );
 		self::$license_options 	= get_option( self::$license_option );
 
@@ -85,9 +87,10 @@ class WPZOOM_Settings {
 		self::$license_key 		= isset( self::$license_options['wpzoom_rcb_plugin_license_key'] ) ? trim( self::$license_options['wpzoom_rcb_plugin_license_key'] ) : false;
 		self::$license_status 	= isset( self::$license_options['wpzoom_rcb_plugin_license_status'] ) ? self::$license_options['wpzoom_rcb_plugin_license_status'] : false;
 
+		// Check what page we are on.
+		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
+
 		if( is_admin() ) {
-            global $pagenow;
-		    add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		    add_action( 'admin_init', array( $this, 'settings_init' ) );
 		    add_action( 'admin_init', array( $this, 'settings_license' ) );
 		    add_action( 'admin_init', array( $this, 'set_defaults' ) );
@@ -99,30 +102,24 @@ class WPZOOM_Settings {
 			add_action( 'wp_ajax_wpzoom_reset_settings', array( $this, 'reset_settings') );
 			add_action( 'wp_ajax_wpzoom_welcome_banner_close', array( $this, 'welcome_banner_close') );
 
-		    if( isset( $_GET['page'] ) && $_GET['page'] === WPZOOM_RCB_SETTINGS_PAGE ) {
-		        if( $pagenow !== "options-general.php" ) {
-		        	// Display admin notices
-		        	add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-		        }
-                // Include admin scripts & styles
-                add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
-            }
+			// Only load if we are actually on the settings page.
+		    if ( WPZOOM_RCB_SETTINGS_PAGE === $page ) {
+			    add_action( 'wpzoom_rcb_admin_page', array( $this, 'settings_page' ) );
+
+			    // Include admin scripts & styles
+			    add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
+
+			    // Action for welcome banner
+			    add_action( 'wpzoom_rcb_welcome_banner', array( $this, 'welcome' ) );
+		    }
+
+	        if( $pagenow !== "admin.php" ) {
+	        	// Display admin notices
+	        	add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+	        }
 
 		    $this->_fields = new WPZOOM_Settings_Fields();
 		}
-	}
-
-	/**
-	 * Add subitem to Settings admin menu.
-	 */
-	public function admin_menu() {
-		add_options_page(
-			__( 'WPZOOM Recipe Card Settings', 'wpzoom-recipe-card' ),
-			__( 'WPZOOM Recipe Card', 'wpzoom-recipe-card' ),
-			'manage_options',
-			WPZOOM_RCB_SETTINGS_PAGE,
-			array( $this, 'settings_page' )
-		);
 	}
 
 	/**
@@ -974,9 +971,11 @@ class WPZOOM_Settings {
 		}
 	?>
 		<div class="wrap">
-			<?php $this->welcome(); ?>
+			<?php do_action( 'wpzoom_rcb_welcome_banner' ); ?>
 
 			<h1 style="margin-bottom: 15px"><?php echo esc_html( get_admin_page_title() ); ?></h1>
+
+			<?php settings_errors(); ?>
 
 			<?php if ( isset( $_GET['wpzoom_reset_settings'] ) && ! isset( $_GET['settings-updated'] ) ): ?>
 				<div class="updated settings-error notice is-dismissible">
@@ -1066,7 +1065,9 @@ class WPZOOM_Settings {
 	 * @param string $hook
 	 */
 	public function scripts( $hook ) {
-	    if ( $hook != 'settings_page_wpzoom-recipe-card-settings' ) {
+	    $pos = strpos( $hook, WPZOOM_RCB_SETTINGS_PAGE );
+
+	    if ( $pos === false ) {
 	        return;
 	    }
 
@@ -1284,7 +1285,7 @@ class WPZOOM_Settings {
 
 			// Check if anything passed on a message constituting a failure
 			if ( ! empty( $message ) ) {
-				$base_url = admin_url( 'options-general.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
+				$base_url = admin_url( 'admin.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
 				$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
 
 				wp_redirect( $redirect );
@@ -1299,7 +1300,7 @@ class WPZOOM_Settings {
 				delete_transient( 'wpzoom_rcb_plugin_license_message' );
 			}
 
-			$base_url = admin_url( 'options-general.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
+			$base_url = admin_url( 'admin.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
 			$redirect = add_query_arg( array( 'sl_activation' => 'true', 'message' => urlencode( $message ) ), $base_url );
 
 			wp_redirect( $redirect );
@@ -1343,7 +1344,7 @@ class WPZOOM_Settings {
 					$message = __( 'An error occurred, please try again.', 'wpzoom-recipe-card' );
 				}
 
-				$base_url = admin_url( 'options-general.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
+				$base_url = admin_url( 'admin.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
 				$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
 
 				wp_redirect( $redirect );
@@ -1361,7 +1362,7 @@ class WPZOOM_Settings {
 				delete_transient( 'wpzoom_rcb_plugin_license_message' );
 			}
 
-			$base_url = admin_url( 'options-general.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
+			$base_url = admin_url( 'admin.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
 			$redirect = add_query_arg( array( 'sl_activation' => 'true', 'message' => urlencode( $message ) ), $base_url );
 
 			wp_redirect( $redirect );

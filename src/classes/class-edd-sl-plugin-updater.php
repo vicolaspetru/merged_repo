@@ -98,7 +98,7 @@ class EDD_SL_Plugin_Updater {
 			$_transient_data = new stdClass;
 		}
 
-		if ( 'options-general.php' == $pagenow && is_multisite() ) {
+		if ( 'admin.php' == $pagenow && is_multisite() ) {
 			return $_transient_data;
 		}
 

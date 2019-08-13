@@ -299,7 +299,9 @@ class WPZOOM_Settings_Fields {
 	 * @param string $hook
 	 */
 	public function scripts( $hook ) {
-	    if ( $hook != 'settings_page_wpzoom-recipe-card-settings' ) {
+	    $pos = strpos( $hook, WPZOOM_RCB_SETTINGS_PAGE );
+
+	    if ( $pos === false ) {
 	        return;
 	    }
 
