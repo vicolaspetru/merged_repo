@@ -99,6 +99,7 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 				require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-edd-sl-plugin-updater.php';
 			}
 
+			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-admin-menu.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-helpers.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-settings-fields.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-settings.php';
