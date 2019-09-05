@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Recipe Card Blocks PRO by WPZOOM
  * Plugin URI: https://www.wpzoom.com/plugins/recipe-card-blocks/
- * Description: Beautiful recipe blocks for Gutenberg to help you to add recipe cards: Ingredients, Directions and more to come.
+ * Description: Beautiful Recipe Card Blocks for Food Bloggers with Schema Markup for the new WordPress editor (Gutenberg).
  * Author: WPZOOM
  * Author URI: https://www.wpzoom.com/
- * Version: 2.2.0
+ * Version: 2.3.0
  * Copyright: (c) 2019 WPZOOM
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
