@@ -289,13 +289,13 @@ class WPZOOM_Settings {
 	 */
 	public function initiate_updater_class() {
 		// setup the updater
-		$plugin_updater = new EDD_SL_Plugin_Updater( WPZOOM_RCB_STORE_URL, WPZOOM_RCB_PLUGIN_DIR, array(
+		$plugin_updater = new EDD_SL_Plugin_Updater( WPZOOM_RCB_STORE_URL, WPZOOM_RCB_PLUGIN_FILE, array(
 			'version' 	=> WPZOOM_RCB_VERSION,		// current version number
 			'license' 	=> self::$license_key,		// license key (used get_option above to retrieve from DB)
 			'item_id'   => WPZOOM_RCB_ITEM_ID,		// id of this plugin
 			'author' 	=> 'Vicolas Petru',			// author of this plugin
 			'url'       => home_url(),
-		        'beta'  => false 					// set to true if you wish customers to receive update notifications of beta releases
+		    'beta'  	=> false 					// set to true if you wish customers to receive update notifications of beta releases
 		) );
 	}
 
