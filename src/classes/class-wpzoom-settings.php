@@ -96,7 +96,7 @@ class WPZOOM_Settings {
 		    add_action( 'admin_init', array( $this, 'set_defaults' ) );
 		    add_action( 'admin_init', array( $this, 'activate_license' ) );
 		    add_action( 'admin_init', array( $this, 'deactivate_license' ) );
-		    add_action( 'admin_init', array( $this, 'initiate_updater_class' ) );
+		    add_action( 'init',       array( $this, 'initiate_updater_class' ) );
 
 		    // Do ajax request
 			add_action( 'wp_ajax_wpzoom_reset_settings', array( $this, 'reset_settings') );
