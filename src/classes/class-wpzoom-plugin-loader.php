@@ -1,7 +1,7 @@
 <?php
 
 if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
-	
+
 	/**
 	 * Responsible for setting up plugin constants, classes and includes.
 	 *
@@ -74,7 +74,7 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 
 			define( 'WPZOOM_RCB_VERSION', $plugin_data['Version'] );
 			define( 'WPZOOM_RCB_TEXT_DOMAIN', $plugin_data['TextDomain'] );
-			
+
 			// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 			define( 'WPZOOM_RCB_STORE_URL', $plugin_data['AuthorURI'] );
 			define( 'WPZOOM_RCB_RENEW_URL', $plugin_data['AuthorURI'].'/account/licenses/' );
@@ -95,7 +95,7 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 			 * @since 1.2.0
 			 */
 			if( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-				// load our custom updater if it doesn't already exist 
+				// load our custom updater if it doesn't already exist
 				require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-edd-sl-plugin-updater.php';
 			}
 
@@ -120,7 +120,7 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 		 */
 		public static function double_install_admin_notice() {
 			/* translators: %s: plugins page link */
-			$message = __( 'You currently have two versions of Recipe Card Blocks PRO active on this site. Please <a href="%s">deactivate one</a> before continuing.', 'wpzoom-recipe-card' );
+			$message = __( 'You currently have two versions of Recipe Card Block active on this site. Please <a href="%s">deactivate one</a> before continuing.', 'wpzoom-recipe-card' );
 
 			self::render_admin_notice( sprintf( $message, admin_url( 'plugins.php' ) ), 'error' );
 		}

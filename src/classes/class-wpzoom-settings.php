@@ -165,13 +165,13 @@ class WPZOOM_Settings {
 
 	/**
 	 * Update option value
-	 * 
-	 * @param string|array $value 
-	 * @param string $option 
+	 *
+	 * @param string|array $value
+	 * @param string $option
 	 */
 	public static function update_option( $value, $option = '', $autoload = null ) {
 		if ( empty( $option ) ) $option = self::$option;
-		
+
 		if ( self::$options !== false ) {
 		    // The option already exists, so we just update it.
 		    update_option( $option, $value, $autoload );
@@ -194,8 +194,8 @@ class WPZOOM_Settings {
 
 	/**
 	 * Get default value by option name
-	 * 
-	 * @param string $option_name 
+	 *
+	 * @param string $option_name
 	 * @static
 	 * @return boolean
 	 */
@@ -205,7 +205,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Get license key
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return string The License key
 	 */
@@ -215,7 +215,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Get license status
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return string The License status
 	 */
@@ -225,7 +225,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Get setting options
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return array
 	 */
@@ -284,7 +284,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Initiate the updater class.
-	 * @since 1.2.0 
+	 * @since 1.2.0
 	 * @return void
 	 */
 	public function initiate_updater_class() {
@@ -788,7 +788,7 @@ class WPZOOM_Settings {
 	/**
 	 * Add License tab to Settings
 	 * Apply to filter 'wpzoom_rcb_before_register_settings'
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @param array $settings
 	 * @return array
@@ -884,7 +884,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Register all Setting options
-	 * 
+	 *
 	 * @since 1.1.0
 	 * @return boolean
 	 */
@@ -905,7 +905,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Register License Setting options
-	 * 
+	 *
 	 * @since 2.2.0
 	 * @return boolean
 	 */
@@ -926,9 +926,9 @@ class WPZOOM_Settings {
 
 	/**
 	 * Register Setting
-	 * 
+	 *
 	 * @since 2.2.0
-	 * @param array $setting 
+	 * @param array $setting
 	 * @return void
 	 */
 	public function register_setting( $setting ) {
@@ -982,7 +982,7 @@ class WPZOOM_Settings {
 					<p><strong>Settings have been successfully reset.</strong></p>
 				</div>
 			<?php endif; ?>
-			
+
 			<div class="cols-wrap">
 				<form id="wpzoom-recipe-card-settings" action="options.php" method="post">
 					<ul class="wp-tab-bar">
@@ -1001,14 +1001,14 @@ class WPZOOM_Settings {
 						<?php if ( $setting['tab_id'] == 'tab-license' ) continue; ?>
 						<?php if ( self::$active_tab === $setting['tab_id'] ): ?>
 							<div class="wp-tab-panel" id="<?php echo $setting['tab_id'] ?>">
-								<?php 
+								<?php
 									settings_fields( $setting['option_group'] );
 									do_settings_sections( $setting['option_group'] );
 								?>
 							</div>
 						<?php else: ?>
 							<div class="wp-tab-panel" id="<?php echo $setting['tab_id'] ?>" style="display: none;">
-								<?php 
+								<?php
 									settings_fields( $setting['option_group'] );
 									do_settings_sections( $setting['option_group'] );
 								?>
@@ -1042,16 +1042,16 @@ class WPZOOM_Settings {
 						<br>
 						<br>
 
-						<iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-follow-button twitter-follow-button-rendered" title="<?php _e( 'Twitter Follow Button', 'wpzoom-recipe-card' ) ?>" src="https://platform.twitter.com/widgets/follow_button.2e9f365dae390394eb8d923cba8c5b11.ro.html#dnt=false&amp;id=twitter-widget-0&amp;lang=ro&amp;screen_name=wpzoom&amp;show_count=true&amp;show_screen_name=true&amp;size=m&amp;time=1556617945313" data-screen-name="wpzoom" style="position: static; visibility: visible; width: 250px; height: 20px;"></iframe>
-						<script>!function (d, s, id) {
-						var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-						if (!d.getElementById(id)) {
-						    js = d.createElement(s);
-						    js.id = id;
-						    js.src = p + '://platform.twitter.com/widgets.js';
-						    fjs.parentNode.insertBefore(js, fjs);
-						}
-						}(document, 'script', 'twitter-wjs');</script>
+						<a href="https://twitter.com/wpzoom" class="twitter-follow-button">Follow @wpzoom</a>
+                        <script>!function (d, s, id) {
+                                var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                                if (!d.getElementById(id)) {
+                                    js = d.createElement(s);
+                                    js.id = id;
+                                    js.src = p + '://platform.twitter.com/widgets.js';
+                                    fjs.parentNode.insertBefore(js, fjs);
+                                }
+                            }(document, 'script', 'twitter-wjs');</script>
 					</div>
 				</div>
 			</div>
@@ -1061,7 +1061,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Enqueue scripts and styles
-	 * 
+	 *
 	 * @param string $hook
 	 */
 	public function scripts( $hook ) {
@@ -1094,9 +1094,9 @@ class WPZOOM_Settings {
 
 	/**
 	 * Sanitize license
-	 * 
+	 *
 	 * @since 1.2.0
-	 * @param array $new 
+	 * @param array $new
 	 * @return array
 	 */
 	public function sanitize_license( $new ) {
@@ -1145,7 +1145,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Check if a license key is still valid
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return void
 	 */
@@ -1224,7 +1224,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Activate a License Key
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return void
 	 */
@@ -1311,7 +1311,7 @@ class WPZOOM_Settings {
 	/**
 	 * Deactivate a License Key
 	 * This will decrease the site count
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return void
 	 */
@@ -1373,7 +1373,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * This is a means of catching errors from the activation method above and displaying it to the customer
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	public function admin_notices() {
@@ -1461,46 +1461,46 @@ class WPZOOM_Settings {
 
 	/**
 	 * Prints out all settings sections added to a particular settings page
-	 * 
+	 *
 	 * @since 2.2.0
 	 * @param string $page The slug name of the page whose settings sections you want to output.
 	 * @return void
 	 */
 	public static function do_settings_sections( $page ) {
 	    global $wp_settings_sections, $wp_settings_fields;
-	 
+
 	    if ( ! isset( $wp_settings_sections[ $page ] ) ) {
 	        return;
 	    }
-	 
+
 	    foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
 	        if ( $section['title'] ) {
 	            echo "<h2 class=\"form-section-title\">{$section['title']}</h2>\n";
 	        }
-	 
+
 	        if ( $section['callback'] ) {
 	            call_user_func( $section['callback'], $section );
 	        }
-	 
+
 	        if ( ! isset( $wp_settings_fields ) || ! isset( $wp_settings_fields[ $page ] ) || ! isset( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
 	            continue;
 	        }
 	        echo '<div class="form-wrap">';
 	            foreach ( (array) $wp_settings_fields[ $page ][ $section['id'] ] as $field ) {
 	                $class = '';
-	         
+
 	                if ( ! empty( $field['args']['class'] ) ) {
 	                    $class = ' class="' . esc_attr( $field['args']['class'] ) . '"';
 	                }
-	         
+
 	                echo "<div{$class}>";
-	         
+
 	                if ( ! empty( $field['args']['label_for'] ) ) {
 	                    echo '<div class="form-row-label"><label for="' . esc_attr( $field['args']['label_for'] ) . '">' . $field['title'] . '</label></div>';
 	                } else {
 	                    echo '<div class="form-row-label">' . $field['title'] . '</div>';
 	                }
-	         
+
 	                echo '<div class="form-row-field">';
 	                call_user_func( $field['callback'], $field['args'] );
 	                echo '</div>';
