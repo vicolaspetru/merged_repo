@@ -199,7 +199,6 @@ export default class DetailItem extends Component {
 				    // isSelected={ isSelectedValue }
 				    placeholder={ DetailItem.getPlaceholder( index, 'value' ) }
 				    unstableOnFocus={ this.onFocusValue }
-				    formattingControls={ [] }
 				    keepPlaceholderOnFocus={ true }
 				/>
 				<p className="detail-item-unit">{ DetailItem.getPlaceholder( index, 'unit' ) }</p>

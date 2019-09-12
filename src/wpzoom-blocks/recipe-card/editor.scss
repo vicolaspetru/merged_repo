@@ -94,6 +94,9 @@
 			display: inline-block;
 			width: 93%;
 		}
+        .ingredient-item-group-title {
+            font-weight: bold;
+        }
 	}
 
 	.ingredients-list {
@@ -150,6 +153,11 @@
 		&::before {
 			left: 10px;
 			top: 6px;
+		}
+	}
+	.direction-step {
+		.direction-step-group-title {
+			font-weight: bold;
 		}
 	}
 	.direction-step-button-container {
