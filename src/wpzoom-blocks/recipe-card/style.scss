@@ -65,6 +65,10 @@
 		.ingredients-list {
 			margin: 0;
 			padding: 0;
+            
+            .ingredient-item-name {
+                padding-left: 30px;
+            }
 		}
 	}
 	.recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link i,

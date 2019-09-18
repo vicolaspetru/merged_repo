@@ -102,6 +102,7 @@
 	.ingredients-list {
 		> li {
 			.ingredient-item-name {
+				padding-left: 0 !important;
 				&:hover {
 				    text-decoration: none !important;
 				}
@@ -121,7 +122,8 @@
 		}
 	}
 	&.is-style-default,
-	&.is-style-newdesign {
+	&.is-style-newdesign,
+	&.is-style-simple, {
 		.ingredients-list > li {
 			cursor: initial !important;
 		}
