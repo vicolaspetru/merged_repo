@@ -551,6 +551,21 @@ class WPZOOM_Settings {
 									'disabled'		=> false,
 								)
 							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_who_can_rate',
+								'title' 	=> __( 'Who can rate?', 'wpzoom-recipe-card' ),
+								'type'		=> 'select',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_who_can_rate',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Select who can rate your recipes.', 'wpzoom-recipe-card' ),
+									'default'		=> 'everyone',
+									'options' 		=> array(
+										'loggedin' 	=> __( 'Only logged in users can rate recipes', 'wpzoom-recipe-card' ),
+										'everyone' 	=> __( 'Everyone can rate recipes', 'wpzoom-recipe-card' ),
+									)
+								)
+							),
 						)
 					),
 				)

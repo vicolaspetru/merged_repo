@@ -66,19 +66,29 @@ jQuery(document).ready(function(){
 	           	element.parents('.wpzoom-rating-stars-container').addClass('is-loading');
 
 	            $.post(wpzoomRatingStars.ajaxurl, data, function(response) {
-	            	if( response.status == '200' ) {
-	            		rating_avg = response.rating_avg;
-	            		rating_total = response.rating_total;
+	            	var data = response.data;
+
+	            	if( response.success ) {
+	            		rating_avg = data.rating_avg;
+	            		rating_total = data.rating_total;
 	            		element.parent().next().find('small.wpzoom-rating-average').html( rating_avg );
 	            		element.parent().next().find('small.wpzoom-rating-total-votes').html( rating_total );
 	            		element.parents('.wpzoom-rating-stars-container').removeClass('is-loading');
+	            	} else {
+	            		element.parents('.wpzoom-rating-stars-container').removeClass('is-loading');
+	            		element.parents('.wpzoom-rating-stars-container').attr('data-user-can-rate', '0');
+	            		element.parents('.wpzoom-rating-stars-container').find('.wpzoom-rating-stars-tooltip').html( data.message );
 	            	}
 	            })
 	            .done(function(response){
-	            	_this.options.rating = response.rating_avg;
-	            	_this.options.rating_total = response.rating_total;
-	            	_this.syncRating();
-	            	return _this.$el.trigger('starrr:change', response.rating_avg);
+	            	var data = response.data;
+
+	            	if ( response.success ) {
+		            	_this.options.rating = data.rating_avg;
+		            	_this.options.rating_total = data.rating_total;
+		            	_this.syncRating();
+		            	return _this.$el.trigger('starrr:change', data.rating_avg);
+	            	}
 	            });
 	        };
 
