@@ -62,6 +62,10 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.3.1 =
+* Fixed a bug with Video Recipe schema markup
+* Added preview to some options in the Settings page
+
 = 2.3.0 =
 * Initial release of the PRO version
 * Added Video Recipe feature in the block
