@@ -186,12 +186,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         );
                     }
 
-                    $this->post = get_post();
-
-                    if ( ! is_object($this->post) ) {
-                        return false;
-                    }
-
                     /**
                      * Localize script data.
                      */
@@ -199,18 +193,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         $this->_slug . '-script',
                         'wpzoomRecipeCard',
                         array(
-                            'version' => WPZOOM_RCB_VERSION,
-                            'textdomain' => WPZOOM_RCB_TEXT_DOMAIN,
                             'pluginURL' => WPZOOM_RCB_PLUGIN_URL,
-                            'post_permalink' => str_replace( '?p=', '', get_the_permalink( $this->post ) ),
-                            'post_thumbnail_url' => get_the_post_thumbnail_url( $this->post ),
-                            'post_thumbnail_id' => get_post_thumbnail_id( $this->post ),
-                            'post_title' => $this->post->post_title,
-                            'post_author_name' => get_the_author_meta( 'display_name', $this->post->post_author ),
-                            'is_pro' => WPZOOM_Recipe_Card_Block_Gutenberg::is_pro(),
-                            'license_status' => WPZOOM_Settings::get_license_status(),
-                            'setting_options' => ( ! empty( $options ) ? $options : WPZOOM_Settings::get_defaults() ),
-                            'availableTerms' => array()
                         )
                     );
                     
