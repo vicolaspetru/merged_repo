@@ -108,7 +108,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 				$dependencies = array( 'wp-edit-blocks' );
 			}
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
-				$dependencies = array( 'jquery', 'wp-blocks', 'wp-i18n' );
+				$dependencies = array( 'jquery' );
 			}
 
 			return $dependencies;

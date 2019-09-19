@@ -424,7 +424,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			<div class="recipe-card-heading">
 				'. sprintf( '<h2 class="%s">%s</h2>', "recipe-card-title", ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) ) ) .
 				( '1' === $options['wpzoom_rcb_settings_user_ratings'] ?
-					self::$wpzoom_rating->get_rating_form( $recipe_ID ) : ''
+					wpzoom_rating_stars( $recipe_ID ) : ''
 				) .
 				( self::$settings['displayAuthor'] ? '<span class="recipe-card-author">'. __( "Recipe by", "wpzoom-recipe-card" ) . " " . $custom_author_name .'</span>' : '' ) .
 				( self::$settings['displayCourse'] ? $this->get_recipe_terms( 'wpzoom_rcb_courses' ) : '' ) .
