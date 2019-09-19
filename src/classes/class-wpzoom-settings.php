@@ -78,6 +78,8 @@ class WPZOOM_Settings {
 	 * The Constructor.
 	 */
 	public function __construct() {
+		global $pagenow;
+
 		self::$options 			= get_option( self::$option );
 		self::$license_options 	= get_option( self::$license_option );
 
@@ -85,44 +87,39 @@ class WPZOOM_Settings {
 		self::$license_key 		= isset( self::$license_options['wpzoom_rcb_plugin_license_key'] ) ? trim( self::$license_options['wpzoom_rcb_plugin_license_key'] ) : false;
 		self::$license_status 	= isset( self::$license_options['wpzoom_rcb_plugin_license_status'] ) ? self::$license_options['wpzoom_rcb_plugin_license_status'] : false;
 
+		// Check what page we are on.
+		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
+
 		if( is_admin() ) {
-            global $pagenow;
-		    add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		    add_action( 'admin_init', array( $this, 'settings_init' ) );
 		    add_action( 'admin_init', array( $this, 'settings_license' ) );
 		    add_action( 'admin_init', array( $this, 'set_defaults' ) );
 		    add_action( 'admin_init', array( $this, 'activate_license' ) );
 		    add_action( 'admin_init', array( $this, 'deactivate_license' ) );
-		    add_action( 'admin_init', array( $this, 'initiate_updater_class' ) );
+		    add_action( 'init',       array( $this, 'initiate_updater_class' ) );
 
 		    // Do ajax request
 			add_action( 'wp_ajax_wpzoom_reset_settings', array( $this, 'reset_settings') );
 			add_action( 'wp_ajax_wpzoom_welcome_banner_close', array( $this, 'welcome_banner_close') );
 
-		    if( isset( $_GET['page'] ) && $_GET['page'] === WPZOOM_RCB_SETTINGS_PAGE ) {
-		        if( $pagenow !== "options-general.php" ) {
-		        	// Display admin notices
-		        	add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-		        }
-                // Include admin scripts & styles
-                add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
-            }
+			// Only load if we are actually on the settings page.
+		    if ( WPZOOM_RCB_SETTINGS_PAGE === $page ) {
+			    add_action( 'wpzoom_rcb_admin_page', array( $this, 'settings_page' ) );
+
+			    // Include admin scripts & styles
+			    add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
+
+			    // Action for welcome banner
+			    add_action( 'wpzoom_rcb_welcome_banner', array( $this, 'welcome' ) );
+		    }
+
+	        if( $pagenow !== "admin.php" ) {
+	        	// Display admin notices
+	        	add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+	        }
 
 		    $this->_fields = new WPZOOM_Settings_Fields();
 		}
-	}
-
-	/**
-	 * Add subitem to Settings admin menu.
-	 */
-	public function admin_menu() {
-		add_options_page(
-			__( 'WPZOOM Recipe Card Settings', 'wpzoom-recipe-card' ),
-			__( 'WPZOOM Recipe Card', 'wpzoom-recipe-card' ),
-			'manage_options',
-			WPZOOM_RCB_SETTINGS_PAGE,
-			array( $this, 'settings_page' )
-		);
 	}
 
 	/**
@@ -168,13 +165,13 @@ class WPZOOM_Settings {
 
 	/**
 	 * Update option value
-	 * 
-	 * @param string|array $value 
-	 * @param string $option 
+	 *
+	 * @param string|array $value
+	 * @param string $option
 	 */
 	public static function update_option( $value, $option = '', $autoload = null ) {
 		if ( empty( $option ) ) $option = self::$option;
-		
+
 		if ( self::$options !== false ) {
 		    // The option already exists, so we just update it.
 		    update_option( $option, $value, $autoload );
@@ -197,8 +194,8 @@ class WPZOOM_Settings {
 
 	/**
 	 * Get default value by option name
-	 * 
-	 * @param string $option_name 
+	 *
+	 * @param string $option_name
 	 * @static
 	 * @return boolean
 	 */
@@ -208,7 +205,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Get license key
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return string The License key
 	 */
@@ -218,7 +215,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Get license status
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return string The License status
 	 */
@@ -228,7 +225,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Get setting options
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return array
 	 */
@@ -287,18 +284,18 @@ class WPZOOM_Settings {
 
 	/**
 	 * Initiate the updater class.
-	 * @since 1.2.0 
+	 * @since 1.2.0
 	 * @return void
 	 */
 	public function initiate_updater_class() {
 		// setup the updater
-		$plugin_updater = new EDD_SL_Plugin_Updater( WPZOOM_RCB_STORE_URL, WPZOOM_RCB_PLUGIN_DIR, array(
+		$plugin_updater = new EDD_SL_Plugin_Updater( WPZOOM_RCB_STORE_URL, WPZOOM_RCB_PLUGIN_FILE, array(
 			'version' 	=> WPZOOM_RCB_VERSION,		// current version number
 			'license' 	=> self::$license_key,		// license key (used get_option above to retrieve from DB)
 			'item_id'   => WPZOOM_RCB_ITEM_ID,		// id of this plugin
 			'author' 	=> 'Vicolas Petru',			// author of this plugin
 			'url'       => home_url(),
-		        'beta'  => false 					// set to true if you wish customers to receive update notifications of beta releases
+		    'beta'  	=> false 					// set to true if you wish customers to receive update notifications of beta releases
 		) );
 	}
 
@@ -329,7 +326,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_course',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show course by default', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+									'preview'       => true,
+									'preview_pos'	=> 'bottom',
 								)
 							),
 							array(
@@ -340,7 +339,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_cuisine',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show cuisine by default', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'bottom',
 								)
 							),
 							array(
@@ -351,7 +352,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_difficulty',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show difficulty by default', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'bottom',
 								)
 							),
 							array(
@@ -362,7 +365,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_author',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show author by default', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'bottom',
 								)
 							),
 							array(
@@ -414,6 +419,18 @@ class WPZOOM_Settings {
 								)
 							),
 							array(
+								'id' 		=> 'wpzoom_rcb_settings_video_title',
+								'title' 	=> __( 'Recipe Video Title', 'wpzoom-recipe-card' ),
+								'type'		=> 'input',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_video_title',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Add your custom title for Recipe video.', 'wpzoom-recipe-card' ),
+									'default'		=> __( 'Recipe Video', 'wpzoom-recipe-card' ),
+									'type'			=> 'text'
+								)
+							),
+							array(
 								'id' 		=> 'wpzoom_rcb_settings_notes_title',
 								'title' 	=> __( 'Default Notes Title', 'wpzoom-recipe-card' ),
 								'type'		=> 'input',
@@ -450,6 +467,8 @@ class WPZOOM_Settings {
 									'description' 	=> esc_html__( 'Hide footer copyright text.', 'wpzoom-recipe-card' ),
 									'default'		=> true,
 									'disabled'		=> false,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'bottom',
 								)
 							),
 						)
@@ -468,7 +487,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_servings',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show servings by default', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'bottom',
 								)
 							),
 							array(
@@ -479,7 +500,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_preptime',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show preparation time by default', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'top',
 								)
 							),
 							array(
@@ -490,7 +513,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_cookingtime',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show cooking time by default', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'top',
 								)
 							),
 							array(
@@ -501,7 +526,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_calories',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show calories by default', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'top',
 								)
 							),
 						)
@@ -714,6 +741,25 @@ class WPZOOM_Settings {
 							),
 						)
 					),
+					array(
+						'id' 		=> 'wpzoom_rcb_settings_google_fonts',
+						'title' 	=> __( 'Google Fonts', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'callback' 	=> '__return_false',
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_enable_google_fonts',
+								'title' 	=> __( 'Enable Google Fonts', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_enable_google_fonts',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'If you check this field, then it means that plugin will load Google Fonts to use them into blocks.', 'wpzoom-recipe-card' ),
+									'default'		=> true
+								)
+							),
+						)
+					),
 				)
 			),
 			'metadata' => array(
@@ -779,7 +825,7 @@ class WPZOOM_Settings {
 	/**
 	 * Add License tab to Settings
 	 * Apply to filter 'wpzoom_rcb_before_register_settings'
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @param array $settings
 	 * @return array
@@ -875,7 +921,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Register all Setting options
-	 * 
+	 *
 	 * @since 1.1.0
 	 * @return boolean
 	 */
@@ -896,7 +942,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Register License Setting options
-	 * 
+	 *
 	 * @since 2.2.0
 	 * @return boolean
 	 */
@@ -917,9 +963,9 @@ class WPZOOM_Settings {
 
 	/**
 	 * Register Setting
-	 * 
+	 *
 	 * @since 2.2.0
-	 * @param array $setting 
+	 * @param array $setting
 	 * @return void
 	 */
 	public function register_setting( $setting ) {
@@ -962,16 +1008,18 @@ class WPZOOM_Settings {
 		}
 	?>
 		<div class="wrap">
-			<?php $this->welcome(); ?>
+			<?php do_action( 'wpzoom_rcb_welcome_banner' ); ?>
 
 			<h1 style="margin-bottom: 15px"><?php echo esc_html( get_admin_page_title() ); ?></h1>
+
+			<?php settings_errors(); ?>
 
 			<?php if ( isset( $_GET['wpzoom_reset_settings'] ) && ! isset( $_GET['settings-updated'] ) ): ?>
 				<div class="updated settings-error notice is-dismissible">
 					<p><strong>Settings have been successfully reset.</strong></p>
 				</div>
 			<?php endif; ?>
-			
+
 			<div class="cols-wrap">
 				<form id="wpzoom-recipe-card-settings" action="options.php" method="post">
 					<ul class="wp-tab-bar">
@@ -990,14 +1038,14 @@ class WPZOOM_Settings {
 						<?php if ( $setting['tab_id'] == 'tab-license' ) continue; ?>
 						<?php if ( self::$active_tab === $setting['tab_id'] ): ?>
 							<div class="wp-tab-panel" id="<?php echo $setting['tab_id'] ?>">
-								<?php 
+								<?php
 									settings_fields( $setting['option_group'] );
 									do_settings_sections( $setting['option_group'] );
 								?>
 							</div>
 						<?php else: ?>
 							<div class="wp-tab-panel" id="<?php echo $setting['tab_id'] ?>" style="display: none;">
-								<?php 
+								<?php
 									settings_fields( $setting['option_group'] );
 									do_settings_sections( $setting['option_group'] );
 								?>
@@ -1031,16 +1079,16 @@ class WPZOOM_Settings {
 						<br>
 						<br>
 
-						<iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-follow-button twitter-follow-button-rendered" title="<?php _e( 'Twitter Follow Button', 'wpzoom-recipe-card' ) ?>" src="https://platform.twitter.com/widgets/follow_button.2e9f365dae390394eb8d923cba8c5b11.ro.html#dnt=false&amp;id=twitter-widget-0&amp;lang=ro&amp;screen_name=wpzoom&amp;show_count=true&amp;show_screen_name=true&amp;size=m&amp;time=1556617945313" data-screen-name="wpzoom" style="position: static; visibility: visible; width: 250px; height: 20px;"></iframe>
-						<script>!function (d, s, id) {
-						var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-						if (!d.getElementById(id)) {
-						    js = d.createElement(s);
-						    js.id = id;
-						    js.src = p + '://platform.twitter.com/widgets.js';
-						    fjs.parentNode.insertBefore(js, fjs);
-						}
-						}(document, 'script', 'twitter-wjs');</script>
+						<a href="https://twitter.com/wpzoom" class="twitter-follow-button">Follow @wpzoom</a>
+                        <script>!function (d, s, id) {
+                                var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                                if (!d.getElementById(id)) {
+                                    js = d.createElement(s);
+                                    js.id = id;
+                                    js.src = p + '://platform.twitter.com/widgets.js';
+                                    fjs.parentNode.insertBefore(js, fjs);
+                                }
+                            }(document, 'script', 'twitter-wjs');</script>
 					</div>
 				</div>
 			</div>
@@ -1050,11 +1098,13 @@ class WPZOOM_Settings {
 
 	/**
 	 * Enqueue scripts and styles
-	 * 
+	 *
 	 * @param string $hook
 	 */
 	public function scripts( $hook ) {
-	    if ( $hook != 'settings_page_wpzoom-recipe-card-settings' ) {
+	    $pos = strpos( $hook, WPZOOM_RCB_SETTINGS_PAGE );
+
+	    if ( $pos === false ) {
 	        return;
 	    }
 
@@ -1081,9 +1131,9 @@ class WPZOOM_Settings {
 
 	/**
 	 * Sanitize license
-	 * 
+	 *
 	 * @since 1.2.0
-	 * @param array $new 
+	 * @param array $new
 	 * @return array
 	 */
 	public function sanitize_license( $new ) {
@@ -1132,7 +1182,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Check if a license key is still valid
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return void
 	 */
@@ -1211,7 +1261,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Activate a License Key
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return void
 	 */
@@ -1272,7 +1322,7 @@ class WPZOOM_Settings {
 
 			// Check if anything passed on a message constituting a failure
 			if ( ! empty( $message ) ) {
-				$base_url = admin_url( 'options-general.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
+				$base_url = admin_url( 'admin.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
 				$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
 
 				wp_redirect( $redirect );
@@ -1287,7 +1337,7 @@ class WPZOOM_Settings {
 				delete_transient( 'wpzoom_rcb_plugin_license_message' );
 			}
 
-			$base_url = admin_url( 'options-general.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
+			$base_url = admin_url( 'admin.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
 			$redirect = add_query_arg( array( 'sl_activation' => 'true', 'message' => urlencode( $message ) ), $base_url );
 
 			wp_redirect( $redirect );
@@ -1298,7 +1348,7 @@ class WPZOOM_Settings {
 	/**
 	 * Deactivate a License Key
 	 * This will decrease the site count
-	 * 
+	 *
 	 * @since 1.2.0
 	 * @return void
 	 */
@@ -1331,7 +1381,7 @@ class WPZOOM_Settings {
 					$message = __( 'An error occurred, please try again.', 'wpzoom-recipe-card' );
 				}
 
-				$base_url = admin_url( 'options-general.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
+				$base_url = admin_url( 'admin.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
 				$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
 
 				wp_redirect( $redirect );
@@ -1349,7 +1399,7 @@ class WPZOOM_Settings {
 				delete_transient( 'wpzoom_rcb_plugin_license_message' );
 			}
 
-			$base_url = admin_url( 'options-general.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
+			$base_url = admin_url( 'admin.php?page=' . WPZOOM_RCB_SETTINGS_PAGE );
 			$redirect = add_query_arg( array( 'sl_activation' => 'true', 'message' => urlencode( $message ) ), $base_url );
 
 			wp_redirect( $redirect );
@@ -1360,7 +1410,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * This is a means of catching errors from the activation method above and displaying it to the customer
-	 * 
+	 *
 	 * @since 1.1.0
 	 */
 	public function admin_notices() {
@@ -1448,46 +1498,46 @@ class WPZOOM_Settings {
 
 	/**
 	 * Prints out all settings sections added to a particular settings page
-	 * 
+	 *
 	 * @since 2.2.0
 	 * @param string $page The slug name of the page whose settings sections you want to output.
 	 * @return void
 	 */
 	public static function do_settings_sections( $page ) {
 	    global $wp_settings_sections, $wp_settings_fields;
-	 
+
 	    if ( ! isset( $wp_settings_sections[ $page ] ) ) {
 	        return;
 	    }
-	 
+
 	    foreach ( (array) $wp_settings_sections[ $page ] as $section ) {
 	        if ( $section['title'] ) {
 	            echo "<h2 class=\"form-section-title\">{$section['title']}</h2>\n";
 	        }
-	 
+
 	        if ( $section['callback'] ) {
 	            call_user_func( $section['callback'], $section );
 	        }
-	 
+
 	        if ( ! isset( $wp_settings_fields ) || ! isset( $wp_settings_fields[ $page ] ) || ! isset( $wp_settings_fields[ $page ][ $section['id'] ] ) ) {
 	            continue;
 	        }
 	        echo '<div class="form-wrap">';
 	            foreach ( (array) $wp_settings_fields[ $page ][ $section['id'] ] as $field ) {
 	                $class = '';
-	         
+
 	                if ( ! empty( $field['args']['class'] ) ) {
 	                    $class = ' class="' . esc_attr( $field['args']['class'] ) . '"';
 	                }
-	         
+
 	                echo "<div{$class}>";
-	         
+
 	                if ( ! empty( $field['args']['label_for'] ) ) {
 	                    echo '<div class="form-row-label"><label for="' . esc_attr( $field['args']['label_for'] ) . '">' . $field['title'] . '</label></div>';
 	                } else {
 	                    echo '<div class="form-row-label">' . $field['title'] . '</div>';
 	                }
-	         
+
 	                echo '<div class="form-row-field">';
 	                call_user_func( $field['callback'], $field['args'] );
 	                echo '</div>';

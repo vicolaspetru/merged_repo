@@ -324,7 +324,7 @@ export default class DirectionStep extends Component {
 					isGroup &&
 					<RichText
 						className="direction-step-group-title"
-						tagName="strong"
+						tagName="p"
 						unstableOnSetup={ this.setTextRef }
 						key={ `${ id }-group-title` }
 						value={ textContent }
@@ -332,7 +332,6 @@ export default class DirectionStep extends Component {
 						// isSelected={ isSelectedText }
 						placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
 						unstableOnFocus={ this.onFocusText }
-						formattingControls={ [] }
 						keepPlaceholderOnFocus={ true }
 					/>
 				}

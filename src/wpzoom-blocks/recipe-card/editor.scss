@@ -94,6 +94,9 @@
 			display: inline-block;
 			width: 93%;
 		}
+        .ingredient-item-group-title {
+            font-weight: bold;
+        }
 	}
 
 	.ingredients-list {
@@ -112,9 +115,9 @@
 	// this is used to prevent floating elements on editing
 	&.is-style-newdesign {
 		.ingredients-list.layout-2-columns {
-			columns: 1;
-		    -webkit-columns: 1;
-		    -moz-columns: 1;
+			columns: 1 !important;
+		    -webkit-columns: 1 !important;
+		    -moz-columns: 1 !important;
 		}
 	}
 	&.is-style-default,
@@ -152,6 +155,11 @@
 			top: 6px;
 		}
 	}
+	.direction-step {
+		.direction-step-group-title {
+			font-weight: bold;
+		}
+	}
 	.direction-step-button-container {
 		text-align: right;
 		button {
@@ -185,7 +193,17 @@
 	}
 }
 
-
+.wpzoom-recipe-card-video-settings {
+	.editor-video__recipe-card .components-button + .components-button {
+		margin-top: 1em;
+		margin-right: 8px;
+	}
+	.editor-video__url-input-container {
+		position: relative;
+		width: 100%;
+		margin-bottom: 10px;
+	}
+}
 .wpzoom-recipe-card-settings .components-base-control__label,
 .wpzoom-recipe-card-seo-settings .components-base-control__label,
 .wpzoom-recipe-card-details .components-base-control__label,
@@ -224,6 +242,9 @@
 }
 .wpzoom-recipe-card-structured-data-testing .text-color-orange {
 	color: #ef6c00;
+}
+.wpzoom-recipe-card-structured-data-testing .text-color-green {
+	color: #29a740;
 }
 .wpzoom-recipe-card-structured-data-testing .components-panel__row strong {
 	width: 60%;

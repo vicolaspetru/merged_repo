@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Recipe Card Blocks PRO by WPZOOM
- * Plugin URI: https://demo.wpzoom.com/recipe-card-blocks/
- * Description: Beautiful recipe blocks for Gutenberg to help you to add recipe cards: Ingredients, Directions and more to come.
+ * Plugin URI: https://www.wpzoom.com/plugins/recipe-card-blocks/
+ * Description: Beautiful Recipe Card Blocks for Food Bloggers with Schema Markup for the new WordPress editor (Gutenberg).
  * Author: WPZOOM
  * Author URI: https://www.wpzoom.com/
- * Version: 2.2.0
+ * Version: 2.3.1
  * Copyright: (c) 2019 WPZOOM
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,9 +19,6 @@
 
 require_once 'src/classes/class-wpzoom-plugin-loader.php';
 
-register_activation_hook( __FILE__, 'WPZOOM_Plugin_Activator::activate' );
-register_deactivation_hook( __FILE__, 'WPZOOM_Plugin_Activator::deactivate' );
-
 /**
  * Redirect to the WPZOOM Recipe Card Getting Started page on single plugin activation
  *
@@ -32,7 +29,7 @@ if ( ! function_exists( 'recipe_card_block_plugin_activation_redirect' ) ) {
 		if ( get_option( 'wpzoom_rcb_do_activation_redirect', false ) ) {
 			delete_option( 'wpzoom_rcb_do_activation_redirect' );
 			if ( ! isset( $_GET['activate-multi'] ) ) {
-				wp_redirect( 'options-general.php?page=wpzoom-recipe-card-settings' );
+				wp_redirect( 'admin.php?page=wpzoom-recipe-card-settings' );
 			}
 		}
 	}

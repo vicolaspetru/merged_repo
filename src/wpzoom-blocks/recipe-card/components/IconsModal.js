@@ -51,7 +51,7 @@ function IconsModal(
     if ( isUndefined( iconSet ) )
         iconSet = 'oldicon';
 
-    const iconStyles = { 'color': `${ primary_color }` };
+    const iconStyles = '' != primary_color ? { 'color': `${ primary_color }` } : [];
     const activeIcon = get( details, [ toInsert, 'icon' ] );
 
     /**

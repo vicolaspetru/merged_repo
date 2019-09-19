@@ -250,10 +250,10 @@ export default class DetailItem extends Component {
 				    key={ `${ id }-label` }
 				    value={ label }
 				    onChange={ this.onChangeLabel }
-				    isSelected={ isSelectedLabel }
+				    // isSelected={ isSelectedLabel }
 				    placeholder={ this.getPlaceholder( index, 'label' ) }
-				    setFocusedElement={ this.onFocusLabel }
-				    formattingControls={ ['bold', 'italic'] }
+				    unstableOnFocus={ this.onFocusLabel }
+				    allowedFormats={ ['bold', 'italic'] }
 				    keepPlaceholderOnFocus={ true }
 				/>
 				<RichText
@@ -263,10 +263,9 @@ export default class DetailItem extends Component {
 				    key={ `${ id }-value` }
 				    value={ value }
 				    onChange={ this.onChangeValue }
-				    isSelected={ isSelectedValue }
+				    // isSelected={ isSelectedValue }
 				    placeholder={ this.getPlaceholder( index, 'value' ) }
-				    setFocusedElement={ this.onFocusValue }
-				    formattingControls={ [] }
+				    unstableOnFocus={ this.onFocusValue }
 				    keepPlaceholderOnFocus={ true }
 				/>
 				{ ( isSelectedLabel || isSelectedValue ) &&

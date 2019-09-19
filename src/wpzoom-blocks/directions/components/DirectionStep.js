@@ -288,9 +288,9 @@ export default class DirectionStep extends Component {
 						key={ `${ id }-text` }
 						value={ text }
 						onChange={ this.onChangeText }
-						isSelected={ isSelectedText }
+						// isSelected={ isSelectedText }
 						placeholder={ __( "Enter step description", "wpzoom-recipe-card" ) }
-						setFocusedElement={ this.onFocusText }
+						unstableOnFocus={ this.onFocusText }
 						keepPlaceholderOnFocus={ true }
 					/>
 				}
@@ -298,15 +298,14 @@ export default class DirectionStep extends Component {
 					isGroup &&
 					<RichText
 						className="direction-step-group-title"
-						tagName="strong"
+						tagName="p"
 						unstableOnSetup={ this.setTextRef }
 						key={ `${ id }-group-title` }
 						value={ text }
 						onChange={ this.onChangeGroupTitle }
-						isSelected={ isSelectedText }
+						// isSelected={ isSelectedText }
 						placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
-						setFocusedElement={ this.onFocusText }
-						formattingControls={ [] }
+						unstableOnFocus={ this.onFocusText }
 						keepPlaceholderOnFocus={ true }
 					/>
 				}
