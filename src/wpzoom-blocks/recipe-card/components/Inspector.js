@@ -77,7 +77,7 @@ class Inspector extends Component {
 			return false;
 		}
 
-		const relevantMedia = pickRelevantMediaFiles( media );
+		const relevantMedia = pickRelevantMediaFiles( media, 'header' );
 
 		setAttributes( {
 			hasImage: !isNull( relevantMedia.id ),
@@ -85,6 +85,7 @@ class Inspector extends Component {
 				id: relevantMedia.id,
 				url: relevantMedia.url,
 				alt: relevantMedia.alt,
+				alt: relevantMedia.title,
 				sizes: get( media, [ 'sizes' ] ) || get( media, [ 'media_details', 'sizes' ] )
 			}
 		} );
@@ -92,7 +93,7 @@ class Inspector extends Component {
 
 	onSelectImage( media ) {
 		const { setAttributes } = this.props;
-		const relevantMedia = pickRelevantMediaFiles( media );
+		const relevantMedia = pickRelevantMediaFiles( media, 'header' );
 
 		setAttributes( {
 			hasImage: !isNull( relevantMedia.id ),
@@ -100,6 +101,7 @@ class Inspector extends Component {
 				id: relevantMedia.id,
 				url: relevantMedia.url,
 				alt: relevantMedia.alt,
+				alt: relevantMedia.title,
 				sizes: media.sizes
 			}
 		} );
@@ -112,13 +114,14 @@ class Inspector extends Component {
 			},
 			setAttributes
 		} = this.props;
-		const relevantMedia = pickRelevantMediaFiles( media );
+		const relevantMedia = pickRelevantMediaFiles( media, 'header' );
 
 		settings[0]['pin_has_custom_image'] = !isNull( relevantMedia.id );
 		settings[0]['pin_custom_image'] = {
 			id: relevantMedia.id,
 			url: relevantMedia.url,
 			alt: relevantMedia.alt,
+			alt: relevantMedia.title,
 			sizes: media.sizes
 		};
 

@@ -228,11 +228,12 @@ export default class IngredientItem extends Component {
 
 		let newName = name.slice();
 
-		const relevantMedia = pickRelevantMediaFiles( media );
+		const relevantMedia = pickRelevantMediaFiles( media, 'ingredient' );
 		const image = (
 			<img
 				key={ relevantMedia.id }
 				alt={ relevantMedia.alt }
+				alt={ relevantMedia.title }
 				src={ relevantMedia.url }
 				className="no-print"
 			/>
