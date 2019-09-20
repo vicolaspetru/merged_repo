@@ -62,6 +62,9 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.3.2 =
+* Fixed a bug with star ratings not working when JS files are combined
+
 = 2.3.1 =
 * Fixed a bug with Video Recipe schema markup
 * Added preview to some options in the Settings page
