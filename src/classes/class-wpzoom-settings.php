@@ -609,6 +609,16 @@ class WPZOOM_Settings {
 									)
 								)
 							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_primary_color',
+								'title' 	=> __( 'Default Primary Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_primary_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> '#FFA921',
+								)
+							),
 						)
 					),
 					array(
