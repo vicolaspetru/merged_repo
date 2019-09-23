@@ -424,7 +424,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			<div class="recipe-card-heading">
 				'. sprintf( '<h2 class="%s">%s</h2>', "recipe-card-title", ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) ) ) .
 				( '1' === $options['wpzoom_rcb_settings_user_ratings'] ?
-					self::$wpzoom_rating->get_rating_form( $recipe_ID ) : ''
+					wpzoom_rating_stars( $recipe_ID ) : ''
 				) .
 				( self::$settings['displayAuthor'] ? '<span class="recipe-card-author">'. __( "Recipe by", "wpzoom-recipe-card" ) . " " . $custom_author_name .'</span>' : '' ) .
 				( self::$settings['displayCourse'] ? $this->get_recipe_terms( 'wpzoom_rcb_courses' ) : '' ) .
@@ -1134,7 +1134,21 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$start_tag = $type ? "<$type>" : "";
 				$end_tag = $type ? "</$type>" : "";
 
-				if ( 'a' === $type ) {
+				if ( 'img' === $type ) {
+					$src = isset( $node['props']['src'] ) ? $node['props']['src'] : false;
+					if ( $src ) {
+						$alt = isset( $node['props']['alt'] ) ? $node['props']['alt'] : '';
+						$class = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_steps_image') ? 'no-print' : '';
+						$class .= ' direction-step-image';
+						$img_style = isset($node['props']['style']) ? $node['props']['style'] : '';
+
+						$start_tag = sprintf( '<%s src="%s" alt="%s" class="%s" style="%s"/>', $type, $src, $alt, trim($class), $this->parseTagStyle($img_style) );
+					} else {
+						$start_tag = "";
+					}
+					$end_tag = "";
+				}
+				elseif ( 'a' === $type ) {
 					$rel 		= isset( $node['props']['rel'] ) ? $node['props']['rel'] : '';
 					$aria_label = isset( $node['props']['aria-label'] ) ? $node['props']['aria-label'] : '';
 					$href 		= isset( $node['props']['href'] ) ? $node['props']['href'] : '#';

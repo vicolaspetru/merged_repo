@@ -64,13 +64,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		public $_slug;
 
 		/**
-		 * The Post Object.
-		 *
-		 * @var string $post
-		 */
-		public $post;
-
-		/**
 		 * The Constructor.
 		 */
 		private function __construct() {
@@ -108,7 +101,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 				$dependencies = array( 'wp-edit-blocks' );
 			}
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
-				$dependencies = array( 'jquery', 'wp-blocks', 'wp-i18n' );
+				$dependencies = array( 'jquery' );
 			}
 
 			return $dependencies;
@@ -186,12 +179,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         );
                     }
 
-                    $this->post = get_post();
-
-                    if ( ! is_object($this->post) ) {
-                        return false;
-                    }
-
                     /**
                      * Localize script data.
                      */
@@ -199,18 +186,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         $this->_slug . '-script',
                         'wpzoomRecipeCard',
                         array(
-                            'version' => WPZOOM_RCB_VERSION,
-                            'textdomain' => WPZOOM_RCB_TEXT_DOMAIN,
                             'pluginURL' => WPZOOM_RCB_PLUGIN_URL,
-                            'post_permalink' => str_replace( '?p=', '', get_the_permalink( $this->post ) ),
-                            'post_thumbnail_url' => get_the_post_thumbnail_url( $this->post ),
-                            'post_thumbnail_id' => get_post_thumbnail_id( $this->post ),
-                            'post_title' => $this->post->post_title,
-                            'post_author_name' => get_the_author_meta( 'display_name', $this->post->post_author ),
-                            'is_pro' => WPZOOM_Recipe_Card_Block_Gutenberg::is_pro(),
-                            'license_status' => WPZOOM_Settings::get_license_status(),
-                            'setting_options' => ( ! empty( $options ) ? $options : WPZOOM_Settings::get_defaults() ),
-                            'availableTerms' => array()
                         )
                     );
                     
@@ -231,6 +207,8 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		 */
 
         public function editor_assets() {
+            global $post;
+
         	$options = WPZOOM_Settings::get_settings();
 
             // Scripts.
@@ -256,12 +234,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                 WPZOOM_RCB_VERSION
             );
 
-            $this->post = get_post();
-
-            if ( ! is_object($this->post) ) {
-            	return false;
-            }
-
             /**
              * Localize script data.
              */
@@ -272,11 +244,11 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     'version' => WPZOOM_RCB_VERSION,
                     'textdomain' => WPZOOM_RCB_TEXT_DOMAIN,
                     'pluginURL' => WPZOOM_RCB_PLUGIN_URL,
-                    'post_permalink' => str_replace( '?p=', '', get_the_permalink( $this->post ) ),
-                    'post_thumbnail_url' => get_the_post_thumbnail_url( $this->post ),
-                    'post_thumbnail_id' => get_post_thumbnail_id( $this->post ),
-                    'post_title' => $this->post->post_title,
-                    'post_author_name' => get_the_author_meta( 'display_name', $this->post->post_author ),
+                    'post_permalink' => str_replace( '?p=', '', get_the_permalink( $post->ID ) ),
+                    'post_thumbnail_url' => get_the_post_thumbnail_url( $post->ID ),
+                    'post_thumbnail_id' => get_post_thumbnail_id( $post->ID ),
+                    'post_title' => $post->post_title,
+                    'post_author_name' => get_the_author_meta( 'display_name', $post->post_author ),
                     'is_pro' => WPZOOM_Recipe_Card_Block_Gutenberg::is_pro(),
                     'license_status' => WPZOOM_Settings::get_license_status(),
                     'setting_options' => ( !empty( $options ) ? $options : WPZOOM_Settings::get_defaults() ),

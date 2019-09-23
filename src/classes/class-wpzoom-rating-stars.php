@@ -124,25 +124,11 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 1.1.0
 		 */
 		public function block_assets() {
-			if ( ! is_object( $this->assets_manager->post ) ) {
+			if ( is_admin() ) {
 				return false;
 			}
 
-			$localize_data = array(
-				'recipe_ID'    	   	=> $this->assets_manager->post->ID,
-				'user_ID'    	   	=> $this->get_user_ID(),
-				'ajaxurl'    	   	=> admin_url('admin-ajax.php'),
-				'ajax_nonce' 	   	=> wp_create_nonce( "wpzoom-rating-stars-nonce" ),
-				'user_rated'		=> $this->check_user_rate( $this->assets_manager->post->ID ),
-				'top_rated'			=> $this->get_toprated_recipes(),
-				'rating_average'	=> $this->get_rating_average( $this->assets_manager->post->ID ),
-				'rating_total'		=> $this->get_total_votes( $this->assets_manager->post->ID ),
-				'who_can_rate'		=> $this->who_can_rate,
-				'strings'			=> array(
-					'recipe_rating'	=> __( "Recipe rating", "wpzoom-recipe-card" ),
-					'top_rated'		=> __( "Top rated", "wpzoom-recipe-card" ),
-				)
-			);
+			$localize_data = $this->get_localize_data();
 
 			wp_enqueue_script(
 			    'wpzoom-rating-stars-script',
@@ -441,6 +427,33 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			} else {
 				return isset($_COOKIE[ "wpzoom-user-rating-recipe-$recipe_ID" ]);
 			}
+		}
+
+		/**
+		 * Localize variables to script
+		 * 
+		 * @since 2.3.1
+		 * @return array
+		 */
+		public function get_localize_data() {
+			global $post;
+
+			$localize_data = array(
+				'recipe_ID'    	   	=> $post->ID,
+				'user_ID'    	   	=> $this->get_user_ID(),
+				'ajaxurl'    	   	=> admin_url('admin-ajax.php'),
+				'ajax_nonce' 	   	=> wp_create_nonce( "wpzoom-rating-stars-nonce" ),
+				'user_rated'		=> $this->check_user_rate( $post->ID ),
+				'rating_average'	=> $this->get_rating_average( $post->ID ),
+				'rating_total'		=> $this->get_total_votes( $post->ID ),
+				'top_rated'			=> $this->get_toprated_recipes(),
+				'strings'			=> array(
+					'recipe_rating'	=> __( "Recipe rating", "wpzoom-recipe-card" ),
+					'top_rated'		=> __( "Top rated", "wpzoom-recipe-card" ),
+				)
+			);
+
+			return $localize_data;
 		}
 	}
 
