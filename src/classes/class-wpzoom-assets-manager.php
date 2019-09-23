@@ -189,6 +189,26 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                             'pluginURL' => WPZOOM_RCB_PLUGIN_URL,
                         )
                     );
+
+                    /**
+                     * Add custom inline styles from Settings
+                     * 
+                     * @since 2.3.2
+                     */
+                    $custom_css = '';
+
+                    $rating_stars_color = $options['wpzoom_rcb_settings_rating_stars_color'];
+
+                    if ( ! empty( $rating_stars_color ) ) {
+                        $custom_css .= "
+                            .wp-block-wpzoom-recipe-card-block-recipe-card ul.wpzoom-rating-stars>li.fa-star {
+                                color: {$rating_stars_color};
+                            }";
+                    }
+
+                    if ( ! empty( $custom_css ) ) {
+                        wp_add_inline_style( $this->_slug . '-style-css', $custom_css );
+                    }
                     
                 }
 

@@ -183,6 +183,34 @@ class WPZOOM_Settings_Fields {
 		$this->create_nonce_field( $args );
 		submit_button( $text, $type, $name, $wrap, $other_attributes );
 	}
+
+	/**
+	 * HTML for Color Picker field
+	 * 
+	 * @since 2.3.2
+	 * @param array $args 
+	 * @return void
+	 */
+	public function colorpicker( $args ) {
+		$value = self::parse_text_field( $args );
+		$option_name = self::parse_option_name( $args );
+	?>
+		<fieldset class="wpzoom-rcb-field-color-picker">
+			<?php
+				if ( isset( $args['badge'] ) ) { echo $args['badge']; }
+				$this->create_nonce_field( $args );
+			?>
+
+			<input name="<?php echo $option_name.'['. esc_attr( $args['label_for'] ) .']'; ?>" type="text" id="<?php echo esc_attr( $args['label_for'] ) ?>" value="<?php echo $value ?>" class="wpzoom-rcb-color-picker" />
+
+			<?php if ( isset( $args['description'] ) ): ?>
+				<p class="description">
+					<?php echo $args['description']; ?>
+				</p>
+			<?php endif ?>
+		</fieldset>
+	<?php
+	}
 	 
 	/**
 	 * HTML for Subsection field type

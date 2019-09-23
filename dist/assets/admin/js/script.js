@@ -114,5 +114,8 @@ jQuery(document).ready(function(){
 
         });
 
+        // Add Color Picker to all inputs that have 'color-field' class
+        $('.wpzoom-rcb-color-picker').wpColorPicker();
+
 	})(jQuery, WPZOOM_Settings);
 });

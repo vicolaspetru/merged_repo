@@ -566,6 +566,17 @@ class WPZOOM_Settings {
 									)
 								)
 							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_rating_stars_color',
+								'title' 	=> __( 'Rating Stars Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_rating_stars_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Change rating stars color of Recipe Card.', 'wpzoom-recipe-card' ),
+									'default'		=> '#F2A123',
+								)
+							),
 						)
 					),
 				)
@@ -1123,6 +1134,9 @@ class WPZOOM_Settings {
 	        return;
 	    }
 
+	    // Add the color picker css file       
+        wp_enqueue_style( 'wp-color-picker' );
+
 	    wp_enqueue_style(
 	    	'wpzoom-rcb-admin-style',
 	    	untrailingslashit( WPZOOM_RCB_PLUGIN_URL ) . '/dist/assets/admin/css/style.css',
@@ -1133,7 +1147,7 @@ class WPZOOM_Settings {
 	    wp_enqueue_script(
 	    	'wpzoom-rcb-admin-script',
 	    	untrailingslashit( WPZOOM_RCB_PLUGIN_URL ) . '/dist/assets/admin/js/script.js',
-	    	array( 'jquery' ),
+	    	array( 'jquery', 'wp-color-picker' ),
 	    	WPZOOM_RCB_VERSION
 	    );
 
