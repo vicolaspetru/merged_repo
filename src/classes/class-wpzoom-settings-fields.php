@@ -193,6 +193,7 @@ class WPZOOM_Settings_Fields {
 	 */
 	public function colorpicker( $args ) {
 		$value = self::parse_text_field( $args );
+		$default_value = WPZOOM_Settings::get_default_option_value( $args['label_for'] );
 		$option_name = self::parse_option_name( $args );
 	?>
 		<fieldset class="wpzoom-rcb-field-color-picker">
@@ -201,7 +202,7 @@ class WPZOOM_Settings_Fields {
 				$this->create_nonce_field( $args );
 			?>
 
-			<input name="<?php echo $option_name.'['. esc_attr( $args['label_for'] ) .']'; ?>" type="text" id="<?php echo esc_attr( $args['label_for'] ) ?>" value="<?php echo $value ?>" class="wpzoom-rcb-color-picker" />
+			<input name="<?php echo $option_name.'['. esc_attr( $args['label_for'] ) .']'; ?>" type="text" id="<?php echo esc_attr( $args['label_for'] ) ?>" value="<?php echo $value ?>" data-default-color="<?php echo esc_attr( $default_value ) ?>" class="wpzoom-rcb-color-picker" />
 
 			<?php if ( isset( $args['description'] ) ): ?>
 				<p class="description">
@@ -254,7 +255,7 @@ class WPZOOM_Settings_Fields {
 			return $default_value;
 		}
 
-		return esc_attr( $value );
+		return sanitize_text_field( $value );
 	}
 
 	/**
