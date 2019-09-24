@@ -100,6 +100,7 @@ class WPZOOM_Settings {
 
 		    // Do ajax request
 			add_action( 'wp_ajax_wpzoom_reset_settings', array( $this, 'reset_settings') );
+			add_action( 'wp_ajax_wpzoom_reset_ratings', array( $this, 'reset_ratings') );
 			add_action( 'wp_ajax_wpzoom_welcome_banner_close', array( $this, 'welcome_banner_close') );
 
 			// Only load if we are actually on the settings page.
@@ -577,6 +578,18 @@ class WPZOOM_Settings {
 									'default'		=> '#F2A123',
 								)
 							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_reset_ratings',
+								'title' 	=> __( 'Reset Ratings', 'wpzoom-recipe-card' ),
+								'type'		=> 'button',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_reset_ratings',
+									'type'			=> 'button',
+									'button_type'	=> 'secondary',
+									'text' 			=> esc_html__( 'Reset Ratings', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Be careful, this action will reset all ratings to zero! NOTE: This action can\'t be reversed.', 'wpzoom-recipe-card' ),
+								)
+							),
 						)
 					),
 				)
@@ -922,17 +935,16 @@ class WPZOOM_Settings {
 
 		if ( ! empty( trim(self::$license_key) ) ) {
 			$this->license_settings['license']['sections'][0]['fields'][2] = array(
-				'id' 		=> 'wpzoom_rcb_plugin_activate_license',
-				'title' 	=> __( 'Activate License', 'wpzoom-recipe-card' ),
-				'type'		=> 'button',
+				'id' 				=> 'wpzoom_rcb_plugin_activate_license',
+				'title' 			=> __( 'Activate License', 'wpzoom-recipe-card' ),
+				'type'				=> 'button',
 			);
 
 			if ( self::$license_status !== false && self::$license_status == 'valid' ) {
 				$this->license_settings['license']['sections'][0]['fields'][2]['args'] = array(
 					'label_for' 	=> 'wpzoom_rcb_plugin_license_deactivate',
-					'class' 		=> 'wpzoom-rcb-field',
 					'text' 			=> esc_html__( 'Deactivate License', 'wpzoom-recipe-card' ),
-					'type'			=> 'secondary',
+					'button_type'	=> 'secondary',
 					'nonce'			=> array(
 						'action' 	=> 'wpzoom_rcb_plugin_deactivate_license_nonce',
 						'name'		=> '_wpzoom_rcb_plugin_license_deactivate_nonce'
@@ -941,9 +953,8 @@ class WPZOOM_Settings {
 			} else {
 				$this->license_settings['license']['sections'][0]['fields'][2]['args'] = array(
 					'label_for' 	=> 'wpzoom_rcb_plugin_license_activate',
-					'class' 		=> 'wpzoom-rcb-field',
 					'text' 			=> esc_html__( 'Activate License', 'wpzoom-recipe-card' ),
-					'type'			=> 'secondary',
+					'button_type'	=> 'secondary',
 					'nonce'			=> array(
 						'action' 	=> 'wpzoom_rcb_plugin_activate_license_nonce',
 						'name'		=> '_wpzoom_rcb_plugin_license_activate_nonce'
@@ -1490,9 +1501,8 @@ class WPZOOM_Settings {
 			 	'status' => '304',
 			 	'message' => 'NOT',
 			);
-			header( 'Content-Type: application/json; charset=utf-8' );
-			echo json_encode( $response );
-			exit;
+
+			wp_send_json_error( $response );
 		}
 
 		$response = array(
@@ -1502,9 +1512,29 @@ class WPZOOM_Settings {
 
 		self::update_option( $defaults );
 
-		header( 'Content-Type: application/json; charset=utf-8' );
-		echo json_encode( $response );
-		exit;
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Reset all ratings
+	 * 
+	 * @since 2.3.2
+	 * @return void
+	 */
+	public function reset_ratings() {
+		check_ajax_referer( 'wpzoom-reset-settings-nonce', 'security' );
+
+		global $wpdb;
+
+		if ( $wpdb->query('TRUNCATE TABLE ' . WPZOOM_Rating_Stars::$tablename ) ) {
+
+			$response = array(
+				'message' => esc_html__( 'All ratings have been reset.', 'wpzoom-recipe-card' )
+			);
+
+			wp_send_json_success( $response );
+			
+		}
 	}
 
 	/**
@@ -1521,17 +1551,16 @@ class WPZOOM_Settings {
 			 	'status' => '200',
 			 	'message' => 'OK',
 			);
-			header( 'Content-Type: application/json; charset=utf-8' );
-			echo json_encode( $response );
-			exit;
-		} else {
+			
+			wp_send_json_success( $response );
+		}
+		else {
 			$response = array(
 			 	'status' => '304',
 			 	'message' => 'NOT',
 			);
-			header( 'Content-Type: application/json; charset=utf-8' );
-			echo json_encode( $response );
-			exit;
+			
+			wp_send_json_error( $response );
 		}
 	}
 

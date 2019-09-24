@@ -22,7 +22,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @var string
 		 * @since 1.1.0
 		 */
-		private static $tablename;
+		public static $tablename;
 
 		/**
 		 * Loads scripts and styles.
