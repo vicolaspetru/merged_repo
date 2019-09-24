@@ -72,9 +72,9 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 
 			$sql = "CREATE TABLE `$tablename` (
 				id mediumint(9) NOT NULL AUTO_INCREMENT,
-				recipe_id smallint(15) NOT NULL,
+				recipe_id int(10) NOT NULL,
 				user_id varchar(20) NOT NULL,
-				rating int(50) NOT NULL,
+				rating tinyint(1) NOT NULL,
 				rate_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 				update_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 				UNIQUE KEY id (id),
