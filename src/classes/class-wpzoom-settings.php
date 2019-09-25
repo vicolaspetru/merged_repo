@@ -445,7 +445,7 @@ class WPZOOM_Settings {
 							),
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_heading_content_align',
-								'title' 	=> __( 'Heading content align', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Recipe Title Alignment', 'wpzoom-recipe-card' ),
 								'type'		=> 'select',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_heading_content_align',
@@ -550,6 +550,8 @@ class WPZOOM_Settings {
 									'description' 	=> esc_html__( 'Allow visitors to vote your recipes.', 'wpzoom-recipe-card' ),
 									'default'		=> true,
 									'disabled'		=> false,
+									'preview'       => true,
+									'preview_pos'	=> 'top',
 								)
 							),
 							array(
@@ -648,7 +650,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_snippets',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description'   => __( 'Automatically display buttons above the post content.', 'wpzoom-recipe-card' ),
-									'default'		=> false
+									'default'		=> false,
+									'preview'       => true,
+									'preview_pos'	=> 'bottom',
 								)
 							),
 							array(
@@ -691,7 +695,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_print',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show Print button in recipe card', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'default'		=> true,
+									'preview'       => true,
+									'preview_pos'	=> 'bottom',
 								)
 							),
 							array(
@@ -754,7 +760,9 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_display_pin',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Show Pinterest button in recipe card', 'wpzoom-recipe-card' ),
-									'default'		=> false
+									'default'		=> false,
+									'preview'       => true,
+									'preview_pos'	=> 'bottom',
 								)
 							),
 							array(
