@@ -169,7 +169,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			    'type' => 'array',
 			    'default' => array(
 			        array(
-			            'primary_color' => '#FFA921',
+			            'primary_color' => WPZOOM_Settings::get('wpzoom_rcb_settings_primary_color'),
 			            'icon_details_color' => '#6d767f',
 			            'print_btn' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_print') === '1',
 			            'pin_btn' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_pin') === '1',

@@ -22,7 +22,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @var string
 		 * @since 1.1.0
 		 */
-		private static $tablename;
+		public static $tablename;
 
 		/**
 		 * Loads scripts and styles.
@@ -41,16 +41,31 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		private $user_ID;
 
 		/**
+		 * Who can rate recipes
+		 *
+		 * @since 2.3.1
+		 */
+		public $who_can_rate;
+
+		/**
 		 * WPZOOM_Rating_Stars constructor.
 		 * @since 1.1.0
 		 */
 		public function __construct() {
 			global $wpdb;
 
-			self::$tablename 		= $wpdb->prefix . 'wpzoom_rating_stars';
+			/**
+			 * Added option to check who can rate recipes
+			 * 
+			 * @since 2.3.1
+			 */
+			$options = WPZOOM_Settings::get_settings();
 
-			$this->user_ID 			= $this->random_number();
+			self::$tablename = $wpdb->prefix . 'wpzoom_rating_stars';
+
+			$this->who_can_rate 	= $options['wpzoom_rcb_settings_who_can_rate'];
 			$this->assets_manager 	= WPZOOM_Assets_Manager::instance();
+			$this->user_ID 			= $this->random_number();
 
 			add_action( 'enqueue_block_assets', array( $this, 'block_assets' ) );
 
@@ -149,11 +164,16 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				    'message' => 'No response',
 				);
 
-				// normally, the script expects a json respone
-				header( 'Content-Type: application/json; charset=utf-8' );
-				echo json_encode( $response );
+				wp_send_json_error( $response );
+			}
 
-				exit;
+			if ( 'loggedin' === $this->who_can_rate && ! is_user_logged_in() ) {
+				$response = array(
+				    'status' => '403',
+				    'message' => __( 'Only logged in users can rate recipes', 'wpzoom-recipe-card' ),
+				);
+
+				wp_send_json_error( $response );
 			}
 
 			$rate_date   = current_time( 'mysql' );
@@ -185,11 +205,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				// set cookie
 				$this->set_user_rate( $recipe_ID, $rating );
 
-				// normally, the script expects a json respone
-				header( 'Content-Type: application/json; charset=utf-8' );
-				echo json_encode( $response );
-
-				exit;
+				wp_send_json_success( $response );
 			}
 		}
 
@@ -200,8 +216,10 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 1.1.0
 		 */
 		public function get_rating_form( $recipe_ID ) {
-			$output = '';
+			$output 			= '';
 			$rating_stars_items = '';
+			$tooltip_message 	= '';
+			$data_user_can_rate = 'data-user-can-rate="1"';
 
 			for ( $i = 1; $i <= 5; $i++ ) {
 				$rating_stars_items .= '<li class="fa fa-star-o"></li>';
@@ -220,11 +238,18 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				_n( "vote", "votes", (int)$total_votes, "wpzoom-recipe-card" )
 			);
 
+			if ( 'loggedin' === $this->who_can_rate && ! is_user_logged_in() ) {
+				$data_user_can_rate = 'data-user-can-rate="0"';
+				$tooltip_message = __( 'Only logged in users can rate recipes', 'wpzoom-recipe-card' );
+			}
+
 			$output = sprintf(
-				'<div class="%1$s-container"><ul class="%1$s">%2$s</ul><span class="%1$s-average">%3$s</span></div>',
+				'<div class="%1$s-container" %4$s><ul class="%1$s">%2$s</ul><span class="%1$s-average">%3$s</span><em class="%1$s-tooltip">%5$s</em></div>',
 				'wpzoom-rating-stars',
 				$rating_stars_items,
-				$average_content
+				$average_content,
+				$data_user_can_rate,
+				$tooltip_message
 			);
 			
 			return $output;

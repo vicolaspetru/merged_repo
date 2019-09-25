@@ -172,16 +172,82 @@ class WPZOOM_Settings_Fields {
 	 * @return void
 	 */
 	public function button( $args ) {
-		$text = isset( $args['text'] ) ? $args['text'] : __( 'Save Changes', 'wpzoom-recipe-card' );
-		$type = isset( $args['type'] ) ? $args['type'] : 'primary';
-		$name = isset( $args['label_for'] ) ? $args['label_for'] : 'wpzoom_rcb_button_field_submit';
-		$wrap = isset( $args['wrap'] ) ? $args['wrap'] : false;
-		$other_attributes = isset( $args['other_attributes'] ) ? $args['other_attributes'] : null;
+		$text 			= isset( $args['text'] ) ? $args['text'] : __( 'Save Changes', 'wpzoom-recipe-card' );
+		$type 			= isset( $args['type'] ) ? $args['type'] : 'submit';
+		$button_type 	= isset( $args['button_type'] ) ? $args['button_type'] : 'primary large';
+		$name 			= isset( $args['label_for'] ) ? $args['label_for'] : 'wpzoom_rcb_button_field_submit';
+		$wrap 			= isset( $args['wrap'] ) ? $args['wrap'] : false;
+
+		if ( ! is_array( $button_type ) ) {
+			$button_type = explode( ' ', $button_type );
+		}
+
+		$button_shorthand = array( 'primary', 'small', 'large' );
+		$classes          = array( 'button' );
+
+		foreach ( $button_type as $t ) {
+	        if ( 'secondary' === $t || 'button-secondary' === $t ) {
+	            continue;
+	        }
+	        $classes[] = in_array( $t, $button_shorthand ) ? 'button-' . $t : $t;
+		}
+		// Remove empty items, remove duplicate items, and finally build a string.
+		$class = implode( ' ', array_unique( array_filter( $classes ) ) );
+
+		$id = $name;
 
 		if ( isset( $args['badge'] ) ) { echo $args['badge']; }
 
 		$this->create_nonce_field( $args );
-		submit_button( $text, $type, $name, $wrap, $other_attributes );
+
+
+		echo sprintf(
+			'<input type="%s" name="%s" id="%s" class="%s" value="%s">',
+			esc_attr( $type ),
+			esc_attr( $name ),
+			esc_attr( $id ),
+			esc_attr( $class ),
+			esc_attr( $text )
+		);
+
+		?>
+
+		<?php if ( isset( $args['description'] ) ): ?>
+			<p class="description">
+				<?php echo $args['description']; ?>
+			</p>
+		<?php endif ?>
+
+	<?php
+	}
+
+	/**
+	 * HTML for Color Picker field
+	 * 
+	 * @since 2.3.2
+	 * @param array $args 
+	 * @return void
+	 */
+	public function colorpicker( $args ) {
+		$value = self::parse_text_field( $args );
+		$default_value = WPZOOM_Settings::get_default_option_value( $args['label_for'] );
+		$option_name = self::parse_option_name( $args );
+	?>
+		<fieldset class="wpzoom-rcb-field-color-picker">
+			<?php
+				if ( isset( $args['badge'] ) ) { echo $args['badge']; }
+				$this->create_nonce_field( $args );
+			?>
+
+			<input name="<?php echo $option_name.'['. esc_attr( $args['label_for'] ) .']'; ?>" type="text" id="<?php echo esc_attr( $args['label_for'] ) ?>" value="<?php echo $value ?>" data-default-color="<?php echo esc_attr( $default_value ) ?>" class="wpzoom-rcb-color-picker" />
+
+			<?php if ( isset( $args['description'] ) ): ?>
+				<p class="description">
+					<?php echo $args['description']; ?>
+				</p>
+			<?php endif ?>
+		</fieldset>
+	<?php
 	}
 	 
 	/**
@@ -226,7 +292,7 @@ class WPZOOM_Settings_Fields {
 			return $default_value;
 		}
 
-		return esc_attr( $value );
+		return sanitize_text_field( $value );
 	}
 
 	/**

@@ -99,15 +99,49 @@
     }
 
     .wpzoom-rating-stars-container {
+        position: relative;
     	float: right;
 
     	-webkit-transition: opacity .25s linear;
     	-o-transition: opacity .25s linear;
     	transition: opacity .25s linear;
 
+        .wpzoom-rating-stars-tooltip {
+            display: block;
+            opacity: 0;
+            visibility: hidden;
+            height: 0;
+        }
+
     	&.is-loading {
 	    	opacity: 0.7;
 	    }
+        &[data-user-can-rate="0"] {
+            .wpzoom-rating-stars-tooltip {
+                position: absolute;
+                top: -100%;
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.85);
+                color: #fff;
+                font-size: 13px;
+                font-style: normal;
+                padding: 3px 5px;
+                border-radius: 3px;
+                line-height: 1.4em;
+                height: auto;
+                transition: opacity .25s ease-in-out, visibility .25s ease-in-out;
+            }
+            .wpzoom-rating-stars {
+                > li {
+                    pointer-events: none;
+                    cursor: none;
+                }
+                &:hover ~ .wpzoom-rating-stars-tooltip {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+        }
     }
     &.header-content-align-center .wpzoom-rating-stars-container {
     	float: none;
@@ -168,6 +202,14 @@
                 ext-decoration: none;
                 border-bottom-color: #ccc;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .wp-block-wpzoom-recipe-card-block-recipe-card {
+        .wpzoom-rating-stars-container {
+            float: none;
         }
     }
 }

@@ -33,7 +33,7 @@ jQuery(document).ready(function(){
 
 			if (window.confirm("Do you really want to Reset all settings to default?")) {
 				$.post( Settings.ajaxUrl, data, function(response){
-					if ( response.status == '200' ) {
+					if ( response.success ) {
 						var query_args = getUrlVars( window.location.href );
 
 						if ( query_args.length > 0 ) {
@@ -48,6 +48,28 @@ jQuery(document).ready(function(){
 			}
 		});
 
+        // Reset Ratings to zero
+        $('#wpzoom_rcb_settings_reset_ratings').click(function(){
+            var data = {
+                security: Settings.ajax_nonce,
+                action: 'wpzoom_reset_ratings',
+            };
+            var $this = $(this);
+
+            if (window.confirm("Do you really want to Reset all ratings?")) {
+
+                $this.val('Loading...');
+
+                $.post( Settings.ajaxUrl, data, function(response){
+                    if ( response.success ) {
+                        $this.val('Done!');
+                        $this.prop('disabled', true);
+                        $this.next().html(response.data.message);
+                    }
+                });
+            }
+        });
+
 		// close Welcome banner
 		$('.wpzoom-rcb-welcome-close').click(function(e){
 			e.preventDefault();
@@ -61,7 +83,7 @@ jQuery(document).ready(function(){
 			$(banner).fadeOut();
 
 			$.post( Settings.ajaxUrl, data, function(response){
-				if ( response.status != '200' ) {
+				if ( ! response.success ) {
 					alert('Something went wrong!')
 				}
 			});
@@ -113,6 +135,9 @@ jQuery(document).ready(function(){
             });
 
         });
+
+        // Add Color Picker to all inputs that have 'color-field' class
+        $('.wpzoom-rcb-color-picker').wpColorPicker();
 
 	})(jQuery, WPZOOM_Settings);
 });
