@@ -137,7 +137,15 @@ jQuery(document).ready(function(){
         });
 
         // Add Color Picker to all inputs that have 'color-field' class
-        $('.wpzoom-rcb-color-picker').wpColorPicker();
+        $('.wpzoom-rcb-color-picker').wpColorPicker({
+            change: function(event, ui){
+                var $this = $(this);
+                setTimeout(function(){
+                    $this.val( ui.color.toString().toUpperCase() ) // uppercase color value
+                },1);
+            },
+            palettes: ['#222222','#FFA921','#FF4E6A','#B7C662']
+        });
 
 	})(jQuery, WPZOOM_Settings);
 });

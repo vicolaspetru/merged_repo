@@ -97,7 +97,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 			elseif ( $this->_slug . '-script' === $handle ) {
 				$dependencies = array( 'jquery' );
 			}
-			elseif ( $this->_slug . '-oldicon-css' === $handle || $this->_slug . '-foodicons-css' === $handle || $this->_slug . '-font-awesome-css' === $handle || $this->_slug . '-genericons-css' === $handle ) {
+			elseif ( $this->_slug . '-icon-fonts-css' === $handle ) {
 				$dependencies = array( 'wp-edit-blocks' );
 			}
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
@@ -301,32 +301,26 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		 * @since 1.1.0
 		 */
 		public function load_icon_fonts() {
-			$icon_fonts = array( 'oldicon', 'foodicons', 'font-awesome', 'genericons' );
+            // enqueue all icon fonts only in admin panel
+            if ( is_admin() ) {
 
-            // enqueue all icon fonts only on editing page from admin panel
-            if ( is_admin() && isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) {
-
-                foreach ( $icon_fonts as $icon ) {
-                    wp_enqueue_style(
-                        $this->_slug . '-' . $icon . '-css', // Handle.
-                        $this->asset_source( 'css', $icon .'.min.css' ), // Block editor CSS.
-                        $this->get_dependencies( $this->_slug . '-' . $icon . '_css' ), // Dependency to include the CSS after it.
-                        WPZOOM_RCB_VERSION
-                    );
-                }
+                wp_enqueue_style(
+                    $this->_slug . '-icon-fonts-css', // Handle.
+                    $this->asset_source( 'css', 'icon-fonts.build.css' ), // Block editor CSS.
+                    $this->get_dependencies( $this->_slug . '-icon-fonts-css' ), // Dependency to include the CSS after it.
+                    WPZOOM_RCB_VERSION
+                );
 
             }
 
             if ( ! is_admin() && ( has_block( 'wpzoom-recipe-card/block-details' ) || has_block( 'wpzoom-recipe-card/block-recipe-card' ) ) ) {
 
-                foreach ( $icon_fonts as $icon ) {
-                    wp_enqueue_style(
-                        $this->_slug . '-' . $icon . '-css', // Handle.
-                        $this->asset_source( 'css', $icon .'.min.css' ), // Block editor CSS.
-                        $this->get_dependencies( $this->_slug . '-' . $icon . '_css' ), // Dependency to include the CSS after it.
-                        WPZOOM_RCB_VERSION
-                    );
-                }
+                wp_enqueue_style(
+                    $this->_slug . '-icon-fonts-css', // Handle.
+                    $this->asset_source( 'css', 'icon-fonts.build.css' ), // Block editor CSS.
+                    $this->get_dependencies( $this->_slug . '-icon-fonts-css' ), // Dependency to include the CSS after it.
+                    WPZOOM_RCB_VERSION
+                );
 
             }
 		}

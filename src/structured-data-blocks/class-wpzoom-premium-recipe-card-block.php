@@ -125,10 +125,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			    'selector' => '.video-title',
 			    'default' => WPZOOM_Settings::get('wpzoom_rcb_settings_video_title'),
 			),
-			'hasInstance' => array(
-			    'type' => 'boolean',
-			    'default' => false
-			),
 			'recipeTitle' => array(
 			    'type' => 'string',
 			    'selector' => '.recipe-card-title',
@@ -363,7 +359,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		$styles = '';
 
-		if ( $hasInstance && '' != self::$settings['primary_color'] ) {
+		if ( '' != self::$settings['primary_color'] ) {
 			if ( 'default' === self::$style ) {
 				$styles = array(
 					'background-color' => self::$settings['primary_color'],

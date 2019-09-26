@@ -239,7 +239,7 @@ class WPZOOM_Settings_Fields {
 				$this->create_nonce_field( $args );
 			?>
 
-			<input name="<?php echo $option_name.'['. esc_attr( $args['label_for'] ) .']'; ?>" type="text" id="<?php echo esc_attr( $args['label_for'] ) ?>" value="<?php echo $value ?>" data-default-color="<?php echo esc_attr( $default_value ) ?>" class="wpzoom-rcb-color-picker" />
+			<input name="<?php echo $option_name.'['. esc_attr( $args['label_for'] ) .']'; ?>" type="text" id="<?php echo esc_attr( $args['label_for'] ) ?>" value="<?php echo strtoupper( $value ) ?>" data-default-color="<?php echo esc_attr( $default_value ) ?>" class="wpzoom-rcb-color-picker" />
 
 			<?php if ( isset( $args['description'] ) ): ?>
 				<p class="description">
