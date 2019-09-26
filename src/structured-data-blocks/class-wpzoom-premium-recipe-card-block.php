@@ -276,8 +276,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		if ( ! is_array( $attributes ) || ! is_singular() ) {
 			return $content;
 		}
-		
-		$options = WPZOOM_Settings::get_settings();
 
 		add_filter( 'the_content', array( $this, 'filter_the_content' ) );
 
@@ -419,7 +417,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$recipe_card_heading = '
 			<div class="recipe-card-heading">
 				'. sprintf( '<h2 class="%s">%s</h2>', "recipe-card-title", ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) ) ) .
-				( '1' === $options['wpzoom_rcb_settings_user_ratings'] ?
+				( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_user_ratings') ?
 					wpzoom_rating_stars( $recipe_ID ) : ''
 				) .
 				( self::$settings['displayAuthor'] ? '<span class="recipe-card-author">'. __( "Recipe by", "wpzoom-recipe-card" ) . " " . $custom_author_name .'</span>' : '' ) .
@@ -456,7 +454,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				@$notes
 			) : '';
 
-		$footer_copyright = ( '1' === $options['wpzoom_rcb_settings_footer_copyright'] ? '' :
+		$footer_copyright = ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_footer_copyright') ? '' :
 			'<div class="footer-copyright">
 	        	<p>'. __( "Recipe Card plugin by ", "wpzoom-recipe-card" ) .'
 	        		<a href="https://www.wpzoom.com/plugins/recipe-card-blocks/" target="_blank" rel="nofollow noopener noreferrer">WPZOOM</a>

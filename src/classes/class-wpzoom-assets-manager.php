@@ -115,8 +115,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		 * @since 1.1.0
 		 */
 		public function block_assets() {
-            $options = WPZOOM_Settings::get_settings();
-
             if ( is_admin() ) {
                 
                 wp_enqueue_style(
@@ -197,7 +195,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                      */
                     $custom_css = '';
 
-                    $rating_stars_color = $options['wpzoom_rcb_settings_rating_stars_color'];
+                    $rating_stars_color = WPZOOM_Settings::get('wpzoom_rcb_settings_rating_stars_color');
 
                     if ( ! empty( $rating_stars_color ) ) {
                         $custom_css .= "

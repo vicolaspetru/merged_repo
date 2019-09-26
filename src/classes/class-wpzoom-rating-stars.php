@@ -54,16 +54,9 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		public function __construct() {
 			global $wpdb;
 
-			/**
-			 * Added option to check who can rate recipes
-			 * 
-			 * @since 2.3.1
-			 */
-			$options = WPZOOM_Settings::get_settings();
-
 			self::$tablename = $wpdb->prefix . 'wpzoom_rating_stars';
 
-			$this->who_can_rate 	= $options['wpzoom_rcb_settings_who_can_rate'];
+			$this->who_can_rate 	= WPZOOM_Settings::get('wpzoom_rcb_settings_who_can_rate');
 			$this->assets_manager 	= WPZOOM_Assets_Manager::instance();
 			$this->user_ID 			= $this->random_number();
 

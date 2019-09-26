@@ -45,15 +45,14 @@ final class WPZOOM_Taxonomies {
 	 * @since 1.2.0
 	 */
 	public static function register_taxonomies() {
-		$options = WPZOOM_Settings::get_settings();
 		$taxonomies = self::get_taxonomies_to_register();
 
 		if ( ! taxonomy_exists( 'wpzoom_rcb_courses' ) || ! taxonomy_exists( 'wpzoom_rcb_cuisines' ) || ! taxonomy_exists( 'wpzoom_rcb_difficulties' ) ) {
 			foreach ( $taxonomies as $taxonomy => $labels ) {
 				if ( 
-					( 'wpzoom_rcb_courses' === $taxonomy && '1' === $options['wpzoom_rcb_settings_course_taxonomy'] ) ||
-					( 'wpzoom_rcb_cuisines' === $taxonomy && '1' === $options['wpzoom_rcb_settings_cuisine_taxonomy'] ) ||
-					( 'wpzoom_rcb_difficulties' === $taxonomy && '1' === $options['wpzoom_rcb_settings_difficulty_taxonomy'] )
+					( 'wpzoom_rcb_courses' === $taxonomy && '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_course_taxonomy') ) ||
+					( 'wpzoom_rcb_cuisines' === $taxonomy && '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_cuisine_taxonomy') ) ||
+					( 'wpzoom_rcb_difficulties' === $taxonomy && '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_difficulty_taxonomy') )
 				) {
 					$args = array(
 						'labels'            => $labels,
