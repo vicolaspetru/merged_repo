@@ -12,10 +12,6 @@ const { IconButton, Modal } = wp.components;
 const { renderToString, Fragment } = wp.element;
 const { withState } = wp.compose;
 
-/* Import CSS. */
-import '../style.scss';
-import '../editor.scss';
-
 /**
  * A Icons Modal within a Details block.
  */

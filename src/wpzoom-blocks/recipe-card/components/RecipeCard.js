@@ -73,6 +73,10 @@ const ExtraOptions = withState( {
     _directions: "<!empty>",
 } )( ExtraOptionsModal );
 
+/* Import CSS. */
+import '../style.scss';
+import '../editor.scss';
+
 /**
  * A Recipe Card block.
  */
