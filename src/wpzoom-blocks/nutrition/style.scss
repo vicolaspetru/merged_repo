@@ -7,19 +7,19 @@
     .wp-block-wpzoom-recipe-card-block-nutrition {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
         line-height: 1.6;
-        font-size: .85rem;
+        font-size: 14px;
         border: 1px solid #aaa;
         border-radius: 3px;
         padding: 20px;
-        margin: 0 0 2rem;
+        margin: 0 0 2em;
         color: #222;
 
         h2 {
-            font-size: 2rem;
+            font-size: 2.4em;
             line-height: 1;
             letter-spacing: 0;
             font-weight: 800;
-            padding: 0 0 .4rem;
+            padding: 0 0 .4em;
             margin: 0;
             border-bottom: 1px solid #aaa;
             color: inherit;
@@ -27,8 +27,8 @@
         p {
             margin: 0;
             padding: 0;
-            font-size: 1rem;
-            line-height: 1.4rem;
+            font-size: 1em;
+            line-height: 1.4em;
         }
         ul {
             list-style: none !important;
@@ -40,6 +40,7 @@
                 margin: 0;
                 padding: 3px 0;
                 border-top: 1px solid #aaa;
+                list-style-type: none;
 
                 &.nutrition-facts-no-border,
                 &:empty,
@@ -66,33 +67,33 @@
             }
         }
         .nutrition-facts-heading {
-            font-size: .85rem;
+            font-size: .85em;
             font-weight: 800;
         }
         .nutrition-facts-right {
             float: right;
         }
         .nutrition-facts-serving {
-            font-size: 1rem;
+            font-size: 1em;
         }
         .nutrition-facts-serving-size {
-            font-size: 1.1rem;
+            font-size: 1.1em;
             font-weight: 800;
 
             + .nutrition-facts-label {
-                font-size: 1.1rem;
+                font-size: 1.1em;
                 font-weight: 800;
             }
         }
         .nutrition-facts-hr {
             border: none;
-            border-top: 1rem solid;
-            margin: .2rem 0 0;
+            border-top: 1em solid;
+            margin: .2em 0 0;
             padding: 0;
         }
         .nutrition-facts-spacer {
             border: none;
-            height: .5rem;
+            height: .5em;
             padding: 0;
             background: #222;
         }
@@ -101,21 +102,23 @@
         }
         .nutrition-facts-calories {
             font-weight: 800;
-            font-size: 1.8rem;
+            font-size: 1.8em;
 
             + .nutrition-facts-label {
                 float: right;
-                font-size: 2.5rem;
-                line-height: 2rem;
+                font-size: 2.5em;
+                line-height: 1em;
                 font-weight: 800;
             }
         }
         .nutrition-facts-daily-value-text {
-            line-height: 1.2rem;
-            font-size: .75rem;
+            line-height: 1.2em;
+            font-size: .75em;
         }
     }
+}
 
+#wpzoom-recipe-nutrition {
     &.layout-orientation-horizontal {
         .wp-block-wpzoom-recipe-card-block-nutrition {
             &::after {
@@ -134,29 +137,24 @@
             .horizontal-column-3 {
                 padding-right: 0;
             }
-
-            h2 {
-                font-size: 1.6rem;
-            }
-
             .horizontal-column-1 {
-                p {
-                    line-height: 1.8rem;
-                }
-                hr {
-                    border: none;
+                .nutrition-facts-hr {
                     border-top: 1px solid #aaa;
-
+                    margin: .5em 0;
+                    background-color: transparent;
                     + p {
-                        line-height: 2rem;
+                        line-height: 2em;
                     }
                 }
+                .nutrition-facts-calories {
+                    display: inline-block;
+                    margin-top: .3em;
+                }
             }
-
-            .nutrition-facts-no-border {
-                line-height: 1rem;
+            ul > li.nutrition-facts-no-border:first-child {
+                line-height: 1em;
                 > strong {
-                    font-size: .75rem;
+                    font-size: .75em;
                 }
             }
             .nutrition-facts-amount-per-serving {
@@ -165,11 +163,12 @@
             .nutrition-facts-bottom {
                 clear: both;
                 border-bottom: 1px solid #aaa;
+                padding-top: 5px;
 
                 li {
                     border: none;
                     display: inline-block;
-                    padding: 4px 0;
+                    padding: 0;
 
                     .nutrition-facts-right {
                         float: none;
@@ -194,3 +193,46 @@
         }
     }
 }
+
+
+@media screen and (max-width: 600px) {
+    #wpzoom-recipe-nutrition {
+        &.layout-orientation-horizontal {
+            .wp-block-wpzoom-recipe-card-block-nutrition {
+                .horizontal-column-1,
+                .horizontal-column-2,
+                .horizontal-column-3 {
+                    float: none;
+                    width: 100%;
+                    padding-right: 0;
+                }
+                .horizontal-column-1 {
+                    p {
+                        line-height: 1.8em;
+                    }
+                    .nutrition-facts-hr {
+                        border: none;
+                        border-top: 1em solid;
+                        margin: .2em 0 0;
+                        padding: 0;
+                    }
+                }
+                .horizontal-column-2 {
+                    > ul > .nutrition-facts-spacer {
+                        display: none;
+                    }
+                }
+                .horizontal-column-3 {
+                    > ul > li:nth-child(1),
+                    > ul > li:nth-child(2) {
+                        display: none;
+                    }
+                    > ul > li:nth-child(3) {
+                        border-top: 1px solid #aaa;
+                    }
+                }
+            }
+        }
+    }
+}
+
