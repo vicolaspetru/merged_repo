@@ -91,6 +91,9 @@ class WPZOOM_Nutrition_Block {
 			'data' => array(
 			    'type' => 'object'
 			),
+			'settings' => array(
+			    'type' => 'object'
+			),
 		);
 
 		// Hook server side rendering into render callback

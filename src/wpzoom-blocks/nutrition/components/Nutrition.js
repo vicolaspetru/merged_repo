@@ -6,6 +6,9 @@ import forEach from "lodash/forEach";
 import indexOf from "lodash/indexOf";
 import metadata from "./NutritionFactsLabel.js";
 
+/* Internal dependencies */
+import { parseClassName } from "../../../helpers/getBlockStyle";
+
 /* WordPress dependencies */
 const { __, _x, sprintf } = wp.i18n;
 const { Component, Fragment } = wp.element;
@@ -14,7 +17,8 @@ const { compose } = wp.compose;
 const {
     TextControl,
     PanelBody,
-    Button
+    Button,
+    SelectControl
 } = wp.components;
 const { InspectorControls } = wp.blockEditor;
 
@@ -47,26 +51,28 @@ class Nutrition extends Component {
             }
         } = this.props;
 
-        if ( this.state.isDataPreFill ) {
+        if ( this.state.isDataPreFill || ! details ) {
             return;
         }
+
+        const newData = data || {};
 
         const servings  = get( details, [ 0, 'value' ] );
         const calories  = get( details, [ 3, 'value' ] );
 
         if ( this.state.reloadValues ) {
-            data['servings'] = servings ? servings : data['servings'];
-            data['calories'] = calories ? calories : data['calories'];
+            newData['servings'] = servings ? servings : get( data, 'servings' );
+            newData['calories'] = calories ? calories : get( data, 'calories' );
         }
 
         if ( ! get( data, 'servings' ) ) {
-            data['servings'] = servings;
+            newData['servings'] = servings;
         }
         if ( ! get( data, 'calories' ) ) {
-            data['calories'] = calories;
+            newData['calories'] = calories;
         }
 
-        setAttributes( { ...data } );
+        setAttributes( { data: { ...newData } } );
 
         this.setState( { isDataPreFill: true } );
     }
@@ -79,8 +85,26 @@ class Nutrition extends Component {
             }
         } = this.props;
 
-        data[ index ] = newValue;
-        setAttributes( { ...data } );
+        const newData = data || {};
+
+        newData[ index ] = newValue;
+
+        setAttributes( { data: { ...newData } } );
+    }
+
+    onChangeSettings( newValue, index ) {
+        const {
+            setAttributes,
+            attributes: {
+                settings
+            }
+        } = this.props;
+
+        const newData = settings || {};
+
+        newData[ index ] = newValue;
+
+        setAttributes( { settings: { ...newData } } );
     }
 
     drawNutritionLabels() {
@@ -124,12 +148,13 @@ class Nutrition extends Component {
         } );
     }
 
-    drawNutritionFacts() {
+    drawVerticalLayout() {
         const { data } = this.props.attributes;
         const { labels } = metadata;
 
         return (
             <Fragment>
+                <h2>{ __( "Nutrition Facts", "wpzoom-recipe-card" ) }</h2>
                 <p>
                     {
                         get( data, get( labels, [ 1, "id" ] ) ) &&
@@ -167,7 +192,7 @@ class Nutrition extends Component {
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ get( labels, [ 3, "label" ] ) }</strong>
                                 <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 3, "id" ] ) }> { get( data, get( labels, [ 3, "id" ] ) ) } </strong>
-                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 3, "id" ] ) }-measurement` }>g</strong>
+                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 3, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 3, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 3, "id" ] ) ) / get( labels, [ 3, "pdv" ] ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -178,7 +203,7 @@ class Nutrition extends Component {
                                     <Fragment>
                                         <strong className="nutrition-facts-label">{ get( labels, [ 4, "label" ] ) }</strong>
                                         <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 4, "id" ] ) }> { get( data, get( labels, [ 4, "id" ] ) ) } </strong>
-                                        <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 4, "id" ] ) }-measurement` }>g</strong>
+                                        <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 4, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
                                         <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 4, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 4, "id" ] ) ) / get( labels, [ 4, "pdv" ] ) ) * 100 ) }</span>%</strong>
                                     </Fragment>
                                 }
@@ -189,7 +214,7 @@ class Nutrition extends Component {
                                     <Fragment>
                                         <strong className="nutrition-facts-label">{ get( labels, [ 5, "label" ] ) }</strong>
                                         <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 5, "id" ] ) }> { get( data, get( labels, [ 5, "id" ] ) ) } </strong>
-                                        <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 5, "id" ] ) }-measurement` }>g</strong>
+                                        <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 5, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
                                     </Fragment>
                                 }
                             </li>
@@ -201,7 +226,7 @@ class Nutrition extends Component {
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ get( labels, [ 6, "label" ] ) }</strong>
                                 <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 6, "id" ] ) }> { get( data, get( labels, [ 6, "id" ] ) ) } </strong>
-                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 6, "id" ] ) }-measurement` }>mg</strong>
+                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 6, "id" ] ) }-measurement` }>{ __( "mg", "wpzoom-recipe-card" ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 6, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 6, "id" ] ) ) / get( labels, [ 6, "pdv" ] ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -212,7 +237,7 @@ class Nutrition extends Component {
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ get( labels, [ 7, "label" ] ) }</strong>
                                 <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 7, "id" ] ) }> { get( data, get( labels, [ 7, "id" ] ) ) } </strong>
-                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 7, "id" ] ) }-measurement` }>mg</strong>
+                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 7, "id" ] ) }-measurement` }>{ __( "mg", "wpzoom-recipe-card" ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 7, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 7, "id" ] ) ) / get( labels, [ 7, "pdv" ] ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -223,7 +248,7 @@ class Nutrition extends Component {
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ get( labels, [ 8, "label" ] ) }</strong>
                                 <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 8, "id" ] ) }> { get( data, get( labels, [ 8, "id" ] ) ) } </strong>
-                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 8, "id" ] ) }-measurement` }>mg</strong>
+                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 8, "id" ] ) }-measurement` }>{ __( "mg", "wpzoom-recipe-card" ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 8, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 8, "id" ] ) ) / get( labels, [ 8, "pdv" ] ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -234,7 +259,7 @@ class Nutrition extends Component {
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ get( labels, [ 9, "label" ] ) }</strong>
                                 <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 9, "id" ] ) }> { get( data, get( labels, [ 9, "id" ] ) ) } </strong>
-                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 9, "id" ] ) }-measurement` }>g</strong>
+                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 9, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 9, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 9, "id" ] ) ) / get( labels, [ 9, "pdv" ] ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -245,7 +270,7 @@ class Nutrition extends Component {
                                     <Fragment>
                                         <strong className="nutrition-facts-label">{ get( labels, [ 10, "label" ] ) }</strong>
                                         <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 10, "id" ] ) }> { get( data, get( labels, [ 10, "id" ] ) ) } </strong>
-                                        <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 10, "id" ] ) }-measurement` }>g</strong>
+                                        <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 10, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
                                         <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 10, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 10, "id" ] ) ) / get( labels, [ 10, "pdv" ] ) ) * 100 ) }</span>%</strong>
                                     </Fragment>
                                 }
@@ -256,7 +281,7 @@ class Nutrition extends Component {
                                     <Fragment>
                                         <strong className="nutrition-facts-label">{ get( labels, [ 11, "label" ] ) }</strong>
                                         <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 11, "id" ] ) }> { get( data, get( labels, [ 11, "id" ] ) ) } </strong>
-                                        <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 11, "id" ] ) }-measurement` }>g</strong>
+                                        <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 11, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
                                     </Fragment>
                                 }
                             </li>
@@ -268,7 +293,7 @@ class Nutrition extends Component {
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ get( labels, [ 12, "label" ] ) }</strong>
                                 <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 12, "id" ] ) }> { get( data, get( labels, [ 12, "id" ] ) ) } </strong>
-                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 12, "id" ] ) }-measurement` }>g</strong>
+                                <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 12, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 12, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 12, "id" ] ) ) / get( labels, [ 12, "pdv" ] ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -280,7 +305,194 @@ class Nutrition extends Component {
                 </ul>
             </Fragment>
         );
-        
+    }
+
+    drawHorizontalLayout() {
+        const { data } = this.props.attributes;
+        const { labels } = metadata;
+
+        return (
+            <Fragment>
+                <div className="horizontal-column-1">
+                    <h2>{ __( "Nutrition Facts", "wpzoom-recipe-card" ) }</h2>
+                    <p>
+                        {
+                            get( data, get( labels, [ 1, "id" ] ) ) &&
+                            <Fragment>
+                                <span className="nutrition-facts-serving">{ `${ get( data, get( labels, [ 1, "id" ] ) ) } ${ __( "servings per container", "wpzoom-recipe-card" ) }` }</span>
+                            </Fragment>
+                        }
+                    </p>
+                    <p>
+                        {
+                            get( data, get( labels, [ 0, "id" ] ) ) &&
+                            <Fragment>
+                                <strong className="nutrition-facts-serving-size">{ get( labels, [ 0, "label" ] ) }</strong>
+                                <strong className="nutrition-facts-label nutrition-facts-right" data-label-type={ get( labels, [ 0, "id" ] ) }>{ get( data, get( labels, [ 0, "id" ] ) ) }g</strong>
+                            </Fragment>
+                        }
+                    </p>
+                    <hr/>
+                    <p>
+                        {
+                            get( data, get( labels, [ 2, "id" ] ) ) &&
+                            <Fragment>
+                                <strong className="nutrition-facts-calories">{ get( labels, [ 2, "label" ] ) }</strong>
+                                <strong className="nutrition-facts-label nutrition-facts-right">{ get( data, get( labels, [ 2, "id" ] ) ) }</strong>
+                            </Fragment>
+                        }
+                    </p>
+                </div>
+                <div className="horizontal-column-2">
+                    <ul>
+                        <li className="nutrition-facts-no-border">
+                            <strong className="nutrition-facts-amount-per-serving">{ __( "Amount Per Serving", "wpzoom-recipe-card" ) }</strong>
+                            <strong className="nutrition-facts-right">% { __( "Daily Value", "wpzoom-recipe-card" ) } *</strong>
+                        </li>
+                        <li className="nutrition-facts-spacer"></li>
+                        <li>
+                            {
+                                get( data, get( labels, [ 3, "id" ] ) ) &&
+                                <Fragment>
+                                    <strong className="nutrition-facts-heading">{ get( labels, [ 3, "label" ] ) }</strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 3, "id" ] ) }> { get( data, get( labels, [ 3, "id" ] ) ) } </strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 3, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 3, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 3, "id" ] ) ) / get( labels, [ 3, "pdv" ] ) ) * 100 ) }</span>%</strong>
+                                </Fragment>
+                            }
+                            <ul>
+                                <li>
+                                    {
+                                        get( data, get( labels, [ 4, "id" ] ) ) &&
+                                        <Fragment>
+                                            <strong className="nutrition-facts-label">{ get( labels, [ 4, "label" ] ) }</strong>
+                                            <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 4, "id" ] ) }> { get( data, get( labels, [ 4, "id" ] ) ) } </strong>
+                                            <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 4, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                            <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 4, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 4, "id" ] ) ) / get( labels, [ 4, "pdv" ] ) ) * 100 ) }</span>%</strong>
+                                        </Fragment>
+                                    }
+                                </li>
+                                <li>
+                                    {
+                                        get( data, get( labels, [ 5, "id" ] ) ) &&
+                                        <Fragment>
+                                            <strong className="nutrition-facts-label">{ get( labels, [ 5, "label" ] ) }</strong>
+                                            <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 5, "id" ] ) }> { get( data, get( labels, [ 5, "id" ] ) ) } </strong>
+                                            <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 5, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                        </Fragment>
+                                    }
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            {
+                                get( data, get( labels, [ 6, "id" ] ) ) &&
+                                <Fragment>
+                                    <strong className="nutrition-facts-heading">{ get( labels, [ 6, "label" ] ) }</strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 6, "id" ] ) }> { get( data, get( labels, [ 6, "id" ] ) ) } </strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 6, "id" ] ) }-measurement` }>{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 6, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 6, "id" ] ) ) / get( labels, [ 6, "pdv" ] ) ) * 100 ) }</span>%</strong>
+                                </Fragment>
+                            }
+                        </li>
+                        <li>
+                            {
+                                get( data, get( labels, [ 7, "id" ] ) ) &&
+                                <Fragment>
+                                    <strong className="nutrition-facts-heading">{ get( labels, [ 7, "label" ] ) }</strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 7, "id" ] ) }> { get( data, get( labels, [ 7, "id" ] ) ) } </strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 7, "id" ] ) }-measurement` }>{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 7, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 7, "id" ] ) ) / get( labels, [ 7, "pdv" ] ) ) * 100 ) }</span>%</strong>
+                                </Fragment>
+                            }
+                        </li>
+                        <li className="nutrition-facts-spacer"></li>
+                    </ul>
+                </div>
+                <div className="horizontal-column-3">
+                    <ul>
+                        <li className="nutrition-facts-no-border">
+                            <strong className="nutrition-facts-amount-per-serving">{ __( "Amount Per Serving", "wpzoom-recipe-card" ) }</strong>
+                            <strong className="nutrition-facts-right">% { __( "Daily Value", "wpzoom-recipe-card" ) } *</strong>
+                        </li>
+                        <li className="nutrition-facts-spacer"></li>
+                        <li>
+                            {
+                                get( data, get( labels, [ 8, "id" ] ) ) &&
+                                <Fragment>
+                                    <strong className="nutrition-facts-heading">{ get( labels, [ 8, "label" ] ) }</strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 8, "id" ] ) }> { get( data, get( labels, [ 8, "id" ] ) ) } </strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 8, "id" ] ) }-measurement` }>{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 8, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 8, "id" ] ) ) / get( labels, [ 8, "pdv" ] ) ) * 100 ) }</span>%</strong>
+                                </Fragment>
+                            }
+                        </li>
+                        <li>
+                            {
+                                get( data, get( labels, [ 9, "id" ] ) ) &&
+                                <Fragment>
+                                    <strong className="nutrition-facts-heading">{ get( labels, [ 9, "label" ] ) }</strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 9, "id" ] ) }> { get( data, get( labels, [ 9, "id" ] ) ) } </strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 9, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 9, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 9, "id" ] ) ) / get( labels, [ 9, "pdv" ] ) ) * 100 ) }</span>%</strong>
+                                </Fragment>
+                            }
+                            <ul>
+                                <li>
+                                    {
+                                        get( data, get( labels, [ 10, "id" ] ) ) &&
+                                        <Fragment>
+                                            <strong className="nutrition-facts-label">{ get( labels, [ 10, "label" ] ) }</strong>
+                                            <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 10, "id" ] ) }> { get( data, get( labels, [ 10, "id" ] ) ) } </strong>
+                                            <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 10, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                            <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 10, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 10, "id" ] ) ) / get( labels, [ 10, "pdv" ] ) ) * 100 ) }</span>%</strong>
+                                        </Fragment>
+                                    }
+                                </li>
+                                <li>
+                                    {
+                                        get( data, get( labels, [ 11, "id" ] ) ) &&
+                                        <Fragment>
+                                            <strong className="nutrition-facts-label">{ get( labels, [ 11, "label" ] ) }</strong>
+                                            <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 11, "id" ] ) }> { get( data, get( labels, [ 11, "id" ] ) ) } </strong>
+                                            <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 11, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                        </Fragment>
+                                    }
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            {
+                                get( data, get( labels, [ 12, "id" ] ) ) &&
+                                <Fragment>
+                                    <strong className="nutrition-facts-heading">{ get( labels, [ 12, "label" ] ) }</strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ get( labels, [ 12, "id" ] ) }> { get( data, get( labels, [ 12, "id" ] ) ) } </strong>
+                                    <strong className="nutrition-facts-label" data-label-type={ `${ get( labels, [ 12, "id" ] ) }-measurement` }>{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-right"><span className="nutrition-facts-percent" data-label-type={ get( labels, [ 12, "id" ] ) }>{ ceil( ( get( data, get( labels, [ 12, "id" ] ) ) / get( labels, [ 12, "pdv" ] ) ) * 100 ) }</span>%</strong>
+                                </Fragment>
+                            }
+                        </li>
+                        <li className="nutrition-facts-spacer"></li>
+                    </ul>
+                </div>
+                <ul className="nutrition-facts-bottom">
+                    { this.drawNutrientsList() }
+                </ul>
+            </Fragment>
+        );
+    }
+
+    drawNutritionFacts() {
+        const { data, settings } = this.props.attributes;
+        const { labels } = metadata;
+        const layout_orientation = get( settings, ['layout-orientation'] );
+
+        if ( 'vertical' === layout_orientation ) {
+            return ( this.drawVerticalLayout() );
+        }
+        else {
+            return ( this.drawHorizontalLayout() );
+        }
     }
 
     render() {
@@ -288,25 +500,28 @@ class Nutrition extends Component {
             className,
             attributes: {
                 id,
-                data
+                data,
+                settings
             }
         } = this.props;
+
+        const blockClassName = parseClassName( className );
+        const layout_orientation = get( settings, ['layout-orientation'] );
 
         this.preFillData();
 
         return (
-            <div id={ id }>
-                <div className={ `${ className }-information` }>
+            <div id={ id } className={ `layout-orientation-${ layout_orientation }` }>
+                <div className={ `${ blockClassName }-information` }>
                     <h3>{ __( "Nutrition Information", "wpzoom-recipe-card" ) }</h3>
                     { this.drawNutritionLabels() }
                 </div>
-                <div className={ className }>
-                    <h2>{ __( "Nutrition Facts", "wpzoom-recipe-card" ) }</h2>
+                <div className={ blockClassName }>
                     { this.drawNutritionFacts() }
                     <p className="nutrition-facts-daily-value-text">* { __( "The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.", "wpzoom-recipe-card" ) }</p>
                 </div>
                 <Button
-                    className={ `${ className }-reload-values` }
+                    className={ `${ blockClassName }-reload-values` }
                     title={ __( "In case you made some changes to Recipe Card, press button to Reload values.", "wpzoom-recipe-card" ) }
                     isDefault
                     isLarge
@@ -314,6 +529,19 @@ class Nutrition extends Component {
                 >
                     { __( "Reload Values", "wpzoom-recipe-card" ) }
                 </Button>
+                <InspectorControls>
+                    <PanelBody className={ `${ blockClassName }-settings` } initialOpen={ true } title={ __( "Nutrition Settings", "wpzoom-recipe-card" ) }>
+                        <SelectControl
+                            label={ __( "Layout Orientation", "wpzoom-recipe-card" ) }
+                            value={ layout_orientation }
+                            options={ [
+                                { label: __( "Vertical", "wpzoom-recipe-card" ), value: 'vertical' },
+                                { label: __( "Horizontal", "wpzoom-recipe-card" ), value: 'horizontal' },
+                            ] }
+                            onChange={ newValue => this.onChangeSettings( newValue, 'layout-orientation' ) }
+                        />
+                    </PanelBody>
+                </InspectorControls>
             </div>
         );
     }
