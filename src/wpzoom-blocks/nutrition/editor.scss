@@ -11,39 +11,43 @@
         display: table;
     }
 
-    .wp-block-wpzoom-recipe-card-block-nutrition-information,
-    .wp-block-wpzoom-recipe-card-block-nutrition {
-        float: left;
-        width: 50%;
-        box-sizing: border-box;
-    }
-
     .wp-block-wpzoom-recipe-card-block-nutrition-information {
-        padding-right: 40px;
-
-        > .components-base-control {
-            float: left;
-            width: 50%;
-            padding-right: 20px;
-            box-sizing: border-box;
-
-            .components-base-control__label {
-                font-size: .7em;
-                letter-spacing: .03em;
-                font-weight: 700;
-                text-transform: uppercase;
-                line-height: 1;
-            }
-
-            &:nth-child(odd) {
-                padding-right: 0;
-            }
-        }
-
         &::after {
             content: '';
             clear: both;
             display: table;
+        }
+    }
+
+    &.layout-orientation-vertical {
+        .wp-block-wpzoom-recipe-card-block-nutrition-information,
+        .wp-block-wpzoom-recipe-card-block-nutrition {
+            float: left;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        .wp-block-wpzoom-recipe-card-block-nutrition-information {
+            padding-right: 40px;
+
+            > .components-base-control {
+                float: left;
+                width: 50%;
+                padding-right: 20px;
+                box-sizing: border-box;
+
+                .components-base-control__label {
+                    font-size: .7em;
+                    letter-spacing: .03em;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    line-height: 1;
+                }
+
+                &:nth-child(2n+1) {
+                    padding-right: 0;
+                    clear: right;
+                }
+            }
         }
     }
 
@@ -61,11 +65,9 @@
                 padding-right: 20px;
                 box-sizing: border-box;
 
-                &:nth-child(odd) {
-                    padding-right: inherit;
-                }
                 &:nth-child(4n+1) {
                     padding-right: 0;
+                    clear: right;
                 }
             }
         }

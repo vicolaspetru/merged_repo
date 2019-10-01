@@ -34,14 +34,16 @@ class WPZOOM_Settings {
 
 	/**
 	 * Store all settings options.
+	 * 
+	 * @static
 	 */
-	public $settings = array();
+	public static $settings = array();
 
 	/**
 	 * Store License settings options.
 	 * @since 2.2.0
 	 */
-	public $license_settings = array();
+	public static $license_settings = array();
 
 	/**
 	 * Active Tab.
@@ -130,19 +132,7 @@ class WPZOOM_Settings {
 		// Set active tab
 		self::$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'tab-general';
 
-		foreach ( $this->settings as $key => $setting ) {
-			if ( isset( $setting['sections'] ) && is_array( $setting['sections'] ) ) {
-				foreach ( $setting['sections'] as $section ) {
-					if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
-						foreach ( $section['fields'] as $field ) {
-							if ( isset( $field['args']['default'] ) ) {
-								self::$defaults[ $field['id'] ] = (string)$field['args']['default'];
-							}
-						}
-					}
-				}
-			}
-		}
+		self::$defaults = self::get_defaults();
 
 		if ( empty( self::$defaults ) ) {
 			return false;
@@ -190,7 +180,23 @@ class WPZOOM_Settings {
 	 * @static
 	 */
 	public static function get_defaults() {
-		return self::$defaults;
+		$defaults = array();
+
+		foreach ( self::$settings as $key => $setting ) {
+			if ( isset( $setting['sections'] ) && is_array( $setting['sections'] ) ) {
+				foreach ( $setting['sections'] as $section ) {
+					if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
+						foreach ( $section['fields'] as $field ) {
+							if ( isset( $field['args']['default'] ) ) {
+								$defaults[ $field['id'] ] = (string)$field['args']['default'];
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return $defaults;
 	}
 
 	/**
@@ -306,7 +312,7 @@ class WPZOOM_Settings {
 	public function settings_init() {
 		$soon_badge = '<span class="wpzoom-rcb-badge wpzoom-rcb-field-is_coming_soon">'. __( 'Coming Soon', 'wpzoom-recipe-card' ) .'</span>';
 
-		$this->settings = array(
+		self::$settings = array(
 			'general' => array(
 				'tab_id' 		=> 'tab-general',
 				'tab_title' 	=> __( 'General', 'wpzoom-recipe-card' ),
@@ -799,6 +805,29 @@ class WPZOOM_Settings {
 						)
 					),
 					array(
+						'id' 		=> 'wpzoom_section_recipe_nutrition',
+						'title' 	=> __( 'Nutrition', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'callback' 	=> '__return_false',
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_nutrition_layout',
+								'title' 	=> __( 'Layout Orientation', 'wpzoom-recipe-card' ),
+								'type'		=> 'select',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_nutrition_layout',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Default layout to use for all Nutrition block.', 'wpzoom-recipe-card' ),
+									'default'		=> 'vertical',
+									'options' 		=> array(
+										'vertical' 		=> __( 'Vertical', 'wpzoom-recipe-card' ),
+										'horizontal'	=> __( 'Horizontal', 'wpzoom-recipe-card' ),
+									)
+								)
+							),
+						)
+					),
+					array(
 						'id' 		=> 'wpzoom_rcb_settings_google_fonts',
 						'title' 	=> __( 'Google Fonts', 'wpzoom-recipe-card' ),
 						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
@@ -897,7 +926,7 @@ class WPZOOM_Settings {
 		    $message = get_transient( 'wpzoom_rcb_plugin_license_message' );
 		}
 
-		$this->license_settings = array(
+		self::$license_settings = array(
 			'license' => array(
 				'tab_id' 		=> 'tab-license',
 				'tab_title' 	=> __( 'License', 'wpzoom-recipe-card' ),
@@ -942,14 +971,14 @@ class WPZOOM_Settings {
 		);
 
 		if ( ! empty( trim(self::$license_key) ) ) {
-			$this->license_settings['license']['sections'][0]['fields'][2] = array(
+			self::$license_settings['license']['sections'][0]['fields'][2] = array(
 				'id' 				=> 'wpzoom_rcb_plugin_activate_license',
 				'title' 			=> __( 'Activate License', 'wpzoom-recipe-card' ),
 				'type'				=> 'button',
 			);
 
 			if ( self::$license_status !== false && self::$license_status == 'valid' ) {
-				$this->license_settings['license']['sections'][0]['fields'][2]['args'] = array(
+				self::$license_settings['license']['sections'][0]['fields'][2]['args'] = array(
 					'label_for' 	=> 'wpzoom_rcb_plugin_license_deactivate',
 					'text' 			=> esc_html__( 'Deactivate License', 'wpzoom-recipe-card' ),
 					'button_type'	=> 'secondary',
@@ -959,7 +988,7 @@ class WPZOOM_Settings {
 					),
 				);
 			} else {
-				$this->license_settings['license']['sections'][0]['fields'][2]['args'] = array(
+				self::$license_settings['license']['sections'][0]['fields'][2]['args'] = array(
 					'label_for' 	=> 'wpzoom_rcb_plugin_license_activate',
 					'text' 			=> esc_html__( 'Activate License', 'wpzoom-recipe-card' ),
 					'button_type'	=> 'secondary',
@@ -982,13 +1011,13 @@ class WPZOOM_Settings {
 	 */
 	public function register_settings() {
 		// filter hook
-		$this->settings = apply_filters( 'wpzoom_rcb_before_register_settings', $this->settings );
+		self::$settings = apply_filters( 'wpzoom_rcb_before_register_settings', self::$settings );
 
-		if ( empty( $this->settings ) ) {
+		if ( empty( self::$settings ) ) {
 			return;
 		}
 
-		foreach ( $this->settings as $key => $setting ) {
+		foreach ( self::$settings as $key => $setting ) {
 			$this->register_setting( $setting );
 		}
 
@@ -1003,13 +1032,13 @@ class WPZOOM_Settings {
 	 */
 	public function register_license_settings() {
 		// filter hook
-		$this->license_settings = apply_filters( 'wpzoom_rcb_before_register_license_settings', $this->license_settings );
+		self::$license_settings = apply_filters( 'wpzoom_rcb_before_register_license_settings', self::$license_settings );
 
-		if ( empty( $this->license_settings ) ) {
+		if ( empty( self::$license_settings ) ) {
 			return;
 		}
 
-		foreach ( $this->license_settings as $key => $setting ) {
+		foreach ( self::$license_settings as $key => $setting ) {
 			$this->register_setting( $setting );
 		}
 
@@ -1078,7 +1107,7 @@ class WPZOOM_Settings {
 			<div class="cols-wrap">
 				<form id="wpzoom-recipe-card-settings" action="options.php" method="post">
 					<ul class="wp-tab-bar">
-						<?php foreach ( $this->settings as $setting ): ?>
+						<?php foreach ( self::$settings as $setting ): ?>
 							<?php if ( $setting['tab_id'] == 'tab-license' ) continue; ?>
 							<?php if ( self::$active_tab === $setting['tab_id'] ): ?>
 								<li class="wp-tab-active"><a href="?page=wpzoom-recipe-card-settings&tab=<?php echo $setting['tab_id'] ?>"><?php echo $setting['tab_title'] ?></a></li>
@@ -1089,7 +1118,7 @@ class WPZOOM_Settings {
 						<li id="wpzoom_rcb_btn_save_settings"><?php submit_button( 'Save Settings', 'primary', 'wpzoom_rcb_settings_save', false ); ?></li>
 						<li id="wpzoom_rcb_btn_reset_settings"><input type="button" class="button button-secondary" name="wpzoom_rcb_reset_settings" id="wpzoom_rcb_reset_settings" value="Reset Settings"></li>
 					</ul>
-					<?php foreach ( $this->settings as $setting ): ?>
+					<?php foreach ( self::$settings as $setting ): ?>
 						<?php if ( $setting['tab_id'] == 'tab-license' ) continue; ?>
 						<?php if ( self::$active_tab === $setting['tab_id'] ): ?>
 							<div class="wp-tab-panel" id="<?php echo $setting['tab_id'] ?>">

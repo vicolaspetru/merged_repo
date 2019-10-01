@@ -99,7 +99,10 @@ class WPZOOM_Nutrition_Block {
 			    'type' => 'object'
 			),
 			'settings' => array(
-			    'type' => 'object'
+			    'type' => 'object',
+			    'default' => array(
+			    	'layout-orientation' => WPZOOM_Settings::get('wpzoom_rcb_settings_nutrition_layout'),
+			    )
 			),
 		);
 
