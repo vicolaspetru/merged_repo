@@ -3,7 +3,7 @@
  * Register admin menu elements.
  *
  * @since   2.2.0
- * @package WPZOOM Recipe Card Block
+ * @package WPZOOM_Recipe_Card_Block
  */
 
 // Exit if accessed directly.

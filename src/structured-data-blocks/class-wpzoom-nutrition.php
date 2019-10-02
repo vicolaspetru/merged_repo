@@ -3,7 +3,7 @@
  * Nutrition Block
  *
  * @since   2.3.2
- * @package WPZOOM Recipe Card Block
+ * @package WPZOOM_Recipe_Card_Block
  */
 
 // Exit if accessed directly.

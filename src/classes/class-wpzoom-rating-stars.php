@@ -5,7 +5,7 @@
  * Add rating stars to recipe card.
  *
  * @since   1.1.0
- * @package WPZOOM Recipe Card Block
+ * @package WPZOOM_Recipe_Card_Block
  */
 
 // Exit if accessed directly.
