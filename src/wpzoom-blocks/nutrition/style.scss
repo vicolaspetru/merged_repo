@@ -116,6 +116,16 @@
             font-size: .75em;
         }
     }
+
+    &.layout-orientation-vertical {
+        .wp-block-wpzoom-recipe-card-block-nutrition {
+            display: inline-block;
+
+            .nutrition-facts-daily-value-text {
+                max-width: 300px;
+            }
+        }
+    }
 }
 
 #wpzoom-recipe-nutrition {

@@ -80,6 +80,12 @@
 					margin-top: 0;
 					text-align: left;
 				}
+				.detail-item-value[role="textbox"] {
+					margin: 0 5px 0 0;
+					padding: 2px 5px;
+					border: 1px solid #ccc;
+					border-radius: 3px;
+				}
 			}
 		}
 		+ p.description {

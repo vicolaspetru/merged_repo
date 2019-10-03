@@ -669,28 +669,32 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				'iconSet' 	=> 'oldicon',
 				'icon' 		=> 'food',
 				'label' 	=> __( "Servings", "wpzoom-recipe-card" ),
-				'unit' 		=> __( "servings", "wpzoom-recipe-card" )
+				'unit' 		=> __( "servings", "wpzoom-recipe-card" ),
+				'value'		=> '4'
 			),
 		    array(
 		    	'id' 		=> self::$helpers->generateId( "detail-item" ),
 		    	'iconSet' 	=> 'oldicon',
 		    	'icon' 		=> 'clock',
 		    	'label' 	=> __( "Prep time", "wpzoom-recipe-card" ),
-		    	'unit' 		=> __( "minutes", "wpzoom-recipe-card" )
+		    	'unit' 		=> __( "minutes", "wpzoom-recipe-card" ),
+		    	'value'		=> '30'
 		    ),
 		    array(
 		        'id' 		=> self::$helpers->generateId( "detail-item" ),
 		        'iconSet' 	=> 'foodicons',
 		        'icon' 		=> 'cooking-food-in-a-hot-casserole',
 		        'label' 	=> __( "Cooking time", "wpzoom-recipe-card" ),
-		        'unit' 		=> __( "minutes", "wpzoom-recipe-card" )
+		        'unit' 		=> __( "minutes", "wpzoom-recipe-card" ),
+		        'value'		=> '40'
 		    ),
 		    array(
 		        'id' 		=> self::$helpers->generateId( "detail-item" ),
 		        'iconSet' 	=> 'foodicons',
 		        'icon' 		=> 'fire-flames',
 		        'label' 	=> __( "Calories", "wpzoom-recipe-card" ),
-		        'unit' 		=> __( "kcal", "wpzoom-recipe-card" )
+		        'unit' 		=> __( "kcal", "wpzoom-recipe-card" ),
+		        'value'		=> '300'
 		    ),
 		    array(
 		        'id' 		=> self::$helpers->generateId( "detail-item" ),

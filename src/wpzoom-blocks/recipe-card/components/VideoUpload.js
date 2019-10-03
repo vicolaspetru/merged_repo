@@ -255,7 +255,7 @@ class VideoUpload extends Component {
 		}
 
 		return (
-            <PanelBody className="wpzoom-recipe-card-video-settings" initialOpen={ false } title={ __( "Recipe Card Video Settings", "wpzoom-recipe-card" ) }>
+            <PanelBody className="wpzoom-recipe-card-video-settings" initialOpen={ true } title={ __( "Recipe Card Video Settings", "wpzoom-recipe-card" ) }>
             	<BaseControl
         			id={ `${ id }-video` }
         			className="editor-video__recipe-card"

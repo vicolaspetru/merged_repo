@@ -31,8 +31,6 @@ const {
 	Button,
 	IconButton,
 	FormTokenField,
-	PanelColor,
-	ColorIndicator,
 	ColorPalette,
 	SelectControl,
 	Notice
@@ -668,7 +666,7 @@ class Inspector extends Component {
    	        		}
 	            </PanelBody>
                 <VideoUpload { ...{ attributes, setAttributes, className , clientId } } />
-                <PanelBody className="wpzoom-recipe-card-seo-settings" initialOpen={ false } title={ __( "Recipe Card SEO Settings", "wpzoom-recipe-card" ) }>
+                <PanelBody className="wpzoom-recipe-card-seo-settings" initialOpen={ true } title={ __( "Recipe Card SEO Settings", "wpzoom-recipe-card" ) }>
 			    	<BaseControl
 						id={ `${ id }-course` }
 						label={ __( "Course (required)", "wpzoom-recipe-card" ) }
@@ -767,7 +765,7 @@ class Inspector extends Component {
 	        			/>
 	        		</BaseControl>
 	            </PanelBody>
-	            <PanelBody className="wpzoom-recipe-card-details" initialOpen={ false } title={ __( "Recipe Card Details", "wpzoom-recipe-card" ) }>
+	            <PanelBody className="wpzoom-recipe-card-details" initialOpen={ true } title={ __( "Recipe Card Details", "wpzoom-recipe-card" ) }>
 	            	{
 	            		! get( attributes, [ 'settings', 1, 'isNoticeDismiss' ] ) &&
 		            	<Notice
@@ -906,7 +904,7 @@ class Inspector extends Component {
         				}
         			</PanelRow>
 	            </PanelBody>
-	            <PanelBody className="wpzoom-recipe-card-custom-details" initialOpen={ false } title={ __( "Add Custom Details", "wpzoom-recipe-card" ) }>
+	            <PanelBody className="wpzoom-recipe-card-custom-details" initialOpen={ true } title={ __( "Add Custom Details", "wpzoom-recipe-card" ) }>
         			<PanelRow>
         	    		<TextControl
         	    			id={ `${ id }-custom-detail-1-label` }
@@ -1016,7 +1014,7 @@ class Inspector extends Component {
         	    		/>
         			</PanelRow>
 	            </PanelBody>
-	            <PanelBody className="wpzoom-recipe-card-structured-data-testing" initialOpen={ false } title={ __( "Structured Data Testing", "wpzoom-recipe-card" ) }>
+	            <PanelBody className="wpzoom-recipe-card-structured-data-testing" initialOpen={ true } title={ __( "Structured Data Testing", "wpzoom-recipe-card" ) }>
     		    	<BaseControl
     					id={ `${ id }-counters` }
     					help={ __( "Automatically check Structured Data errors and warnings.", "wpzoom-recipe-card" ) }
@@ -1024,13 +1022,13 @@ class Inspector extends Component {
     					{
     						get( structuredDataNotice, 'errors' ).length > 0 &&
     						<Notice status="error" isDismissible={ false }>
-    							<p>{ __( "Following fields are required: ", "wpzoom-recipe-card" ) } <strong>{ this.errorDetails() }</strong>. { __( "Please enter value for all of them.", "wpzoom-recipe-card" ) }</p>
+    							<p>{ __( "Please enter value for required fields: ", "wpzoom-recipe-card" ) } <strong>{ this.errorDetails() }</strong>.</p>
     						</Notice>
     					}
     					{
     						get( structuredDataNotice, 'warnings' ).length > 0 &&
     						<Notice status="warning" isDismissible={ false }>
-    							<p>{ __( "Following fields are recommended: ", "wpzoom-recipe-card" ) } <strong>{ this.warningDetails() }</strong>. { __( "We recommend to enter value for all of them.", "wpzoom-recipe-card" ) }</p>
+    							<p>{ __( "We recommend to add value for following fields: ", "wpzoom-recipe-card" ) } <strong>{ this.warningDetails() }</strong>.</p>
     						</Notice>
     					}
     	        		<PanelRow>
@@ -1039,15 +1037,15 @@ class Inspector extends Component {
     	        		</PanelRow>
     	        		<PanelRow className={ RichText.isEmpty( summary ) ? "text-color-orange": "" }>
     	        			<span>description</span>
-    	        			<strong>{ stripHTML( jsonSummary ) }</strong>
+    	        			<strong>{ ! isUndefined( jsonSummary ) ? stripHTML( jsonSummary ) : __( "Not added", "wpzoom-recipe-card" ) }</strong>
     	        		</PanelRow>
     	        		<PanelRow className={ ! hasImage ? "text-color-red": "" }>
     	        			<span>image</span>
-    	        			<strong>{ hasImage ? get( image, 'url' ) : '' }</strong>
+    	        			<strong>{ hasImage ? get( image, 'url' ) : __( "Not added", "wpzoom-recipe-card" ) }</strong>
     	        		</PanelRow>
     	        		<PanelRow className={ ! hasVideo ? "text-color-orange": "" }>
     	        			<span>video</span>
-    	        			<strong>{ hasVideo ? get( video, 'url' ) : '' }</strong>
+    	        			<strong>{ hasVideo ? get( video, 'url' ) : __( "Not added", "wpzoom-recipe-card" ) }</strong>
     	        		</PanelRow>
     	        		<PanelRow>
     	        			<span>recipeYield</span>

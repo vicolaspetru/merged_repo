@@ -413,7 +413,7 @@ class RecipeCard extends Component {
 							onSetup={ ( ref ) => {
 								this.editorRefs.recipeTitle = ref;
 							} }
-							placeholder={ __( "Enter the title of your Recipe Card", "wpzoom-recipe-card" ) }
+							placeholder={ __( "Enter the title of your recipe", "wpzoom-recipe-card" ) }
 							keepPlaceholderOnFocus={ true }
 						/>
 						{ 
@@ -541,7 +541,7 @@ class RecipeCard extends Component {
 								onSetup={ ( ref ) => {
 									this.editorRefs.recipeTitle = ref;
 								} }
-								placeholder={ __( "Enter the title of your Recipe Card.", "wpzoom-recipe-card" ) }
+								placeholder={ __( "Enter the title of your recipe", "wpzoom-recipe-card" ) }
 								keepPlaceholderOnFocus={ true }
 							/>
 							{ 
@@ -628,7 +628,7 @@ class RecipeCard extends Component {
 						<Placeholder
 							icon="video-alt3"
 							className="wpzoom-recipe-card-video-placeholder"
-							instructions={ __( "You can add Recipe Video from block settings on right sidebar", "wpzoom-recipe-card" ) }
+							instructions={ __( "You can add a video here from Recipe Card Video Settings in the right sidebar", "wpzoom-recipe-card" ) }
 							label={ __( "Recipe Card Video", "wpzoom-recipe-card" ) }
 						/>
 					}
