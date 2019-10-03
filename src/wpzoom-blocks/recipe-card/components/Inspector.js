@@ -96,7 +96,7 @@ class Inspector extends Component {
 			return false;
 		}
 
-		const relevantMedia = pickRelevantMediaFiles( media );
+		const relevantMedia = pickRelevantMediaFiles( media, 'header' );
 
 		setAttributes( {
 			hasImage: !isNull( relevantMedia.id ),
@@ -104,6 +104,7 @@ class Inspector extends Component {
 				id: relevantMedia.id,
 				url: relevantMedia.url,
 				alt: relevantMedia.alt,
+				title: relevantMedia.title,
 				sizes: get( media, [ 'sizes' ] ) || get( media, [ 'media_details', 'sizes' ] )
 			}
 		} );
@@ -111,7 +112,7 @@ class Inspector extends Component {
 
 	onSelectImage( media ) {
 		const { setAttributes } = this.props;
-		const relevantMedia = pickRelevantMediaFiles( media );
+		const relevantMedia = pickRelevantMediaFiles( media, 'header' );
 
 		setAttributes( {
 			hasImage: !isNull( relevantMedia.id ),
@@ -119,6 +120,7 @@ class Inspector extends Component {
 				id: relevantMedia.id,
 				url: relevantMedia.url,
 				alt: relevantMedia.alt,
+				title: relevantMedia.title,
 				sizes: media.sizes
 			}
 		} );
@@ -131,13 +133,14 @@ class Inspector extends Component {
 			},
 			setAttributes
 		} = this.props;
-		const relevantMedia = pickRelevantMediaFiles( media );
+		const relevantMedia = pickRelevantMediaFiles( media, 'header' );
 
 		settings[0]['pin_has_custom_image'] = !isNull( relevantMedia.id );
 		settings[0]['pin_custom_image'] = {
 			id: relevantMedia.id,
 			url: relevantMedia.url,
 			alt: relevantMedia.alt,
+			title: relevantMedia.title,
 			sizes: media.sizes
 		};
 
@@ -350,7 +353,7 @@ class Inspector extends Component {
 		// Set featured image if Recipe Card image aren't uploaded
 		this.onSetFeaturedImage();
 
-		// Inline check Schema Marckup
+		// Inline check Schema Markup
 		this.structuredDataTable();
 		this.structuredDataNotice();
 
@@ -771,7 +774,7 @@ class Inspector extends Component {
 		            		status="info"
 		            		onRemove={ () => this.onChangeSettings( true, 'isNoticeDismiss', 1 ) }
 		            	>
-	            	        <p>{ __( "The following details are used for Schema Marckup. In case you want to hide some details from Front-End, we recommend to fill them with value.", "wpzoom-recipe-card") }</p>
+	            	        <p>{ __( "The following details are used for Schema Markup. In case you want to hide some details from Front-End, we recommend to fill them with value.", "wpzoom-recipe-card") }</p>
 	            	        <p><strong>{ __( "Newer now you can add custom Details (see next Panel below).", "wpzoom-recipe-card" ) }</strong></p>
 	            	    </Notice>
 	            	}

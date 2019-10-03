@@ -592,6 +592,13 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$json_ld['video']['uploadDate'] = $video['date'];
 			}
 		}
+		else {
+
+			// we have no video added
+			// removed video attribute from json_ld array
+			unset( $json_ld['video'] );
+
+		}
 
 		if ( ! empty( $attributes['course'] ) ) {
 			$json_ld['recipeCategory'] = $attributes['course'];
@@ -1084,6 +1091,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	}
 
 	protected function wrap_direction_text( $nodes, $type = '' ) {
+		$attributes = self::$attributes;
+
 		if ( ! is_array( $nodes ) ) {
 			return $nodes;
 		}
@@ -1103,11 +1112,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					$src = isset( $node['props']['src'] ) ? $node['props']['src'] : false;
 					if ( $src ) {
 						$alt = isset( $node['props']['alt'] ) ? $node['props']['alt'] : '';
+						$title = isset( $node['props']['title'] ) ? $node['props']['title'] : ( isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : $this->recipe->post_title );
 						$class = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_steps_image') ? 'no-print' : '';
 						$class .= ' direction-step-image';
 						$img_style = isset($node['props']['style']) ? $node['props']['style'] : '';
 
-						$start_tag = sprintf( '<%s src="%s" alt="%s" class="%s" style="%s"/>', $type, $src, $alt, trim($class), $this->parseTagStyle($img_style) );
+						$start_tag = sprintf( '<%s src="%s" title="%s" alt="%s" class="%s" style="%s"/>', $type, $src, $title, $alt, trim($class), $this->parseTagStyle($img_style) );
 					} else {
 						$start_tag = "";
 					}
@@ -1133,6 +1143,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	}
 
 	protected function wrap_ingredient_name( $nodes, $type = '' ) {
+		$attributes = self::$attributes;
+
 		if ( ! is_array( $nodes ) ) {
 			return $nodes;
 		}
@@ -1152,11 +1164,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					$src = isset( $node['props']['src'] ) ? $node['props']['src'] : false;
 					if ( $src ) {
 						$alt = isset( $node['props']['alt'] ) ? $node['props']['alt'] : '';
+						$title = isset( $node['props']['title'] ) ? $node['props']['title'] : ( isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : $this->recipe->post_title );
 						$class = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_steps_image') ? 'no-print' : '';
 						$class .= ' direction-step-image';
 						$img_style = isset($node['props']['style']) ? $node['props']['style'] : '';
 
-						$start_tag = sprintf( '<%s src="%s" alt="%s" class="%s" style="%s"/>', $type, $src, $alt, trim($class), $this->parseTagStyle($img_style) );
+						$start_tag = sprintf( '<%s src="%s" title="%s" alt="%s" class="%s" style="%s"/>', $type, $src, $title, $alt, trim($class), $this->parseTagStyle($img_style) );
 					} else {
 						$start_tag = "";
 					}

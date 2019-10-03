@@ -134,7 +134,7 @@ class RecipeCard extends Component {
 	}
 
 	onSelectImage( media ) {
-		const relevantMedia = pickRelevantMediaFiles( media );
+		const relevantMedia = pickRelevantMediaFiles( media, 'header' );
 
 		this.props.setAttributes( {
 			hasImage: true,
@@ -142,6 +142,7 @@ class RecipeCard extends Component {
 				id: relevantMedia.id,
 				url: relevantMedia.url,
 				alt: relevantMedia.alt,
+				title: relevantMedia.title,
 				sizes: media.sizes
 			}
 		} );
