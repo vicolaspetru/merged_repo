@@ -4,6 +4,9 @@ import map from "lodash/map";
 import compact from "lodash/compact";
 import isEmpty from "lodash/isEmpty";
 import isNull from "lodash/isNull";
+import forEach from "lodash/forEach";
+import toString from "lodash/toString";
+import uniqueId from "lodash/uniqueId";
 import isUndefined from "lodash/isUndefined";
 import PostTaxonomies from "./PostTaxonomies";
 
@@ -31,7 +34,8 @@ const {
 	PanelColor,
 	ColorIndicator,
 	ColorPalette,
-	SelectControl
+	SelectControl,
+	Notice
 } = wp.components;
 const { withSelect } = wp.data;
 const { compose } = wp.compose;
@@ -62,6 +66,21 @@ class Inspector extends Component {
 		this.onChangeDetail 			= this.onChangeDetail.bind( this );
 		this.onChangeSettings 			= this.onChangeSettings.bind( this );
 		this.onUpdateURL 				= this.onUpdateURL.bind( this );
+
+		this.state = {
+			updateIngredients: false,
+			updateInstructions: false,
+			updateErrors: false,
+			updateWarnings: false,
+			structuredDataNotice: {
+				errors: [],
+				warnings: []
+			},
+			structuredDataTable: {
+				recipeIngredients: 0,
+				recipeInstructions: 0
+			}
+		}
 	}
 
 	onSetFeaturedImage() {
@@ -148,12 +167,16 @@ class Inspector extends Component {
 		} = this.props;
 		const newSettings = settings ? settings.slice() : [];
 
+		if ( ! get( newSettings, index ) ) {
+			newSettings[ index ] = {};
+		}
+
 		newSettings[ index ][ param ] = newValue;
 
 		setAttributes( { settings: newSettings } );
 	}
 
-	onChangeDetail( newValue, index ) {
+	onChangeDetail( newValue, index, field ) {
 		const {
 			setAttributes,
 			attributes: {
@@ -162,9 +185,36 @@ class Inspector extends Component {
 		} = this.props;
 		const newDetails = details ? details.slice() : [];
 
-		newDetails[ index ][ 'value' ] = newValue;
-		newDetails[ index ][ 'jsonValue' ] = stripHTML( renderToString( newValue ) );
-		newDetails[ index ][ 'jsonUnit' ] = stripHTML( renderToString( newDetails[ index ][ 'unit' ] ) );
+		const id 		= get( newDetails, [ index, 'id' ] );
+		const icon 		= get( newDetails, [ index, 'icon' ] );
+		const iconSet 	= get( newDetails, [ index, 'iconSet' ] );
+
+		if ( ! get( newDetails, index ) ) {
+			newDetails[ index ] = {};
+		}
+
+		if ( !id ) {
+			newDetails[ index ][ 'id' ] = uniqueId( `detail-item-${ new Date().getTime() }` );
+		}
+		if ( !icon ) {
+			newDetails[ index ][ 'icon' ] = 'restaurant-utensils';
+		}
+		if ( !iconSet ) {
+			newDetails[ index ][ 'iconSet' ] = 'foodicons';
+		}
+
+		if ( 'label' === field ) {
+			newDetails[ index ][ field ] = newValue;
+			newDetails[ index ][ 'jsonLabel' ] = stripHTML( renderToString( newValue ) );
+		}
+		if ( 'value' === field ) {
+			newDetails[ index ][ field ] = newValue;
+			newDetails[ index ][ 'jsonValue' ] = stripHTML( renderToString( newValue ) );
+		}
+		if ( 'unit' === field ) {
+			newDetails[ index ][ field ] = newValue;
+			newDetails[ index ][ 'jsonUnit' ] = stripHTML( renderToString( newValue ) );
+		}
 
 		setAttributes( { details: newDetails } );
 	}
@@ -213,6 +263,83 @@ class Inspector extends Component {
 		} ) );
 	}
 
+	errorDetails() {
+		const string = toString( this.state.structuredDataNotice.errors );
+		return string.replace( /,/g, ', ' );
+	}
+
+	warningDetails() {
+		const string = toString( this.state.structuredDataNotice.warnings );
+		return string.replace( /,/g, ', ' );
+	}
+
+	structuredDataTable() {
+		const {
+			updateIngredients,
+			updateInstructions,
+			structuredDataTable
+		} = this.state;
+		const {
+			ingredients,
+			steps
+		} = this.props.attributes;
+
+		let recipeIngredients = 0;
+		let recipeInstructions = 0;
+
+		ingredients.forEach( ( ingredient ) => {
+			const jsonName = get( ingredient, 'jsonName' );
+
+			if ( ! isEmpty( jsonName ) ) {
+				recipeIngredients++;
+			}
+		} );
+
+		steps.forEach( ( step ) => {
+			const jsonText = get( step, 'jsonText' );
+
+			if ( ! isEmpty( jsonText ) ) {
+				recipeInstructions++;
+			}
+		} );
+
+		if ( recipeIngredients != get( structuredDataTable, 'recipeIngredients' ) || recipeInstructions != get( structuredDataTable, 'recipeInstructions' ) ) {
+			this.setState( { structuredDataTable: { recipeIngredients, recipeInstructions } } );
+		}
+	}
+
+	structuredDataNotice() {
+		const {
+			structuredDataNotice,
+			structuredDataTable
+		} = this.state;
+		const {
+			hasImage,
+			details,
+			summary,
+			hasVideo
+		} = this.props.attributes;
+
+		let warnings = [];
+		let errors = [];
+
+		// Push warnings
+		RichText.isEmpty( summary ) && warnings.push("summary");
+		! hasVideo && warnings.push("video");
+		! get( details, [ 1 ,'value' ] ) && warnings.push("prepTime");
+		! get( details, [ 2 ,'value' ] ) && warnings.push("cookTime");
+		! get( details, [ 3 ,'value' ] ) && warnings.push("calories");
+
+		// Push errors
+		! hasImage && errors.push("image");
+		! get( structuredDataTable, 'recipeIngredients' ) && errors.push("ingredients");
+		! get( structuredDataTable, 'recipeInstructions' ) && errors.push("steps");
+
+		if ( warnings.length != get( structuredDataNotice, 'warnings' ).length || errors.length != get( structuredDataNotice, 'errors' ).length ) {
+			this.setState( { structuredDataNotice: { warnings, errors } } );
+		}
+	}
+
 	/**
 	 * Renders this component.
 	 *
@@ -222,6 +349,10 @@ class Inspector extends Component {
 
 		// Set featured image if Recipe Card image aren't uploaded
 		this.onSetFeaturedImage();
+
+		// Inline check Schema Marckup
+		this.structuredDataTable();
+		this.structuredDataNotice();
 
 		const {
 			className,
@@ -236,6 +367,11 @@ class Inspector extends Component {
 			difficultiesTaxonomy,
 			settingOptions
 		} = this.props;
+
+		const {
+			structuredDataNotice,
+			structuredDataTable
+		} = this.state;
 
 		const {
 			id,
@@ -324,101 +460,7 @@ class Inspector extends Component {
 			{ name: __( "Green", "wpzoom-recipe-card" ), color: '#B7C662' },
 		];
 
-		function structuredDataTestingTool() {
-			let dataTable = {
-				ingredients: [],
-				steps: [],
-			};
-
-			let check = {
-				warnings: [],
-				errors: []
-			}
-
-			for (var i = 0; i < ingredients.length; i++) {
-				if ( ingredients[i].name.length !== 0 ) {
-					dataTable.ingredients.push(<PanelRow><strong>recipeIngredient</strong><span>{ ingredients[i].name }</span></PanelRow>);
-				}
-			}
-
-			for (var i = 0; i < steps.length; i++) {
-				if ( steps[i].text.length !== 0 ) {
-					dataTable.steps.push(<PanelRow><strong>recipeInstructions</strong><span>{ steps[i].text }</span></PanelRow>);
-				}
-			}
-
-			RichText.isEmpty( summary ) ? check.warnings.push("summary") : '';
-			! hasImage ? check.errors.push("image") : '';
-			! hasVideo ? check.warnings.push("video") : '';
-			! dataTable.ingredients.length ? check.errors.push("ingredients") : '';
-			! dataTable.steps.length ? check.errors.push("steps") : '';
-			! get( details, [ 1 ,'value' ] ) ? check.warnings.push("prepTime") : '';
-			! get( details, [ 2 ,'value' ] ) ? check.warnings.push("cookTime") : '';
-			! get( details, [ 3 ,'value' ] ) ? check.warnings.push("calories") : '';
-
-			return (
-		    	<BaseControl
-					id={ `${ id }-counters` }
-					help={ __( "Automatically check Structured Data errors and warnings.", "wpzoom-recipe-card" ) }
-				>
-					<PanelRow>
-						<span>{ __( "Legend:", "wpzoom-recipe-card" ) }</span>
-					</PanelRow>
-					<PanelRow className={ check.errors.length === 0 ? `text-color-green` : `text-color-red` }>
-						<ColorIndicator aria-label={ __( "Required fields", "wpzoom-recipe-card" ) } colorValue={ check.errors.length === 0 ? `#29a740` : `#ff2725` } />
-						<strong>{ `${ check.errors.length } ` + _n( "error", "errors", `${ check.errors.length }`, "wpzoom-recipe-card" ) }</strong>
-					</PanelRow>
-					<PanelRow className="text-color-orange">
-						<ColorIndicator aria-label={ __( "Recommended fields", "wpzoom-recipe-card" ) } colorValue="#ef6c00" />
-						<strong>{ `${ check.warnings.length } ` + _n( "warning", "warnings", `${ check.warnings.length }`, "wpzoom-recipe-card" ) }</strong>
-					</PanelRow>
-					<PanelRow>
-						<span>{ __( "Recipe:", "wpzoom-recipe-card" ) }</span>
-					</PanelRow>
-            		<PanelRow>
-            			<span>recipeTitle</span>
-            			<strong>{ ! RichText.isEmpty( recipeTitle ) ? recipeTitle : postTitle }</strong>
-            		</PanelRow>
-            		<PanelRow className={ RichText.isEmpty( summary ) ? "text-color-orange": "" }>
-            			<span>description</span>
-            			<strong>{ stripHTML( jsonSummary ) }</strong>
-            		</PanelRow>
-            		<PanelRow className={ ! hasImage ? "text-color-red": "" }>
-            			<span>image</span>
-            			<strong>{ hasImage ? get( image, ['url'] ) : '' }</strong>
-            		</PanelRow>
-            		<PanelRow className={ ! hasVideo ? "text-color-orange": "" }>
-            			<span>video</span>
-            			<strong>{ hasVideo ? get( video, ['url'] ) : '' }</strong>
-            		</PanelRow>
-            		<PanelRow>
-            			<span>recipeYield</span>
-            			<strong>{ get( details, [ 0, 'value' ] ) ? get( details, [ 0, 'value' ] ) + ' ' + get( details, [ 0, 'unit' ] ) : '0 ' + get( details, [ 0, 'unit' ] ) }</strong>
-            		</PanelRow>
             		<PanelRow className={ ! get( details, [ 1, 'value' ] ) ? "text-color-orange": "" }>
-            			<span>prepTime</span>
-            			<strong><strong>{ get( details, [ 1, 'value' ] ) ? get( details, [ 1, 'value' ] ) + ' ' + get( details, [ 1, 'unit' ] ) : '0 ' + get( details, [ 1, 'unit' ] ) }</strong></strong>
-            		</PanelRow>
-            		<PanelRow className={ ! get( details, [ 2, 'value' ] ) ? "text-color-orange": "" }>
-            			<span>cookTime</span>
-            			<strong>{ get( details, [ 2, 'value' ] ) ? get( details, [ 2, 'value' ] ) + ' ' + get( details, [ 2, 'unit' ] ) : '0 ' + get( details, [ 2, 'unit' ] ) }</strong>
-            		</PanelRow>
-            		<PanelRow className={ ! get( details, [ 3, 'value' ] ) ? "text-color-orange": "" }>
-            			<span>calories</span>
-            			<strong>{ get( details, [ 3, 'value' ] ) ? get( details, [ 3, 'value' ] ) + ' ' + get( details, [ 3, 'unit' ] ) : '0 ' + get( details, [ 3, 'unit' ] ) }</strong>
-            		</PanelRow>
-            		<PanelRow className={ ! dataTable.ingredients.length ? "text-color-red": "" }>
-            			<span>{ __( "Ingredients", "wpzoom-recipe-card" ) }</span>
-            			<strong>{ dataTable.ingredients.length }</strong>
-            		</PanelRow>
-            		<PanelRow className={ ! dataTable.steps.length ? "text-color-red" : "" }>
-            			<span>{ __( "Steps", "wpzoom-recipe-card" ) }</span>
-            			<strong>{ dataTable.steps.length }</strong>
-            		</PanelRow>
-            	</BaseControl>
-			);
-		}
-
 		return (
 			<InspectorControls>
                 <PanelBody className="wpzoom-recipe-card-settings" initialOpen={ true } title={ __( "Recipe Card Settings", "wpzoom-recipe-card" ) }>
@@ -624,7 +666,7 @@ class Inspector extends Component {
    	        		}
 	            </PanelBody>
                 <VideoUpload { ...{ attributes, setAttributes, className , clientId } } />
-                <PanelBody className="wpzoom-recipe-card-seo-settings" initialOpen={ true } title={ __( "Recipe Card SEO Settings", "wpzoom-recipe-card" ) }>
+                <PanelBody className="wpzoom-recipe-card-seo-settings" initialOpen={ false } title={ __( "Recipe Card SEO Settings", "wpzoom-recipe-card" ) }>
 			    	<BaseControl
 						id={ `${ id }-course` }
 						label={ __( "Course (required)", "wpzoom-recipe-card" ) }
@@ -723,7 +765,17 @@ class Inspector extends Component {
 	        			/>
 	        		</BaseControl>
 	            </PanelBody>
-	            <PanelBody className="wpzoom-recipe-card-details" initialOpen={ true } title={ __( "Recipe Card Details", "wpzoom-recipe-card" ) }>
+	            <PanelBody className="wpzoom-recipe-card-details" initialOpen={ false } title={ __( "Recipe Card Details", "wpzoom-recipe-card" ) }>
+	            	{
+	            		! get( attributes, [ 'settings', 1, 'isNoticeDismiss' ] ) &&
+		            	<Notice
+		            		status="info"
+		            		onRemove={ () => this.onChangeSettings( true, 'isNoticeDismiss', 1 ) }
+		            	>
+	            	        <p>{ __( "The following details are used for Schema Marckup. In case you want to hide some details from Front-End, we recommend to fill them with value.", "wpzoom-recipe-card") }</p>
+	            	        <p><strong>{ __( "Newer now you can add custom Details (see next Panel below).", "wpzoom-recipe-card" ) }</strong></p>
+	            	    </Notice>
+	            	}
     				<ToggleControl
     				    label={ __( "Display Servings", "wpzoom-recipe-card" ) }
     				    checked={ displayServings }
@@ -733,15 +785,31 @@ class Inspector extends Component {
         				{
         					displayServings &&
         					<Fragment>
-		        	    		<TextControl
-		        	    			id={ `${ id }-yield` }
-		        	    			instanceId={ `${ id }-yield` }
-		        	    			type="number"
-		        	    			label={ __( "Servings", "wpzoom-recipe-card" ) }
-		        	    			value={ get( details, [ 0, 'value' ] ) }
-		        	    			onChange={ newYield => this.onChangeDetail(newYield, 0) }
-		        	    		/>
-		        				<span>{ get( details, [ 0, 'unit' ] ) }</span>
+        						<TextControl
+        							id={ `${ id }-yield-label` }
+        							instanceId={ `${ id }-yield-label` }
+        							type="text"
+        							label={ __( "Servings Label", "wpzoom-recipe-card" ) }
+        							placeholder={ __( "Servings", "wpzoom-recipe-card" ) }
+        							value={ get( details, [ 0, 'label' ] ) }
+        							onChange={ newValue => this.onChangeDetail(newValue, 0, 'label') }
+        						/>
+        						<TextControl
+        							id={ `${ id }-yield-value` }
+        							instanceId={ `${ id }-yield-value` }
+        							type="number"
+        							label={ __( "Servings Value", "wpzoom-recipe-card" ) }
+        							value={ get( details, [ 0, 'value' ] ) }
+        							onChange={ newValue => this.onChangeDetail(newValue, 0, 'value') }
+        						/>
+        						<TextControl
+        							id={ `${ id }-yield-unit` }
+        							instanceId={ `${ id }-yield-unit` }
+        							type="text"
+        							label={ __( "Servings Unit", "wpzoom-recipe-card" ) }
+        							value={ get( details, [ 0, 'unit' ] ) }
+        							onChange={ newValue => this.onChangeDetail(newValue, 0, 'unit') }
+        						/>
 		        			</Fragment>
         				}
         			</PanelRow>
@@ -755,14 +823,23 @@ class Inspector extends Component {
         					displayPrepTime &&
         					<Fragment>
 		        	    		<TextControl
-		        	    			id={ `${ id }-preptime` }
-		        	    			instanceId={ `${ id }-preptime` }
-		        	    			type="number"
-		        	    			label={ __( "Preparation time", "wpzoom-recipe-card" ) }
-		        	    			value={ get( details, [ 1, 'value' ] ) }
-		        	    			onChange={ newPrepTime => this.onChangeDetail(newPrepTime, 1) }
+		        	    			id={ `${ id }-preptime-label` }
+		        	    			instanceId={ `${ id }-preptime-label` }
+		        	    			type="text"
+		        	    			label={ __( "Prep Time Label", "wpzoom-recipe-card" ) }
+		        	    			placeholder={ __( "Prep Time", "wpzoom-recipe-card" ) }
+		        	    			value={ get( details, [ 1, 'label' ] ) }
+		        	    			onChange={ newValue => this.onChangeDetail(newValue, 1, 'label') }
 		        	    		/>
-		        				<span>{ get( details, [ 1, 'unit' ] ) }</span>
+		        	    		<TextControl
+		        	    			id={ `${ id }-preptime-value` }
+		        	    			instanceId={ `${ id }-preptime-value` }
+		        	    			type="number"
+		        	    			label={ __( "Prep Time Value", "wpzoom-recipe-card" ) }
+		        	    			value={ get( details, [ 1, 'value' ] ) }
+		        	    			onChange={ newValue => this.onChangeDetail(newValue, 1, 'value') }
+		        	    		/>
+		        	    		<span>{ get( details, [ 1, 'unit' ] ) }</span>
 		        			</Fragment>
         				}
         			</PanelRow>
@@ -776,14 +853,23 @@ class Inspector extends Component {
         					displayCookingTime &&
         					<Fragment>
 		        	    		<TextControl
-		        	    			id={ `${ id }-cookingtime` }
-		        	    			instanceId={ `${ id }-cookingtime` }
-		        	    			type="number"
-		        	    			label={ __( "Cooking time", "wpzoom-recipe-card" ) }
-		        	    			value={ get( details, [ 2, 'value' ] ) }
-		        	    			onChange={ newCookingTime => this.onChangeDetail(newCookingTime, 2) }
+		        	    			id={ `${ id }-cookingtime-label` }
+		        	    			instanceId={ `${ id }-cookingtime-label` }
+		        	    			type="text"
+		        	    			label={ __( "Cook Time Label", "wpzoom-recipe-card" ) }
+		        	    			placeholder={ __( "Cooking Time", "wpzoom-recipe-card" ) }
+		        	    			value={ get( details, [ 2, 'label' ] ) }
+		        	    			onChange={ newValue => this.onChangeDetail(newValue, 2, 'label') }
 		        	    		/>
-		        				<span>{ get( details, [ 2, 'unit' ] ) }</span>
+		        	    		<TextControl
+		        	    			id={ `${ id }-cookingtime-value` }
+		        	    			instanceId={ `${ id }-cookingtime-value` }
+		        	    			type="number"
+		        	    			label={ __( "Cook Time Value", "wpzoom-recipe-card" ) }
+		        	    			value={ get( details, [ 2, 'value' ] ) }
+		        	    			onChange={ newValue => this.onChangeDetail(newValue, 2, 'value') }
+		        	    		/>
+		        	    		<span>{ get( details, [ 2, 'unit' ] ) }</span>
 		        			</Fragment>
         				}
         			</PanelRow>
@@ -797,20 +883,195 @@ class Inspector extends Component {
         					displayCalories &&
         					<Fragment>
 		        	    		<TextControl
-		        	    			id={ `${ id }-calories` }
-		        	    			instanceId={ `${ id }-calories` }
-		        	    			type="number"
-		        	    			label={ __( "Calories", "wpzoom-recipe-card" ) }
-		        	    			value={ get( details, [ 3, 'value' ] ) }
-		        	    			onChange={ newCalories => this.onChangeDetail(newCalories, 3) }
+		        	    			id={ `${ id }-calories-label` }
+		        	    			instanceId={ `${ id }-calories-label` }
+		        	    			type="text"
+		        	    			label={ __( "Cook Time Label", "wpzoom-recipe-card" ) }
+		        	    			placeholder={ __( "Cooking Time", "wpzoom-recipe-card" ) }
+		        	    			value={ get( details, [ 3, 'label' ] ) }
+		        	    			onChange={ newValue => this.onChangeDetail(newValue, 3, 'label') }
 		        	    		/>
-		        				<span>{ get( details, [ 3, 'unit' ] ) }</span>
+		        	    		<TextControl
+		        	    			id={ `${ id }-calories-value` }
+		        	    			instanceId={ `${ id }-calories-value` }
+		        	    			type="number"
+		        	    			label={ __( "Cook Time Value", "wpzoom-recipe-card" ) }
+		        	    			value={ get( details, [ 3, 'value' ] ) }
+		        	    			onChange={ newValue => this.onChangeDetail(newValue, 3, 'value') }
+		        	    		/>
+		        	    		<span>{ get( details, [ 3, 'unit' ] ) }</span>
 		        			</Fragment>
         				}
         			</PanelRow>
 	            </PanelBody>
+	            <PanelBody className="wpzoom-recipe-card-custom-details" initialOpen={ false } title={ __( "Add Custom Details", "wpzoom-recipe-card" ) }>
+        			<PanelRow>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-1-label` }
+        	    			instanceId={ `${ id }-custom-detail-1-label` }
+        	    			type="text"
+        	    			label={ __( "Custom Label 1", "wpzoom-recipe-card" ) }
+        	    			placeholder={ __( "Resting Time", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 4, 'label' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 4, 'label') }
+        	    		/>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-1-value` }
+        	    			instanceId={ `${ id }-custom-detail-1-value` }
+        	    			type="text"
+        	    			label={ __( "Custom Value 1", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 4, 'value' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 4, 'value') }
+        	    		/>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-1-unit` }
+        	    			instanceId={ `${ id }-custom-detail-1-unit` }
+        	    			type="text"
+        	    			label={ __( "Custom Unit 1", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 4, 'unit' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 4, 'unit') }
+        	    		/>
+        			</PanelRow>
+        			<PanelRow>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-2-label` }
+        	    			instanceId={ `${ id }-custom-detail-2-label` }
+        	    			type="text"
+        	    			label={ __( "Custom Label 2", "wpzoom-recipe-card" ) }
+        	    			placeholder={ __( "Baking Time", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 5, 'label' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 5, 'label') }
+        	    		/>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-2-value` }
+        	    			instanceId={ `${ id }-custom-detail-2-value` }
+        	    			type="text"
+        	    			label={ __( "Custom Value 2", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 5, 'value' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 5, 'value') }
+        	    		/>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-2-unit` }
+        	    			instanceId={ `${ id }-custom-detail-2-unit` }
+        	    			type="text"
+        	    			label={ __( "Custom Unit 2", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 5, 'unit' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 5, 'unit') }
+        	    		/>
+        			</PanelRow>
+        			<PanelRow>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-3-label` }
+        	    			instanceId={ `${ id }-custom-detail-3-label` }
+        	    			type="text"
+        	    			label={ __( "Custom Label 3", "wpzoom-recipe-card" ) }
+        	    			placeholder={ __( "Total Time", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 6, 'label' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 6, 'label') }
+        	    		/>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-3-value` }
+        	    			instanceId={ `${ id }-custom-detail-3-value` }
+        	    			type="text"
+        	    			label={ __( "Custom Value 3", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 6, 'value' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 6, 'value') }
+        	    		/>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-3-unit` }
+        	    			instanceId={ `${ id }-custom-detail-3-unit` }
+        	    			type="text"
+        	    			label={ __( "Custom Unit 3", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 6, 'unit' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 6, 'unit') }
+        	    		/>
+        			</PanelRow>
+        			<PanelRow>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-4-label` }
+        	    			instanceId={ `${ id }-custom-detail-4-label` }
+        	    			type="text"
+        	    			label={ __( "Custom Label 4", "wpzoom-recipe-card" ) }
+        	    			placeholder={ __( "Net Carbs", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 7, 'label' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 7, 'label') }
+        	    		/>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-4-value` }
+        	    			instanceId={ `${ id }-custom-detail-4-value` }
+        	    			type="text"
+        	    			label={ __( "Custom Value 4", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 7, 'value' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 7, 'value') }
+        	    		/>
+        	    		<TextControl
+        	    			id={ `${ id }-custom-detail-4-unit` }
+        	    			instanceId={ `${ id }-custom-detail-4-unit` }
+        	    			type="text"
+        	    			label={ __( "Custom Unit 4", "wpzoom-recipe-card" ) }
+        	    			value={ get( details, [ 7, 'unit' ] ) }
+        	    			onChange={ newValue => this.onChangeDetail(newValue, 7, 'unit') }
+        	    		/>
+        			</PanelRow>
+	            </PanelBody>
 	            <PanelBody className="wpzoom-recipe-card-structured-data-testing" initialOpen={ false } title={ __( "Structured Data Testing", "wpzoom-recipe-card" ) }>
-	            	{ structuredDataTestingTool() }
+    		    	<BaseControl
+    					id={ `${ id }-counters` }
+    					help={ __( "Automatically check Structured Data errors and warnings.", "wpzoom-recipe-card" ) }
+    				>
+    					{
+    						get( structuredDataNotice, 'errors' ).length > 0 &&
+    						<Notice status="error" isDismissible={ false }>
+    							<p>{ __( "Following fields are required: ", "wpzoom-recipe-card" ) } <strong>{ this.errorDetails() }</strong>. { __( "Please enter value for all of them.", "wpzoom-recipe-card" ) }</p>
+    						</Notice>
+    					}
+    					{
+    						get( structuredDataNotice, 'warnings' ).length > 0 &&
+    						<Notice status="warning" isDismissible={ false }>
+    							<p>{ __( "Following fields are recommended: ", "wpzoom-recipe-card" ) } <strong>{ this.warningDetails() }</strong>. { __( "We recommend to enter value for all of them.", "wpzoom-recipe-card" ) }</p>
+    						</Notice>
+    					}
+    	        		<PanelRow>
+    	        			<span>recipeTitle</span>
+    	        			<strong>{ ! RichText.isEmpty( recipeTitle ) ? recipeTitle : postTitle }</strong>
+    	        		</PanelRow>
+    	        		<PanelRow className={ RichText.isEmpty( summary ) ? "text-color-orange": "" }>
+    	        			<span>description</span>
+    	        			<strong>{ stripHTML( jsonSummary ) }</strong>
+    	        		</PanelRow>
+    	        		<PanelRow className={ ! hasImage ? "text-color-red": "" }>
+    	        			<span>image</span>
+    	        			<strong>{ hasImage ? get( image, 'url' ) : '' }</strong>
+    	        		</PanelRow>
+    	        		<PanelRow className={ ! hasVideo ? "text-color-orange": "" }>
+    	        			<span>video</span>
+    	        			<strong>{ hasVideo ? get( video, 'url' ) : '' }</strong>
+    	        		</PanelRow>
+    	        		<PanelRow>
+    	        			<span>recipeYield</span>
+    	        			<strong>{ get( details, [ 0, 'value' ] ) ? get( details, [ 0, 'value' ] ) + ' ' + get( details, [ 0, 'unit' ] ) : '0 ' + get( details, [ 0, 'unit' ] ) }</strong>
+    	        		</PanelRow>
+    	        		<PanelRow className={ ! get( details, [ 1, 'value' ] ) ? "text-color-orange": "" }>
+    	        			<span>prepTime</span>
+    	        			<strong><strong>{ get( details, [ 1, 'value' ] ) ? get( details, [ 1, 'value' ] ) + ' ' + get( details, [ 1, 'unit' ] ) : '0 ' + get( details, [ 1, 'unit' ] ) }</strong></strong>
+    	        		</PanelRow>
+    	        		<PanelRow className={ ! get( details, [ 2, 'value' ] ) ? "text-color-orange": "" }>
+    	        			<span>cookTime</span>
+    	        			<strong>{ get( details, [ 2, 'value' ] ) ? get( details, [ 2, 'value' ] ) + ' ' + get( details, [ 2, 'unit' ] ) : '0 ' + get( details, [ 2, 'unit' ] ) }</strong>
+    	        		</PanelRow>
+    	        		<PanelRow className={ ! get( details, [ 3, 'value' ] ) ? "text-color-orange": "" }>
+    	        			<span>calories</span>
+    	        			<strong>{ get( details, [ 3, 'value' ] ) ? get( details, [ 3, 'value' ] ) + ' ' + get( details, [ 3, 'unit' ] ) : '0 ' + get( details, [ 3, 'unit' ] ) }</strong>
+    	        		</PanelRow>
+    	        		<PanelRow className={ ! get( structuredDataTable, 'recipeIngredients' ) ? "text-color-red": "" }>
+    	        			<span>{ __( "Ingredients", "wpzoom-recipe-card" ) }</span>
+    	        			<strong>{ get( structuredDataTable, 'recipeIngredients' ) }</strong>
+    	        		</PanelRow>
+    	        		<PanelRow className={ ! get( structuredDataTable, 'recipeInstructions' ) ? "text-color-red" : "" }>
+    	        			<span>{ __( "Steps", "wpzoom-recipe-card" ) }</span>
+    	        			<strong>{ get( structuredDataTable, 'recipeInstructions' ) }</strong>
+    	        		</PanelRow>
+    	        	</BaseControl>
 	            </PanelBody>
             </InspectorControls>
 		);

@@ -1,5 +1,6 @@
 /* External dependencies */
 import PropTypes from "prop-types";
+import isUndefined from "lodash/isUndefined";
 
 /* External dependencies */
 import IconsModal from "./IconsModal";
@@ -140,8 +141,9 @@ export default class DetailItem extends Component {
 	 *
 	 * @returns {Component}
 	 */
-	static getPlaceholder( index, key = '' ) {
-		let newIndex = index % 4;
+	getPlaceholder( index, key = '' ) {
+		const { item } = this.props;
+		const itemValue = get( item, key );
 
 		const placeholderText = {
 		    0: { label: __( "Servings", "wpzoom-recipe-card" ), value: 4, unit: __( "servings", "wpzoom-recipe-card" ) },
@@ -150,7 +152,11 @@ export default class DetailItem extends Component {
 		    3: { label: __( "Calories", "wpzoom-recipe-card" ), value: 300, unit: __( "kcal", "wpzoom-recipe-card" ) },
 		}
 
-		return key !== '' ? get( placeholderText, [ newIndex, key ] ) : get( placeholderText, [ newIndex ] );
+		if ( isUndefined( itemValue ) ) {
+			return get( placeholderText, [ index, key ] ) || get( placeholderText, index ) || '';
+		} else {
+			return itemValue;
+		}
 	}
 
 	/**
@@ -188,7 +194,7 @@ export default class DetailItem extends Component {
 						<div className="detail-item-icon">{ this.getOpenModalButton( this.props ) }</div>
 						: <div className="detail-open-modal">{ this.getOpenModalButton( this.props ) }</div>
 				}
-				<p className="detail-item-label">{ DetailItem.getPlaceholder( index, 'label' ) }</p>
+				<p className="detail-item-label">{ this.getPlaceholder( index, 'label' ) }</p>
 				<RichText
 				    className="detail-item-value"
 				    tagName="p"
@@ -197,11 +203,11 @@ export default class DetailItem extends Component {
 				    value={ value }
 				    onChange={ this.onChangeValue }
 				    // isSelected={ isSelectedValue }
-				    placeholder={ DetailItem.getPlaceholder( index, 'value' ) }
+				    placeholder={ this.getPlaceholder( index, 'value' ) }
 				    unstableOnFocus={ this.onFocusValue }
 				    keepPlaceholderOnFocus={ true }
 				/>
-				<p className="detail-item-unit">{ DetailItem.getPlaceholder( index, 'unit' ) }</p>
+				<p className="detail-item-unit">{ this.getPlaceholder( index, 'unit' ) }</p>
 			</div>
 		);
 	}

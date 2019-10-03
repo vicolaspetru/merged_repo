@@ -684,6 +684,26 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		        'icon' 		=> 'fire-flames',
 		        'label' 	=> __( "Calories", "wpzoom-recipe-card" ),
 		        'unit' 		=> __( "kcal", "wpzoom-recipe-card" )
+		    ),
+		    array(
+		        'id' 		=> self::$helpers->generateId( "detail-item" ),
+		        'iconSet' 	=> 'fa',
+		        'icon' 		=> 'clock-o',
+		    ),
+		    array(
+		        'id' 		=> self::$helpers->generateId( "detail-item" ),
+		        'iconSet' 	=> 'oldicon',
+		        'icon' 		=> 'chef-cooking',
+		    ),
+		    array(
+		        'id' 		=> self::$helpers->generateId( "detail-item" ),
+		        'iconSet' 	=> 'fa',
+		        'icon' 		=> 'clock-o',
+		    ),
+		    array(
+		        'id' 		=> self::$helpers->generateId( "detail-item" ),
+		        'iconSet' 	=> 'fa',
+		        'icon' 		=> 'sort-amount-asc',
 		    )
 		);
 	}
@@ -748,12 +768,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 	protected function get_detail_items( array $details ) {
 		$output = '';
-		$defaults = self::get_details_default();
 
 		foreach ( $details as $index => $detail ) {
-			if ( $index >= 4 ) {
-				return force_balance_tags( $output );
-			}
 			$icon = $label = $value = $unit = '';
 
 			if ( 0 === $index && self::$settings['displayServings'] != '1' ) {
@@ -763,6 +779,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			} elseif ( 2 === $index && self::$settings['displayCookingTime'] != '1' ) {
 				continue;
 			} elseif ( 3 === $index && self::$settings['displayCalories'] != '1' ) {
+				continue;
+			} elseif ( ( 4 === $index || 5 === $index || 6 === $index || 7 === $index ) && empty( $detail['label'] ) ) {
 				continue;
 			}
 
@@ -797,10 +815,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				);
 			}
 
-			$label = sprintf(
-				'<span class="detail-item-label">%s</span>',
-				$defaults[ $index ]['label']
-			);
+			if ( ! empty( $detail['label'] ) ) {
+				$label = sprintf(
+					'<span class="detail-item-label">%s</span>',
+					$detail['label']
+				);
+			}
 
 			if ( ! empty( $detail[ 'value' ] ) ) {
 				if ( !is_array( $detail['value'] ) ) {
@@ -818,7 +838,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			if ( ! empty( $detail[ 'unit' ] ) ) {
 				$unit = sprintf(
 					'<span class="detail-item-unit">%s</span>',
-					$defaults[ $index ]['unit']
+					$detail['unit']
 				);
 			}
 
