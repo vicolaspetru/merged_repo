@@ -139,9 +139,10 @@ $heading_color: #222;
             border: 1px dashed rgba(0,0,0,.1);
             text-align: center;
             display: flex;
+            flex-wrap: wrap;
 
             .detail-item {
-                flex: 1;
+                flex: 1 0 25%;
                 padding: 10px 1.5%;
                 position: relative;
                 box-sizing: border-box;
