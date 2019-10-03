@@ -460,7 +460,6 @@ class Inspector extends Component {
 			{ name: __( "Green", "wpzoom-recipe-card" ), color: '#B7C662' },
 		];
 
-            		<PanelRow className={ ! get( details, [ 1, 'value' ] ) ? "text-color-orange": "" }>
 		return (
 			<InspectorControls>
                 <PanelBody className="wpzoom-recipe-card-settings" initialOpen={ true } title={ __( "Recipe Card Settings", "wpzoom-recipe-card" ) }>
