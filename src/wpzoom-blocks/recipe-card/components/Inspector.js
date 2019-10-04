@@ -772,8 +772,8 @@ class Inspector extends Component {
 		            		status="info"
 		            		onRemove={ () => this.onChangeSettings( true, 'isNoticeDismiss', 1 ) }
 		            	>
-	            	        <p>{ __( "The following details are used for Schema Markup. In case you want to hide some details from Front-End, we recommend to fill them with value.", "wpzoom-recipe-card") }</p>
-	            	        <p><strong>{ __( "Newer now you can add custom Details (see next Panel below).", "wpzoom-recipe-card" ) }</strong></p>
+	            	        <p>{ __( "The following details are used for Schema Markup (Rich Snippets). If you want to hide some details in the post, just turn them off below.", "wpzoom-recipe-card") }</p>
+	            	        <p><strong>{ __( "NEW: you can also add custom details (see next panel below).", "wpzoom-recipe-card" ) }</strong></p>
 	            	    </Notice>
 	            	}
     				<ToggleControl
