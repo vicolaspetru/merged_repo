@@ -34,7 +34,7 @@ class WPZOOM_Privacy_Policy {
         ob_end_clean();
 
         wp_add_privacy_policy_content(
-            'WPZOOM Recipe Card PRO',
+            'Recipe Card Blocks PRO',
             wp_kses_post( wpautop( $content, false ) )
         );
     }
