@@ -62,6 +62,20 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.4.0 =
+* 🔥 Added Nutrition Block with two Layouts (Vertical / Horizontal)
+* Added possibility to edit details label from Block Settings, and also edit unit for Servings
+* Added possibility to add custom details from Block Settings
+* Added option to upload image per ingredient
+* Added new image size for directions images
+* Added Privacy Policy template for Settings -> Privacy page
+* Added Reset Ratings action in Settings Page
+* Added option to set default color for rating stars in Settings Page
+* Added option to set Who can rate recipes (Only logged in or Everyone) in Settings Page
+* Numerous changes and improvements to Code and UX
+* Fixed issue with Database table for recipe ratings
+* Fixed issue to not include video attribute in Schema Markup if it's not added to block
+
 = 2.3.2 =
 * Fixed a bug with star ratings not working when JS files are combined
 
