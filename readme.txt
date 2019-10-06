@@ -23,6 +23,7 @@ Inspired by our popular food blog theme [Foodica](https://www.wpzoom.com/themes/
 * **Recipe Details**
 * **Ingredients**
 * **Directions**
+* **Nutrition Facts**
 
 
 = 📌 WHAT'S NEW IN 2.1? =
@@ -64,17 +65,16 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 = 2.4.0 =
 * 🔥 Added Nutrition Block with two Layouts (Vertical / Horizontal)
-* Added possibility to edit details label from Block Settings, and also edit unit for Servings
-* Added possibility to add custom details from Block Settings
-* Added option to upload image per ingredient
-* Added new image size for directions images
-* Added Privacy Policy template for Settings -> Privacy page
+* Added possibility to edit details labels from Block Settings, and also edit unit for Servings
+* Added possibility to add additional custom details from Block Settings
+* Added option to upload images for ingredients
+* GDPR: Added Privacy Policy template for Settings -> Privacy page
 * Added Reset Ratings action in Settings Page
 * Added option to set default color for rating stars in Settings Page
 * Added option to set Who can rate recipes (Only logged in or Everyone) in Settings Page
-* Numerous changes and improvements to Code and UX
+* Numerous changes and improvements
 * Fixed issue with Database table for recipe ratings
-* Fixed issue to not include video attribute in Schema Markup if it's not added to block
+* Fixed issue to not include video attribute in Schema Markup if it's not added to the block
 
 = 2.3.2 =
 * Fixed a bug with star ratings not working when JS files are combined
