@@ -182,7 +182,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			            'displayCookingTime' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_cookingtime') === '1',
 			            'displayCalories' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_calories') === '1',
 			            'headerAlign' => WPZOOM_Settings::get('wpzoom_rcb_settings_heading_content_align'),
-			            'ingredientsLayout' => '1-column'
+			            'ingredientsLayout' => '1-column',
+			            'ajustableServings' => false
 			        )
 			    ),
 			    'items' => array(
@@ -853,6 +854,14 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				);
 			}
 
+			// User has enabled Ajustable Servings?
+			if ( 0 === $index && self::$settings['ajustableServings'] ) {
+				$value = sprintf(
+					'<p class="detail-item-value"><input class="detail-item-ajustable-servings" type="number" value="%s" min="1"></p>',
+					$detail['value']
+				);
+			}
+
 			// convert minutes to hours for 'prep time' and 'cook time' items
 			if ( 1 === $index || 2 === $index ) {
 				if ( ! empty( $detail['value'] ) ) {
@@ -1164,22 +1173,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$start_tag = $type ? "<$type>" : "";
 				$end_tag = $type ? "</$type>" : "";
 
-				if ( 'img' === $type ) {
-					$src = isset( $node['props']['src'] ) ? $node['props']['src'] : false;
-					if ( $src ) {
-						$alt = isset( $node['props']['alt'] ) ? $node['props']['alt'] : '';
-						$title = isset( $node['props']['title'] ) ? $node['props']['title'] : ( isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : $this->recipe->post_title );
-						$class = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_steps_image') ? 'no-print' : '';
-						$class .= ' direction-step-image';
-						$img_style = isset($node['props']['style']) ? $node['props']['style'] : '';
-
-						$start_tag = sprintf( '<%s src="%s" title="%s" alt="%s" class="%s" style="%s"/>', $type, $src, $title, $alt, trim($class), $this->parseTagStyle($img_style) );
-					} else {
-						$start_tag = "";
-					}
-					$end_tag = "";
-				}
-				elseif ( 'a' === $type ) {
+				if ( 'a' === $type ) {
 					$rel 		= isset( $node['props']['rel'] ) ? $node['props']['rel'] : '';
 					$aria_label = isset( $node['props']['aria-label'] ) ? $node['props']['aria-label'] : '';
 					$href 		= isset( $node['props']['href'] ) ? $node['props']['href'] : '#';

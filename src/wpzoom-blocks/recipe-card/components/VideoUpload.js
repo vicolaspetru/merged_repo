@@ -3,7 +3,7 @@ import get from "lodash/get";
 import ReactPlayer from "react-player";
 
 /* Internal dependencies */
-import { excludeClassNames } from "../../../helpers/parseClassName";
+import { excludeClassNames } from "../../../helpers/parseHelpers";
 
 /* WordPress dependencies */
 const { __, _n } = wp.i18n;

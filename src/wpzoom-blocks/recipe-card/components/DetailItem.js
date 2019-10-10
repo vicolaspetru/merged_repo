@@ -199,10 +199,9 @@ export default class DetailItem extends Component {
 				    className="detail-item-value"
 				    tagName="p"
 				    unstableOnSetup={ this.setValueRef }
-				    key={ `${ id }-value` }
+				    key={ `${ id }-${ index }-value` }
 				    value={ value }
 				    onChange={ this.onChangeValue }
-				    // isSelected={ isSelectedValue }
 				    placeholder={ this.getPlaceholder( index, 'value' ) }
 				    unstableOnFocus={ this.onFocusValue }
 				    keepPlaceholderOnFocus={ true }
