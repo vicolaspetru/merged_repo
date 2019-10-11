@@ -166,6 +166,7 @@ export default class IngredientItem extends Component {
 		} = this.props;
 
 		return <div className="ingredient-item-button-container">
+			{ this.getMover() }
 			<IconButton
 				className="ingredient-item-button ingredient-item-button-delete editor-inserter__toggle"
 				icon="trash"
@@ -187,7 +188,7 @@ export default class IngredientItem extends Component {
 	 * @returns {Component} the buttons.
 	 */
 	getMover() {
-		return <div className="ingredient-item-mover">
+		return <Fragment>
 			<IconButton
 				className="editor-block-mover__control"
 				onClick={ this.onMoveIngredientUp }
@@ -202,7 +203,7 @@ export default class IngredientItem extends Component {
 				label={ __( "Move item down", "wpzoom-recipe-card" ) }
 				aria-disabled={ this.props.isLast }
 			/>
-		</div>;
+		</Fragment>;
 	}
 
 	/**
@@ -314,7 +315,6 @@ export default class IngredientItem extends Component {
 				{
 					isSelectedName &&
 					<div className="ingredient-item-controls-container">
-						{ this.getMover() }
 						{ this.getButtons() }
 					</div>
 				}

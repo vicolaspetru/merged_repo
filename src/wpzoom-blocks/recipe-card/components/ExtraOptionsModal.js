@@ -85,17 +85,14 @@ export default function ExtraOptionsModal(
 		    forEach( m, (match, groupIndex) => {
 		    	if ( groupIndex == '1' ) {
                     const isGroup = includes( match, '**' ); // check for group title if contains **Text**
-                    
+
                     if ( isGroup ) {
                         match = trim( match, '**' );
                     }
 
-                    // Converting HTML strings into React components
-                    const ParserHTML = ReactHtmlParser(match);
-
 		    		items[ index ] = {
 		    			id: `ingredient-item-${m.index}`,
-		    			name: ParserHTML,
+		    			name: ReactHtmlParser(match), // Converting HTML strings into React components
 		    			jsonName: stripHTML( renderToString( trim( match ) ) ),
                         isGroup
 		    		}
@@ -129,12 +126,9 @@ export default function ExtraOptionsModal(
                         match = trim( match, '**' );
                     }
 
-                    // Converting HTML strings into React components
-                    const ParserHTML = ReactHtmlParser(match);
-
 		    		steps[ index ] = {
 		    			id: `direction-step-${m.index}`,
-		    			text: ParserHTML,
+		    			text: ReactHtmlParser(match), // Converting HTML strings into React components
 		    			jsonText: stripHTML( renderToString( trim( match ) ) ),
                         isGroup
 		    		}
@@ -156,8 +150,16 @@ export default function ExtraOptionsModal(
         const { ingredients } = attributes;
         ingredients ?
             ingredients.map( ( item ) => {
-                const isGroup = !isUndefined( item.isGroup ) ? item.isGroup : false;
-                _ingredients += parseValue( item.name, isGroup );
+                const amount = get( item, [ 'parse', 'amount' ] ) || '';
+                const unit = get( item, [ 'parse', 'unit' ] ) || '';
+                const name = get( item, 'name' ) || get( item, [ 'parse', 'ingredient' ] );
+                const isGroup = get( item, 'isGroup' ) || false;
+
+                if ( ! isGroup && ( amount || unit ) ) {
+                    _ingredients += `${ amount }${ unit } `;
+                }
+
+                _ingredients += parseValue( name, isGroup );
             } )
         : null;
         _ingredients = replace( _ingredients, '<!empty>', '' );
@@ -170,8 +172,10 @@ export default function ExtraOptionsModal(
         const { steps } = attributes;
         steps ?
             steps.map( ( step ) => {
-                const isGroup = !isUndefined( step.isGroup ) ? step.isGroup : false;
-                _directions += parseValue( step.text, isGroup );
+                const isGroup = get( step, 'isGroup' ) || false;
+                const text = get( step, 'text' );
+
+                _directions += parseValue( text, isGroup );
             } )
         : null;
         _directions = replace( _directions, '<!empty>', '' );

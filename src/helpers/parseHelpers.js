@@ -41,9 +41,10 @@ export function parseValue( value, isGroup = false ) {
 
     if ( ! isEmpty( content ) ) {
         returnValue = stripHTML( renderToString( trim( content ) ) );
-    }
-    if ( isGroup ) {
-        returnValue = `**${ returnValue }**`;
+        
+        if ( isGroup ) {
+            returnValue = `**${ returnValue }**`;
+        }
     }
     return ! isEmpty( returnValue ) ? returnValue + '\n' : '';
 }

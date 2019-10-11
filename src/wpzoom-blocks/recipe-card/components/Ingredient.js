@@ -37,8 +37,7 @@ export default class Ingredient extends Component {
 		super( props );
 
 		this.state = {
-			focus: "",
-			hasNewChanges: true
+			focus: ""
 		};
 
 		this.changeName      			= this.changeName.bind( this );
@@ -111,8 +110,6 @@ export default class Ingredient extends Component {
 			jsonName: stripHTML( renderToString( newName ) ),
 			isGroup: group
 		};
-
-		this.setState( { hasNewChanges: true } );
 
 		this.props.setAttributes( { ingredients } );
 	}
@@ -253,7 +250,8 @@ export default class Ingredient extends Component {
 	setAmountUnitName( parsedArray, index ) {
 		const ingredients = this.props.attributes.ingredients ? this.props.attributes.ingredients.slice() : [];
 
-		if ( ! this.state.hasNewChanges ) {
+		// Skip group title item
+		if ( get( ingredients, [ index, 'isGroup' ] ) ) {
 			return;
 		}
 
@@ -289,9 +287,15 @@ export default class Ingredient extends Component {
 			stringName = replace( stringName, amount, '' );
 			stringName = replace( stringName, unit, '' );
 
-			const newName = ReactHtmlParser( stringName );
+			const newName = ReactHtmlParser( trim( stringName ) );
 
-			this.changeName( newName, ingredients[ index ].name, index );
+			// Rebuild the item with the newly made changes.
+			ingredients[ index ] = {
+				...ingredients[ index ],
+				id: ingredients[ index ].id,
+				name: newName,
+				jsonName: stripHTML( renderToString( newName ) )
+			};
 		}
 
 		// Rebuild the item
@@ -306,8 +310,6 @@ export default class Ingredient extends Component {
 			...ingredients[ index ],
 			parse: { ...{ amount, unit, ingredient } }
 		};
-
-		this.setState( { hasNewChanges: false } );
 
 		this.props.setAttributes( { ingredients } );
 	}
@@ -348,8 +350,6 @@ export default class Ingredient extends Component {
 			parse: { ...{ amount: newAmount } }
 		}
 
-		this.setState( { hasNewChanges: true } );
-
 		this.props.setAttributes( { ingredients } );
 	}
 
@@ -388,8 +388,6 @@ export default class Ingredient extends Component {
 			...ingredients[ index ],
 			parse: { ...{ unit: newUnit } }
 		}
-
-		this.setState( { hasNewChanges: true } );
 
 		this.props.setAttributes( { ingredients } );
 	}
