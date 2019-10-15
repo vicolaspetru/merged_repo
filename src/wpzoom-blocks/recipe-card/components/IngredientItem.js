@@ -2,7 +2,6 @@
 import PropTypes from "prop-types";
 import get from "lodash/get";
 import isString from "lodash/isString";
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import ingredientParser from 'ingredients-parser';
 
 /* WordPress dependencies */
@@ -256,12 +255,6 @@ export default class IngredientItem extends Component {
 		const amount = get( this.props.item, ['parse', 'amount'] );
 		const ingredient = get( this.props.item, ['parse', 'ingredient'] );
 
-		let ingredientName = name;
-		if ( isString( ingredientName ) ) {
-			// Converting HTML strings into React components
-			ingredientName = ReactHtmlParser( name );
-		}
-
 		return (
 			<li className={ itemClassName } key={ id }>
 				{
@@ -272,7 +265,7 @@ export default class IngredientItem extends Component {
 							<TextControl
 			                	instanceId={ `${ id }-${ index }-amount` }
 			                	type="text"
-			                	placeholder={ __( "Amount", "wpzoom-recipe-card" ) }
+			                	placeholder={ __( "amount", "wpzoom-recipe-card" ) }
 			                	value={ amount }
 			                	onChange={ newValue => onChangeAmount( newValue, amount, index ) }
 			                	onFocus={ this.onFocusName }
@@ -280,7 +273,7 @@ export default class IngredientItem extends Component {
 			                <TextControl
 			                	instanceId={ `${ id }-${ index }-unit` }
 			                	type="text"
-			                	placeholder={ __( "Unit", "wpzoom-recipe-card" ) }
+			                	placeholder={ __( "unit", "wpzoom-recipe-card" ) }
 			                	value={ unit }
 			                	onChange={ newValue => onChangeUnit( newValue, unit, index ) }
 			                	onFocus={ this.onFocusName }
@@ -289,7 +282,7 @@ export default class IngredientItem extends Component {
 								tagName="p"
 								unstableOnSetup={ this.setNameRef }
 								key={ `${ id }-${ index }-name` }
-								value={ ingredientName }
+								value={ name }
 								onChange={ this.onChangeName }
 								placeholder={ __( "Enter ingredient name", "wpzoom-recipe-card" ) }
 								unstableOnFocus={ this.onFocusName }
@@ -305,7 +298,7 @@ export default class IngredientItem extends Component {
 						tagName="p"
 						unstableOnSetup={ this.setNameRef }
 						key={ `${ id }-${ index }-group-title` }
-						value={ ingredientName }
+						value={ name }
 						onChange={ this.onChangeGroupTitle }
 						placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
 						unstableOnFocus={ this.onFocusName }

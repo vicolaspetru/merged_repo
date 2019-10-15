@@ -12,7 +12,6 @@ import ReactHtmlParser from 'react-html-parser';
 
 /* Internal dependencies */
 import { stripHTML } from "../../../helpers/stringHelpers";
-import { convertObjectToString } from "../../../helpers/parseHelpers";
 
 /* WordPress dependencies */
 const { __ } = wp.i18n;
@@ -281,7 +280,7 @@ export default class Ingredient extends Component {
 		 * First we will convert name object to string and then replace the amount and unit with empty replacement
 		 * After that we'll convert back to React HTML Object
 		 */
-		let stringName = convertObjectToString( ingredients[index].name );
+		let stringName = renderToString( ingredients[index].name );
 
 		if ( includes( stringName, amount ) || includes( stringName, unit ) ) {
 			stringName = replace( stringName, amount, '' );
@@ -290,26 +289,18 @@ export default class Ingredient extends Component {
 			const newName = ReactHtmlParser( trim( stringName ) );
 
 			// Rebuild the item with the newly made changes.
-			ingredients[ index ] = {
-				...ingredients[ index ],
-				id: ingredients[ index ].id,
-				name: newName,
-				jsonName: stripHTML( renderToString( newName ) )
-			};
+			ingredients[ index ].name = newName;
+			ingredients[ index ].jsonName = stripHTML( stringName );
 		}
 
-		// Rebuild the item
 		if ( isUndefined( ingredients[ index ].parse ) ) {
-			ingredients[ index ].parse = {};
+			ingredients[ index ].parse = {}
 		}
 
 		/*
 		 * All looks right, now we can update ingredient item attributes
 		 */
-		ingredients[ index ] = {
-			...ingredients[ index ],
-			parse: { ...{ amount, unit, ingredient } }
-		};
+		ingredients[ index ].parse = { ...{ amount, unit, ingredient } }
 
 		this.props.setAttributes( { ingredients } );
 	}
@@ -344,11 +335,12 @@ export default class Ingredient extends Component {
 			return;
 		}
 
-		// Rebuild the item with the newly made changes.
-		ingredients[ index ] = {
-			...ingredients[ index ],
-			parse: { ...{ amount: newAmount } }
+		if ( isUndefined( ingredients[ index ].parse ) ) {
+			ingredients[ index ].parse = {}
 		}
+
+		// Rebuild the item with the newly made changes.
+		ingredients[ index ].parse = { ...{ amount: newAmount } }
 
 		this.props.setAttributes( { ingredients } );
 	}
@@ -383,11 +375,12 @@ export default class Ingredient extends Component {
 			return;
 		}
 
-		// Rebuild the item with the newly made changes.
-		ingredients[ index ] = {
-			...ingredients[ index ],
-			parse: { ...{ unit: newUnit } }
+		if ( isUndefined( ingredients[ index ].parse ) ) {
+			ingredients[ index ].parse = {}
 		}
+
+		// Rebuild the item with the newly made changes.
+		ingredients[ index ].parse = { ...{ unit: newUnit } }
 
 		this.props.setAttributes( { ingredients } );
 	}

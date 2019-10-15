@@ -5,7 +5,6 @@ import isObject from "lodash/isObject";
 import isString from "lodash/isString";
 import includes from "lodash/includes";
 import isUndefined from "lodash/isUndefined";
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 /* WordPress dependencies */
 const { __ } = wp.i18n;
@@ -299,12 +298,6 @@ export default class DirectionStep extends Component {
 		const isSelectedText = isSelected && subElement === "text";
 		const stepClassName = !isGroup ? "direction-step" : "direction-step direction-step-group";
 
-		let textContent = text;
-		if ( isString( textContent ) ) {
-			// Converting HTML strings into React components
-			textContent = ReactHtmlParser( text );
-		}
-
 		return (
 			<li className={ stepClassName } key={ id }>
 				{
@@ -314,7 +307,7 @@ export default class DirectionStep extends Component {
 						tagName="p"
 						unstableOnSetup={ this.setTextRef }
 						key={ `${ id }-text` }
-						value={ textContent }
+						value={ text }
 						onChange={ this.onChangeText }
 						// isSelected={ isSelectedText }
 						placeholder={ __( "Enter step description", "wpzoom-recipe-card" ) }
@@ -329,7 +322,7 @@ export default class DirectionStep extends Component {
 						tagName="p"
 						unstableOnSetup={ this.setTextRef }
 						key={ `${ id }-group-title` }
-						value={ textContent }
+						value={ text }
 						onChange={ this.onChangeGroupTitle }
 						// isSelected={ isSelectedText }
 						placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
