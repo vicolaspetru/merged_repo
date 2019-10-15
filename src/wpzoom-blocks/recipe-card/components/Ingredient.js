@@ -12,6 +12,7 @@ import ReactHtmlParser from 'react-html-parser';
 
 /* Internal dependencies */
 import { stripHTML } from "../../../helpers/stringHelpers";
+import { removeKeys } from "../../../helpers/removeKeys";
 
 /* WordPress dependencies */
 const { __ } = wp.i18n;
@@ -286,7 +287,12 @@ export default class Ingredient extends Component {
 			stringName = replace( stringName, amount, '' );
 			stringName = replace( stringName, unit, '' );
 
-			const newName = ReactHtmlParser( trim( stringName ) );
+			var obj = ReactHtmlParser( trim( stringName ) );
+
+			// remove unneded property keys
+			removeKeys(obj, ['_owner', '$$typeof', 'key']);
+
+			const newName = obj;
 
 			// Rebuild the item with the newly made changes.
 			ingredients[ index ].name = newName;

@@ -13,7 +13,6 @@ import indexOf from "lodash/indexOf";
 import includes from "lodash/includes";
 import uniqueId from "lodash/uniqueId";
 import ReactHtmlParser from 'react-html-parser';
-import ingredientParser from 'ingredients-parser';
 
 /* Internal dependencies */
 import { stripHTML } from "../../../helpers/stringHelpers";
@@ -44,14 +43,6 @@ const { select } = wp.data;
  * dialog, the slot is no longer in the system, and the dialog disappears
  */
 const stopKeyPressPropagation = ( event ) => event.stopPropagation();
-
-const parseIngredient = ( ingredient ) =>{
-    if ( ! isString( ingredient ) ) {
-        return;
-    }
-    var result = ingredientParser.parse( ingredient );
-    return result;
-}
 
 /**
  * Extra options for Recipe Card Block
@@ -107,36 +98,6 @@ export default function ExtraOptionsModal(
                         name,
                         jsonName,
                         isGroup
-                    }
-
-                    if ( ! isGroup ) {
-                        const parsedArray = parseIngredient( jsonName );
-                        const amount = get( parsedArray, 'amount' );
-                        const unit = get( parsedArray, 'unit' );
-                        const ingredient = get( parsedArray, 'ingredient' );
-
-                        /*
-                         * We need to modify name to be without amount and unit
-                         * First we will convert name object to string and then replace the amount and unit with empty replacement
-                         * After that we'll convert back to React HTML Object
-                         */
-                        let stringName = match;
-
-                        if ( includes( stringName, amount ) || includes( stringName, unit ) ) {
-                            stringName = replace( stringName, amount, '' );
-                            stringName = replace( stringName, unit, '' );
-
-                            const newName = ReactHtmlParser( trim( stringName ) );
-
-                            // Rebuild the item with the newly made changes.
-                            ingredients[ index ].name = newName;
-                            ingredients[ index ].jsonName = stripHTML( stringName );
-                        }
-
-                        ingredients[ index ] = {
-                            ...ingredients[ index ],
-                            parse: { amount, unit, ingredient }
-                        }
                     }
 
 		    		index++;
