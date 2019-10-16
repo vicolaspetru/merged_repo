@@ -950,14 +950,15 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				}
 
 				if ( ! empty( $ingredient[ 'name' ] ) ) {
-					$amount = !empty( $amount ) ? sprintf( '<span class="ingredient-amount">%s</span>', $amount ) : '';
-					$unit = !empty( $unit ) ? sprintf( '<span class="ingredient-unit">%s</span>', $unit ) : '';
+					$amount = !empty( $amount ) ? sprintf( '<span class="wpzoom-rcb-ingredient-amount">%s</span>', $amount ) : '';
+					$unit = !empty( $unit ) ? sprintf( '<span class="wpzoom-rcb-ingredient-unit">%s</span>', $unit ) : '';
+					$name = sprintf( '<span class="wpzoom-rcb-ingredient-name">%s</span>', $this->wrap_ingredient_name( $ingredient['name'] ) );
 
 					$name = sprintf(
 						'<p class="ingredient-item-name">%s %s %s</p>',
 						$amount,
 						$unit,
-						$this->wrap_ingredient_name( $ingredient['name'] )
+						$name
 					);
 					$output .= sprintf(
 						'<li class="ingredient-item">%s</li>',
