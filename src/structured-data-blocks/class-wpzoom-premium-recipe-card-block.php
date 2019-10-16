@@ -921,8 +921,14 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		foreach ( $ingredients as $index => $ingredient ) {
 			$tick = $name = '';
+			$amount = $unit = '';
 			$styles = array();
 			$isGroup = isset($ingredient['isGroup']) ? $ingredient['isGroup'] : false;
+
+			if ( isset( $ingredient['parse'] ) ) {
+				$amount = isset( $ingredient['parse']['amount'] ) ? $ingredient['parse']['amount'] : '';
+				$unit = isset( $ingredient['parse']['unit'] ) ? $ingredient['parse']['unit'] : '';
+			}
 
 			if ( !$isGroup ) {
 				if ( 'newdesign' === self::$style || 'simple' === self::$style ) {
@@ -944,8 +950,13 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				}
 
 				if ( ! empty( $ingredient[ 'name' ] ) ) {
+					$amount = !empty( $amount ) ? sprintf( '<span class="ingredient-amount">%s</span>', $amount ) : '';
+					$unit = !empty( $unit ) ? sprintf( '<span class="ingredient-unit">%s</span>', $unit ) : '';
+
 					$name = sprintf(
-						'<p class="ingredient-item-name">%s</p>',
+						'<p class="ingredient-item-name">%s %s %s</p>',
+						$amount,
+						$unit,
 						$this->wrap_ingredient_name( $ingredient['name'] )
 					);
 					$output .= sprintf(
