@@ -113,8 +113,8 @@ class WPZOOM_Helpers {
 		if ( !isset( $settings['pin_custom_image'] ) ) {
 			$settings['pin_custom_image'] = array();
 		}
-		if ( !isset( $settings['ajustableServings'] ) ) {
-			$settings['ajustableServings'] = false;
+		if ( !isset( $settings['adjustableServings'] ) ) {
+			$settings['adjustableServings'] = false;
 		}
 
 		return $settings;

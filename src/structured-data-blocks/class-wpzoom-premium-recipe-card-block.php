@@ -183,7 +183,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			            'displayCalories' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_calories') === '1',
 			            'headerAlign' => WPZOOM_Settings::get('wpzoom_rcb_settings_heading_content_align'),
 			            'ingredientsLayout' => '1-column',
-			            'ajustableServings' => false
+			            'adjustableServings' => false
 			        )
 			    ),
 			    'items' => array(
@@ -854,10 +854,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				);
 			}
 
-			// User has enabled Ajustable Servings?
-			if ( 0 === $index && self::$settings['ajustableServings'] ) {
+			// User has enabled Adjustable Servings?
+			if ( 0 === $index && self::$settings['adjustableServings'] ) {
 				$value = sprintf(
-					'<p class="detail-item-value"><input class="detail-item-ajustable-servings" type="number" value="%s" min="1"></p>',
+					'<p class="detail-item-value"><input class="detail-item-adjustable-servings" type="number" value="%s" min="1"></p>',
 					$detail['value']
 				);
 			}

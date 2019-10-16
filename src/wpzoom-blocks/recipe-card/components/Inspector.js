@@ -410,7 +410,7 @@ class Inspector extends Component {
 					displayCalories,
 					headerAlign,
 					ingredientsLayout,
-					ajustableServings
+					adjustableServings
 				}
 			}
 		} = attributes;
@@ -783,9 +783,9 @@ class Inspector extends Component {
     				    onChange={ display => this.onChangeSettings( display, 'displayServings' ) }
     				/>
     				<ToggleControl
-    				    label={ __( "Enable Ajustable Servings", "wpzoom-recipe-card" ) }
-    				    checked={ ajustableServings }
-    				    onChange={ value => this.onChangeSettings( value, 'ajustableServings' ) }
+    				    label={ __( "Enable Adjustable Servings", "wpzoom-recipe-card" ) }
+    				    checked={ adjustableServings }
+    				    onChange={ value => this.onChangeSettings( value, 'adjustableServings' ) }
     				/>
         			<PanelRow>
         				{
