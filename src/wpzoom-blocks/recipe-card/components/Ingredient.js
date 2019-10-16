@@ -269,34 +269,36 @@ export default class Ingredient extends Component {
 			return;
 		}
 
-		/*
-		 * To prevent multiple events when values are the same as previously, we need to check if parsed values was changed
-		 */
+		// To prevent multiple events when values are the same as previously, we need to check if parsed values was changed
 		if ( amount === get( ingredients, [ index, 'parse', 'amount' ] ) && unit === get( ingredients, [ index, 'parse', 'unit' ] ) && ingredient === get( ingredients, [ index, 'parse', 'ingredient' ] ) ) {
 			return;
 		}
 
-		/*
-		 * We need to modify name to be without amount and unit
-		 * First we will convert name object to string and then replace the amount and unit with empty replacement
-		 * After that we'll convert back to React HTML Object
-		 */
-		let stringName = renderToString( ingredients[index].name );
+		if ( !get( ingredients, [ index, 'parse', 'amount' ] ) || !get( ingredients, [ index, 'parse', 'unit' ] ) ) {
 
-		if ( includes( stringName, amount ) || includes( stringName, unit ) ) {
-			stringName = replace( stringName, amount, '' );
-			stringName = replace( stringName, unit, '' );
+			/*
+			 * We need to modify name to be without amount and unit
+			 * First we will convert name object to string and then replace the amount and unit with empty replacement
+			 * After that we'll convert back to React HTML Object
+			 */
+			let stringName = renderToString( ingredients[index].name );
 
-			var obj = ReactHtmlParser( trim( stringName ) );
+			if ( includes( stringName, amount ) || includes( stringName, unit ) ) {
+				stringName = replace( stringName, amount, '' );
+				stringName = replace( stringName, unit, '' );
 
-			// remove unneded property keys
-			removeKeys(obj, ['_owner', '$$typeof', 'key']);
+				var obj = ReactHtmlParser( trim( stringName ) );
 
-			const newName = obj;
+				// remove unneded property keys
+				removeKeys(obj, ['_owner', '$$typeof', 'key']);
 
-			// Rebuild the item with the newly made changes.
-			ingredients[ index ].name = newName;
-			ingredients[ index ].jsonName = stripHTML( stringName );
+				const newName = obj;
+
+				// Rebuild the item with the newly made changes.
+				ingredients[ index ].name = newName;
+				ingredients[ index ].jsonName = stripHTML( stringName );
+			}
+
 		}
 
 		if ( isUndefined( ingredients[ index ].parse ) ) {
@@ -346,7 +348,10 @@ export default class Ingredient extends Component {
 		}
 
 		// Rebuild the item with the newly made changes.
-		ingredients[ index ].parse = { ...{ amount: newAmount } }
+		ingredients[ index ].parse = {
+			...ingredients[ index ].parse,
+			amount: newAmount
+		}
 
 		this.props.setAttributes( { ingredients } );
 	}
@@ -386,7 +391,10 @@ export default class Ingredient extends Component {
 		}
 
 		// Rebuild the item with the newly made changes.
-		ingredients[ index ].parse = { ...{ unit: newUnit } }
+		ingredients[ index ].parse = {
+			...ingredients[ index ].parse,
+			unit: newUnit
+		}
 
 		this.props.setAttributes( { ingredients } );
 	}
