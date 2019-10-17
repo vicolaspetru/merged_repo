@@ -127,6 +127,22 @@
 					}
 				}
 			}
+			.editor-rich-text__editable {
+				display: inline-block;
+				width: 64%;
+				padding: 3px 8px;
+				border-radius: 4px;
+				border: 1px solid #7e8993;
+				font-size: 14px;
+				background-color: #fff;
+				color: initial;
+				&:focus {
+					color: #191e23;
+					border-color: #007cba;
+					box-shadow: 0 0 0 1px #007cba;
+					outline: 2px solid transparent;
+				}
+			}
 		}
         .ingredient-item-group-title {
             font-weight: bold;
