@@ -326,6 +326,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$class .= $hasImage && isset($image['url']) ? '' : ' recipe-card-noimage';
 		$class .= '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? ' recipe-card-noimage-print' : '';
 
+		if ( self::$settings['adjustableServings'] ) {
+			$class .= ' wpzoom-recipe-card-block-adjustable-servings';
+		}
+
 		$pin_description = strip_tags($recipeTitle);
 		if ( 'recipe_summary' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_description') ) {
 			$pin_description = strip_tags( $summary );
@@ -857,7 +861,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			// User has enabled Adjustable Servings?
 			if ( 0 === $index && self::$settings['adjustableServings'] ) {
 				$value = sprintf(
-					'<p class="detail-item-value"><input class="detail-item-adjustable-servings" type="number" value="%s" min="1"></p>',
+					'<p class="detail-item-value"><input class="detail-item-adjustable-servings" type="number" data-servings="%1$s" data-original-servings="%1$s" value="%1$s" min="1"></p>',
 					$detail['value']
 				);
 			}
