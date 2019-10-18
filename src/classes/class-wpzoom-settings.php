@@ -643,6 +643,174 @@ class WPZOOM_Settings {
 						)
 					),
 					array(
+						'id' 		=> 'wpzoom_section_recipe_call_to_action',
+						'title' 	=> __( 'Footer Call To Action', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'callback' 	=> array( $this, 'section_recipe_call_to_action_cb' ),
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_cta_target',
+								'title' 	=> __( 'Open link in a new tab', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_cta_target',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> true,
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_cta_add_nofollow',
+								'title' 	=> __( 'Add nofollow attribute to links', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_cta_add_nofollow',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> false,
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_cta_delimiter_1',
+								'title' 	=> '',
+								'type'		=> 'subsection',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_cta_delimiter_1',
+									'class' 		=> 'wpzoom-rcb-field wpzoom-rcb-field-delimiter',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_instagram_cta_profile',
+								'title' 	=> __( 'Instagram Profile', 'wpzoom-recipe-card' ),
+								'type'		=> 'input',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_profile',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Do not include &#64; to your profile username.', 'wpzoom-recipe-card' ),
+									'default'		=> '',
+									'type'			=> 'text'
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_instagram_cta_hashtag',
+								'title' 	=> __( 'Instagram Hashtag', 'wpzoom-recipe-card' ),
+								'type'		=> 'input',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_hashtag',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Do not include &#35; to your hashtag.', 'wpzoom-recipe-card' ),
+									'default'		=> '',
+									'type'			=> 'text'
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_instagram_cta_title',
+								'title' 	=> __( 'Instagram Title', 'wpzoom-recipe-card' ),
+								'type'		=> 'input',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_title',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Add Instagram title for CTA.', 'wpzoom-recipe-card' ),
+									'default'		=> __( 'Did you make this recipe?', 'wpzoom-recipe-card' ),
+									'type'			=> 'text'
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_instagram_cta_subtitle',
+								'title' 	=> __( 'Instagram Subtitle', 'wpzoom-recipe-card' ),
+								'type'		=> 'textarea',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_subtitle',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Add Instagram subtitle for CTA. To add profile link into your subtitle text, please enter %profile% and for hashtag enter %hashtag%.', 'wpzoom-recipe-card' ),
+									'default'		=> __( 'Tag %profile% on Instagram and hashtag it %hashtag%', 'wpzoom-recipe-card' ),
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_instagram_cta_bg_color',
+								'title' 	=> __( 'Instagram CTA Background Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_bg_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> '#E1306C',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_instagram_cta_text_color',
+								'title' 	=> __( 'Instagram CTA Text Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_text_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> '#ffffff',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_cta_delimiter_2',
+								'title' 	=> '',
+								'type'		=> 'subsection',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_cta_delimiter_2',
+									'class' 		=> 'wpzoom-rcb-field wpzoom-rcb-field-delimiter',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_pinterest_cta_profile',
+								'title' 	=> __( 'Pinterest Profile', 'wpzoom-recipe-card' ),
+								'type'		=> 'input',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_pinterest_cta_profile',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Do not include &#64; to your profile username.', 'wpzoom-recipe-card' ),
+									'default'		=> '',
+									'type'			=> 'text'
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_pinterest_cta_title',
+								'title' 	=> __( 'Pinterest Title', 'wpzoom-recipe-card' ),
+								'type'		=> 'input',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_pinterest_cta_title',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Add Pinterest title for CTA.', 'wpzoom-recipe-card' ),
+									'default'		=> __( 'Like this recipe?', 'wpzoom-recipe-card' ),
+									'type'			=> 'text'
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_pinterest_cta_subtitle',
+								'title' 	=> __( 'Pinterest Subtitle', 'wpzoom-recipe-card' ),
+								'type'		=> 'textarea',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_pinterest_cta_subtitle',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Add Pinterest subtitle for CTA. To add profile link into your subtitle text, please enter %profile%.', 'wpzoom-recipe-card' ),
+									'default'		=> __( 'Follow us %profile% on Pinterest', 'wpzoom-recipe-card' ),
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_pinterest_cta_bg_color',
+								'title' 	=> __( 'Pinterest CTA Background Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_pinterest_cta_bg_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> '#E60023',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_pinterest_cta_text_color',
+								'title' 	=> __( 'Pinterest CTA Text Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_pinterest_cta_text_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> '#ffffff',
+								)
+							),
+						)
+					),
+					array(
 						'id' 		=> 'wpzoom_section_snippets',
 						'title' 	=> __( 'Recipe Buttons', 'wpzoom-recipe-card' ),
 						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
@@ -1670,6 +1838,12 @@ class WPZOOM_Settings {
 	public function section_recipe_template_cb( $args ) {
 	?>
 	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'You will get access to more Recipe Templates with the Premium version.', 'wpzoom-recipe-card' ) ?></p>
+	<?php
+	}
+
+	public function section_recipe_call_to_action_cb( $args ) {
+	?>
+	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Add Instagram and Pinterest CTA (call to action) on Recipe Card footer.', 'wpzoom-recipe-card' ) ?></p>
 	<?php
 	}
 
