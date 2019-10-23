@@ -679,24 +679,24 @@ class WPZOOM_Settings {
 							),
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_instagram_cta_profile',
-								'title' 	=> __( 'Instagram Profile', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Instagram Username', 'wpzoom-recipe-card' ),
 								'type'		=> 'input',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_profile',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Do not include &#64; to your profile username.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Do not include &#64; to your Instagram username.', 'wpzoom-recipe-card' ),
 									'default'		=> '',
 									'type'			=> 'text'
 								)
 							),
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_instagram_cta_hashtag',
-								'title' 	=> __( 'Instagram Hashtag', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Your Instagram Hashtag (optional)', 'wpzoom-recipe-card' ),
 								'type'		=> 'input',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_hashtag',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Do not include &#35; to your hashtag.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Do not include &#35; to your Instagram hashtag.', 'wpzoom-recipe-card' ),
 									'default'		=> '',
 									'type'			=> 'text'
 								)
@@ -755,12 +755,12 @@ class WPZOOM_Settings {
 							),
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_pinterest_cta_profile',
-								'title' 	=> __( 'Pinterest Profile', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Pinterest Username', 'wpzoom-recipe-card' ),
 								'type'		=> 'input',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_pinterest_cta_profile',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Do not include &#64; to your profile username.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Do not include &#64; to your Pinterest username.', 'wpzoom-recipe-card' ),
 									'default'		=> '',
 									'type'			=> 'text'
 								)

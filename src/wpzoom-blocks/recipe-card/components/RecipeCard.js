@@ -13,6 +13,7 @@ import Detail from "./Detail";
 import DetailItem from "./DetailItem";
 import Ingredient from "./Ingredient";
 import Direction from "./Direction";
+import CallToAction from "./CTA";
 import Inspector from "./Inspector";
 import ExtraOptionsModal from "./ExtraOptionsModal";
 
@@ -684,6 +685,7 @@ class RecipeCard extends Component {
 					/>
 					<p className="description">{ __( "Press Enter to add new note.", "wpzoom-recipe-card" ) }</p>
 				</div>
+				<CallToAction/>
 				<Inspector { ...{ attributes, setAttributes, className , clientId } } />
 				<BlockControls>
 					<ExtraOptions { ...{ props: this.props } } />
