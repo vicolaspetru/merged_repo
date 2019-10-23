@@ -189,24 +189,8 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         )
                     );
 
-                    /**
-                     * Add custom inline styles from Settings
-                     * 
-                     * @since 2.3.2
-                     */
-                    $custom_css = '';
-
-                    $rating_stars_color = WPZOOM_Settings::get('wpzoom_rcb_settings_rating_stars_color');
-
-                    if ( ! empty( $rating_stars_color ) ) {
-                        $custom_css .= "
-                            .wp-block-wpzoom-recipe-card-block-recipe-card ul.wpzoom-rating-stars>li.fa-star {
-                                color: {$rating_stars_color};
-                            }";
-                    }
-
-                    if ( ! empty( $custom_css ) ) {
-                        wp_add_inline_style( $this->_slug . '-style-css', $custom_css );
+                    if ( ! empty( self::get_custom_css() ) ) {
+                        wp_add_inline_style( $this->_slug . '-style-css', self::get_custom_css() );
                     }
                     
                 }
@@ -349,6 +333,46 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		public function localize_script( $handle, $name, $data ) {
 			wp_localize_script( $handle, $name, $data );
 		}
+
+        /**
+         * Add custom inline styles from Settings
+         * 
+         * @since 2.4.0
+         */
+        public static function get_custom_css() {
+            $custom_css = '';
+
+            $rating_stars_color = WPZOOM_Settings::get('wpzoom_rcb_settings_rating_stars_color');
+            $cta_ig_bg_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instagram_cta_bg_color' );
+            $cta_ig_text_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instagram_cta_text_color' );
+            $cta_pin_bg_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_bg_color' );
+            $cta_pin_text_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_text_color' );
+
+            if ( ! empty( $rating_stars_color ) ) {
+                $custom_css .= "
+                    .wp-block-wpzoom-recipe-card-block-recipe-card ul.wpzoom-rating-stars>li.fa-star {
+                        color: {$rating_stars_color};
+                    }";
+            }
+
+            if ( ! empty( $cta_ig_bg_color ) || ! empty( $cta_ig_text_color ) ) {
+                $custom_css .= "
+                    .wp-block-wpzoom-recipe-card-block-recipe-card .recipe-card-cta-instagram {
+                        background-color: {$cta_ig_bg_color};
+                        color: {$cta_ig_text_color};
+                    }";
+            }
+
+            if ( ! empty( $cta_pin_bg_color ) || ! empty( $cta_pin_text_color ) ) {
+                $custom_css .= "
+                    .wp-block-wpzoom-recipe-card-block-recipe-card .recipe-card-cta-pinterest {
+                        background-color: {$cta_pin_bg_color};
+                        color: {$cta_pin_text_color};
+                    }";
+            }
+
+            return $custom_css;
+        }
 	}
 }
 

@@ -225,12 +225,14 @@
                 margin-bottom: 0;
                 font-size: 1.2em;
                 line-height: 1.4em;
+                color: inherit;
                 text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.15);
             }
             .cta-text-subtitle {
                 margin-bottom: 0;
                 font-size: .85em;
                 line-height: 1.6em;
+                color: inherit;
                 opacity: .8;
             }
             a {
@@ -239,6 +241,10 @@
                 color: inherit;
             }
         }
+    }
+    .recipe-card-directions + .recipe-card-cta-instagram,
+    .recipe-card-directions + .recipe-card-cta-pinterest {
+        margin-top: 20px;
     }
     .recipe-card-cta-instagram + .recipe-card-cta-pinterest {
         margin-top: 20px;
