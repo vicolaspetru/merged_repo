@@ -623,6 +623,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				if ( $key === 0 ) {
 					if ( ! empty( $detail['jsonValue'] ) ) {
 						$json_ld['recipeYield'] = $detail['jsonValue'];
+
+						if ( isset( $detail['unit'] ) && ! empty( $detail['unit'] ) ) {
+							$json_ld['recipeYield'] .= ' '.$detail['unit'];
+						}
 					}
 				}
 				elseif ( $key === 3 ) {
