@@ -12,14 +12,15 @@ import forEach from "lodash/forEach";
 import indexOf from "lodash/indexOf";
 import includes from "lodash/includes";
 import uniqueId from "lodash/uniqueId";
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 
 /* Internal dependencies */
 import { stripHTML } from "../../../helpers/stringHelpers";
+import { parseValue } from "../../../helpers/parseHelpers";
 
 /* WordPress dependencies */
 const { __ } = wp.i18n;
-const { renderToString, Fragment } = wp.element;
+const { Fragment } = wp.element;
 const { 
 	Button,
     IconButton,
@@ -69,84 +70,8 @@ export default function ExtraOptionsModal(
 	const blocksList    		= select('core/block-editor').getBlocks();
 	const wpzoomBlocksFilter 	= filter( blocksList, function( item ) { return indexOf( blocks, item.name ) !== -1 } );
 
-    // parse value for ingredients and directions
-    // render from array to string and strip HTML
-    // append \n newline at the end of each item
-    function parseValue( value, isGroup = false ) {
-        const content = convertObjectToString( value );
-        let returnValue = '';
-
-        if ( ! isEmpty( content ) ) {
-            returnValue = stripHTML( renderToString( trim( content ) ) );
-        }
-        if ( isGroup ) {
-            returnValue = `**${ returnValue }**`;
-        }
-        return ! isEmpty( returnValue ) ? returnValue + '\n' : '';
-    }
-
-    function parseObjectStyle( style ) {
-        let css = '';
-        if ( isObject(style) ) {
-            forEach( style, (value, property) => {
-                css += `${ property }: ${ value };`
-            });
-        }
-        if ( isString(style) ) {
-            css = style;
-        }
-        return css;
-    }
-
-    function convertObjectToString( nodes, $type = '' ) {
-        if ( isString( nodes ) ) {
-            return nodes;
-        }
-
-        if ( isNull( nodes ) ) {
-            return '';
-        }
-
-        let output = '';
-
-        forEach( nodes, (node, index) => {
-            if ( isString( node ) ) {
-                output += node;
-            } else {
-                const type     = get( node, ['type'] ) || '';
-                let children   = get( node, ['props', 'children'] ) || '';
-                let startTag   = type ? '<'+type+'>' : '';
-                let endTag     = type ? '</'+type+'>' : '';
-
-                if ( 'img' === type ) {
-                    const src = get( node, ['props', 'src'] ) || false;
-                    if ( src ) {
-                        const alt      = get( node, ['props', 'alt'] ) || '';
-                        const imgStyle = get( node, ['props', 'style'] ) || '';
-                        const imgClass = 'direction-step-image';
-                        startTag = `<${ type } src="${ src }" alt="${ alt }" class="${ imgClass }" style="${ parseObjectStyle( imgStyle ) }" />`;
-                    } else {
-                        startTag = '';
-                    }
-                    endTag = '';
-                } else if ( 'a' === type ) {
-                    const rel        = get( node, ['props', 'rel'] ) || '';
-                    const ariaLabel  = get( node, ['props', 'aria-label'] ) || '';
-                    const href       = get( node, ['props', 'href'] ) || '#';
-                    const target     = get( node, ['props', 'target'] ) || '_blank';
-                    startTag = `<${ type } rel="${ rel }" aria-label="${ ariaLabel }" href="${ href }" target="${ target }">`;
-                } else if ( 'br' === type ) {
-                    endTag = '';
-                }
-                output += startTag + convertObjectToString( children, type ) + endTag;
-            }
-        });
-
-        return output;
-    }
-
     function onBulkAddIngredients() {
-		let items = [];
+		let ingredients = [];
 		const regex = /([^\n\t\r\v\f][\w\W].*)/gmi;
 		let m; let index = 0;
 
@@ -160,27 +85,28 @@ export default function ExtraOptionsModal(
 		    forEach( m, (match, groupIndex) => {
 		    	if ( groupIndex == '1' ) {
                     const isGroup = includes( match, '**' ); // check for group title if contains **Text**
-                    
+
                     if ( isGroup ) {
                         match = trim( match, '**' );
                     }
 
-                    // Converting HTML strings into React components
-                    const ParserHTML = ReactHtmlParser(match);
+                    const name = ReactHtmlParser( match ); // Converting HTML strings into React components
+                    const jsonName = stripHTML( match ); // strip all HTML tags from ingredient name
 
-		    		items[ index ] = {
-		    			id: `ingredient-item-${m.index}`,
-		    			name: ParserHTML,
-		    			jsonName: stripHTML( renderToString( trim( match ) ) ),
+                    ingredients[ index ] = {
+                        id: `ingredient-item-${ m.index }`,
+                        name,
+                        jsonName,
                         isGroup
-		    		}
+                    }
+
 		    		index++;
 		    	}
 		    });
 		}
 
-		if ( !isEmpty(items) ) {
-	    	setAttributes( { ingredients: items } );
+		if ( !isEmpty(ingredients) ) {
+	    	setAttributes( { ingredients } );
 		}
     }
 
@@ -204,15 +130,16 @@ export default function ExtraOptionsModal(
                         match = trim( match, '**' );
                     }
 
-                    // Converting HTML strings into React components
-                    const ParserHTML = ReactHtmlParser(match);
+                    const text = ReactHtmlParser( match ); // Converting HTML strings into React components
+                    const jsonText = stripHTML( match ); // strip all HTML tags from step text
 
 		    		steps[ index ] = {
-		    			id: `direction-step-${m.index}`,
-		    			text: ParserHTML,
-		    			jsonText: stripHTML( renderToString( trim( match ) ) ),
+		    			id: `direction-step-${ m.index }`,
+		    			text,
+		    			jsonText,
                         isGroup
 		    		}
+
 		    		index++;
 		    	}
 		    });
@@ -231,8 +158,16 @@ export default function ExtraOptionsModal(
         const { ingredients } = attributes;
         ingredients ?
             ingredients.map( ( item ) => {
-                const isGroup = !isUndefined( item.isGroup ) ? item.isGroup : false;
-                _ingredients += parseValue( item.name, isGroup );
+                const amount = get( item, [ 'parse', 'amount' ] ) || '';
+                const unit = get( item, [ 'parse', 'unit' ] ) || '';
+                const name = get( item, 'name' ) || get( item, [ 'parse', 'ingredient' ] );
+                const isGroup = get( item, 'isGroup' ) || false;
+
+                if ( ! isGroup && ( amount || unit ) ) {
+                    _ingredients += `${ amount }${ unit } `;
+                }
+
+                _ingredients += parseValue( name, isGroup );
             } )
         : null;
         _ingredients = replace( _ingredients, '<!empty>', '' );
@@ -245,8 +180,10 @@ export default function ExtraOptionsModal(
         const { steps } = attributes;
         steps ?
             steps.map( ( step ) => {
-                const isGroup = !isUndefined( step.isGroup ) ? step.isGroup : false;
-                _directions += parseValue( step.text, isGroup );
+                const isGroup = get( step, 'isGroup' ) || false;
+                const text = get( step, 'text' );
+
+                _directions += parseValue( text, isGroup );
             } )
         : null;
         _directions = replace( _directions, '<!empty>', '' );

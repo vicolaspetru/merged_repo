@@ -9,8 +9,7 @@ import get from "lodash/get";
 /* WordPress dependencies */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { RichText } = wp.blockEditor;
-const { IconButton } = wp.components;
+const { IconButton, TextControl } = wp.components;
 
 /**
  * A Detail items within a Details block.
@@ -195,18 +194,13 @@ export default class DetailItem extends Component {
 						: <div className="detail-open-modal">{ this.getOpenModalButton( this.props ) }</div>
 				}
 				<p className="detail-item-label">{ this.getPlaceholder( index, 'label' ) }</p>
-				<RichText
-				    className="detail-item-value"
-				    tagName="p"
-				    unstableOnSetup={ this.setValueRef }
-				    key={ `${ id }-value` }
-				    value={ value }
-				    onChange={ this.onChangeValue }
-				    // isSelected={ isSelectedValue }
-				    placeholder={ this.getPlaceholder( index, 'value' ) }
-				    unstableOnFocus={ this.onFocusValue }
-				    keepPlaceholderOnFocus={ true }
-				/>
+				<TextControl
+                	instanceId={ `${ id }-${ index }-item-amount` }
+                	type="text"
+                	placeholder={ this.getPlaceholder( index, 'value' ) }
+                	value={ value }
+                	onChange={ this.onChangeValue }
+                />
 				<p className="detail-item-unit">{ this.getPlaceholder( index, 'unit' ) }</p>
 			</div>
 		);

@@ -182,7 +182,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			            'displayCookingTime' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_cookingtime') === '1',
 			            'displayCalories' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_calories') === '1',
 			            'headerAlign' => WPZOOM_Settings::get('wpzoom_rcb_settings_heading_content_align'),
-			            'ingredientsLayout' => '1-column'
+			            'ingredientsLayout' => '1-column',
+			            'adjustableServings' => false
 			        )
 			    ),
 			    'items' => array(
@@ -324,6 +325,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$class .= ' header-content-align-' . self::$settings['headerAlign'];
 		$class .= $hasImage && isset($image['url']) ? '' : ' recipe-card-noimage';
 		$class .= '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? ' recipe-card-noimage-print' : '';
+
+		if ( self::$settings['adjustableServings'] ) {
+			$class .= ' wpzoom-recipe-card-block-adjustable-servings';
+		}
 
 		$pin_description = strip_tags($recipeTitle);
 		if ( 'recipe_summary' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_description') ) {
@@ -887,6 +892,14 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				);
 			}
 
+			// User has enabled Adjustable Servings?
+			if ( 0 === $index && self::$settings['adjustableServings'] ) {
+				$value = sprintf(
+					'<p class="detail-item-value"><input class="detail-item-adjustable-servings" type="number" data-servings="%1$s" data-original-servings="%1$s" value="%1$s" min="1"></p>',
+					$detail['value']
+				);
+			}
+
 			// convert minutes to hours for 'prep time' and 'cook time' items
 			if ( 1 === $index || 2 === $index ) {
 				if ( ! empty( $detail['value'] ) ) {
@@ -946,8 +959,14 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		foreach ( $ingredients as $index => $ingredient ) {
 			$tick = $name = '';
+			$amount = $unit = '';
 			$styles = array();
 			$isGroup = isset($ingredient['isGroup']) ? $ingredient['isGroup'] : false;
+
+			if ( isset( $ingredient['parse'] ) ) {
+				$amount = isset( $ingredient['parse']['amount'] ) ? $ingredient['parse']['amount'] : '';
+				$unit = isset( $ingredient['parse']['unit'] ) ? $ingredient['parse']['unit'] : '';
+			}
 
 			if ( !$isGroup ) {
 				if ( 'newdesign' === self::$style || 'simple' === self::$style ) {
@@ -969,9 +988,15 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				}
 
 				if ( ! empty( $ingredient[ 'name' ] ) ) {
+					$amount = !empty( $amount ) ? sprintf( '<span class="wpzoom-rcb-ingredient-amount">%s</span>', $amount ) : '';
+					$unit = !empty( $unit ) ? sprintf( '<span class="wpzoom-rcb-ingredient-unit">%s</span>', $unit ) : '';
+					$name = sprintf( '<span class="wpzoom-rcb-ingredient-name">%s</span>', $this->wrap_ingredient_name( $ingredient['name'] ) );
+
 					$name = sprintf(
-						'<p class="ingredient-item-name">%s</p>',
-						$this->wrap_ingredient_name( $ingredient['name'] )
+						'<p class="ingredient-item-name">%s %s %s</p>',
+						$amount,
+						$unit,
+						$name
 					);
 					$output .= sprintf(
 						'<li class="ingredient-item">%s</li>',
@@ -1198,22 +1223,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$start_tag = $type ? "<$type>" : "";
 				$end_tag = $type ? "</$type>" : "";
 
-				if ( 'img' === $type ) {
-					$src = isset( $node['props']['src'] ) ? $node['props']['src'] : false;
-					if ( $src ) {
-						$alt = isset( $node['props']['alt'] ) ? $node['props']['alt'] : '';
-						$title = isset( $node['props']['title'] ) ? $node['props']['title'] : ( isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : $this->recipe->post_title );
-						$class = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_steps_image') ? 'no-print' : '';
-						$class .= ' direction-step-image';
-						$img_style = isset($node['props']['style']) ? $node['props']['style'] : '';
-
-						$start_tag = sprintf( '<%s src="%s" title="%s" alt="%s" class="%s" style="%s"/>', $type, $src, $title, $alt, trim($class), $this->parseTagStyle($img_style) );
-					} else {
-						$start_tag = "";
-					}
-					$end_tag = "";
-				}
-				elseif ( 'a' === $type ) {
+				if ( 'a' === $type ) {
 					$rel 		= isset( $node['props']['rel'] ) ? $node['props']['rel'] : '';
 					$aria_label = isset( $node['props']['aria-label'] ) ? $node['props']['aria-label'] : '';
 					$href 		= isset( $node['props']['href'] ) ? $node['props']['href'] : '#';

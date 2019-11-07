@@ -211,6 +211,16 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     
                 }
 
+                if ( has_block( 'wpzoom-recipe-card/block-recipe-card' ) ) {
+                    wp_enqueue_script(
+                        $this->_slug . '-adjustable-servings',
+                        $this->asset_source( 'js', 'adjustable-servings.js' ),
+                        $this->get_dependencies( $this->_slug . '-adjustable-servings' ),
+                        WPZOOM_RCB_VERSION,
+                        true
+                    );
+                }
+
             }
             
 		}

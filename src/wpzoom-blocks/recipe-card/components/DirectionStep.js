@@ -5,11 +5,10 @@ import isObject from "lodash/isObject";
 import isString from "lodash/isString";
 import includes from "lodash/includes";
 import isUndefined from "lodash/isUndefined";
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 /* WordPress dependencies */
 const { __ } = wp.i18n;
-const { Component } = wp.element;
+const { Component, Fragment } = wp.element;
 const { RichText, MediaUpload } = wp.blockEditor;
 const { IconButton } = wp.components;
 const { setting_options } = wpzoomRecipeCard;
@@ -161,6 +160,7 @@ export default class DirectionStep extends Component {
 		} = this.props;
 
 		return <div className="direction-step-button-container">
+			{ this.getMover() }
 			{ ! isGroup &&
 			<MediaUpload
 				onSelect={ this.onSelectImage }
@@ -196,7 +196,7 @@ export default class DirectionStep extends Component {
 	 * @returns {Component} the buttons.
 	 */
 	getMover() {
-		return <div className="direction-step-mover">
+		return <Fragment>
 			<IconButton
 				className="editor-block-mover__control"
 				onClick={ this.onMoveStepUp }
@@ -211,7 +211,7 @@ export default class DirectionStep extends Component {
 				label={ __( "Move step down", "wpzoom-recipe-card" ) }
 				aria-disabled={ this.props.isLast }
 			/>
-		</div>;
+		</Fragment>;
 	}
 
 	/**
@@ -298,12 +298,6 @@ export default class DirectionStep extends Component {
 		const isSelectedText = isSelected && subElement === "text";
 		const stepClassName = !isGroup ? "direction-step" : "direction-step direction-step-group";
 
-		let textContent = text;
-		if ( isString( textContent ) ) {
-			// Converting HTML strings into React components
-			textContent = ReactHtmlParser( text );
-		}
-
 		return (
 			<li className={ stepClassName } key={ id }>
 				{
@@ -313,7 +307,7 @@ export default class DirectionStep extends Component {
 						tagName="p"
 						unstableOnSetup={ this.setTextRef }
 						key={ `${ id }-text` }
-						value={ textContent }
+						value={ text }
 						onChange={ this.onChangeText }
 						// isSelected={ isSelectedText }
 						placeholder={ __( "Enter step description", "wpzoom-recipe-card" ) }
@@ -328,7 +322,7 @@ export default class DirectionStep extends Component {
 						tagName="p"
 						unstableOnSetup={ this.setTextRef }
 						key={ `${ id }-group-title` }
-						value={ textContent }
+						value={ text }
 						onChange={ this.onChangeGroupTitle }
 						// isSelected={ isSelectedText }
 						placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
@@ -339,7 +333,6 @@ export default class DirectionStep extends Component {
 				{ 
 					isSelectedText &&
 					<div className="direction-step-controls-container">
-						{ this.getMover() }
 						{ this.getButtons() }
 					</div>
 				}

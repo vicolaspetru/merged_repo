@@ -2,12 +2,17 @@
 import IngredientItem from "./IngredientItem";
 import isUndefined from "lodash/isUndefined";
 import PropTypes from "prop-types";
-import uniq from "lodash/uniq";
+import get from "lodash/get";
+import trim from "lodash/trim";
+import replace from "lodash/replace";
+import includes from "lodash/includes";
 import uniqueId from "lodash/uniqueId";
 import toNumber from "lodash/toNumber";
+import ReactHtmlParser from 'react-html-parser';
 
 /* Internal dependencies */
 import { stripHTML } from "../../../helpers/stringHelpers";
+import { removeKeys } from "../../../helpers/removeKeys";
 
 /* WordPress dependencies */
 const { __ } = wp.i18n;
@@ -31,15 +36,20 @@ export default class Ingredient extends Component {
 	constructor( props ) {
 		super( props );
 
-		this.state = { focus: "" };
+		this.state = {
+			focus: ""
+		};
 
-		this.changeItem      			= this.changeItem.bind( this );
+		this.changeName      			= this.changeName.bind( this );
+		this.changeAmount      			= this.changeAmount.bind( this );
+		this.changeUnit      			= this.changeUnit.bind( this );
 		this.insertItem      			= this.insertItem.bind( this );
 		this.removeItem      			= this.removeItem.bind( this );
 		this.swapItem        			= this.swapItem.bind( this );
 		this.setFocus        			= this.setFocus.bind( this );
 		this.setFocusToTitle 			= this.setFocusToTitle.bind( this );
 		this.setFocusToIngredient 		= this.setFocusToIngredient.bind( this );
+		this.setAmountUnitName 			= this.setAmountUnitName.bind( this );
 		this.setTitleRef 				= this.setTitleRef.bind( this );
 		this.setIngredientRef 			= this.setIngredientRef.bind( this );
 		this.moveIngredientUp 			= this.moveIngredientUp.bind( this );
@@ -72,7 +82,7 @@ export default class Ingredient extends Component {
 	 *
 	 * @returns {void}
 	 */
-	changeItem( newName, previousName, index, group = false ) {
+	changeName( newName, previousName, index, group = false ) {
 		const ingredients = this.props.attributes.ingredients ? this.props.attributes.ingredients.slice() : [];
 
 		// If the index exceeds the number of ingredients, don't change anything.
@@ -81,12 +91,12 @@ export default class Ingredient extends Component {
 		}
 
 		/*
-		 * Because the DOM re-uses input elements, the changeItem function was triggered when removing/inserting/swapping
-		 * input elements. We need to check for such events, and return early if the changeItem was called without any
+		 * Because the DOM re-uses input elements, the changeName function was triggered when removing/inserting/swapping
+		 * input elements. We need to check for such events, and return early if the changeName was called without any
 		 * user changes to the input field, but because the underlying input elements moved around in the DOM.
 		 *
 		 * In essence, when the name at the current index does not match the name that was in the input field previously,
-		 * the changeItem was triggered by input fields moving in the DOM.
+		 * the changeName was triggered by input fields moving in the DOM.
 		 */
 		if ( ingredients[ index ].name !== previousName ) {
 			return;
@@ -94,6 +104,7 @@ export default class Ingredient extends Component {
 
 		// Rebuild the item with the newly made changes.
 		ingredients[ index ] = {
+			...ingredients[ index ],
 			id: ingredients[ index ].id,
 			name: newName,
 			jsonName: stripHTML( renderToString( newName ) ),
@@ -229,6 +240,166 @@ export default class Ingredient extends Component {
 	}
 
 	/**
+	 * Sets the parsed ingredient unit, amount and ingredient name to Ingredient item at the given index.
+	 *
+	 * @param {array}  parsedArray 	The values after ingredient parsing.
+	 * @param {number} index 		The index of the item that needs to be changed.
+	 *
+	 * @returns {void}
+	 */
+	setAmountUnitName( parsedArray, index ) {
+		const ingredients = this.props.attributes.ingredients ? this.props.attributes.ingredients.slice() : [];
+
+		// Skip group title item
+		if ( get( ingredients, [ index, 'isGroup' ] ) ) {
+			return;
+		}
+
+		let unit = get( parsedArray, 'unit' ) || get( ingredients, [ index, 'parse', 'unit' ] );
+		let amount = get( parsedArray, 'amount' ) || get( ingredients, [ index, 'parse', 'amount' ] );
+		let ingredient = get( parsedArray, 'ingredient' ) || get( ingredients, [ index, 'parse', 'ingredient' ] );
+
+		// If the index exceeds the number of ingredients, don't change anything.
+		if ( index >= ingredients.length ) {
+			return;
+		}
+
+		// We can't parse amount unit and ingredient name from Ingredient item, so in this case we need to stop further execution
+		if ( isUndefined( amount ) || isUndefined( unit ) || isUndefined( ingredient ) ) {
+			return;
+		}
+
+		// To prevent multiple events when values are the same as previously, we need to check if parsed values was changed
+		if ( amount === get( ingredients, [ index, 'parse', 'amount' ] ) && unit === get( ingredients, [ index, 'parse', 'unit' ] ) && ingredient === get( ingredients, [ index, 'parse', 'ingredient' ] ) ) {
+			return;
+		}
+
+		if ( !get( ingredients, [ index, 'parse', 'amount' ] ) || !get( ingredients, [ index, 'parse', 'unit' ] ) ) {
+
+			/*
+			 * We need to modify name to be without amount and unit
+			 * First we will convert name object to string and then replace the amount and unit with empty replacement
+			 * After that we'll convert back to React HTML Object
+			 */
+			let stringName = renderToString( ingredients[index].name );
+
+			if ( includes( stringName, amount ) || includes( stringName, unit ) ) {
+				stringName = replace( stringName, amount, '' );
+				stringName = replace( stringName, unit, '' );
+
+				var obj = ReactHtmlParser( trim( stringName ) );
+
+				// remove unneded property keys
+				removeKeys(obj, ['_owner', '$$typeof', 'key']);
+
+				const newName = obj;
+
+				// Rebuild the item with the newly made changes.
+				ingredients[ index ].name = newName;
+				ingredients[ index ].jsonName = stripHTML( stringName );
+			}
+
+		}
+
+		if ( isUndefined( ingredients[ index ].parse ) ) {
+			ingredients[ index ].parse = {}
+		}
+
+		/*
+		 * All looks right, now we can update ingredient item attributes
+		 */
+		ingredients[ index ].parse = { ...{ amount, unit, ingredient } }
+
+		this.props.setAttributes( { ingredients } );
+	}
+
+	/**
+	 * Replaces amount for the Ingredient item with the given index.
+	 *
+	 * @param {array}  newAmount      	The new item amount.
+	 * @param {array}  previousAmount 	The previous item amount.
+	 * @param {number} index        	The index of the item that needs to be changed.
+	 *
+	 * @returns {void}
+	 */
+	changeAmount( newAmount, previousAmount, index ) {
+		const ingredients = this.props.attributes.ingredients ? this.props.attributes.ingredients.slice() : [];
+		const amount = get( ingredients, [ index, 'parse', 'amount' ] );
+
+		// If the index exceeds the number of ingredients, don't change anything.
+		if ( index >= ingredients.length ) {
+			return;
+		}
+
+		/*
+		 * Because the DOM re-uses input elements, the changeAmount function was triggered when removing/inserting/swapping
+		 * input elements. We need to check for such events, and return early if the changeAmount was called without any
+		 * user changes to the input field, but because the underlying input elements moved around in the DOM.
+		 *
+		 * In essence, when the amount at the current index does not match the amount that was in the input field previously,
+		 * the changeAmount was triggered by input fields moving in the DOM.
+		 */
+		if ( amount !== previousAmount ) {
+			return;
+		}
+
+		if ( isUndefined( ingredients[ index ].parse ) ) {
+			ingredients[ index ].parse = {}
+		}
+
+		// Rebuild the item with the newly made changes.
+		ingredients[ index ].parse = {
+			...ingredients[ index ].parse,
+			amount: newAmount
+		}
+
+		this.props.setAttributes( { ingredients } );
+	}
+
+	/**
+	 * Replaces unit for the Ingredient item with the given index.
+	 *
+	 * @param {array}  newUnit      	The new item unit.
+	 * @param {array}  previousUnit 	The previous item unit.
+	 * @param {number} index        	The index of the item that needs to be changed.
+	 *
+	 * @returns {void}
+	 */
+	changeUnit( newUnit, previousUnit, index ) {
+		const ingredients = this.props.attributes.ingredients ? this.props.attributes.ingredients.slice() : [];
+		const unit = get( ingredients, [ index, 'parse', 'unit' ] );
+
+		// If the index exceeds the number of ingredients, don't change anything.
+		if ( index >= ingredients.length ) {
+			return;
+		}
+
+		/*
+		 * Because the DOM re-uses input elements, the changeUnit function was triggered when removing/inserting/swapping
+		 * input elements. We need to check for such events, and return early if the changeUnit was called without any
+		 * user changes to the input field, but because the underlying input elements moved around in the DOM.
+		 *
+		 * In essence, when the unit at the current index does not match the unit that was in the input field previously,
+		 * the changeUnit was triggered by input fields moving in the DOM.
+		 */
+		if ( unit !== previousUnit ) {
+			return;
+		}
+
+		if ( isUndefined( ingredients[ index ].parse ) ) {
+			ingredients[ index ].parse = {}
+		}
+
+		// Rebuild the item with the newly made changes.
+		ingredients[ index ].parse = {
+			...ingredients[ index ].parse,
+			unit: newUnit
+		}
+
+		this.props.setAttributes( { ingredients } );
+	}
+
+	/**
 	 * Handles the Add Ingredient Button click event.
 	 *
 	 * Necessary because insertIngredient needs to be called without arguments, to assure the ingredient is added properly.
@@ -353,7 +524,10 @@ export default class Ingredient extends Component {
 		        	item={ item }
 		        	index={ index }
 		        	editorRef={ this.setIngredientRef }
-		        	onChange={ this.changeItem }
+		        	onChange={ this.changeName }
+		        	onParseItem={ this.setAmountUnitName }
+		        	onChangeAmount={ this.changeAmount }
+		        	onChangeUnit={ this.changeUnit }
 		        	insertItem={ this.insertItem }
 		        	removeItem={ this.removeItem }
 		        	onFocus={ this.setFocusToIngredient }
