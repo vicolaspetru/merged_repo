@@ -63,6 +63,12 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.5.0 =
+* Improvements to Ingredients: you can now specify amount and unit
+* New: Adjustable Servings. You can enable this option in Block options > Recipe Card Details.
+* Fixed a bug with Pinterest Custom Image
+* Multiple bug fixes and improvements
+
 = 2.4.0 =
 * 🔥 Added Nutrition Block with two Layouts (Vertical / Horizontal)
 * Added possibility to edit details labels from Block Settings, and also edit unit for Servings
