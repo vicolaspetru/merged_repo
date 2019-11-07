@@ -133,16 +133,21 @@ class Inspector extends Component {
 		} = this.props;
 		const relevantMedia = pickRelevantMediaFiles( media, 'header' );
 
-		settings[0]['pin_has_custom_image'] = !isNull( relevantMedia.id );
-		settings[0]['pin_custom_image'] = {
-			id: relevantMedia.id,
-			url: relevantMedia.url,
-			alt: relevantMedia.alt,
-			title: relevantMedia.title,
-			sizes: media.sizes
-		};
+		const newSettings = settings ? settings.slice() : [];
 
-		setAttributes( { settings } );
+		newSettings[0] = {
+			...newSettings[0],
+			pin_has_custom_image: !isNull( relevantMedia.id ),
+			pin_custom_image: {
+				id: relevantMedia.id,
+				url: relevantMedia.url,
+				alt: relevantMedia.alt,
+				title: relevantMedia.title,
+				sizes: media.sizes
+			}
+		}
+
+		setAttributes( { settings: newSettings } );
 	}
 
 	onRemovePinImage() {
@@ -152,11 +157,16 @@ class Inspector extends Component {
 			},
 			setAttributes
 		} = this.props;
-		
-		settings[0]['pin_has_custom_image'] = false;
-		settings[0]['pin_custom_image'] = [];
 
-		setAttributes( { settings } );
+		const newSettings = settings ? settings.slice() : [];
+		
+		newSettings[0] = {
+			...newSettings[0],
+			pin_has_custom_image: false,
+			pin_custom_image: null
+		}
+
+		setAttributes( { settings: newSettings } );
 	}
 
 	onChangeSettings( newValue, param, index = 0 ) {
