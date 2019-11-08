@@ -63,6 +63,9 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.5.1 =
+* Minor bug fix with Pinterest Custom Image not saving
+
 = 2.5.0 =
 * Improvements to Ingredients: you can now specify amount and unit
 * New: Adjustable Servings. You can enable this option in Block options > Recipe Card Details.
