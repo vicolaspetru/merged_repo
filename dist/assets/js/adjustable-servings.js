@@ -21,9 +21,11 @@
                     var amount = parseAmount( $(this).text() );
                         amount /= servings;
 
+                    var roundedAmount = amount.toFixed(2);
+
                     $(this)
                         .data('original-amount', $(this).text())
-                        .data('per-one-serving', amount);
+                        .data('per-one-serving', roundedAmount);
                 }
             })
         }
@@ -49,9 +51,10 @@
             }
             else {
                 var amount = parseFloat( amountElement.data('per-one-serving') ) * servings;
+                var roundedAmount = amount.toFixed(2);
 
-                if ( !isNaN( amount ) ) {
-                    amountElement.text( amount );
+                if ( !isNaN( roundedAmount ) ) {
+                    amountElement.text( roundedAmount );
                 }
             }
         })
