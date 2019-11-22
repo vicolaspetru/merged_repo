@@ -249,6 +249,12 @@ export default class Ingredient extends Component {
 	 */
 	setAmountUnitName( parsedArray, index ) {
 		const ingredients = this.props.attributes.ingredients ? this.props.attributes.ingredients.slice() : [];
+		const [ focusIndex, subElement ] = this.state.focus.split( ":" );
+
+		// stop parsing when typing ingredient name or input is focus
+		if ( 'name' === subElement ) {
+			return;
+		}
 
 		// Skip group title item
 		if ( get( ingredients, [ index, 'isGroup' ] ) ) {
