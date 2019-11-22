@@ -46,6 +46,8 @@ export default class IngredientItem extends Component {
 		this.onMoveIngredientDown 	= this.onMoveIngredientDown.bind( this );
 		this.setNameRef    			= this.setNameRef.bind( this );
 		this.onFocusName   			= this.onFocusName.bind( this );
+		this.onFocusAmount   		= this.onFocusAmount.bind( this );
+		this.onFocusUnit   			= this.onFocusUnit.bind( this );
 		this.onChangeName  			= this.onChangeName.bind( this );
 		this.onChangeGroupTitle  	= this.onChangeGroupTitle.bind( this );
 	}
@@ -110,6 +112,24 @@ export default class IngredientItem extends Component {
 	 */
 	onFocusName() {
 		this.props.onFocus( this.props.index, "name" );
+	}
+
+	/**
+	 * Handles the focus event on the ingredient amount editor.
+	 *
+	 * @returns {void}
+	 */
+	onFocusAmount() {
+		this.props.onFocus( this.props.index, "amount" );
+	}
+
+	/**
+	 * Handles the focus event on the ingredient unit editor.
+	 *
+	 * @returns {void}
+	 */
+	onFocusUnit() {
+		this.props.onFocus( this.props.index, "unit" );
 	}
 
 	/**
@@ -249,6 +269,8 @@ export default class IngredientItem extends Component {
 		}
 
 		const isSelectedName = isSelected && subElement === "name";
+		const isSelectedAmount = isSelected && subElement === "amount";
+		const isSelectedUnit = isSelected && subElement === "unit";
 		const itemClassName = !isGroup ? "ingredient-item" : "ingredient-item ingredient-item-group";
 
 		const unit = get( this.props.item, ['parse', 'unit'] );
@@ -268,7 +290,7 @@ export default class IngredientItem extends Component {
 			                	placeholder={ __( "amount", "wpzoom-recipe-card" ) }
 			                	value={ amount }
 			                	onChange={ newValue => onChangeAmount( newValue, amount, index ) }
-			                	onFocus={ this.onFocusName }
+			                	onFocus={ this.onFocusAmount }
 			                />
 			                <TextControl
 			                	instanceId={ `${ id }-${ index }-unit` }
@@ -276,7 +298,7 @@ export default class IngredientItem extends Component {
 			                	placeholder={ __( "unit", "wpzoom-recipe-card" ) }
 			                	value={ unit }
 			                	onChange={ newValue => onChangeUnit( newValue, unit, index ) }
-			                	onFocus={ this.onFocusName }
+			                	onFocus={ this.onFocusUnit }
 			                />
 							<RichText
 								tagName="p"
@@ -306,7 +328,7 @@ export default class IngredientItem extends Component {
 					/>
 				}
 				{
-					isSelectedName &&
+					(isSelectedName || isSelectedAmount || isSelectedUnit ) &&
 					<div className="ingredient-item-controls-container">
 						{ this.getButtons() }
 					</div>
