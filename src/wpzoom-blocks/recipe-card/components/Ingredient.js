@@ -256,6 +256,11 @@ export default class Ingredient extends Component {
 			return;
 		}
 
+		// If the index exceeds the number of ingredients, don't change anything.
+		if ( index >= ingredients.length ) {
+			return;
+		}
+
 		// Skip group title item
 		if ( get( ingredients, [ index, 'isGroup' ] ) ) {
 			return;
@@ -264,11 +269,6 @@ export default class Ingredient extends Component {
 		let unit = get( parsedArray, 'unit' ) || get( ingredients, [ index, 'parse', 'unit' ] );
 		let amount = get( parsedArray, 'amount' ) || get( ingredients, [ index, 'parse', 'amount' ] );
 		let ingredient = get( parsedArray, 'ingredient' ) || get( ingredients, [ index, 'parse', 'ingredient' ] );
-
-		// If the index exceeds the number of ingredients, don't change anything.
-		if ( index >= ingredients.length ) {
-			return;
-		}
 
 		// We can't parse amount unit and ingredient name from Ingredient item, so in this case we need to stop further execution
 		if ( isUndefined( amount ) || isUndefined( unit ) || isUndefined( ingredient ) ) {
