@@ -963,6 +963,16 @@ class WPZOOM_Settings {
 									'type'			=> 'hidden',
 									'badge' 		=> '<span class="wpzoom-rcb-badge wpzoom-rcb-field-'. ( !self::$license_status ? 'is_inactive' : 'is_active' ) .'">'. ( !self::$license_status ? __( 'inactive', 'wpzoom-recipe-card' ) : __( 'active', 'wpzoom-recipe-card' ) ) .'</span>' . $message,
 								)
+							),
+							array(
+								'id'		=> 'wpzoom_rcb_settings_save_license',
+								'title'		=> '',
+								'type'		=> 'button',
+								'args'		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_save_license',
+									'text' 			=> esc_html__( 'Save License', 'wpzoom-recipe-card' ),
+									'button_type'	=> 'primary',
+								)
 							)
 						)
 					)
@@ -971,14 +981,14 @@ class WPZOOM_Settings {
 		);
 
 		if ( ! empty( trim(self::$license_key) ) ) {
-			self::$license_settings['license']['sections'][0]['fields'][2] = array(
+			self::$license_settings['license']['sections'][0]['fields'][3] = array(
 				'id' 				=> 'wpzoom_rcb_plugin_activate_license',
-				'title' 			=> __( 'Activate License', 'wpzoom-recipe-card' ),
+				'title' 			=> '',
 				'type'				=> 'button',
 			);
 
 			if ( self::$license_status !== false && self::$license_status == 'valid' ) {
-				self::$license_settings['license']['sections'][0]['fields'][2]['args'] = array(
+				self::$license_settings['license']['sections'][0]['fields'][3]['args'] = array(
 					'label_for' 	=> 'wpzoom_rcb_plugin_license_deactivate',
 					'text' 			=> esc_html__( 'Deactivate License', 'wpzoom-recipe-card' ),
 					'button_type'	=> 'secondary',
@@ -988,7 +998,7 @@ class WPZOOM_Settings {
 					),
 				);
 			} else {
-				self::$license_settings['license']['sections'][0]['fields'][2]['args'] = array(
+				self::$license_settings['license']['sections'][0]['fields'][3]['args'] = array(
 					'label_for' 	=> 'wpzoom_rcb_plugin_license_activate',
 					'text' 			=> esc_html__( 'Activate License', 'wpzoom-recipe-card' ),
 					'button_type'	=> 'secondary',
@@ -1150,8 +1160,6 @@ class WPZOOM_Settings {
 							<?php
 								settings_fields( 'wpzoom-recipe-card-settings-license' );
 								self::do_settings_sections( 'wpzoom-recipe-card-settings-license' );
-
-								submit_button( 'Save License', 'primary', 'wpzoom_rcb_settings_save_license', false );
 							?>
 						</form>
 					</div>
