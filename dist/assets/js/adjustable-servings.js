@@ -58,6 +58,8 @@
     }
 
     function initTextField() {
+        $('<div class="adjustable-quantity-nav"><div class="adjustable-quantity-button adjustable-quantity-up">+</div><div class="adjustable-quantity-button adjustable-quantity-down">-</div></div>').insertAfter('.adjustable-quantity input');
+
         $(document).on('input change', 'input.detail-item-adjustable-servings', function() {
             var $servingsElement = $(this),
                 servings = $servingsElement.val(),
@@ -129,6 +131,41 @@
         return result;
     }
 
+    function buttonQuantityIncrementers() {
+        $('.adjustable-quantity').each(function() {
+            var $spinner = $(this),
+                $input = $spinner.find('input[type="number"]'),
+                $btnUp = $spinner.find('.adjustable-quantity-up'),
+                $btnDown = $spinner.find('.adjustable-quantity-down'),
+                min = $input.attr('min'),
+                max = $input.attr('max');
+
+            $btnUp.click(function() {
+                var oldValue = parseFloat( $input.val() );
+
+                if (oldValue >= max) {
+                    var newVal = oldValue;
+                } else {
+                    var newVal = oldValue + 1;
+                }
+                $spinner.find("input").val(newVal);
+                $spinner.find("input").trigger("change");
+            });
+
+            $btnDown.click(function() {
+                var oldValue = parseFloat( $input.val() );
+
+                if (oldValue <= min) {
+                    var newVal = oldValue;
+                } else {
+                    var newVal = oldValue - 1;
+                }
+                $spinner.find("input").val(newVal);
+                $spinner.find("input").trigger("change");
+            });
+        });
+    }
+
     $(document).ready(function () {
         $('.detail-item-adjustable-servings').each(function() {
             var $servingsElement = $(this),
@@ -140,6 +177,7 @@
                 $servingsElement.data('original-servings', servings);
 
                 initTextField();
+                buttonQuantityIncrementers();
             }
         });
     })
