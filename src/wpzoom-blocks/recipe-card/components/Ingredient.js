@@ -252,7 +252,7 @@ export default class Ingredient extends Component {
 		const [ focusIndex, subElement ] = this.state.focus.split( ":" );
 
 		// stop parsing when typing ingredient name or input is focus
-		if ( 'name' === subElement ) {
+		if ( index === toNumber(focusIndex) && 'name' === subElement ) {
 			return;
 		}
 
