@@ -83,6 +83,33 @@ class WPZOOM_Settings_Fields {
 		</fieldset>
 	<?php
 	}
+
+	/**
+	 * HTML for Textarea field type
+	 * 
+	 * @param array $args 
+	 * @return void
+	 */
+	public function textarea( $args ) {
+		$value = self::parse_text_field( $args );
+		$option_name = self::parse_option_name( $args );
+	?>
+		<fieldset class="wpzoom-rcb-field-textarea">
+			<?php
+				if ( isset( $args['badge'] ) ) { echo $args['badge']; }
+				$this->create_nonce_field( $args );
+			?>
+
+			<textarea name="<?php echo $option_name.'['. esc_attr( $args['label_for'] ) .']'; ?>" id="<?php echo esc_attr( $args['label_for'] ) ?>" cols="30" rows="5" class="regular-text" <?php echo ( self::is_disabled( $args ) ? 'disabled' : '' ); ?>><?php echo $value ?></textarea>
+
+			<?php if ( isset( $args['description'] ) ): ?>
+				<p class="description">
+					<?php echo $args['description']; ?>
+				</p>
+			<?php endif ?>
+		</fieldset>
+	<?php
+	}
 	 
 	/**
 	 * HTML for Checkbox field type
