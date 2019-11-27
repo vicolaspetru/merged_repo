@@ -1402,7 +1402,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$output = sprintf(
 			'<div class="%s">
 	            <a class="btn-print-link no-print" href="#%s" %s>
-	            	<i class="fas fa-print icon-print-link"></i>
+	            	<i class="icon-print-link"></i>
 	                <span>%s</span>
 	            </a>
 	        </div>',
@@ -1439,7 +1439,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$output = sprintf(
 			'<div class="%s">
 	            <a class="btn-pinit-link no-print" data-pin-do="buttonPin" href="%s" data-pin-custom="true" %s>
-	            	<i class="fab fa-pinterest-p icon-pinit-link"></i>
+	            	<i class="icon-pinit-link"></i>
 	            	<span>%s</span>
 	            </a>
 	        </div>',
