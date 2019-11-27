@@ -63,6 +63,12 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.5.2 =
+* Fixed Pinterest custom image size issue
+* Fixed issue with multiple digits on adjustable servings
+* Fixed issue with parsing ingredient name while typing
+* Added button quantity increments for adjustable servings
+
 = 2.5.1 =
 * Minor bug fix with Pinterest Custom Image not saving
 

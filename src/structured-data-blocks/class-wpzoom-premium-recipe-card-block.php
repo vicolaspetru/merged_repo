@@ -183,7 +183,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			            'displayCalories' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_calories') === '1',
 			            'headerAlign' => WPZOOM_Settings::get('wpzoom_rcb_settings_heading_content_align'),
 			            'ingredientsLayout' => '1-column',
-			            'adjustableServings' => false
+			            'adjustableServings' => true
 			        )
 			    ),
 			    'items' => array(
@@ -348,7 +348,19 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$pin_image = $hasImage ? $image['url'] : $recipe_thumbnail_url;
 		if ( 'custom_image' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_image') ) {
 			if ( self::$settings['pin_has_custom_image'] ) {
-				$pin_image = self::$settings['pin_custom_image']['url'];
+
+				$pin_custom_image 	= self::$settings['pin_custom_image'];
+				$pin_image 			= $pin_custom_image['url'];
+
+				if ( isset( $pin_custom_image['sizes']['large'] ) ) {
+					$pin_image = $pin_custom_image['sizes']['large']['url'];
+				}
+				elseif ( isset( $pin_custom_image['sizes']['wpzoom-rcb-block-step-image'] ) ) {
+					$pin_image = $pin_custom_image['sizes']['wpzoom-rcb-block-step-image']['url'];
+				}
+				elseif ( isset( $pin_custom_image['sizes']['full'] ) ) {
+					$pin_image = $pin_custom_image['sizes']['full']['url'];
+				}
 			}
 		}
 
@@ -900,7 +912,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			// User has enabled Adjustable Servings?
 			if ( 0 === $index && self::$settings['adjustableServings'] ) {
 				$value = sprintf(
-					'<p class="detail-item-value"><input class="detail-item-adjustable-servings" type="number" data-servings="%1$s" data-original-servings="%1$s" value="%1$s" min="1"></p>',
+					'<div class="detail-item-value adjustable-quantity"><input class="detail-item-adjustable-servings" type="number" data-servings="%1$s" data-original-servings="%1$s" value="%1$s" min="1" step="1"></div>',
 					$detail['value']
 				);
 			}

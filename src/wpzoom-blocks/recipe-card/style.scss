@@ -60,9 +60,71 @@
 				margin-bottom: 0;
 			}
             .detail-item-adjustable-servings {
-                padding: 5px 0 5px 5px;
-                font-size: 14px;
-                width: 45px;
+                width: 55px;
+                height: 30px;
+                line-height: 1.65;
+                font-size: 12px;
+                float: left;
+                display: block;
+                padding: 0 20px 0 8px;
+                margin: 0;
+                border: 1px solid #eee;
+                border-radius: 0;
+                background-color: #fff;
+            }
+            .adjustable-quantity {
+                position: relative;
+                vertical-align: middle;
+                width: 45%;
+
+                + .detail-item-unit {
+                    vertical-align: middle;
+                }
+                input[type=number]::-webkit-inner-spin-button,
+                input[type=number]::-webkit-outer-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                input[type=number] {
+                    -moz-appearance: textfield;
+                }
+                input:focus {
+                    outline: 0;
+                }
+                .adjustable-quantity-nav {
+                    float: left;
+                    position: relative;
+                    height: 30px;
+                }
+                .adjustable-quantity-button {
+                    position: relative;
+                    cursor: pointer;
+                    border-left: 1px solid #eee;
+                    width: 20px;
+                    text-align: center;
+                    color: #333;
+                    font-size: 14px;
+                    font-weight: bold;
+                    font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+                    line-height: 1;
+                    transform: translateX(-100%);
+                    user-select: none;
+
+                    &:hover {
+                        background-color: #eee;
+                    }
+                    &.adjustable-quantity-up {
+                        position: absolute;
+                        height: 50%;
+                        top: 0;
+                        border-bottom: 1px solid #eee;
+                    }
+                    &.adjustable-quantity-down {
+                        position: absolute;
+                        bottom: 0;
+                        height: 50%;
+                    }
+                }
             }
 		}
 	}
