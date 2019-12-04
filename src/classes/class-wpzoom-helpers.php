@@ -116,6 +116,9 @@ class WPZOOM_Helpers {
 		if ( !isset( $settings['adjustableServings'] ) ) {
 			$settings['adjustableServings'] = true;
 		}
+		if ( !isset( $settings['hide_header_image'] ) ) {
+ 			$settings['hide_header_image'] = false;
+ 		}
 
 		return $settings;
 	}

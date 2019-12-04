@@ -167,6 +167,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			        array(
 			            'primary_color' => WPZOOM_Settings::get('wpzoom_rcb_settings_primary_color'),
 			            'icon_details_color' => '#6d767f',
+			            'hide_header_image' => false,
 			            'print_btn' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_print') === '1',
 			            'pin_btn' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_pin') === '1',
 			            'pin_has_custom_image' => false,
@@ -324,6 +325,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$class .= strpos( $className, 'is-style' ) === false ? ' is-style-' . self::$style : '';
 		$class .= ' header-content-align-' . self::$settings['headerAlign'];
 		$class .= $hasImage && isset($image['url']) ? '' : ' recipe-card-noimage';
+		$class .= self::$settings['hide_header_image'] ? ' recipe-card-noimage' : '';
 		$class .= '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? ' recipe-card-noimage-print' : '';
 
 		if ( self::$settings['adjustableServings'] ) {
@@ -393,7 +395,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$printStyles = self::$helpers->render_styles_attributes( $styles );
 
 		$recipe_card_image = '';
-		if ( $hasImage && isset($image['url']) ) {
+
+		if ( $hasImage && isset( $image['url'] ) ) {
 			$img_id = $image['id'];
 			$src 	= $image['url'];
 			$alt 	= ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
@@ -411,24 +414,25 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		            </figcaption>
 				</figure>
 			</div>';
-		} elseif ( ! $hasImage && ! empty( $recipe_thumbnail_url ) ) {
-				$img_id = $recipe_thumbnail_id;
-				$src 	= $recipe_thumbnail_url;
-				$alt 	= ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
-				$img_class  = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? 'no-print' : '';
-				$img_class .= ' wpzoom-recipe-card-image';
+		}
+		elseif ( ! $hasImage && ! empty( $recipe_thumbnail_url ) ) {
+			$img_id = $recipe_thumbnail_id;
+			$src 	= $recipe_thumbnail_url;
+			$alt 	= ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
+			$img_class  = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? 'no-print' : '';
+			$img_class .= ' wpzoom-recipe-card-image';
 
-				$recipe_card_image = '<div class="recipe-card-image">
-					<figure>
-						'. sprintf( '<img id="%s" src="%s" alt="%s" class="%s"/>', $img_id, $src, $alt, trim($img_class) ) .'
-						<figcaption>
-							'.
-								( self::$settings['pin_btn'] ? self::get_pinterest_button( array( 'url' => $pin_image ), $recipe_permalink, $pin_description ) : '' ).
-								( self::$settings['print_btn'] ? self::get_print_button( $id, array( 'title' => __( "Print directions...", "wpzoom-recipe-card" ), 'style' => $printStyles ) ) : '' )
-							.'
-			            </figcaption>
-					</figure>
-				</div>';
+			$recipe_card_image = '<div class="recipe-card-image">
+				<figure>
+					'. sprintf( '<img id="%s" src="%s" alt="%s" class="%s"/>', $img_id, $src, $alt, trim($img_class) ) .'
+					<figcaption>
+						'.
+							( self::$settings['pin_btn'] ? self::get_pinterest_button( array( 'url' => $pin_image ), $recipe_permalink, $pin_description ) : '' ).
+							( self::$settings['print_btn'] ? self::get_print_button( $id, array( 'title' => __( "Print directions...", "wpzoom-recipe-card" ), 'style' => $printStyles ) ) : '' )
+						.'
+		            </figcaption>
+				</figure>
+			</div>';
 		}
 
 		$recipe_card_heading = '

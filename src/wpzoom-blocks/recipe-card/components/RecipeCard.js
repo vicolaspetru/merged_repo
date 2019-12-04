@@ -263,6 +263,7 @@ class RecipeCard extends Component {
 				0: {
 					primary_color,
 					icon_details_color,
+					hide_header_image,
 					print_btn,
 					pin_btn,
 					custom_author_name,
@@ -282,7 +283,9 @@ class RecipeCard extends Component {
 
 		const style = getBlockStyle( className );
 		const loadingClass = this.state.isLoading ? 'is-loading-block' : '';
+		const hideRecipeImgClass = hide_header_image ? 'recipe-card-noimage' : '';
 		const videoType = get( video, 'type' );
+
 		let pin_description = recipeTitle;
 		let headerContentAlign = headerAlign;
 		let customAuthorName;
@@ -304,7 +307,7 @@ class RecipeCard extends Component {
 
 		const regex = /is-style-(\S*)/g;
 		let m = regex.exec( className );
-		let classNames = m !== null ? [ className, `header-content-align-${ headerContentAlign }`, loadingClass ] : [ className, `is-style-${ style }`, `header-content-align-${ headerContentAlign }`, loadingClass ];
+		let classNames = m !== null ? [ className, `header-content-align-${ headerContentAlign }`, loadingClass, hideRecipeImgClass ] : [ className, `is-style-${ style }`, `header-content-align-${ headerContentAlign }`, loadingClass, hideRecipeImgClass ];
 
 		let printStyles = [];
 
