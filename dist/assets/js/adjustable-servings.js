@@ -153,6 +153,7 @@
                 }
                 $spinner.find("input").val(newVal);
                 $spinner.find("input").trigger("change");
+                $spinner.parent().find(".only-print-visible").text(newVal);
             });
 
             $btnDown.click(function() {
@@ -165,6 +166,7 @@
                 }
                 $spinner.find("input").val(newVal);
                 $spinner.find("input").trigger("change");
+                $spinner.parent().find(".only-print-visible").text(newVal);
             });
         });
     }

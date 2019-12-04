@@ -916,7 +916,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			// User has enabled Adjustable Servings?
 			if ( 0 === $index && self::$settings['adjustableServings'] ) {
 				$value = sprintf(
-					'<div class="detail-item-value adjustable-quantity"><input class="detail-item-adjustable-servings" type="number" data-servings="%1$s" data-original-servings="%1$s" value="%1$s" min="1" step="1"></div>',
+					'<div class="detail-item-value adjustable-quantity no-print">
+						<input class="detail-item-adjustable-servings" type="number" data-servings="%1$s" data-original-servings="%1$s" value="%1$s" min="1" step="1">
+					</div><p class="detail-item-value only-print-visible">%1$s</p>',
 					$detail['value']
 				);
 			}
@@ -1539,7 +1541,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     	ob_start();
     ?>
     	<?php if ( ! empty( $igUsername ) ): ?>
-	    	<div class="recipe-card-cta-instagram">
+	    	<div class="recipe-card-cta-instagram no-print">
 	    	    <div class="cta-brand-icon"><i class="fab fa-instagram"></i></div>
 	    	    <div class="cta-text-wrapper">
 	    	        <h3 class="cta-text-title"><?php echo $igTitle ?></h3>
@@ -1549,7 +1551,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     	<?php endif ?>
 
     	<?php if ( ! empty( $pinUsername ) ): ?>
-    		<div class="recipe-card-cta-pinterest">
+    		<div class="recipe-card-cta-pinterest no-print">
     		    <div class="cta-brand-icon"><i class="fab fa-pinterest"></i></div>
     		    <div class="cta-text-wrapper">
     		        <h3 class="cta-text-title"><?php echo $pinTitle ?></h3>

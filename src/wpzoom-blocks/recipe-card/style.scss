@@ -76,6 +76,11 @@
                 border-radius: 0;
                 background-color: #fff;
             }
+            > p.detail-item-value {
+                &.only-print-visible {
+                    display: none;
+                }
+            }
             .adjustable-quantity {
                 position: relative;
                 vertical-align: middle;
