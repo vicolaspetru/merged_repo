@@ -1,10 +1,10 @@
 /* External dependencies */
+import { __ } from "@wordpress/i18n";
 import get from "lodash/get";
 import replace from "lodash/replace";
 import ReactHtmlParser from 'react-html-parser';
 
 /* WordPress dependencies */
-const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
 const { setting_options } = wpzoomRecipeCard;
 

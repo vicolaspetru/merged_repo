@@ -12,15 +12,16 @@ import isUndefined from "lodash/isUndefined";
 import PostTaxonomies from "./PostTaxonomies";
 
 /* Internal dependencies */
+import VideoUpload from "./VideoUpload";
 import { stripHTML } from "../../../helpers/stringHelpers";
+import { getNumberFromString, convertMinutesToHours } from "../../../helpers/convertMinutesToHours";
 import { pickRelevantMediaFiles } from "../../../helpers/pickRelevantMediaFiles";
 import { getBlockStyle } from "../../../helpers/getBlockStyle";
-import VideoUpload from "./VideoUpload";
 
 /* WordPress dependencies */
 const { Component, renderToString, Fragment } = wp.element;
 const { RichText, InspectorControls, MediaUpload } = wp.blockEditor;
-const { 
+const {
     BaseControl,
     PanelBody,
     PanelRow,
@@ -56,7 +57,7 @@ export default class Inspector extends Component {
      */
     constructor( props ) {
         super( props );
-        
+
         this.onSelectImage = this.onSelectImage.bind( this );
         this.onRemoveRecipeImage = this.onRemoveRecipeImage.bind( this );
         this.onSelectPinImage = this.onSelectPinImage.bind( this );
@@ -196,7 +197,7 @@ export default class Inspector extends Component {
         } = this.props;
 
         const newSettings = settings ? settings.slice() : [];
-        
+
         newSettings[0] = {
             ...newSettings[0],
             pin_has_custom_image: false,
@@ -456,12 +457,8 @@ export default class Inspector extends Component {
     render() {
         const {
             className,
-            clientId,
-            media,
             attributes,
             setAttributes,
-            postTitle,
-            postType,
             coursesTaxonomy,
             cuisinesTaxonomy,
             difficultiesTaxonomy,
@@ -486,13 +483,10 @@ export default class Inspector extends Component {
             cuisine,
             difficulty,
             keywords,
-            ingredients,
-            steps,
             details,
             settings: {
                 0: {
                     primary_color,
-                    icon_details_color,
                     hide_header_image,
                     print_btn,
                     pin_btn,
@@ -507,6 +501,7 @@ export default class Inspector extends Component {
                     displayServings,
                     displayPrepTime,
                     displayCookingTime,
+                    displayTotalTime,
                     displayCalories,
                     headerAlign,
                     ingredientsLayout,
@@ -555,7 +550,7 @@ export default class Inspector extends Component {
 
         const keywordsToken = [];
 
-        const colors = [ 
+        const colors = [
             { name: __( "Dark", "wpzoom-recipe-card" ), color: '#222222' },
             { name: __( "Orange", "wpzoom-recipe-card" ), color: '#FFA921' },
             { name: __( "Red", "wpzoom-recipe-card" ), color: '#FF4E6A' },
@@ -576,7 +571,7 @@ export default class Inspector extends Component {
                             <MediaUpload
                                 onSelect={ this.onSelectImage }
                                 allowedTypes={ ALLOWED_MEDIA_TYPES }
-                                value={ get( image, ['id'] ) }
+                                value={ get( image, [ 'id' ] ) }
                                 render={ ( { open } ) => (
                                     <Button
                                         className="editor-post-featured-image__toggle"
@@ -593,7 +588,7 @@ export default class Inspector extends Component {
                                 <MediaUpload
                                     onSelect={ this.onSelectImage }
                                     allowedTypes={ ALLOWED_MEDIA_TYPES }
-                                    value={ get( image, ['id'] ) }
+                                    value={ get( image, [ 'id' ] ) }
                                     render={ ( { open } ) => (
                                         <Button
                                             className="editor-post-featured-image__preview"
@@ -601,8 +596,8 @@ export default class Inspector extends Component {
                                         >
                                             <img
                                                 className={ `${ id }-image` }
-                                                src={ get( image, ['sizes', 'full', 'url'] ) || get( image, ['sizes', 'full', 'source_url'] ) || get( image, ['url'] ) || get( image, ['source_url'] ) }
-                                                alt={ get( image, ['alt'] ) || recipeTitle }
+                                                src={ get( image, [ 'sizes', 'full', 'url' ] ) || get( image, [ 'sizes', 'full', 'source_url' ] ) || get( image, [ 'url' ] ) || get( image, [ 'source_url' ] ) }
+                                                alt={ get( image, [ 'alt' ] ) || recipeTitle }
                                             />
                                         </Button>
                                     ) }
@@ -610,7 +605,7 @@ export default class Inspector extends Component {
                                 <MediaUpload
                                     onSelect={ this.onSelectImage }
                                     allowedTypes={ ALLOWED_MEDIA_TYPES }
-                                    value={ get( image, ['id'] ) }
+                                    value={ get( image, [ 'id' ] ) }
                                     render={ ( { open } ) => (
                                         <Button
                                             isDefault
@@ -630,7 +625,7 @@ export default class Inspector extends Component {
                         ! isEmpty( imageSizeOptions ) &&
                         <SelectControl
                             label={ __( "Image Size", "wpzoom-recipe-card" ) }
-                            value={ get( image, ['url'] ) }
+                            value={ get( image, [ 'url' ] ) }
                             options={ imageSizeOptions }
                             onChange={ this.onUpdateURL }
                         />
@@ -670,7 +665,7 @@ export default class Inspector extends Component {
                             </BaseControl>
                         </Fragment>
                     }
-                    {   
+                    {
                         !hide_header_image &&
                         pin_btn &&
                         'custom_image' === get( settingOptions, 'wpzoom_rcb_settings_pin_image' ) &&
@@ -681,7 +676,7 @@ export default class Inspector extends Component {
                             <MediaUpload
                                 onSelect={ this.onSelectPinImage }
                                 allowedTypes={ ALLOWED_MEDIA_TYPES }
-                                value={ get( pin_custom_image, ['id'] ) }
+                                value={ get( pin_custom_image, [ 'id' ] ) }
                                 render={ ( { open } ) => (
                                     <Button
                                         className={ pin_has_custom_image ? "editor-post-featured-image__preview" : "editor-post-featured-image__toggle" }
@@ -690,8 +685,8 @@ export default class Inspector extends Component {
                                         { pin_has_custom_image ?
                                             <img
                                                 className={ `${ id }-pinit-custom-image` }
-                                                src={ get( pin_custom_image, ['sizes', 'full', 'url'] ) || get( pin_custom_image, ['url'] ) }
-                                                alt={ get( pin_custom_image, ['alt'] ) || recipeTitle }
+                                                src={ get( pin_custom_image, [ 'sizes', 'full', 'url' ] ) || get( pin_custom_image, [ 'url' ] ) }
+                                                alt={ get( pin_custom_image, [ 'alt' ] ) || recipeTitle }
                                             />
                                             : __( "Add Pin custom image", "wpzoom-recipe-card" )
                                         }
@@ -758,8 +753,8 @@ export default class Inspector extends Component {
                         id={ `${ id }-primary-color` }
                         label={ __( "Primary Color", "wpzoom-recipe-card" ) }
                     >
-                        <ColorPalette 
-                            colors={ colors } 
+                        <ColorPalette
+                            colors={ colors }
                             value={ primary_color }
                             onChange={ color => this.onChangeSettings( color, 'primary_color' ) }
                         />
@@ -783,11 +778,15 @@ export default class Inspector extends Component {
                             </BaseControl>
                     }
                 </PanelBody>
-                <VideoUpload { ...{ attributes, setAttributes, className , clientId } } />
+                <VideoUpload
+                    hintLoading={ this.props.hintLoading }
+                    { ...{ attributes, setAttributes, className } }
+                />
                 <PanelBody className="wpzoom-recipe-card-seo-settings" initialOpen={ true } title={ __( "Recipe Card SEO Settings", "wpzoom-recipe-card" ) }>
                     <BaseControl
                         id={ `${ id }-course` }
                         label={ __( "Course (required)", "wpzoom-recipe-card" ) }
+                        help={ __( "The post category is added by default.", "wpzoom-recipe-card" ) }
                     >
                         <ToggleControl
                             label={ __( "Display Course", "wpzoom-recipe-card" ) }
@@ -795,19 +794,19 @@ export default class Inspector extends Component {
                             onChange={ display => this.onChangeSettings( display, 'displayCourse' ) }
                         />
                         {
-                            displayCourse && 
+                            displayCourse &&
                             '1' === get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
                             <PostTaxonomies
                                 taxonomies={ [ coursesTaxonomy ] }
                             />
                         }
                         {
-                            displayCourse && 
+                            displayCourse &&
                             '1' !== get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
-                            <FormTokenField 
+                            <FormTokenField
                                 label={ __( "Add course", "wpzoom-recipe-card" ) }
-                                value={ course } 
-                                suggestions={ coursesToken } 
+                                value={ course }
+                                suggestions={ coursesToken }
                                 onChange={ newCourse => setAttributes( { course: newCourse } ) }
                                 placeholder={ __( "Type course and press Enter", "wpzoom-recipe-card" ) }
                             />
@@ -823,19 +822,19 @@ export default class Inspector extends Component {
                             onChange={ display => this.onChangeSettings( display, 'displayCuisine' ) }
                         />
                         {
-                            displayCuisine && 
+                            displayCuisine &&
                             '1' === get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
                             <PostTaxonomies
                                 taxonomies={ [ cuisinesTaxonomy ] }
                             />
                         }
                         {
-                            displayCuisine && 
+                            displayCuisine &&
                             '1' !== get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
-                            <FormTokenField 
+                            <FormTokenField
                                 label={ __( "Add cuisine", "wpzoom-recipe-card" ) }
-                                value={ cuisine } 
-                                suggestions={ cuisinesToken } 
+                                value={ cuisine }
+                                suggestions={ cuisinesToken }
                                 onChange={ newCuisine => setAttributes( { cuisine: newCuisine } ) }
                                 placeholder={ __( "Type cuisine and press Enter", "wpzoom-recipe-card" ) }
                             />
@@ -851,19 +850,19 @@ export default class Inspector extends Component {
                             onChange={ display => this.onChangeSettings( display, 'displayDifficulty' ) }
                         />
                         {
-                            displayDifficulty && 
+                            displayDifficulty &&
                             '1' === get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
                             <PostTaxonomies
                                 taxonomies={ [ difficultiesTaxonomy ] }
                             />
                         }
                         {
-                            displayDifficulty && 
+                            displayDifficulty &&
                             '1' !== get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
-                            <FormTokenField 
+                            <FormTokenField
                                 label={ __( "Add difficulty level", "wpzoom-recipe-card" ) }
-                                value={ difficulty } 
-                                suggestions={ difficultyToken } 
+                                value={ difficulty }
+                                suggestions={ difficultyToken }
                                 onChange={ newDifficulty => setAttributes( { difficulty: newDifficulty } ) }
                                 placeholder={ __( "Type difficulty level and press Enter", "wpzoom-recipe-card" ) }
                             />
@@ -872,12 +871,12 @@ export default class Inspector extends Component {
                     <BaseControl
                         id={ `${ id }-keywords` }
                         label={ __( "Keywords (recommended)", "wpzoom-recipe-card" ) }
-                        help={ __( "For multiple keywords add `,` after each keyword (ex: keyword, keyword, keyword).", "wpzoom-recipe-card" ) }
+                        help={ __( "For multiple keywords add `,` after each keyword (ex: keyword, keyword, keyword). Note: The post tags is added by default.", "wpzoom-recipe-card" ) }
                     >
                         <FormTokenField
-                            label={ __( "Add keywords", "wpzoom-recipe-card" ) } 
-                            value={ keywords } 
-                            suggestions={ keywordsToken } 
+                            label={ __( "Add keywords", "wpzoom-recipe-card" ) }
+                            value={ keywords }
+                            suggestions={ keywordsToken }
                             onChange={ newKeyword => setAttributes( { keywords: newKeyword } ) }
                             placeholder={ __( "Type recipe keywords", "wpzoom-recipe-card" ) }
                         />
@@ -890,7 +889,7 @@ export default class Inspector extends Component {
                             status="info"
                             onRemove={ () => this.onChangeSettings( true, 'isNoticeDismiss', 1 ) }
                         >
-                            <p>{ __( "The following details are used for Schema Markup (Rich Snippets). If you want to hide some details in the post, just turn them off below.", "wpzoom-recipe-card") }</p>
+                            <p>{ __( "The following details are used for Schema Markup (Rich Snippets). If you want to hide some details in the post, just turn them off below.", "wpzoom-recipe-card" ) }</p>
                             <p><strong>{ __( "NEW: you can also add custom details (see next panel below).", "wpzoom-recipe-card" ) }</strong></p>
                         </Notice>
                     }
@@ -915,7 +914,7 @@ export default class Inspector extends Component {
                                     label={ __( "Servings Label", "wpzoom-recipe-card" ) }
                                     placeholder={ __( "Servings", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 0, 'label' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 0, 'label') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 0, 'label' ) }
                                 />
                                 <TextControl
                                     id={ `${ id }-yield-value` }
@@ -923,7 +922,7 @@ export default class Inspector extends Component {
                                     type="number"
                                     label={ __( "Servings Value", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 0, 'value' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 0, 'value') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 0, 'value' ) }
                                 />
                                 <TextControl
                                     id={ `${ id }-yield-unit` }
@@ -931,7 +930,7 @@ export default class Inspector extends Component {
                                     type="text"
                                     label={ __( "Servings Unit", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 0, 'unit' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 0, 'unit') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 0, 'unit' ) }
                                 />
                             </Fragment>
                         }
@@ -952,7 +951,7 @@ export default class Inspector extends Component {
                                     label={ __( "Prep Time Label", "wpzoom-recipe-card" ) }
                                     placeholder={ __( "Prep Time", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 1, 'label' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 1, 'label') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 1, 'label' ) }
                                 />
                                 <TextControl
                                     id={ `${ id }-preptime-value` }
@@ -960,7 +959,7 @@ export default class Inspector extends Component {
                                     type="number"
                                     label={ __( "Prep Time Value", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 1, 'value' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 1, 'value') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 1, 'value' ) }
                                 />
                                 <span>{ get( details, [ 1, 'unit' ] ) }</span>
                             </Fragment>
@@ -982,7 +981,7 @@ export default class Inspector extends Component {
                                     label={ __( "Cook Time Label", "wpzoom-recipe-card" ) }
                                     placeholder={ __( "Cooking Time", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 2, 'label' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 2, 'label') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 2, 'label' ) }
                                 />
                                 <TextControl
                                     id={ `${ id }-cookingtime-value` }
@@ -990,7 +989,7 @@ export default class Inspector extends Component {
                                     type="number"
                                     label={ __( "Cook Time Value", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 2, 'value' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 2, 'value') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 2, 'value' ) }
                                 />
                                 <span>{ get( details, [ 2, 'unit' ] ) }</span>
                             </Fragment>
@@ -1009,18 +1008,18 @@ export default class Inspector extends Component {
                                     id={ `${ id }-calories-label` }
                                     instanceId={ `${ id }-calories-label` }
                                     type="text"
-                                    label={ __( "Cook Time Label", "wpzoom-recipe-card" ) }
-                                    placeholder={ __( "Cooking Time", "wpzoom-recipe-card" ) }
+                                    label={ __( "Calories Label", "wpzoom-recipe-card" ) }
+                                    placeholder={ __( "Calories", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 3, 'label' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 3, 'label') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 3, 'label' ) }
                                 />
                                 <TextControl
                                     id={ `${ id }-calories-value` }
                                     instanceId={ `${ id }-calories-value` }
                                     type="number"
-                                    label={ __( "Cook Time Value", "wpzoom-recipe-card" ) }
+                                    label={ __( "Calories Value", "wpzoom-recipe-card" ) }
                                     value={ get( details, [ 3, 'value' ] ) }
-                                    onChange={ newValue => this.onChangeDetail(newValue, 3, 'value') }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 3, 'value' ) }
                                 />
                                 <span>{ get( details, [ 3, 'unit' ] ) }</span>
                             </Fragment>
@@ -1036,7 +1035,7 @@ export default class Inspector extends Component {
                             label={ __( "Custom Label 1", "wpzoom-recipe-card" ) }
                             placeholder={ __( "Resting Time", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 4, 'label' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 4, 'label') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 4, 'label' ) }
                         />
                         <TextControl
                             id={ `${ id }-custom-detail-1-value` }
@@ -1044,7 +1043,7 @@ export default class Inspector extends Component {
                             type="text"
                             label={ __( "Custom Value 1", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 4, 'value' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 4, 'value') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 4, 'value' ) }
                         />
                         <TextControl
                             id={ `${ id }-custom-detail-1-unit` }
@@ -1052,7 +1051,7 @@ export default class Inspector extends Component {
                             type="text"
                             label={ __( "Custom Unit 1", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 4, 'unit' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 4, 'unit') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 4, 'unit' ) }
                         />
                     </PanelRow>
                     <PanelRow>
@@ -1063,7 +1062,7 @@ export default class Inspector extends Component {
                             label={ __( "Custom Label 2", "wpzoom-recipe-card" ) }
                             placeholder={ __( "Baking Time", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 5, 'label' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 5, 'label') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 5, 'label' ) }
                         />
                         <TextControl
                             id={ `${ id }-custom-detail-2-value` }
@@ -1071,7 +1070,7 @@ export default class Inspector extends Component {
                             type="text"
                             label={ __( "Custom Value 2", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 5, 'value' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 5, 'value') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 5, 'value' ) }
                         />
                         <TextControl
                             id={ `${ id }-custom-detail-2-unit` }
@@ -1079,7 +1078,7 @@ export default class Inspector extends Component {
                             type="text"
                             label={ __( "Custom Unit 2", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 5, 'unit' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 5, 'unit') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 5, 'unit' ) }
                         />
                     </PanelRow>
                     <PanelRow>
@@ -1088,9 +1087,9 @@ export default class Inspector extends Component {
                             instanceId={ `${ id }-custom-detail-3-label` }
                             type="text"
                             label={ __( "Custom Label 3", "wpzoom-recipe-card" ) }
-                            placeholder={ __( "Total Time", "wpzoom-recipe-card" ) }
+                            placeholder={ __( "Serving Size", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 6, 'label' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 6, 'label') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 6, 'label' ) }
                         />
                         <TextControl
                             id={ `${ id }-custom-detail-3-value` }
@@ -1098,7 +1097,7 @@ export default class Inspector extends Component {
                             type="text"
                             label={ __( "Custom Value 3", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 6, 'value' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 6, 'value') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 6, 'value' ) }
                         />
                         <TextControl
                             id={ `${ id }-custom-detail-3-unit` }
@@ -1106,7 +1105,7 @@ export default class Inspector extends Component {
                             type="text"
                             label={ __( "Custom Unit 3", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 6, 'unit' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 6, 'unit') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 6, 'unit' ) }
                         />
                     </PanelRow>
                     <PanelRow>
@@ -1117,7 +1116,7 @@ export default class Inspector extends Component {
                             label={ __( "Custom Label 4", "wpzoom-recipe-card" ) }
                             placeholder={ __( "Net Carbs", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 7, 'label' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 7, 'label') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 7, 'label' ) }
                         />
                         <TextControl
                             id={ `${ id }-custom-detail-4-value` }
@@ -1125,7 +1124,7 @@ export default class Inspector extends Component {
                             type="text"
                             label={ __( "Custom Value 4", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 7, 'value' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 7, 'value') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 7, 'value' ) }
                         />
                         <TextControl
                             id={ `${ id }-custom-detail-4-unit` }
@@ -1133,7 +1132,7 @@ export default class Inspector extends Component {
                             type="text"
                             label={ __( "Custom Unit 4", "wpzoom-recipe-card" ) }
                             value={ get( details, [ 7, 'unit' ] ) }
-                            onChange={ newValue => this.onChangeDetail(newValue, 7, 'unit') }
+                            onChange={ newValue => this.onChangeDetail( newValue, 7, 'unit' ) }
                         />
                     </PanelRow>
                 </PanelBody>
@@ -1154,45 +1153,116 @@ export default class Inspector extends Component {
                                 <p>{ __( "We recommend to add value for following fields: ", "wpzoom-recipe-card" ) } <strong>{ this.warningDetails() }</strong>.</p>
                             </Notice>
                         }
-                        <PanelRow>
+                        {
+                            get( structuredDataNotice, 'not_display' ).length > 0 &&
+                            <Notice status="warning" isDismissible={ false }>
+                                <p>{ __( "We recommend to display following fields: ", "wpzoom-recipe-card" ) } <strong>{ this.notDisplayDetails() }</strong>.</p>
+                            </Notice>
+                        }
+                        <PanelRow className={ recipeTitle ? "text-color-green" : "text-color-red" }>
                             <span>recipeTitle</span>
-                            <strong>{ ! RichText.isEmpty( recipeTitle ) ? recipeTitle : postTitle }</strong>
+                            <strong>{ recipeTitle }</strong>
                         </PanelRow>
-                        <PanelRow className={ RichText.isEmpty( summary ) ? "text-color-orange": "" }>
+                        <PanelRow className={ RichText.isEmpty( summary ) ? "text-color-orange": "text-color-green" }>
                             <span>description</span>
-                            <strong>{ ! isUndefined( jsonSummary ) ? stripHTML( jsonSummary ) : __( "Not added", "wpzoom-recipe-card" ) }</strong>
+                            <strong>{ ! isUndefined( jsonSummary ) ? stripHTML( jsonSummary ) : NOT_ADDED }</strong>
                         </PanelRow>
-                        <PanelRow className={ ! hasImage ? "text-color-red": "" }>
+                        <PanelRow className={ ! hasImage ? "text-color-red": "text-color-green" }>
                             <span>image</span>
-                            <strong>{ hasImage ? get( image, 'url' ) : __( "Not added", "wpzoom-recipe-card" ) }</strong>
+                            <strong>{ hasImage ? get( image, 'url' ) : NOT_ADDED }</strong>
                         </PanelRow>
-                        <PanelRow className={ ! hasVideo ? "text-color-orange": "" }>
+                        <PanelRow className={ ! hasVideo ? "text-color-orange": "text-color-green" }>
                             <span>video</span>
-                            <strong>{ hasVideo ? get( video, 'url' ) : __( "Not added", "wpzoom-recipe-card" ) }</strong>
+                            <strong>{ hasVideo ? get( video, 'url' ) : NOT_ADDED }</strong>
                         </PanelRow>
-                        <PanelRow>
+                        <PanelRow className={ isEmpty( keywords ) ? "text-color-orange": "text-color-green" }>
+                            <span>keywords</span>
+                            <strong>{ ! isEmpty( keywords ) ? keywords.filter( ( item ) => item ).join( ", " ) : NOT_ADDED }</strong>
+                        </PanelRow>
+                        <PanelRow className={ ! displayCourse || isEmpty( course ) ? "text-color-orange": "text-color-green" }>
+                            <span>recipeCategory</span>
+                            {
+                                displayCourse &&
+                                <strong>{ ! isEmpty( course ) ? course.filter( ( item ) => item ).join( ", " ) : NOT_ADDED }</strong>
+                            }
+                            {
+                                ! displayCourse &&
+                                <strong>{ NOT_DISPLAYED }</strong>
+                            }
+                        </PanelRow>
+                        <PanelRow className={ ! displayCuisine || isEmpty( cuisine ) ? "text-color-orange": "text-color-green" }>
+                            <span>recipeCuisine</span>
+                            {
+                                displayCuisine &&
+                                <strong>{ ! isEmpty( cuisine ) ? cuisine.filter( ( item ) => item ).join( ", " ) : NOT_ADDED }</strong>
+                            }
+                            {
+                                ! displayCuisine &&
+                                <strong>{ NOT_DISPLAYED }</strong>
+                            }
+                        </PanelRow>
+                        <PanelRow className={ displayServings && get( details, [ 0, 'value' ] ) && "text-color-green" }>
                             <span>recipeYield</span>
-                            <strong>{ get( details, [ 0, 'value' ] ) ? get( details, [ 0, 'value' ] ) + ' ' + get( details, [ 0, 'unit' ] ) : '0 ' + get( details, [ 0, 'unit' ] ) }</strong>
+                            {
+                                displayServings &&
+                                <strong>{ get( details, [ 0, 'value' ] ) ? get( details, [ 0, 'value' ] ) + ' ' + get( details, [ 0, 'unit' ] ) : NOT_ADDED }</strong>
+                            }
+                            {
+                                ! displayServings &&
+                                <strong>{ NOT_DISPLAYED }</strong>
+                            }
                         </PanelRow>
-                        <PanelRow className={ ! get( details, [ 1, 'value' ] ) ? "text-color-orange": "" }>
+                        <PanelRow className={ ! displayPrepTime || ! get( details, [ 1, 'value' ] ) ? "text-color-orange": "text-color-green" }>
                             <span>prepTime</span>
-                            <strong><strong>{ get( details, [ 1, 'value' ] ) ? get( details, [ 1, 'value' ] ) + ' ' + get( details, [ 1, 'unit' ] ) : '0 ' + get( details, [ 1, 'unit' ] ) }</strong></strong>
+                            {
+                                displayPrepTime &&
+                                <strong>{ get( details, [ 1, 'value' ] ) ? convertMinutesToHours( get( details, [ 1, 'value' ] ) ) : NOT_ADDED }</strong>
+                            }
+                            {
+                                ! displayPrepTime &&
+                                <strong>{ NOT_DISPLAYED }</strong>
+                            }
                         </PanelRow>
-                        <PanelRow className={ ! get( details, [ 2, 'value' ] ) ? "text-color-orange": "" }>
+                        <PanelRow className={ ! displayCookingTime || ! get( details, [ 2, 'value' ] ) ? "text-color-orange": "text-color-green" }>
                             <span>cookTime</span>
-                            <strong>{ get( details, [ 2, 'value' ] ) ? get( details, [ 2, 'value' ] ) + ' ' + get( details, [ 2, 'unit' ] ) : '0 ' + get( details, [ 2, 'unit' ] ) }</strong>
+                            {
+                                displayCookingTime &&
+                                <strong>{ get( details, [ 2, 'value' ] ) ? convertMinutesToHours( get( details, [ 2, 'value' ] ) ) : NOT_ADDED }</strong>
+                            }
+                            {
+                                ! displayCookingTime &&
+                                <strong>{ NOT_DISPLAYED }</strong>
+                            }
                         </PanelRow>
-                        <PanelRow className={ ! get( details, [ 3, 'value' ] ) ? "text-color-orange": "" }>
+                        <PanelRow className={ displayTotalTime && get( details, [ 8, 'value' ] ) && "text-color-green" }>
+                            <span>totalTime</span>
+                            {
+                                displayTotalTime &&
+                                <strong>{ get( details, [ 8, 'value' ] ) ? convertMinutesToHours( get( details, [ 8, 'value' ] ) ) : NOT_ADDED }</strong>
+                            }
+                            {
+                                ! displayTotalTime &&
+                                <strong>{ NOT_DISPLAYED }</strong>
+                            }
+                        </PanelRow>
+                        <PanelRow className={ ! displayCalories || ! get( details, [ 3, 'value' ] ) ? "text-color-orange": "text-color-green" }>
                             <span>calories</span>
-                            <strong>{ get( details, [ 3, 'value' ] ) ? get( details, [ 3, 'value' ] ) + ' ' + get( details, [ 3, 'unit' ] ) : '0 ' + get( details, [ 3, 'unit' ] ) }</strong>
+                            {
+                                displayCalories &&
+                                <strong>{ get( details, [ 3, 'value' ] ) ? get( details, [ 3, 'value' ] ) + ' ' + get( details, [ 3, 'unit' ] ) : NOT_ADDED }</strong>
+                            }
+                            {
+                                ! displayCalories &&
+                                <strong>{ NOT_DISPLAYED }</strong>
+                            }
                         </PanelRow>
-                        <PanelRow className={ ! get( structuredDataTable, 'recipeIngredients' ) ? "text-color-red": "" }>
+                        <PanelRow className={ ! get( structuredDataTable, 'recipeIngredients' ) ? "text-color-red": "text-color-green" }>
                             <span>{ __( "Ingredients", "wpzoom-recipe-card" ) }</span>
-                            <strong>{ get( structuredDataTable, 'recipeIngredients' ) }</strong>
+                            <strong>{ get( structuredDataTable, 'recipeIngredients' ) ? get( structuredDataTable, 'recipeIngredients' ) : NOT_ADDED }</strong>
                         </PanelRow>
-                        <PanelRow className={ ! get( structuredDataTable, 'recipeInstructions' ) ? "text-color-red" : "" }>
+                        <PanelRow className={ ! get( structuredDataTable, 'recipeInstructions' ) ? "text-color-red" : "text-color-green" }>
                             <span>{ __( "Steps", "wpzoom-recipe-card" ) }</span>
-                            <strong>{ get( structuredDataTable, 'recipeInstructions' ) }</strong>
+                            <strong>{ get( structuredDataTable, 'recipeInstructions' ) ? get( structuredDataTable, 'recipeInstructions' ) : NOT_ADDED }</strong>
                         </PanelRow>
                     </BaseControl>
                 </PanelBody>
@@ -1200,88 +1270,3 @@ export default class Inspector extends Component {
         );
     }
 }
-
-const applyWithSelect = withSelect( ( select, props ) => {
-    const {
-        attributes: {
-            image,
-            hasImage
-        }
-    } = props;
-    
-    const {
-        getMedia,
-        getTaxonomy,
-        getPostType
-    } = select( 'core' );
-
-    const {
-        getEditedPostAttribute,
-        getEditorSettings
-    } = select( 'core/editor' );
-
-    const {
-        maxWidth,
-        isRTL,
-        imageSizes
-    } = getEditorSettings();
-
-    const {
-        license_status,
-        setting_options
-    } = wpzoomRecipeCard;
-
-    const postType = getPostType( getEditedPostAttribute( 'type' ) );
-    const postTitle = getEditedPostAttribute( 'title' );
-    const featuredImageId = getEditedPostAttribute( 'featured_media' );
-
-    let id = 0;
-    let coursesTaxonomy = {};
-    let cuisinesTaxonomy = {};
-    let difficultiesTaxonomy = {};
-
-    if ( hasImage ) {
-        id = get( image, ['id'] ) || 0;
-    } else {
-        id = featuredImageId;
-    }
-
-    if ( 'valid' === license_status ) {
-        if ( '1' === setting_options['wpzoom_rcb_settings_course_taxonomy'] ) {
-            coursesTaxonomy = getTaxonomy( 'wpzoom_rcb_courses' );
-            if ( !isUndefined( coursesTaxonomy ) ) {
-                coursesTaxonomy['visibility']['custom_show_ui'] = true;
-            }
-        }
-        if ( '1' === setting_options['wpzoom_rcb_settings_cuisine_taxonomy'] ) {
-            cuisinesTaxonomy = getTaxonomy( 'wpzoom_rcb_cuisines' );
-            if ( !isUndefined( cuisinesTaxonomy ) ) {
-                cuisinesTaxonomy['visibility']['custom_show_ui'] = true;
-            }
-        }
-        if ( '1' === setting_options['wpzoom_rcb_settings_difficulty_taxonomy'] ) {
-            difficultiesTaxonomy = getTaxonomy( 'wpzoom_rcb_difficulties' );
-            if ( !isUndefined( difficultiesTaxonomy ) ) {
-                difficultiesTaxonomy['visibility']['custom_show_ui'] = true;
-            }
-        }
-    }
-
-    return {
-        media: id ? getMedia( id ) : false,
-        imageSizes,
-        maxWidth,
-        isRTL,
-        postTitle,
-        postType,
-        settingOptions: setting_options,
-        licenseStatus: license_status,
-        coursesTaxonomy,
-        cuisinesTaxonomy,
-        difficultiesTaxonomy,
-    };
-} );
-
-export default compose(
-    applyWithSelect
-)( Inspector );

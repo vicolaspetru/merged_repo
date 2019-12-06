@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { __, _x, sprintf } from "@wordpress/i18n";
 import escapeString from 'lodash/escape';
 import find from 'lodash/find';
 import get from 'lodash/get';
@@ -14,7 +15,6 @@ import uniqBy from 'lodash/uniqBy';
 /**
  * WordPress dependencies
  */
-const { __, _x, sprintf } = wp.i18n;
 const { Component } = wp.element;
 const { withSelect, withDispatch } = wp.data;
 const { compose } = wp.compose;
