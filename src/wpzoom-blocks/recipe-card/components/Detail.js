@@ -74,9 +74,8 @@ export default class Detail extends Component {
 
         // Rebuild the item with the newly made changes.
         details[ index ] = {
-            id: details[ index ].id,
+            ...details[ index ],
             icon: newIcon,
-            iconSet: details[ index ].iconSet,
             label: newLabel,
             value: newValue,
             unit: newUnit,
@@ -224,7 +223,7 @@ export default class Detail extends Component {
     /**
      * Set a reference to the specified detail
      *
-     * @param {number} detailIndex  Index of the step that should be moved.
+     * @param {number} detailIndex  Index of the detail that should be moved.
      * @param {string} part         The part to set a reference too.
      * @param {object} ref          The reference object.
      *
@@ -249,7 +248,8 @@ export default class Detail extends Component {
                         displayServings,
                         displayPrepTime,
                         displayCalories,
-                        displayCookingTime
+                        displayCookingTime,
+                        displayTotalTime
                     }
                 }
             }
@@ -268,6 +268,7 @@ export default class Detail extends Component {
             if ( 0 === index && displayServings ||
                 1 === index && displayPrepTime ||
                 2 === index && displayCookingTime ||
+                8 === index && displayTotalTime ||
                 3 === index && displayCalories ||
                 4 === index && label ||
                 5 === index && label ||

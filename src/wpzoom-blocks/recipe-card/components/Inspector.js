@@ -612,7 +612,7 @@ export default class Inspector extends Component {
                                             isLarge
                                             onClick={ open }
                                         >
-                                            {__( "Replace Image", "wpzoom-recipe-card" ) }
+                                            { __( "Replace Image", "wpzoom-recipe-card" ) }
                                         </Button>
                                     ) }
                                 />
@@ -992,6 +992,44 @@ export default class Inspector extends Component {
                                     onChange={ newValue => this.onChangeDetail( newValue, 2, 'value' ) }
                                 />
                                 <span>{ get( details, [ 2, 'unit' ] ) }</span>
+                            </Fragment>
+                        }
+                    </PanelRow>
+                    <ToggleControl
+                        label={ __( "Display Total Time", "wpzoom-recipe-card" ) }
+                        checked={ displayTotalTime }
+                        onChange={ display => this.onChangeSettings( display, 'displayTotalTime' ) }
+                    />
+                    <PanelRow>
+                        {
+                            displayTotalTime &&
+                            <Fragment>
+                                <TextControl
+                                    id={ `${ id }-totaltime-label` }
+                                    instanceId={ `${ id }-totaltime-label` }
+                                    type="text"
+                                    label={ __( "Total Time Label", "wpzoom-recipe-card" ) }
+                                    placeholder={ __( "Total Time", "wpzoom-recipe-card" ) }
+                                    value={ get( details, [ 8, 'label' ] ) }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 8, 'label' ) }
+                                />
+                                <TextControl
+                                    id={ `${ id }-totaltime-value` }
+                                    instanceId={ `${ id }-totaltime-value` }
+                                    type="number"
+                                    label={ __( "Total Time Value", "wpzoom-recipe-card" ) }
+                                    value={ get( details, [ 8, 'value' ] ) }
+                                    onChange={ newValue => this.onChangeDetail( newValue, 8, 'value' ) }
+                                />
+                                <span>{ get( details, [ 8, 'unit' ] ) }</span>
+                                <Button
+                                    isDefault
+                                    className="editor-calculate-total-time"
+                                    onClick={ () => this.setState( { isCalculatedTotalTime: false, isCalculateBtnClick: true } ) }
+                                >
+                                    { __( "Calculate Total Time", "wpzoom-recipe-card" ) }
+                                </Button>
+                                <p className="description">{ __( "Default value: prepTime + cookTime", "wpzoom-recipe-card" ) }</p>
                             </Fragment>
                         }
                     </PanelRow>

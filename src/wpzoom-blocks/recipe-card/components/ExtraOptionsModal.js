@@ -214,8 +214,16 @@ function ExtraOptionsModal(
     if ( ! isDataSet ) {
         ingredients ?
             ingredients.map( ( item ) => {
-                const isGroup = !isUndefined( item.isGroup ) ? item.isGroup : false;
-                _ingredients += parseValue( item.name, isGroup );
+                const amount = get( item, [ 'parse', 'amount' ] ) || '';
+                const unit = get( item, [ 'parse', 'unit' ] ) || '';
+                const name = get( item, 'name' ) || get( item, [ 'parse', 'ingredient' ] );
+                const isGroup = get( item, 'isGroup' ) || false;
+
+                if ( ! isGroup && ( amount || unit ) ) {
+                    _ingredients += `${ amount }${ unit } `;
+                }
+
+                _ingredients += parseValue( name, isGroup );
             } )
             : null;
 

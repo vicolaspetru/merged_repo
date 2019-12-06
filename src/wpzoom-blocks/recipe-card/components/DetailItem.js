@@ -5,7 +5,7 @@ import isShallowEqual from "@wordpress/is-shallow-equal/objects";
 import isUndefined from "lodash/isUndefined";
 import get from "lodash/get";
 
-/* External dependencies */
+/* Internal dependencies */
 import IconsModal from "./IconsModal";
 
 /* WordPress dependencies */
@@ -132,7 +132,6 @@ export default class DetailItem extends Component {
         );
     }
 
-
     /**
      * The predefined text for items.
      *
@@ -185,7 +184,7 @@ export default class DetailItem extends Component {
         const {
             id,
             icon,
-            value,
+            value
         } = item;
 
         return (

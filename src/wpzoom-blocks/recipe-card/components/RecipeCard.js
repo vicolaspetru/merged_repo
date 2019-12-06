@@ -1,4 +1,5 @@
 /* External dependencies */
+import { __ } from "@wordpress/i18n";
 import get from "lodash/get";
 import map from "lodash/map";
 import isEmpty from "lodash/isEmpty";
@@ -7,20 +8,18 @@ import invoke from "lodash/invoke";
 import isUndefined from "lodash/isUndefined";
 import ReactPlayer from "react-player";
 
+/* Internal dependencies */
 import Detail from "./Detail";
 import Ingredient from "./Ingredient";
 import Direction from "./Direction";
 import CallToAction from "./CTA";
 import Inspector from "./Inspector";
 import ExtraOptionsModal from "./ExtraOptionsModal";
-
-/* Internal dependencies */
 import { stripHTML } from "../../../helpers/stringHelpers";
 import { pickRelevantMediaFiles } from "../../../helpers/pickRelevantMediaFiles";
 import { getBlockStyle } from "../../../helpers/getBlockStyle";
 
 /* WordPress dependencies */
-const { __ } = wp.i18n;
 const { Component, renderToString, Fragment } = wp.element;
 const {
     Button,
@@ -31,8 +30,8 @@ const {
 
 const {
     RichText,
+    BlockControls,
     MediaUpload,
-    BlockControls
 } = wp.blockEditor;
 
 const { withSelect } = wp.data;
@@ -40,7 +39,9 @@ const { compose } = wp.compose;
 const { apiFetch } = wp;
 const { addQueryArgs } = wp.url;
 
-/* Module constants */
+/**
+ * Module Constants
+ */
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 const DEFAULT_QUERY = {
     per_page: -1,
@@ -57,7 +58,6 @@ import '../editor.scss';
  * A Recipe Card block.
  */
 class RecipeCard extends Component {
-
     /**
      * Constructs a Recipe Card editor component.
      *
@@ -134,6 +134,7 @@ class RecipeCard extends Component {
 
     fetchTerms( taxonomy ) {
         if ( isEmpty( taxonomy ) ) {
+            this.setState( { isLoading: false } );
             return;
         }
         this.fetchRequest = apiFetch( {
@@ -278,7 +279,7 @@ class RecipeCard extends Component {
      *
      * @returns {string} Returns the unique ID.
      */
-    static generateId( prefix = '' ) {
+    generateId( prefix = '' ) {
         return prefix !== '' ? uniqueId( `${ prefix }-${ new Date().getTime() }` ) : uniqueId( new Date().getTime() );
     }
 

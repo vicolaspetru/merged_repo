@@ -162,18 +162,18 @@ export default class DirectionStep extends Component {
         return <div className="direction-step-button-container">
             { this.getMover() }
             { ! isGroup &&
-            <MediaUpload
-                onSelect={ this.onSelectImage }
-                allowedTypes={ ALLOWED_MEDIA_TYPES }
-                value={ id }
-                render={ ( { open } ) => (
-                    <IconButton
-                        className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
-                        icon="format-image"
-                        onClick={ open }
-                    />
-                ) }
-            />
+                <MediaUpload
+                    onSelect={ this.onSelectImage }
+                    allowedTypes={ ALLOWED_MEDIA_TYPES }
+                    value={ id }
+                    render={ ( { open } ) => (
+                        <IconButton
+                            className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
+                            icon="format-image"
+                            onClick={ open }
+                        />
+                    ) }
+                />
             }
             <IconButton
                 className="direction-step-button direction-step-button-delete editor-inserter__toggle"

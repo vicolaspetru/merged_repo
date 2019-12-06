@@ -35,11 +35,9 @@ export default class Ingredient extends Component {
     constructor( props ) {
         super( props );
 
-        this.state = {
-            focus: ""
-        };
+        this.state = { focus: "" };
 
-        this.changeName = this.changeName.bind( this );
+        this.changeItem = this.changeItem.bind( this );
         this.changeAmount = this.changeAmount.bind( this );
         this.changeUnit = this.changeUnit.bind( this );
         this.insertItem = this.insertItem.bind( this );
@@ -70,7 +68,7 @@ export default class Ingredient extends Component {
      *
      * @returns {void}
      */
-    changeName( newName, previousName, index, group = false ) {
+    changeItem( newName, previousName, index, group = false ) {
         const ingredients = this.props.attributes.ingredients ? this.props.attributes.ingredients.slice() : [];
 
         // If the index exceeds the number of ingredients, don't change anything.
@@ -79,12 +77,12 @@ export default class Ingredient extends Component {
         }
 
         /*
-         * Because the DOM re-uses input elements, the changeName function was triggered when removing/inserting/swapping
-         * input elements. We need to check for such events, and return early if the changeName was called without any
+         * Because the DOM re-uses input elements, the changeItem function was triggered when removing/inserting/swapping
+         * input elements. We need to check for such events, and return early if the changeItem was called without any
          * user changes to the input field, but because the underlying input elements moved around in the DOM.
          *
          * In essence, when the name at the current index does not match the name that was in the input field previously,
-         * the changeName was triggered by input fields moving in the DOM.
+         * the changeItem was triggered by input fields moving in the DOM.
          */
         if ( ingredients[ index ].name !== previousName ) {
             return;
@@ -93,11 +91,10 @@ export default class Ingredient extends Component {
         // Rebuild the item with the newly made changes.
         ingredients[ index ] = {
             ...ingredients[ index ],
-            id: ingredients[ index ].id,
             name: newName,
             jsonName: stripHTML( renderToString( newName ) ),
             isGroup: group
-        };
+        }
 
         this.props.setAttributes( { ingredients } );
     }
@@ -136,7 +133,7 @@ export default class Ingredient extends Component {
 
         if ( focus ) {
             setTimeout( this.setFocus.bind( this, `${ index + 1 }:name` ) );
-            // When moving focus to a newly created step, return and don't use the speak() messaage.
+            // When moving focus to a newly created ingredient, return and don't use the speak() messaage.
             return;
         }
 
@@ -418,7 +415,7 @@ export default class Ingredient extends Component {
     /**
      * Sets the focus to an element within the specified ingredient.
      *
-     * @param {number} ingredientIndex      Index of the step to focus.
+     * @param {number} ingredientIndex      Index of the ingredient to focus.
      * @param {string} elementToFocus       Name of the element to focus.
      *
      * @returns {void}
@@ -430,7 +427,7 @@ export default class Ingredient extends Component {
     /**
      * Sets the focus to ingredient title.
      *
-     * @param {number} ingredientIndex      Index of the step to focus.
+     * @param {number} ingredientIndex      Index of the ingredient to focus.
      * @param {string} elementToFocus       Name of the element to focus.
      *
      * @returns {void}
@@ -451,9 +448,9 @@ export default class Ingredient extends Component {
     }
 
     /**
-     * Move the step at the specified index one step up.
+     * Move the ingredient at the specified index one ingredient up.
      *
-     * @param {number} ingredientIndex Index of the step that should be moved.
+     * @param {number} ingredientIndex Index of the ingredient that should be moved.
      *
      * @returns {void}
      */
@@ -462,9 +459,9 @@ export default class Ingredient extends Component {
     }
 
     /**
-     * Move the step at the specified index one step down.
+     * Move the ingredient at the specified index one ingredient down.
      *
-     * @param {number} ingredientIndex Index of the step that should be moved.
+     * @param {number} ingredientIndex Index of the ingredient that should be moved.
      *
      * @returns {void}
      */
@@ -473,9 +470,9 @@ export default class Ingredient extends Component {
     }
 
     /**
-     * Set a reference to the specified step
+     * Set a reference to the specified ingredient
      *
-     * @param {number} ingredientIndex Index of the step that should be moved.
+     * @param {number} ingredientIndex Index of the ingredient that should be moved.
      * @param {string} part      The part to set a reference too.
      * @param {object} ref       The reference object.
      *
@@ -518,7 +515,7 @@ export default class Ingredient extends Component {
                     item={ item }
                     index={ index }
                     editorRef={ this.setIngredientRef }
-                    onChange={ this.changeName }
+                    onChange={ this.changeItem }
                     onParseItem={ this.setAmountUnitName }
                     onChangeAmount={ this.changeAmount }
                     onChangeUnit={ this.changeUnit }
