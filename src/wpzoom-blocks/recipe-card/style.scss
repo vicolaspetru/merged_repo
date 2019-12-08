@@ -75,7 +75,6 @@
             .adjustable-quantity {
                 position: relative;
                 vertical-align: middle;
-                width: 45%;
 
                 + .detail-item-unit {
                     vertical-align: middle;
@@ -132,7 +131,7 @@
 		.ingredients-list {
 			margin: 0;
 			padding: 0;
-            
+
             .ingredient-item-name {
                 padding-left: 30px;
             }
@@ -151,7 +150,7 @@
 	.recipe-card-directions + .footer-copyright {
         margin-top: 30px;
     }
-    
+
     .recipe-card-directions .directions-list .direction-step-group {
     	counter-reset: count;
     	&::before {
