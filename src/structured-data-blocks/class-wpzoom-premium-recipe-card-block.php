@@ -769,7 +769,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		    ),
 		    array(
 		        'id' 		=> self::$helpers->generateId( "detail-item" ),
-		        'iconSet' 	=> 'far',
+		        'iconSet' 	=> 'fa',
+		        '_prefix' 	=> 'far',
 		        'icon' 		=> 'clock',
 		    ),
 		    array(
@@ -784,12 +785,14 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		    ),
 		    array(
 		        'id' 		=> self::$helpers->generateId( "detail-item" ),
-		        'iconSet' 	=> 'fas',
+		        'iconSet' 	=> 'fa',
+		        '_prefix' 	=> 'fas',
 		        'icon' 		=> 'sort-amount-down',
 		    ),
 		    array(
 		        'id' 		=> self::$helpers->generateId( "detail-item" ),
-		        'iconSet' 	=> 'far',
+		        'iconSet' 	=> 'fa',
+		        '_prefix' 	=> 'far',
 		        'icon' 		=> 'clock',
 		        'label' 	=> __( "Total time", "wpzoom-recipe-card" ),
 		        'unit' 		=> __( "minutes", "wpzoom-recipe-card" ),
