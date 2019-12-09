@@ -500,6 +500,19 @@ class WPZOOM_Settings {
 								)
 							),
 							array(
+								'id' 		=> 'wpzoom_rcb_settings_enable_adjustable_servings',
+								'title' 	=> __( 'Enable Adjustable Servings', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_enable_adjustable_servings',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Enable adjustable servings by default', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'bottom',
+								)
+							),
+							array(
 								'id' 		=> 'wpzoom_rcb_settings_display_preptime',
 								'title' 	=> __( 'Display Preparation Time', 'wpzoom-recipe-card' ),
 								'type'		=> 'checkbox',
@@ -522,6 +535,19 @@ class WPZOOM_Settings {
 									'description' 	=> esc_html__( 'Show cooking time by default', 'wpzoom-recipe-card' ),
 									'default'		=> true,
                                     'preview'       => true,
+                                    'preview_pos'	=> 'top',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_display_totaltime',
+								'title' 	=> __( 'Display Total Time', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_display_totaltime',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Show total time by default', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+                                    'preview'       => false,
                                     'preview_pos'	=> 'top',
 								)
 							),
