@@ -2,7 +2,7 @@
 Tags: gutenberg, food recipe, blocks, recipe, card, food, directions, ingredients, recipe card
 Requires at least: 5.0
 Requires PHP: 5.6
-Tested up to: 5.2.3
+Tested up to: 5.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -62,6 +62,10 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 
 == Changelog ==
+
+= 2.5.3 =
+* Added support for more ingredients units in the Bulk Add
+* Minor fixes in the responsive design
 
 = 2.5.2 =
 * Fixed Pinterest custom image size issue
