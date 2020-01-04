@@ -5,7 +5,7 @@
  * Add rating stars to recipe card.
  *
  * @since   1.1.0
- * @package WPZOOM_Recipe_Card_Block
+ * @package WPZOOM_Recipe_Card_Blocks
  */
 
 // Exit if accessed directly.
@@ -215,7 +215,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			$data_user_can_rate = 'data-user-can-rate="1"';
 
 			for ( $i = 1; $i <= 5; $i++ ) {
-				$rating_stars_items .= '<li class="fa fa-star-o"></li>';
+				$rating_stars_items .= '<li class="fas fa-star"></li>';
 			}
 
 			// Get the average vote number and check if user has voted for this post

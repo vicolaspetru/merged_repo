@@ -3,7 +3,7 @@
  * Register the recipe taxonomies.
  *
  * @since   1.2.0
- * @package WPZOOM_Recipe_Card_Block
+ * @package WPZOOM_Recipe_Card_Blocks
  */
 
 /**

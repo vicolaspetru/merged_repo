@@ -183,6 +183,11 @@ div.wp-tab-panel-inactive {
 	font-size: 16px;
 	padding-top: 0;
 }
+.toplevel_page_wpzoom-recipe-card-settings .wpzoom-rcb-field-delimiter th,
+.toplevel_page_wpzoom-recipe-card-settings .wpzoom-rcb-field-delimiter td {
+	padding: 1px;
+	border-top: 2px dashed #dddddd;
+}
 
 .toplevel_page_wpzoom-recipe-card-settings .wpzoom-rcb-field-preview {
     line-height: inherit;
