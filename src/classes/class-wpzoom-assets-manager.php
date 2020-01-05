@@ -5,7 +5,7 @@
  * Enqueue CSS/JS of all the blocks.
  *
  * @since   1.1.0
- * @package WPZOOM_Recipe_Card_Block
+ * @package WPZOOM_Recipe_Card_Blocks
  */
 
 // Exit if accessed directly.
@@ -218,7 +218,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		 *
 		 * @since 1.1.0
 		 */
-
         public function editor_assets() {
             global $post;
 

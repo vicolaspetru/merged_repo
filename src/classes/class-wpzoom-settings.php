@@ -3,7 +3,7 @@
  * Class Settings Page
  *
  * @since   1.1.0
- * @package WPZOOM_Recipe_Card_Block
+ * @package WPZOOM_Recipe_Card_Blocks
  */
 
 // Exit if accessed directly.
@@ -34,7 +34,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Store all settings options.
-	 * 
+	 *
 	 * @static
 	 */
 	public static $settings = array();
@@ -500,6 +500,19 @@ class WPZOOM_Settings {
 								)
 							),
 							array(
+								'id' 		=> 'wpzoom_rcb_settings_enable_adjustable_servings',
+								'title' 	=> __( 'Enable Adjustable Servings', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_enable_adjustable_servings',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Enable adjustable servings by default', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'bottom',
+								)
+							),
+							array(
 								'id' 		=> 'wpzoom_rcb_settings_display_preptime',
 								'title' 	=> __( 'Display Preparation Time', 'wpzoom-recipe-card' ),
 								'type'		=> 'checkbox',
@@ -522,6 +535,19 @@ class WPZOOM_Settings {
 									'description' 	=> esc_html__( 'Show cooking time by default', 'wpzoom-recipe-card' ),
 									'default'		=> true,
                                     'preview'       => true,
+                                    'preview_pos'	=> 'top',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_display_totaltime',
+								'title' 	=> __( 'Display Total Time', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_display_totaltime',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Show total time by default', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+                                    'preview'       => false,
                                     'preview_pos'	=> 'top',
 								)
 							),
@@ -660,7 +686,7 @@ class WPZOOM_Settings {
 							),
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_cta_add_nofollow',
-								'title' 	=> __( 'Add nofollow attribute to links', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Add "nofollow" attribute to links', 'wpzoom-recipe-card' ),
 								'type'		=> 'checkbox',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_cta_add_nofollow',
@@ -684,7 +710,7 @@ class WPZOOM_Settings {
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_instagram_cta_profile',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Do not include &#64; to your Instagram username.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Do not include &#64; in your Instagram username.', 'wpzoom-recipe-card' ),
 									'default'		=> '',
 									'type'			=> 'text'
 								)
@@ -1368,7 +1394,7 @@ class WPZOOM_Settings {
 	        return;
 	    }
 
-	    // Add the color picker css file       
+	    // Add the color picker css file
         wp_enqueue_style( 'wp-color-picker' );
 
 	    wp_enqueue_style(
@@ -1730,7 +1756,7 @@ class WPZOOM_Settings {
 
 	/**
 	 * Reset all ratings
-	 * 
+	 *
 	 * @since 2.3.2
 	 * @return void
 	 */
@@ -1746,7 +1772,7 @@ class WPZOOM_Settings {
 			);
 
 			wp_send_json_success( $response );
-			
+
 		}
 	}
 
@@ -1764,7 +1790,7 @@ class WPZOOM_Settings {
 			 	'status' => '200',
 			 	'message' => 'OK',
 			);
-			
+
 			wp_send_json_success( $response );
 		}
 		else {
@@ -1772,7 +1798,7 @@ class WPZOOM_Settings {
 			 	'status' => '304',
 			 	'message' => 'NOT',
 			);
-			
+
 			wp_send_json_error( $response );
 		}
 	}
@@ -1851,7 +1877,7 @@ class WPZOOM_Settings {
 
 	public function section_recipe_call_to_action_cb( $args ) {
 	?>
-	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Add Instagram and Pinterest CTA (call to action) on Recipe Card footer.', 'wpzoom-recipe-card' ) ?></p>
+	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Add Instagram and/or Pinterest CTA (call to action) in Recipe Card footer.', 'wpzoom-recipe-card' ) ?></p>
 	<?php
 	}
 
