@@ -47,7 +47,7 @@ class WPZOOM_Jump_To_Recipe_Block {
 		$attributes = array(
 			'id' => array(
 			    'type' => 'string',
-			    'default' => 'wpzoom-recipe-card'
+			    'default' => 'wpzoom-premium-recipe-card'
 			),
 			'text' => array(
 				'type' => 'string',
