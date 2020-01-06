@@ -63,6 +63,11 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.6.0 =
+* Added Instagram & Pinterest call to actions in the footer of the recipe card (see details in the Settings page)
+* Added new detail: Total Time
+* Multiple bug fixes & improvements
+
 = 2.5.3 =
 * Added support for more ingredients units in the Bulk Add
 * Minor fixes in the responsive design
