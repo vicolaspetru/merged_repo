@@ -64,7 +64,7 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 == Changelog ==
 
 = 2.6.1 =
-* Fixed issue with the ingredients amount & unit to be visible in Rich Snippets
+* Fixed issue with the ingredients amount & unit to be visible in Structured Data
 
 = 2.6.0 =
 * Added Instagram & Pinterest call to actions in the footer of the recipe card (see details in the Settings page)
