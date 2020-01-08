@@ -25,10 +25,18 @@ class WPZOOM_Structured_Data_Helpers {
 	public function get_ingredient_json_ld( array $ingredient ) {
 		$ingredient_json_ld = '';
 
+		if ( isset( $ingredient['parse']['amount'] ) ) {
+			$ingredient_json_ld .= trim( $ingredient['parse']['amount'] ) .' ';
+		}
+
+		if ( isset( $ingredient['parse']['unit'] ) ) {
+			$ingredient_json_ld .= trim( $ingredient['parse']['unit'] ) .' ';
+		}
+
 		if ( ! empty( $ingredient['jsonName'] ) ) {
-			$ingredient_json_ld = $ingredient['jsonName'];
+			$ingredient_json_ld .= trim( $ingredient['jsonName'] );
 		} else {
-			$ingredient_json_ld = $this->ingredient_name_to_JSON( $ingredient['name'] );
+			$ingredient_json_ld .= trim( $this->ingredient_name_to_JSON( $ingredient['name'] ) );
 		}
 
 		return $ingredient_json_ld;

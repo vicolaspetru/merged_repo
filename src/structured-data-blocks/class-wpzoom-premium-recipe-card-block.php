@@ -719,14 +719,22 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		if ( ! empty( $attributes['ingredients'] ) && is_array( $attributes['ingredients'] ) ) {
 			$ingredients = array_filter( $attributes['ingredients'], 'is_array' );
 			foreach ( $ingredients as $ingredient ) {
-				$json_ld['recipeIngredient'][] = $this->structured_data_helpers->get_ingredient_json_ld( $ingredient );
+
+				if ( ! $ingredient['isGroup'] ) {
+					$json_ld['recipeIngredient'][] = $this->structured_data_helpers->get_ingredient_json_ld( $ingredient );
+				}
+
 			}
 		}
 
 		if ( ! empty( $attributes['steps'] ) && is_array( $attributes['steps'] ) ) {
 			$steps = array_filter( $attributes['steps'], 'is_array' );
 			foreach ( $steps as $step ) {
-				$json_ld['recipeInstructions'][] = $this->structured_data_helpers->get_step_json_ld( $step );
+
+				if ( ! $step['isGroup'] ) {
+					$json_ld['recipeInstructions'][] = $this->structured_data_helpers->get_step_json_ld( $step );
+				}
+
 			}
 		}
 
