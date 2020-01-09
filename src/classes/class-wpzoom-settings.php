@@ -834,6 +834,70 @@ class WPZOOM_Settings {
 									'default'		=> '#ffffff',
 								)
 							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_cta_delimiter_3',
+								'title' 	=> '',
+								'type'		=> 'subsection',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_cta_delimiter_3',
+									'class' 		=> 'wpzoom-rcb-field wpzoom-rcb-field-delimiter',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_facebook_cta_profile',
+								'title' 	=> __( 'Facebook Username', 'wpzoom-recipe-card' ),
+								'type'		=> 'input',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_profile',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Do not include &#64; in your Facebook username. You can add profile or page username', 'wpzoom-recipe-card' ),
+									'default'		=> '',
+									'type'			=> 'text'
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_facebook_cta_title',
+								'title' 	=> __( 'Facebook Title', 'wpzoom-recipe-card' ),
+								'type'		=> 'input',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_title',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Add Facebook title for CTA.', 'wpzoom-recipe-card' ),
+									'default'		=> __( 'Did you make this recipe?', 'wpzoom-recipe-card' ),
+									'type'			=> 'text'
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_facebook_cta_subtitle',
+								'title' 	=> __( 'Facebook Subtitle', 'wpzoom-recipe-card' ),
+								'type'		=> 'textarea',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_subtitle',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Add Facebook subtitle for CTA. To add profile or page link into your subtitle text, please enter %profile%.', 'wpzoom-recipe-card' ),
+									'default'		=> __( 'Like us %profile% on Facebook', 'wpzoom-recipe-card' ),
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_facebook_cta_bg_color',
+								'title' 	=> __( 'Facebook CTA Background Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_bg_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> '#4267B2',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_facebook_cta_text_color',
+								'title' 	=> __( 'Facebook CTA Text Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_text_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'default'		=> '#ffffff',
+								)
+							),
 						)
 					),
 					array(
@@ -1877,7 +1941,7 @@ class WPZOOM_Settings {
 
 	public function section_recipe_call_to_action_cb( $args ) {
 	?>
-	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Add Instagram and/or Pinterest CTA (call to action) in Recipe Card footer.', 'wpzoom-recipe-card' ) ?></p>
+	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Add Instagram and/or Pinterest and/or Facebook CTA (call to action) in Recipe Card footer.', 'wpzoom-recipe-card' ) ?></p>
 	<?php
 	}
 

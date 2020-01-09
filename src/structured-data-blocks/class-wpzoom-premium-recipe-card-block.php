@@ -1559,6 +1559,23 @@ class WPZOOM_Premium_Recipe_Card_Block {
     }
 
     /**
+     * Parse Facebook Text
+     * 
+     * @since 2.6.2
+     * 
+     * @param string $text 
+     * @return string
+     */
+    private static function cta_parse_facebook_text( $text ) {
+        $facebookURL = 'https://www.facebook.com';
+        $facebookUsername = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_profile' );
+
+        $text = str_replace( '%profile%', self::cta_build_link( $facebookURL, $facebookUsername ), $text );
+
+        return $text;
+    }
+
+    /**
      * Get the Call To Action content
      * 
      * @since 2.4.0
@@ -1573,6 +1590,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
     	$pinUsername = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_profile' );
     	$pinTitle = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_title' );
     	$pinSubtitle = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_subtitle' );
+
+    	$facebookUsername = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_profile' );
+    	$facebookTitle = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_title' );
+    	$facebookSubtitle = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_subtitle' );
 
     	ob_start();
     ?>
@@ -1592,6 +1613,16 @@ class WPZOOM_Premium_Recipe_Card_Block {
     		    <div class="cta-text-wrapper">
     		        <h3 class="cta-text-title"><?php echo $pinTitle ?></h3>
     		        <p class="cta-text-subtitle"><?php echo self::cta_parse_pinterest_text( $pinSubtitle ) ?></p>
+    		    </div>
+    		</div>
+    	<?php endif ?>
+
+    	<?php if ( ! empty( $facebookUsername ) ): ?>
+    		<div class="recipe-card-cta-facebook no-print">
+    		    <div class="cta-brand-icon"><i class="fab fa-facebook"></i></div>
+    		    <div class="cta-text-wrapper">
+    		        <h3 class="cta-text-title"><?php echo $facebookTitle ?></h3>
+    		        <p class="cta-text-subtitle"><?php echo self::cta_parse_facebook_text( $facebookSubtitle ) ?></p>
     		    </div>
     		</div>
     	<?php endif ?>

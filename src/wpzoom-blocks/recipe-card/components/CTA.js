@@ -17,6 +17,10 @@ const pinUsername   = get( setting_options, 'wpzoom_rcb_settings_pinterest_cta_p
 const pinTitle      = get( setting_options, 'wpzoom_rcb_settings_pinterest_cta_title' );
 const pinSubtitle   = get( setting_options, 'wpzoom_rcb_settings_pinterest_cta_subtitle' );
 
+const facebookUsername   = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_profile' );
+const facebookTitle      = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_title' );
+const facebookSubtitle   = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_subtitle' );
+
 export default class CTA extends Component {
     constructor() {
         super( ...arguments );
@@ -45,6 +49,10 @@ export default class CTA extends Component {
         else if ( 'pinterest' === brand ) {
             backgroundColor = get( setting_options, 'wpzoom_rcb_settings_pinterest_cta_bg_color' );
             textColor = get( setting_options, 'wpzoom_rcb_settings_pinterest_cta_text_color' );
+        }
+        else if ( 'facebook' === brand ) {
+            backgroundColor = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_bg_color' );
+            textColor = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_text_color' );
         }
 
         if ( '' != backgroundColor ) {
@@ -81,6 +89,14 @@ export default class CTA extends Component {
         return ReactHtmlParser( text );
     }
 
+    parseFacebookText( text ) {
+        const facebookURL = 'https://www.facebook.com';
+
+        text = replace( text, '%profile%', this.buildLink( facebookURL, facebookUsername ) );
+
+        return ReactHtmlParser( text );
+    }
+
     render() {
         return (
             <Fragment>
@@ -101,6 +117,16 @@ export default class CTA extends Component {
                         <div className="cta-text-wrapper">
                             <h3 className="cta-text-title">{ pinTitle }</h3>
                             <p className="cta-text-subtitle">{ this.parsePinterestText( pinSubtitle ) }</p>
+                        </div>
+                    </div>
+                }
+                {
+                    '' != facebookUsername &&
+                    <div className="recipe-card-cta-facebook" style={ this.buildStyles( 'facebook' ) }>
+                        <div className="cta-brand-icon"><i className="fab fa-facebook"></i></div>
+                        <div className="cta-text-wrapper">
+                            <h3 className="cta-text-title">{ facebookTitle }</h3>
+                            <p className="cta-text-subtitle">{ this.parseFacebookText( facebookSubtitle ) }</p>
                         </div>
                     </div>
                 }

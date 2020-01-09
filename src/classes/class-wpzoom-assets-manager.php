@@ -356,6 +356,8 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             $cta_ig_text_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instagram_cta_text_color' );
             $cta_pin_bg_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_bg_color' );
             $cta_pin_text_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_text_color' );
+            $cta_fb_bg_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_bg_color' );
+            $cta_fb_text_color = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_text_color' );
 
             if ( ! empty( $rating_stars_color ) ) {
                 $custom_css .= "
@@ -377,6 +379,14 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     .wp-block-wpzoom-recipe-card-block-recipe-card .recipe-card-cta-pinterest {
                         background-color: {$cta_pin_bg_color};
                         color: {$cta_pin_text_color};
+                    }";
+            }
+
+            if ( ! empty( $cta_fb_bg_color ) || ! empty( $cta_fb_text_color ) ) {
+                $custom_css .= "
+                    .wp-block-wpzoom-recipe-card-block-recipe-card .recipe-card-cta-facebook {
+                        background-color: {$cta_fb_bg_color};
+                        color: {$cta_fb_text_color};
                     }";
             }
 
