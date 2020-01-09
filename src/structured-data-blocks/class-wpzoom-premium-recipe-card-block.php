@@ -719,8 +719,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		if ( ! empty( $attributes['ingredients'] ) && is_array( $attributes['ingredients'] ) ) {
 			$ingredients = array_filter( $attributes['ingredients'], 'is_array' );
 			foreach ( $ingredients as $ingredient ) {
+				$isGroup = isset( $ingredient['isGroup'] ) ? $ingredient['isGroup'] : false;
 
-				if ( ! $ingredient['isGroup'] ) {
+				if ( ! $isGroup ) {
 					$json_ld['recipeIngredient'][] = $this->structured_data_helpers->get_ingredient_json_ld( $ingredient );
 				}
 
@@ -730,8 +731,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		if ( ! empty( $attributes['steps'] ) && is_array( $attributes['steps'] ) ) {
 			$steps = array_filter( $attributes['steps'], 'is_array' );
 			foreach ( $steps as $step ) {
+				$isGroup = isset( $step['isGroup'] ) ? $step['isGroup'] : false;
 
-				if ( ! $step['isGroup'] ) {
+				if ( ! $isGroup ) {
 					$json_ld['recipeInstructions'][] = $this->structured_data_helpers->get_step_json_ld( $step );
 				}
 
