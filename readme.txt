@@ -63,6 +63,12 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.6.2 =
+* Added Facebook to Call To Action (view Recipe Card Settings -> Appearance)
+* Added Resting Time value to Calculate Total Time
+* Fixed issue that causes to display wrong data (default value) for details in Recipe Card on Front-End
+* Fixed issue with undefined index isGroup
+
 = 2.6.1 =
 * Fixed issue with the ingredients amount & unit to be visible in Structured Data
 
