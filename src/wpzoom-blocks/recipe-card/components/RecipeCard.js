@@ -3,7 +3,6 @@ import { __ } from "@wordpress/i18n";
 import get from "lodash/get";
 import map from "lodash/map";
 import isEmpty from "lodash/isEmpty";
-import uniqueId from "lodash/uniqueId";
 import invoke from "lodash/invoke";
 import isUndefined from "lodash/isUndefined";
 import ReactPlayer from "react-player";
@@ -18,6 +17,7 @@ import ExtraOptionsModal from "./ExtraOptionsModal";
 import { stripHTML } from "../../../helpers/stringHelpers";
 import { pickRelevantMediaFiles } from "../../../helpers/pickRelevantMediaFiles";
 import { getBlockStyle } from "../../../helpers/getBlockStyle";
+import { generateId } from "../../../helpers/generateId";
 
 /* WordPress dependencies */
 const { Component, renderToString, Fragment } = wp.element;
@@ -270,17 +270,6 @@ class RecipeCard extends Component {
                 } );
             }
         );
-    }
-
-    /**
-     * Generates a pseudo-unique id.
-     *
-     * @param {string} [prefix] The prefix to use.
-     *
-     * @returns {string} Returns the unique ID.
-     */
-    generateId( prefix = '' ) {
-        return prefix !== '' ? uniqueId( `${ prefix }-${ new Date().getTime() }` ) : uniqueId( new Date().getTime() );
     }
 
     /**
@@ -582,7 +571,7 @@ class RecipeCard extends Component {
                             <p className="description">{ __( 'You can add or edit these details in the Block Options on the right →', 'wpzoom-recipe-card' ) }</p>
                         </div>
                         <Detail
-                            generateId={ this.generateId }
+                            generateId={ generateId }
                             { ...{ attributes, setAttributes, className } }
                         />
 
@@ -714,7 +703,7 @@ class RecipeCard extends Component {
                                 <p className="description">{ __( 'You can add or edit these details in the Block Options on the right →', 'wpzoom-recipe-card' ) }</p>
                             </div>
                             <Detail
-                                generateId={ this.generateId }
+                                generateId={ generateId }
                                 { ...{ attributes, setAttributes, className } }
                             />
 
@@ -736,11 +725,11 @@ class RecipeCard extends Component {
                     keepPlaceholderOnFocus={ true }
                 />
                 <Ingredient
-                    generateId={ this.generateId }
+                    generateId={ generateId }
                     { ...{ attributes, setAttributes, className } }
                 />
                 <Direction
-                    generateId={ this.generateId }
+                    generateId={ generateId }
                     { ...{ attributes, setAttributes, className } }
                 />
                 <div className="recipe-card-video">
