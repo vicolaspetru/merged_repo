@@ -51,6 +51,7 @@ final class WPZOOM_Recipe_Card_Block_Gutenberg {
 		add_action( 'init', 							__CLASS__ . '::register_block_types' );
 		add_action( 'init', 							__CLASS__ . '::load_textdomain' );
 		add_action( 'init', 							'WPZOOM_Rating_Stars::create_table' );
+		add_action( 'init', 							'WPZOOM_Rating_Stars::set_user_ID' );
 
 		WPZOOM_Taxonomies::init();
 	}

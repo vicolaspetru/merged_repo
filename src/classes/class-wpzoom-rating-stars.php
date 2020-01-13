@@ -38,7 +38,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 *
 		 * @since 1.1.0
 		 */
-		private $user_ID;
+		public static $user_ID;
 
 		/**
 		 * Who can rate recipes
@@ -55,10 +55,10 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			global $wpdb;
 
 			self::$tablename = $wpdb->prefix . 'wpzoom_rating_stars';
+			self::$user_ID 	 = self::random_number();
 
 			$this->who_can_rate 	= WPZOOM_Settings::get('wpzoom_rcb_settings_who_can_rate');
 			$this->assets_manager 	= WPZOOM_Assets_Manager::instance();
-			$this->user_ID 			= $this->random_number();
 
 			add_action( 'enqueue_block_assets', array( $this, 'block_assets' ) );
 
@@ -101,7 +101,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @param number $length The length of returned value.
 		 * @since 1.1.0
 		 */
-		public function random_number( $length = 10 ) {
+		public static function random_number( $length = 10 ) {
 		    $characters = '0123456789';
 		    $charactersLength = strlen($characters);
 		    $randomNumber = '';
@@ -147,8 +147,8 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			global $wpdb;
 
 			$recipe_ID   = isset($_POST['recipe_id']) ? (int)$_POST['recipe_id'] : 0;
-			$user_ID 	 = $this->get_user_ID();
 			$rating      = isset($_POST['rating']) ? (int)$_POST['rating'] : 0;
+			$user_ID 	 = self::get_user_ID();
 			$tablename 	 = self::$tablename;
 
 			if ( $rating == 0 ) {
@@ -366,8 +366,8 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 1.1.0
 		 * @return string|number Current user ID or new generated ID.
 		 */
-		public function get_user_ID() {
-			$user_ID = '';
+		public static function get_user_ID() {
+			$user_ID = self::$user_ID;
 			$current_user_id = (int)get_current_user_id();
 
 			// Check for logged in users
@@ -375,10 +375,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				return $current_user_id;
 			}
 
-			if ( ! isset( $_COOKIE[ "wpzoom-not-logged-user-id" ] ) ) {
-				$this->set_user_ID(); // set user id in cookie
-				$user_ID = $this->user_ID;
-			} else {
+			if ( isset( $_COOKIE[ "wpzoom-not-logged-user-id" ] ) ) {
 				$user_ID = $_COOKIE[ "wpzoom-not-logged-user-id" ];
 			}
 
@@ -390,10 +387,13 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 *
 		 * @since 1.1.0
 		 */
-		public function set_user_ID() {
+		public static function set_user_ID() {
 			$cookie_name = "wpzoom-not-logged-user-id";
-			$cookie_value = $this->user_ID;
-			return setcookie( $cookie_name, $cookie_value, time() + (86400 * 7), "/" ); // expires in 7 days
+			$cookie_value = self::$user_ID;
+
+			if ( ! isset( $_COOKIE[ $cookie_name ] ) ) {
+				return setcookie( $cookie_name, $cookie_value, time() + (86400 * 7), "/" ); // expires in 7 days
+			}
 		}
 
 		/**
@@ -433,7 +433,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 
 			$localize_data = array(
 				'recipe_ID'    	   	=> $post->ID,
-				'user_ID'    	   	=> $this->get_user_ID(),
+				'user_ID'    	   	=> self::get_user_ID(),
 				'ajaxurl'    	   	=> admin_url('admin-ajax.php'),
 				'ajax_nonce' 	   	=> wp_create_nonce( "wpzoom-rating-stars-nonce" ),
 				'user_rated'		=> $this->check_user_rate( $post->ID ),
