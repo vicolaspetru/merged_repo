@@ -844,14 +844,14 @@ class WPZOOM_Settings {
 								)
 							),
 							array(
-								'id' 		=> 'wpzoom_rcb_settings_facebook_cta_profile',
-								'title' 	=> __( 'Facebook Username', 'wpzoom-recipe-card' ),
+								'id' 		=> 'wpzoom_rcb_settings_facebook_cta_url',
+								'title' 	=> __( 'Facebook URL', 'wpzoom-recipe-card' ),
 								'type'		=> 'input',
 								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_profile',
+									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_url',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Do not include &#64; in your Facebook username. You can add profile or page username', 'wpzoom-recipe-card' ),
-									'default'		=> '',
+									'description' 	=> esc_html__( 'Add your Facebook url.', 'wpzoom-recipe-card' ),
+									'default'		=> 'https://www.facebook.com/',
 									'type'			=> 'text'
 								)
 							),
@@ -865,17 +865,6 @@ class WPZOOM_Settings {
 									'description' 	=> esc_html__( 'Add Facebook title for CTA.', 'wpzoom-recipe-card' ),
 									'default'		=> __( 'Did you make this recipe?', 'wpzoom-recipe-card' ),
 									'type'			=> 'text'
-								)
-							),
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_facebook_cta_subtitle',
-								'title' 	=> __( 'Facebook Subtitle', 'wpzoom-recipe-card' ),
-								'type'		=> 'textarea',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_subtitle',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Add Facebook subtitle for CTA. To add profile or page link into your subtitle text, please enter %profile%.', 'wpzoom-recipe-card' ),
-									'default'		=> __( 'Like us %profile% on Facebook', 'wpzoom-recipe-card' ),
 								)
 							),
 							array(

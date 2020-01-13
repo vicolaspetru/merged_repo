@@ -1514,7 +1514,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
         return sprintf(
         	'<a href="%s" target="%s" %s>%s</a>',
-        	$url .'/'. $attr,
+        	esc_url( $url ) .'/'. esc_attr( $attr ),
         	( 1 == $target ? '_blank' : '_self' ),
         	( 1 == $nofollow ? 'rel="nofollow"' : '' ),
         	$symbol . $attr
@@ -1567,10 +1567,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
      * @return string
      */
     private static function cta_parse_facebook_text( $text ) {
-        $facebookURL = 'https://www.facebook.com';
-        $facebookUsername = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_profile' );
+        $facebookURL = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_url' );
 
-        $text = str_replace( '%profile%', self::cta_build_link( $facebookURL, $facebookUsername ), $text );
+        $text = self::cta_build_link( $facebookURL, __('Like us','wpzoom-recipe-card'), '' ) .' '. __('on Facebook', 'wpzoom-recipe-card');
 
         return $text;
     }
@@ -1591,7 +1590,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     	$pinTitle = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_title' );
     	$pinSubtitle = WPZOOM_Settings::get( 'wpzoom_rcb_settings_pinterest_cta_subtitle' );
 
-    	$facebookUsername = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_profile' );
+    	$facebookURL = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_url' );
     	$facebookTitle = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_title' );
     	$facebookSubtitle = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_subtitle' );
 
@@ -1617,7 +1616,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     		</div>
     	<?php endif ?>
 
-    	<?php if ( ! empty( $facebookUsername ) ): ?>
+    	<?php if ( ! empty( $facebookURL ) ): ?>
     		<div class="recipe-card-cta-facebook no-print">
     		    <div class="cta-brand-icon"><i class="fab fa-facebook"></i></div>
     		    <div class="cta-text-wrapper">

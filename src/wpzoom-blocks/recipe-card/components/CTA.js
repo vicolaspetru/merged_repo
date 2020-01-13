@@ -17,7 +17,7 @@ const pinUsername   = get( setting_options, 'wpzoom_rcb_settings_pinterest_cta_p
 const pinTitle      = get( setting_options, 'wpzoom_rcb_settings_pinterest_cta_title' );
 const pinSubtitle   = get( setting_options, 'wpzoom_rcb_settings_pinterest_cta_subtitle' );
 
-const facebookUsername   = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_profile' );
+const facebookURL        = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_url' );
 const facebookTitle      = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_title' );
 const facebookSubtitle   = get( setting_options, 'wpzoom_rcb_settings_facebook_cta_subtitle' );
 
@@ -90,9 +90,8 @@ export default class CTA extends Component {
     }
 
     parseFacebookText( text ) {
-        const facebookURL = 'https://www.facebook.com';
-
-        text = replace( text, '%profile%', this.buildLink( facebookURL, facebookUsername ) );
+        text = this.buildLink( facebookURL, __( "Like us", "wpzoom-recipe-card" ), '' );
+        text += ' '+ __( "on Facebook", "wpzoom-recipe-card" );
 
         return ReactHtmlParser( text );
     }
@@ -121,7 +120,7 @@ export default class CTA extends Component {
                     </div>
                 }
                 {
-                    '' != facebookUsername &&
+                    '' != facebookURL &&
                     <div className="recipe-card-cta-facebook" style={ this.buildStyles( 'facebook' ) }>
                         <div className="cta-brand-icon"><i className="fab fa-facebook"></i></div>
                         <div className="cta-text-wrapper">
