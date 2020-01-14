@@ -27,10 +27,6 @@ export default class CTA extends Component {
     }
 
     buildLink( url, attr, symbol = '@' ) {
-        if ( '' == attr ) {
-            return '';
-        }
-
         const target   = get( setting_options, 'wpzoom_rcb_settings_cta_target' );
         const nofollow = get( setting_options, 'wpzoom_rcb_settings_cta_add_nofollow' );
 
@@ -90,7 +86,7 @@ export default class CTA extends Component {
     }
 
     parseFacebookText( text ) {
-        text = this.buildLink( facebookURL, __( "Like us", "wpzoom-recipe-card" ), '' );
+        text = this.buildLink( facebookURL, '', __( "Like us", "wpzoom-recipe-card" ) );
         text += ' '+ __( "on Facebook", "wpzoom-recipe-card" );
 
         return ReactHtmlParser( text );
