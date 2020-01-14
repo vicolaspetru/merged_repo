@@ -851,7 +851,7 @@ class WPZOOM_Settings {
 									'label_for' 	=> 'wpzoom_rcb_settings_facebook_cta_url',
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Add your Facebook url.', 'wpzoom-recipe-card' ),
-									'default'		=> 'https://www.facebook.com/',
+									'default'		=> '',
 									'type'			=> 'text'
 								)
 							),
