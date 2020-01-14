@@ -1505,10 +1505,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	 * @return string
 	 */
 	private static function cta_build_link( $url, $attr, $symbol = '@' ) {
-        if ( '' == $attr ) {
-            return '';
-        }
-
         $target   = WPZOOM_Settings::get( 'wpzoom_rcb_settings_cta_target' );
         $nofollow = WPZOOM_Settings::get( 'wpzoom_rcb_settings_cta_add_nofollow' );
 
@@ -1569,7 +1565,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     private static function cta_parse_facebook_text( $text ) {
         $facebookURL = WPZOOM_Settings::get( 'wpzoom_rcb_settings_facebook_cta_url' );
 
-        $text = self::cta_build_link( $facebookURL, __('Like us','wpzoom-recipe-card'), '' ) .' '. __('on Facebook', 'wpzoom-recipe-card');
+        $text = self::cta_build_link( $facebookURL, '', __('Like us','wpzoom-recipe-card') ) .' '. __('on Facebook', 'wpzoom-recipe-card');
 
         return $text;
     }
