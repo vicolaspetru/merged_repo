@@ -1188,21 +1188,21 @@ export default class Inspector extends Component {
                 <PanelBody className="wpzoom-recipe-card-food-labels" initialOpen={ true } title={ __( "Food Labels", "wpzoom-recipe-card" ) }>
                     <ToggleControl
                         label={ __( "Display Food Labels", "wpzoom-recipe-card" ) }
-                        checked={ get( attributes, [ 'settings', 2, 'displayFoodLabels' ] ) }
-                        onChange={ display => this.onChangeSettings( display, 'displayFoodLabels', 2 ) }
+                        checked={ get( attributes, [ 'settings', 1, 'displayFoodLabels' ] ) }
+                        onChange={ display => this.onChangeSettings( display, 'displayFoodLabels', 1 ) }
                     />
                     <SelectControl
                         multiple
                         label={ __( "Select Food Labels", "wpzoom-recipe-card" ) }
-                        value={ get( attributes, [ 'settings', 2, 'foodLabels' ] ) }
+                        value={ get( attributes, [ 'settings', 1, 'foodLabels' ] ) }
                         options={ foodLabels }
-                        onChange={ label => this.onChangeSettings( label, 'foodLabels', 2 ) }
+                        onChange={ label => this.onChangeSettings( label, 'foodLabels', 1 ) }
                     />
                     <SelectControl
                         label={ __( "Where to show labels?", "wpzoom-recipe-card" ) }
-                        value={ get( attributes, [ 'settings', 2, 'locationToShowFoodLabels' ] ) }
+                        value={ get( attributes, [ 'settings', 1, 'locationToShowFoodLabels' ] ) }
                         options={ foodLabelsLocation }
-                        onChange={ location => this.onChangeSettings( location, 'locationToShowFoodLabels', 2 ) }
+                        onChange={ location => this.onChangeSettings( location, 'locationToShowFoodLabels', 1 ) }
                     />
                 </PanelBody>
                 <PanelBody className="wpzoom-recipe-card-structured-data-testing" initialOpen={ true } title={ __( "Structured Data Testing", "wpzoom-recipe-card" ) }>
