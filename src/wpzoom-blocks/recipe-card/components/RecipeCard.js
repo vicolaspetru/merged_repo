@@ -782,10 +782,6 @@ class RecipeCard extends Component {
                         </Fragment>
                     }
                 </div>
-                <FoodLabels
-                    location="bottom"
-                    { ...{ attributes, setAttributes } }
-                />
                 <div className="recipe-card-notes">
                     <RichText
                         tagName="h3"
@@ -815,6 +811,10 @@ class RecipeCard extends Component {
                     />
                     <p className="description">{ __( "Press Enter to add new note.", "wpzoom-recipe-card" ) }</p>
                 </div>
+                <FoodLabels
+                    location="bottom"
+                    { ...{ attributes, setAttributes } }
+                />
                 <CallToAction/>
                 <Inspector
                     media={ this.props.media }
