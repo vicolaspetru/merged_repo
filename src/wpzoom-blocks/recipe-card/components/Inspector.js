@@ -101,6 +101,11 @@ const foodLabels = [
     { label: __( "Whole Grain" ), value: 'whole-grain' }
 ];
 
+const foodLabelsLocation = [
+    { label: __( "At the top", "wpzoom-recipe-card" ), value: 'top' },
+    { label: __( "At the very bottom", "wpzoom-recipe-card" ), value: 'bottom' }
+];
+
 /**
  * Inspector controls
  */
@@ -1181,15 +1186,24 @@ export default class Inspector extends Component {
                     </PanelRow>
                 </PanelBody>
                 <PanelBody className="wpzoom-recipe-card-food-labels" initialOpen={ true } title={ __( "Food Labels", "wpzoom-recipe-card" ) }>
-                    <PanelRow>
-                        <SelectControl
-                            multiple
-                            label={ __( "Select Food Labels", "wpzoom-recipe-card" ) }
-                            value={ get( attributes, [ 'settings', 2, 'foodLabels' ] ) }
-                            options={ foodLabels }
-                            onChange={ label => this.onChangeSettings( label, 'foodLabels', 2 ) }
-                        />
-                    </PanelRow>
+                    <ToggleControl
+                        label={ __( "Display Food Labels", "wpzoom-recipe-card" ) }
+                        checked={ get( attributes, [ 'settings', 2, 'displayFoodLabels' ] ) }
+                        onChange={ display => this.onChangeSettings( display, 'displayFoodLabels', 2 ) }
+                    />
+                    <SelectControl
+                        multiple
+                        label={ __( "Select Food Labels", "wpzoom-recipe-card" ) }
+                        value={ get( attributes, [ 'settings', 2, 'foodLabels' ] ) }
+                        options={ foodLabels }
+                        onChange={ label => this.onChangeSettings( label, 'foodLabels', 2 ) }
+                    />
+                    <SelectControl
+                        label={ __( "Where to show labels?", "wpzoom-recipe-card" ) }
+                        value={ get( attributes, [ 'settings', 2, 'locationToShowFoodLabels' ] ) }
+                        options={ foodLabelsLocation }
+                        onChange={ location => this.onChangeSettings( location, 'locationToShowFoodLabels', 2 ) }
+                    />
                 </PanelBody>
                 <PanelBody className="wpzoom-recipe-card-structured-data-testing" initialOpen={ true } title={ __( "Structured Data Testing", "wpzoom-recipe-card" ) }>
                     <BaseControl
