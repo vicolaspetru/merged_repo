@@ -368,6 +368,13 @@
         .wpzoom-rating-stars-container {
             float: none;
         }
+        .recipe-card-food-labels {
+            .food-labels-list {
+                > li {
+                    flex: 0 0 16.6666%;
+                }
+            }
+        }
     }
 }
 
