@@ -156,7 +156,7 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 		/**
 		 * Defined Food Labels SVGs
 		 * 
-		 * @since 2.6.2
+		 * @since 2.6.3
 		 * 
 		 * @return array
 		 */

@@ -1636,7 +1636,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     /**
      * Get the Food Labels content
      * 
-     * @since 2.6.2
+     * @since 2.6.3
      * 
      * @return object
      */
@@ -1647,7 +1647,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     /**
      * Draw the food labels SVGs
      * 
-     * @since 2.6.2
+     * @since 2.6.3
      * 
      * @return object
      */
