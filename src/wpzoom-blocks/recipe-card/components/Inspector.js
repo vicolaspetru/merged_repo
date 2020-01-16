@@ -91,14 +91,15 @@ const foodLabels = [
     { label: __( "Select a Food Label", "wpzoom-recipe-card" ), value: null, disabled: true },
     { label: __( "Vegan", "wpzoom-recipe-card" ), value: 'vegan' },
     { label: __( "Gluten Free", "wpzoom-recipe-card" ), value: 'gluten-free' },
-    { label: __( "Lactose Free" ), value: 'lactose-free' },
-    { label: __( "Oil Free" ), value: 'oil-free' },
+    { label: __( "Dairy Free" ), value: 'dairy-free' },
+    { label: __( "Palm Oil Free" ), value: 'palm-oil-free' },
     { label: __( "Sugar Free" ), value: 'sugar-free' },
-    { label: __( "Low Fat" ), value: 'low-fat' },
-    { label: __( "High Protein" ), value: 'high-protein' },
-    { label: __( "Keto Option" ), value: 'keto-option' },
-    { label: __( "Nut Free" ), value: 'nut-free' },
-    { label: __( "Whole Grain" ), value: 'whole-grain' }
+    { label: __( "Phosphate Free" ), value: 'phosphate-free' },
+    // { label: __( "Low Fat" ), value: 'low-fat' },
+    // { label: __( "High Protein" ), value: 'high-protein' },
+    // { label: __( "Keto Option" ), value: 'keto-option' },
+    // { label: __( "Nut Free" ), value: 'nut-free' },
+    // { label: __( "Whole Grain" ), value: 'whole-grain' }
 ];
 
 const foodLabelsLocation = [

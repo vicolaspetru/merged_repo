@@ -343,6 +343,20 @@
     .recipe-card-cta-pinterest + .recipe-card-cta-facebook {
         margin-top: 20px;
     }
+
+    .recipe-card-food-labels {
+        @include margin( 10px 0 );
+        .food-labels-list {
+            @include reset-list;
+            display: flex;
+            flex-wrap: wrap;
+
+            > li {
+                flex: 0 0 16.6666%;
+                line-height: 0;
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 600px) {
