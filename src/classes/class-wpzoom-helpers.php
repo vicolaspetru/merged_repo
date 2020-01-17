@@ -131,10 +131,10 @@ class WPZOOM_Helpers {
  			$settings['foodLabels'] = array();
  		}
  		if ( !isset( $settings['displayFoodLabels'] ) ) {
- 			$settings['displayFoodLabels'] = false;
+ 			$settings['displayFoodLabels'] = WPZOOM_Settings::get('wpzoom_rcb_settings_display_food_labels');
  		}
  		if ( !isset( $settings['locationToShowFoodLabels'] ) ) {
- 			$settings['locationToShowFoodLabels'] = 'top';
+ 			$settings['locationToShowFoodLabels'] = WPZOOM_Settings::get('wpzoom_rcb_settings_location_to_show_food_labels');
  		}
 
 		return $settings;

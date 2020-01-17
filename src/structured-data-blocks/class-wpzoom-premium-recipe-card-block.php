@@ -186,6 +186,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			            'headerAlign' => WPZOOM_Settings::get('wpzoom_rcb_settings_heading_content_align'),
 			            'ingredientsLayout' => '1-column',
 			            'adjustableServings' => WPZOOM_Settings::get('wpzoom_rcb_settings_enable_adjustable_servings') === '1'
+			        ),
+			        array(
+			        	'displayFoodLabels' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_food_labels') === '1',
+			        	'locationToShowFoodLabels' => WPZOOM_Settings::get('wpzoom_rcb_settings_location_to_show_food_labels')
 			        )
 			    ),
 			    'items' => array(
