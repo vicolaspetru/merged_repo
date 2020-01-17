@@ -103,8 +103,8 @@ const foodLabels = [
 ];
 
 const foodLabelsLocation = [
-    { label: __( "At the top", "wpzoom-recipe-card" ), value: 'top' },
-    { label: __( "At the very bottom", "wpzoom-recipe-card" ), value: 'bottom' }
+    { label: __( "Top (Before Summary text)", "wpzoom-recipe-card" ), value: 'top' },
+    { label: __( "Bottom (Below Notes)", "wpzoom-recipe-card" ), value: 'bottom' }
 ];
 
 /**
@@ -1195,6 +1195,7 @@ export default class Inspector extends Component {
                     <SelectControl
                         multiple
                         label={ __( "Select Food Labels", "wpzoom-recipe-card" ) }
+                        help={ __( "CMD + Click / Ctrl + Click to select multiple labels", "wpzoom-recipe-card" ) }
                         value={ get( attributes, [ 'settings', 1, 'foodLabels' ] ) }
                         options={ foodLabels }
                         onChange={ label => this.onChangeSettings( label, 'foodLabels', 1 ) }

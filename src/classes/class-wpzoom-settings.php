@@ -595,8 +595,8 @@ class WPZOOM_Settings {
 									'description' 	=> esc_html__( 'Select where you want to show the food labels in recipe card.', 'wpzoom-recipe-card' ),
 									'default'		=> 'top',
 									'options' 		=> array(
-										'top' 		=> __( 'At the top', 'wpzoom-recipe-card' ),
-										'bottom' 	=> __( 'At the very bottom', 'wpzoom-recipe-card' ),
+										'top' 		=> __( 'Top (Before Summary text)', 'wpzoom-recipe-card' ),
+										'bottom' 	=> __( 'Bottom (Below Notes)', 'wpzoom-recipe-card' ),
 									)
 								)
 							),
