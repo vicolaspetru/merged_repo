@@ -352,7 +352,10 @@ class RecipeCard extends Component {
             postAuthor,
             postPermalink,
             media,
-            settingOptions
+            settingOptions,
+            coursesTaxonomy,
+            cuisinesTaxonomy,
+            difficultiesTaxonomy
         } = this.props;
 
         const {
@@ -818,6 +821,10 @@ class RecipeCard extends Component {
                     maxWidth={ this.props.maxWidth }
                     isRTL={ this.props.isRTL }
                     hintLoading={ this.hintLoading }
+                    settingOptions={ settingOptions }
+                    coursesTaxonomy={ coursesTaxonomy }
+                    cuisinesTaxonomy={ cuisinesTaxonomy }
+                    difficultiesTaxonomy={ difficultiesTaxonomy }
                     { ...{ attributes, setAttributes, className } }
                 />
                 <BlockControls>
