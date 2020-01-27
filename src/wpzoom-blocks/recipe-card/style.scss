@@ -40,6 +40,9 @@
 	.recipe-card-image figure img {
 		width: 100%;
 	}
+    .recipe-card-image .recipe-card-image-popup-link {
+        display: block;
+    }
 	.recipe-card-video {
         margin-top: 20px;
         margin-bottom: 20px;
@@ -180,9 +183,12 @@
         }
     }
 
-	.direction-step img {
-    	display: block;
-    	clear: both;
+	.direction-step {
+        .direction-step-image-popup-link,
+        img {
+        	display: block;
+        	clear: both;
+        }
     }
 
     .wpzoom-rating-stars-container {
@@ -357,3 +363,4 @@
 @import "./skins/default";
 @import "./skins/newdesign";
 @import "./skins/simple";
+@import "./magnific-popup";

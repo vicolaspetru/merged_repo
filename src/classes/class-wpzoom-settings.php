@@ -566,66 +566,6 @@ class WPZOOM_Settings {
 							),
 						)
 					),
-					array(
-						'id' 		=> 'wpzoom_section_rating_features',
-						'title' 	=> __( 'Rating Feature', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-general',
-						'callback' 	=> array( $this, 'section_rating_feature_cb' ),
-						'fields' 	=> array(
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_user_ratings',
-								'title' 	=> __( 'User Rating', 'wpzoom-recipe-card' ),
-								'type'		=> 'checkbox',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_user_ratings',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Allow visitors to vote your recipes.', 'wpzoom-recipe-card' ),
-									'default'		=> true,
-									'disabled'		=> false,
-									'preview'       => true,
-									'preview_pos'	=> 'top',
-								)
-							),
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_who_can_rate',
-								'title' 	=> __( 'Who can rate?', 'wpzoom-recipe-card' ),
-								'type'		=> 'select',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_who_can_rate',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Select who can rate your recipes.', 'wpzoom-recipe-card' ),
-									'default'		=> 'everyone',
-									'options' 		=> array(
-										'loggedin' 	=> __( 'Only logged in users can rate recipes', 'wpzoom-recipe-card' ),
-										'everyone' 	=> __( 'Everyone can rate recipes', 'wpzoom-recipe-card' ),
-									)
-								)
-							),
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_rating_stars_color',
-								'title' 	=> __( 'Rating Stars Color', 'wpzoom-recipe-card' ),
-								'type'		=> 'colorpicker',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_rating_stars_color',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Change rating stars color of Recipe Card.', 'wpzoom-recipe-card' ),
-									'default'		=> '#F2A123',
-								)
-							),
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_reset_ratings',
-								'title' 	=> __( 'Reset Ratings', 'wpzoom-recipe-card' ),
-								'type'		=> 'button',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_reset_ratings',
-									'type'			=> 'button',
-									'button_type'	=> 'secondary',
-									'text' 			=> esc_html__( 'Reset Ratings', 'wpzoom-recipe-card' ),
-									'description' 	=> esc_html__( 'Be careful, this action will reset all ratings to zero! NOTE: This action can\'t be reversed.', 'wpzoom-recipe-card' ),
-								)
-							),
-						)
-					),
 				)
 			),
 			'appearance' => array(
@@ -890,9 +830,59 @@ class WPZOOM_Settings {
 						)
 					),
 					array(
+						'id' 		=> 'wpzoom_section_recipe_nutrition',
+						'title' 	=> __( 'Nutrition', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'callback' 	=> '__return_false',
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_nutrition_layout',
+								'title' 	=> __( 'Layout Orientation', 'wpzoom-recipe-card' ),
+								'type'		=> 'select',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_nutrition_layout',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Default layout to use for all Nutrition block.', 'wpzoom-recipe-card' ),
+									'default'		=> 'vertical',
+									'options' 		=> array(
+										'vertical' 		=> __( 'Vertical', 'wpzoom-recipe-card' ),
+										'horizontal'	=> __( 'Horizontal', 'wpzoom-recipe-card' ),
+									)
+								)
+							),
+						)
+					),
+					array(
+						'id' 		=> 'wpzoom_rcb_settings_google_fonts',
+						'title' 	=> __( 'Google Fonts', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'callback' 	=> '__return_false',
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_enable_google_fonts',
+								'title' 	=> __( 'Enable Google Fonts', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_enable_google_fonts',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'If you check this field, then it means that plugin will load Google Fonts to use them into blocks.', 'wpzoom-recipe-card' ),
+									'default'		=> true
+								)
+							),
+						)
+					),
+				)
+			),
+			'interactivity' => array(
+				'tab_id' 		=> 'tab-interactivity',
+				'tab_title' 	=> __( 'Interactivity', 'wpzoom-recipe-card' ),
+				'option_group' 	=> 'wpzoom-recipe-card-settings-interactivity',
+				'option_name' 	=> self::$option,
+				'sections' 		=> array(
+					array(
 						'id' 		=> 'wpzoom_section_snippets',
 						'title' 	=> __( 'Recipe Buttons', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
 						'callback' 	=> array( $this, 'section_recipe_snippets' ),
 						'fields' 	=> array(
 							array(
@@ -937,7 +927,7 @@ class WPZOOM_Settings {
 					array(
 						'id' 		=> 'wpzoom_section_print',
 						'title' 	=> __( 'Print', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
 						'callback' 	=> '__return_false',
 						'fields' 	=> array(
 							array(
@@ -1002,7 +992,7 @@ class WPZOOM_Settings {
 					array(
 						'id' 		=> 'wpzoom_rcb_settings_pinterest',
 						'title' 	=> __( 'Pinterest', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
 						'callback' 	=> '__return_false',
 						'fields' 	=> array(
 							array(
@@ -1052,47 +1042,111 @@ class WPZOOM_Settings {
 						)
 					),
 					array(
-						'id' 		=> 'wpzoom_section_recipe_nutrition',
-						'title' 	=> __( 'Nutrition', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
-						'callback' 	=> '__return_false',
+						'id' 		=> 'wpzoom_section_rating_features',
+						'title' 	=> __( 'Rating Feature', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
+						'callback' 	=> array( $this, 'section_rating_feature_cb' ),
 						'fields' 	=> array(
 							array(
-								'id' 		=> 'wpzoom_rcb_settings_nutrition_layout',
-								'title' 	=> __( 'Layout Orientation', 'wpzoom-recipe-card' ),
+								'id' 		=> 'wpzoom_rcb_settings_user_ratings',
+								'title' 	=> __( 'User Rating', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_user_ratings',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Allow visitors to vote your recipes.', 'wpzoom-recipe-card' ),
+									'default'		=> true,
+									'disabled'		=> false,
+									'preview'       => true,
+									'preview_pos'	=> 'top',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_who_can_rate',
+								'title' 	=> __( 'Who can rate?', 'wpzoom-recipe-card' ),
 								'type'		=> 'select',
 								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_nutrition_layout',
+									'label_for' 	=> 'wpzoom_rcb_settings_who_can_rate',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Default layout to use for all Nutrition block.', 'wpzoom-recipe-card' ),
-									'default'		=> 'vertical',
+									'description' 	=> esc_html__( 'Select who can rate your recipes.', 'wpzoom-recipe-card' ),
+									'default'		=> 'everyone',
 									'options' 		=> array(
-										'vertical' 		=> __( 'Vertical', 'wpzoom-recipe-card' ),
-										'horizontal'	=> __( 'Horizontal', 'wpzoom-recipe-card' ),
+										'loggedin' 	=> __( 'Only logged in users can rate recipes', 'wpzoom-recipe-card' ),
+										'everyone' 	=> __( 'Everyone can rate recipes', 'wpzoom-recipe-card' ),
 									)
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_rating_stars_color',
+								'title' 	=> __( 'Rating Stars Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_rating_stars_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Change rating stars color of Recipe Card.', 'wpzoom-recipe-card' ),
+									'default'		=> '#F2A123',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_reset_ratings',
+								'title' 	=> __( 'Reset Ratings', 'wpzoom-recipe-card' ),
+								'type'		=> 'button',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_reset_ratings',
+									'type'			=> 'button',
+									'button_type'	=> 'secondary',
+									'text' 			=> esc_html__( 'Reset Ratings', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Be careful, this action will reset all ratings to zero! NOTE: This action can\'t be reversed.', 'wpzoom-recipe-card' ),
 								)
 							),
 						)
 					),
 					array(
-						'id' 		=> 'wpzoom_rcb_settings_google_fonts',
-						'title' 	=> __( 'Google Fonts', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
-						'callback' 	=> '__return_false',
+						'id' 		=> 'wpzoom_section_lightbox',
+						'title' 	=> __( 'Lightbox', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
+						'callback' 	=> array( $this, 'section_lightbox_cb' ),
 						'fields' 	=> array(
 							array(
-								'id' 		=> 'wpzoom_rcb_settings_enable_google_fonts',
-								'title' 	=> __( 'Enable Google Fonts', 'wpzoom-recipe-card' ),
+								'id' 		=> 'wpzoom_rcb_settings_recipe_image_lightbox',
+								'title' 	=> __( 'Clickable Recipe Image', 'wpzoom-recipe-card' ),
 								'type'		=> 'checkbox',
 								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_enable_google_fonts',
+									'label_for' 	=> 'wpzoom_rcb_settings_recipe_image_lightbox',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'If you check this field, then it means that plugin will load Google Fonts to use them into blocks.', 'wpzoom-recipe-card' ),
-									'default'		=> true
+									'description' 	=> esc_html__( 'Open the recipe image in a lightbox when click on it.', 'wpzoom-recipe-card' ),
+									'default'		=> false,
 								)
 							),
-						)
-					),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_instruction_images_lightbox',
+								'title' 	=> __( 'Clickable Directions Images', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_instruction_images_lightbox',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Open the directions image in a lightbox when click on it.', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_image_size_lightbox',
+								'title' 	=> __( 'Image Size', 'wpzoom-recipe-card' ),
+								'type'		=> 'select',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_image_size_lightbox',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Image size to link to for the clickable images. You can select from defined image sizes.', 'wpzoom-recipe-card' ),
+									'default'		=> 'full',
+									'options' 		=> array(
+										'full'		=> esc_html__( 'Original image resolution (unmodified)', 'wpzoom-recipe-card' ),
+										'large' 	=> esc_html__( 'Large resolution (default 1024px x 1024px max)', 'wpzoom-recipe-card' ),
+										'medium_large' => esc_html__( 'Medium Large resolution (default 768px x 0px max)', 'wpzoom-recipe-card' ),
+									)
+								)
+							),
+						),
+					)
 				)
 			),
 			'metadata' => array(
@@ -1919,6 +1973,12 @@ class WPZOOM_Settings {
 	public function section_rating_feature_cb( $args ) {
 	?>
 	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Recipe Rating shown in the Recipe Card and Recipe Metadata.', 'wpzoom-recipe-card' ) ?></p>
+	<?php
+	}
+
+	public function section_lightbox_cb( $args ) {
+	?>
+	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'With Lightbox, when a user clicks on the recipe and/or directions images, the image opens in a lightbox popup. This provides you with a much better user experience.', 'wpzoom-recipe-card' ) ?></p>
 	<?php
 	}
 
