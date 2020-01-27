@@ -1313,6 +1313,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 								$attachment = wp_get_attachment_image( $attachment_id, 'wpzoom_rcb_block_step_image', false, array( 'title' => $title, 'alt' => $alt, 'class' => trim( $class ), 'style' => self::parseTagStyle( $img_style ) ) );
 							}
 						}
+						else {
+							$attachment = wp_get_attachment_image( $attachment_id, 'wpzoom_rcb_block_step_image', false, array( 'title' => $title, 'alt' => $alt, 'class' => trim( $class ), 'style' => self::parseTagStyle( $img_style ) ) );
+						}
 
 						if ( $clickableDirectionImages === '1' ) {
 							$clickableImageSrc = wp_get_attachment_image_src( $attachment_id, $clickableImageSize );
