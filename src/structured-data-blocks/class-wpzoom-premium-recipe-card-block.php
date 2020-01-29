@@ -1283,6 +1283,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					 */
 					$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
 					$clickableDirectionImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instruction_images_lightbox' );
+					$clickableImageSrc = false;
 
 					if ( $src ) {
 						$attachment_id = isset( $node['key'] ) ? $node['key'] : 0;
