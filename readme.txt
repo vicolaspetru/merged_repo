@@ -63,6 +63,10 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+
+= 2.6.3 =
+* Added Toggle option to set Resting Time field in custom details
+
 = 2.6.2 =
 * Added Facebook to Call To Action (view Recipe Card Settings -> Appearance)
 * Added Resting Time value to Calculate Total Time

@@ -1,77 +1,77 @@
-(function($){
+( function( $ ) {
     'use scrict';
 
     function analyzeAmounts( $recipe ) {
-        var servings = parseInt( $recipe.find('.detail-item-adjustable-servings').data('original-servings') );
+        var servings = parseInt( $recipe.find( '.detail-item-adjustable-servings' ).data( 'original-servings' ) );
 
         if ( servings > 0 ) {
-            $recipe.find('.ingredients-list .wpzoom-rcb-ingredient-amount').each(function(){
+            $recipe.find( '.ingredients-list .wpzoom-rcb-ingredient-amount' ).each( function() {
                 // Do this only once
-                if ( 0 === $(this).find('.wpzoom-rcb-adjustable').length ) {
-                    var amount = $(this),
+                if ( 0 === $( this ).find( '.wpzoom-rcb-adjustable' ).length ) {
+                    var amount = $( this ),
                         amountValue = amount.text();
 
-                    amount.html('<span class="wpzoom-rcb-adjustable">' + amountValue + '</span>');
+                    amount.html( '<span class="wpzoom-rcb-adjustable">' + amountValue + '</span>' );
                 }
-            })
+            } )
 
-            $recipe.find('.wpzoom-rcb-adjustable').each(function() {
+            $recipe.find( '.wpzoom-rcb-adjustable' ).each( function() {
                 // Do this only once
-                if ( 'undefined' == typeof $(this).data('original-amount') ) {
-                    var amount = parseAmount( $(this).text() );
-                        amount /= servings;
+                if ( 'undefined' == typeof $( this ).data( 'original-amount' ) ) {
+                    var amount = parseAmount( $( this ).text() );
+                    amount /= servings;
 
-                    var roundedAmount = amount.toFixed(2);
+                    var roundedAmount = amount.toFixed( 2 );
 
-                    $(this)
-                        .data('original-amount', $(this).text())
-                        .data('per-one-serving', roundedAmount);
+                    $( this )
+                        .data( 'original-amount', $( this ).text() )
+                        .data( 'per-one-serving', roundedAmount );
                 }
-            })
+            } )
         }
     }
 
     function updateServingSize( $recipe ) {
-        var $servingsElement = $recipe.find('.detail-item-adjustable-servings'),
-            servings = parseInt( $servingsElement.data('servings') ),
-            originalServings = $servingsElement.data('original-servings');
+        var $servingsElement = $recipe.find( '.detail-item-adjustable-servings' ),
+            servings = parseInt( $servingsElement.data( 'servings' ) ),
+            originalServings = $servingsElement.data( 'original-servings' );
 
-        var $adjustableAmount = $recipe.find('.wpzoom-rcb-adjustable');
-        
+        var $adjustableAmount = $recipe.find( '.wpzoom-rcb-adjustable' );
+
         if ( 0 == $adjustableAmount.length ) {
             analyzeAmounts( $recipe );
-            $adjustableAmount = $recipe.find('.wpzoom-rcb-adjustable');
+            $adjustableAmount = $recipe.find( '.wpzoom-rcb-adjustable' );
         }
 
-        $adjustableAmount.each(function() {
-            var amountElement = $(this);
+        $adjustableAmount.each( function() {
+            var amountElement = $( this );
 
             if ( servings == originalServings ) {
-                amountElement.text( amountElement.data('original-amount') );
+                amountElement.text( amountElement.data( 'original-amount' ) );
             }
             else {
-                var amount = parseFloat( amountElement.data('per-one-serving') ) * servings;
-                var roundedAmount = amount.toFixed(2);
+                var amount = parseFloat( amountElement.data( 'per-one-serving' ) ) * servings;
+                var roundedAmount = amount.toFixed( 2 );
 
                 if ( !isNaN( roundedAmount ) ) {
                     amountElement.text( roundedAmount );
                 }
             }
-        })
+        } )
     }
 
     function initTextField() {
-        $('<div class="adjustable-quantity-nav"><div class="adjustable-quantity-button adjustable-quantity-up">+</div><div class="adjustable-quantity-button adjustable-quantity-down">-</div></div>').insertAfter('.adjustable-quantity input');
+        $( '<div class="adjustable-quantity-nav"><div class="adjustable-quantity-button adjustable-quantity-up">+</div><div class="adjustable-quantity-button adjustable-quantity-down">-</div></div>' ).insertAfter( '.adjustable-quantity input' );
 
-        $(document).on('input change', 'input.detail-item-adjustable-servings', function() {
-            var $servingsElement = $(this),
+        $( document ).on( 'input change', 'input.detail-item-adjustable-servings', function() {
+            var $servingsElement = $( this ),
                 servings = $servingsElement.val(),
-                $recipe = $servingsElement.parents('#wpzoom-premium-recipe-card');
+                $recipe = $servingsElement.parents( '.wpzoom-recipe-card-block-adjustable-servings' );
 
-            $servingsElement.data('servings', servings);
+            $servingsElement.data( 'servings', servings );
 
             updateServingSize( $recipe );
-        })
+        } )
     }
 
     function parseAmount( amount ) {
@@ -80,9 +80,9 @@
         }
 
         // Use . for decimals
-        amount = amount.replace(',', '.');
+        amount = amount.replace( ',', '.' );
 
-        if ( -1 === amount.indexOf('/') ) {
+        if ( -1 === amount.indexOf( '/' ) ) {
             return amount;
         }
 
@@ -95,13 +95,13 @@
             '\u2159': ' 1/6', '\u215A': ' 5/6', '\u215B': ' 1/8', '\u215C': ' 3/8',
             '\u215D': ' 5/8', '\u215E': ' 7/8'
         };
-        amount = amount.replace(fractionsRegex, function(m, vf) {
+        amount = amount.replace( fractionsRegex, function( m, vf ) {
             return fractionsMap[vf];
-        });
+        } );
 
         // Split by spaces
         amount = amount.trim();
-        var parts = amount.split(' ');
+        var parts = amount.split( ' ' );
 
         var result = false;
 
@@ -113,7 +113,7 @@
 
                 if ( '' !== parts[i].trim() ) {
 
-                    var divisionParts = parts[i].split('/', 2);
+                    var divisionParts = parts[i].split( '/', 2 );
                     var partAmount = parseFloat( divisionParts[0] );
 
                     if ( undefined !== divisionParts[1] ) {
@@ -126,7 +126,7 @@
                     }
 
                     result += partAmount;
-                } 
+                }
 
             }
         }
@@ -135,56 +135,56 @@
     }
 
     function buttonQuantityIncrementers() {
-        $('.adjustable-quantity').each(function() {
-            var $spinner = $(this),
-                $input = $spinner.find('input[type="number"]'),
-                $btnUp = $spinner.find('.adjustable-quantity-up'),
-                $btnDown = $spinner.find('.adjustable-quantity-down'),
-                min = $input.attr('min'),
-                max = $input.attr('max');
+        $( '.adjustable-quantity' ).each( function() {
+            var $spinner = $( this ),
+                $input = $spinner.find( 'input[type="number"]' ),
+                $btnUp = $spinner.find( '.adjustable-quantity-up' ),
+                $btnDown = $spinner.find( '.adjustable-quantity-down' ),
+                min = $input.attr( 'min' ),
+                max = $input.attr( 'max' );
 
-            $btnUp.click(function() {
+            $btnUp.click( function() {
                 var oldValue = parseFloat( $input.val() );
 
-                if (oldValue >= max) {
+                if ( oldValue >= max ) {
                     var newVal = oldValue;
                 } else {
                     var newVal = oldValue + 1;
                 }
-                $spinner.find("input").val(newVal);
-                $spinner.find("input").trigger("change");
-                $spinner.parent().find(".only-print-visible").text(newVal);
-            });
+                $spinner.find( "input" ).val( newVal );
+                $spinner.find( "input" ).trigger( "change" );
+                $spinner.parent().find( ".only-print-visible" ).text( newVal );
+            } );
 
-            $btnDown.click(function() {
+            $btnDown.click( function() {
                 var oldValue = parseFloat( $input.val() );
 
-                if (oldValue <= min) {
+                if ( oldValue <= min ) {
                     var newVal = oldValue;
                 } else {
                     var newVal = oldValue - 1;
                 }
-                $spinner.find("input").val(newVal);
-                $spinner.find("input").trigger("change");
-                $spinner.parent().find(".only-print-visible").text(newVal);
-            });
-        });
+                $spinner.find( "input" ).val( newVal );
+                $spinner.find( "input" ).trigger( "change" );
+                $spinner.parent().find( ".only-print-visible" ).text( newVal );
+            } );
+        } );
     }
 
-    $(document).ready(function () {
-        $('.detail-item-adjustable-servings').each(function() {
-            var $servingsElement = $(this),
+    $( document ).ready( function () {
+        $( '.detail-item-adjustable-servings' ).each( function() {
+            var $servingsElement = $( this ),
                 servings = $servingsElement.val();
 
             if ( servings > 0 ) {
                 // Save original servings
-                $servingsElement.data('servings', servings);
-                $servingsElement.data('original-servings', servings);
+                $servingsElement.data( 'servings', servings );
+                $servingsElement.data( 'original-servings', servings );
 
                 initTextField();
                 buttonQuantityIncrementers();
             }
-        });
-    })
+        } );
+    } )
 
-})(jQuery);
+} )( jQuery );
