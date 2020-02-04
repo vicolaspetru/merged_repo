@@ -875,7 +875,7 @@ class WPZOOM_Settings {
 			),
 			'interactivity' => array(
 				'tab_id' 		=> 'tab-interactivity',
-				'tab_title' 	=> __( 'Interactivity', 'wpzoom-recipe-card' ),
+				'tab_title' 	=> __( 'Miscellaneous', 'wpzoom-recipe-card' ),
 				'option_group' 	=> 'wpzoom-recipe-card-settings-interactivity',
 				'option_name' 	=> self::$option,
 				'sections' 		=> array(
@@ -1109,23 +1109,23 @@ class WPZOOM_Settings {
 						'fields' 	=> array(
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_recipe_image_lightbox',
-								'title' 	=> __( 'Clickable Recipe Image', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Recipe Image Lightbox', 'wpzoom-recipe-card' ),
 								'type'		=> 'checkbox',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_recipe_image_lightbox',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Open the recipe image in a lightbox when click on it.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Open the recipe image in a lightbox when clicking it.', 'wpzoom-recipe-card' ),
 									'default'		=> false,
 								)
 							),
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_instruction_images_lightbox',
-								'title' 	=> __( 'Clickable Directions Images', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Directions Images Lightbox', 'wpzoom-recipe-card' ),
 								'type'		=> 'checkbox',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_instruction_images_lightbox',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Open the directions image in a lightbox when click on it.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Open the directions images in a lightbox when clicking them.', 'wpzoom-recipe-card' ),
 									'default'		=> false,
 								)
 							),
@@ -1978,7 +1978,7 @@ class WPZOOM_Settings {
 
 	public function section_lightbox_cb( $args ) {
 	?>
-	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'With Lightbox, when a user clicks on the recipe and/or directions images, the image opens in a lightbox popup. This provides you with a much better user experience.', 'wpzoom-recipe-card' ) ?></p>
+	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'With Lightbox, when a user clicks on the recipe and/or directions images, the image opens in a lightbox popup.', 'wpzoom-recipe-card' ) ?></p>
 	<?php
 	}
 
