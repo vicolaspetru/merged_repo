@@ -186,6 +186,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			            'headerAlign' => WPZOOM_Settings::get('wpzoom_rcb_settings_heading_content_align'),
 			            'ingredientsLayout' => '1-column',
 			            'adjustableServings' => WPZOOM_Settings::get('wpzoom_rcb_settings_enable_adjustable_servings') === '1'
+			        ),
+			        array(
+			        	'displayFoodLabels' => WPZOOM_Settings::get('wpzoom_rcb_settings_display_food_labels') === '1',
+			        	'locationToShowFoodLabels' => WPZOOM_Settings::get('wpzoom_rcb_settings_location_to_show_food_labels')
 			        )
 			    ),
 			    'items' => array(
@@ -463,6 +467,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$ingredients_content = $this->get_ingredients_content( $ingredients );
 		$steps_content = $this->get_steps_content( $steps );
 		$recipe_card_video = $this->get_video_content();
+		$food_labels_content_top = self::get_food_labels_content( 'top' );
+		$food_labels_content_bottom = self::get_food_labels_content( 'bottom' );
 
 		$strip_tags_notes = isset( $notes ) ? strip_tags($notes) : '';
 		$notes = str_replace('<li></li>', '', $notes); // remove empty list item
@@ -500,11 +506,13 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$recipe_card_image .
 			$recipe_card_heading .
 			$details_content .
+			$food_labels_content_top .
 			$summary_text .
 			$ingredients_content .
 			$steps_content .
 			$recipe_card_video .
 			$notes_content .
+			$food_labels_content_bottom .
 			$cta_content .
 			$footer_copyright
 		);
@@ -1628,5 +1636,44 @@ class WPZOOM_Premium_Recipe_Card_Block {
     	ob_end_clean();
 
     	return $content;
+    }
+
+    /**
+     * Get the Food Labels content
+     * 
+     * @since 2.6.3
+     * 
+     * @return object
+     */
+    public static function get_food_labels_content( $location ) {
+    	return sprintf( '<div class="recipe-card-food-labels">%s</div>', self::draw_icon_label( $location ) );
+    }
+
+    /**
+     * Draw the food labels SVGs
+     * 
+     * @since 2.6.3
+     * 
+     * @return object
+     */
+    public static function draw_icon_label( $location ) {
+    	$foodLabels = self::$settings['foodLabels'];
+    	$displayFoodLabels = self::$settings['displayFoodLabels'];
+    	$foodLabelsLocation = self::$settings['locationToShowFoodLabels'];
+
+    	if ( empty( $foodLabels ) || ! $displayFoodLabels || $location !== $foodLabelsLocation ) {
+    		return '';
+    	}
+
+    	$iconsSVG = FOOD_LABELS_SVG; // constant defined in class-wpzoom-plugin-loader.php
+    	$drawLabels = '';
+
+		foreach ( $foodLabels as $index => $label ) {
+        	if ( isset( $iconsSVG[ $label ] ) ) {
+        		$drawLabels .= sprintf( '<li>%s</li>', $iconsSVG[ $label ] );
+        	}
+        }
+
+        return sprintf( '<ul class="food-labels-list">%s</ul>', $drawLabels );
     }
 }
