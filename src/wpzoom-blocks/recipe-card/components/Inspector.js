@@ -804,6 +804,27 @@ export default class Inspector extends Component {
                     hintLoading={ this.props.hintLoading }
                     { ...{ attributes, setAttributes, className } }
                 />
+                <PanelBody className="wpzoom-recipe-card-food-labels" initialOpen={ true } title={ __( "Food Labels", "wpzoom-recipe-card" ) }>
+                    <ToggleControl
+                        label={ __( "Display Food Labels", "wpzoom-recipe-card" ) }
+                        checked={ get( attributes, [ 'settings', 1, 'displayFoodLabels' ] ) }
+                        onChange={ display => this.onChangeSettings( display, 'displayFoodLabels', 1 ) }
+                    />
+                    <SelectControl
+                        multiple
+                        label={ __( "Select Food Labels", "wpzoom-recipe-card" ) }
+                        help={ __( "CMD + Click / Ctrl + Click to select multiple labels", "wpzoom-recipe-card" ) }
+                        value={ get( attributes, [ 'settings', 1, 'foodLabels' ] ) }
+                        options={ foodLabels }
+                        onChange={ label => this.onChangeSettings( label, 'foodLabels', 1 ) }
+                    />
+                    <SelectControl
+                        label={ __( "Where to show labels?", "wpzoom-recipe-card" ) }
+                        value={ get( attributes, [ 'settings', 1, 'locationToShowFoodLabels' ] ) }
+                        options={ foodLabelsLocation }
+                        onChange={ location => this.onChangeSettings( location, 'locationToShowFoodLabels', 1 ) }
+                    />
+                </PanelBody>
                 <PanelBody className="wpzoom-recipe-card-seo-settings" initialOpen={ true } title={ __( "Recipe Card SEO Settings", "wpzoom-recipe-card" ) }>
                     <BaseControl
                         id={ `${ id }-course` }
@@ -1201,27 +1222,6 @@ export default class Inspector extends Component {
                             onChange={ newValue => this.onChangeDetail( newValue, 7, 'unit' ) }
                         />
                     </PanelRow>
-                </PanelBody>
-                <PanelBody className="wpzoom-recipe-card-food-labels" initialOpen={ true } title={ __( "Food Labels", "wpzoom-recipe-card" ) }>
-                    <ToggleControl
-                        label={ __( "Display Food Labels", "wpzoom-recipe-card" ) }
-                        checked={ get( attributes, [ 'settings', 1, 'displayFoodLabels' ] ) }
-                        onChange={ display => this.onChangeSettings( display, 'displayFoodLabels', 1 ) }
-                    />
-                    <SelectControl
-                        multiple
-                        label={ __( "Select Food Labels", "wpzoom-recipe-card" ) }
-                        help={ __( "CMD + Click / Ctrl + Click to select multiple labels", "wpzoom-recipe-card" ) }
-                        value={ get( attributes, [ 'settings', 1, 'foodLabels' ] ) }
-                        options={ foodLabels }
-                        onChange={ label => this.onChangeSettings( label, 'foodLabels', 1 ) }
-                    />
-                    <SelectControl
-                        label={ __( "Where to show labels?", "wpzoom-recipe-card" ) }
-                        value={ get( attributes, [ 'settings', 1, 'locationToShowFoodLabels' ] ) }
-                        options={ foodLabelsLocation }
-                        onChange={ location => this.onChangeSettings( location, 'locationToShowFoodLabels', 1 ) }
-                    />
                 </PanelBody>
                 <PanelBody className="wpzoom-recipe-card-structured-data-testing" initialOpen={ true } title={ __( "Structured Data Testing", "wpzoom-recipe-card" ) }>
                     <BaseControl
