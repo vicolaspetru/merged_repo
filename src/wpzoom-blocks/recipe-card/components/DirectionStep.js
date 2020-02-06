@@ -2,12 +2,14 @@
 import PropTypes from "prop-types";
 import { __ } from "@wordpress/i18n";
 import isShallowEqual from "@wordpress/is-shallow-equal/objects";
+import some from "lodash/some";
 import isObject from "lodash/isObject";
 import isString from "lodash/isString";
 import isUndefined from "lodash/isUndefined";
 import ReactHtmlParser from "react-html-parser";
 
 /* Internal dependencies */
+import DirectionGalleryEdit from "./DirectionGalleryEdit";
 import { pickRelevantMediaFiles } from "../../../helpers/pickRelevantMediaFiles";
 import { matchIMGsrc } from "../../../helpers/stringHelpers";
 
@@ -44,6 +46,7 @@ export default class DirectionStep extends Component {
         this.onFocusText = this.onFocusText.bind( this );
         this.onChangeText = this.onChangeText.bind( this );
         this.onChangeGroupTitle = this.onChangeGroupTitle.bind( this );
+        this.onSelectGalleryImages = this.onSelectGalleryImages.bind( this );
     }
 
     /**
@@ -156,24 +159,50 @@ export default class DirectionStep extends Component {
             step: {
                 id,
                 isGroup,
+                galleryImages
             }
         } = this.props;
+
+        const hasImages = ! isUndefined( galleryImages ) && !! galleryImages.length;
+        const hasImagesWithId = hasImages && some( galleryImages, ( { id } ) => id );
+
+        const mediaUpload = (
+            <MediaUpload
+                addToGallery={ hasImagesWithId }
+                isAppender={ hasImages }
+                onSelect={ this.onSelectGalleryImages }
+                accept="image/*"
+                allowedTypes={ ALLOWED_MEDIA_TYPES }
+                multiple
+                value={ hasImagesWithId ? galleryImages : undefined }
+                render={ ( { open } ) => (
+                    <IconButton
+                        className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
+                        icon="format-gallery"
+                        onClick={ open }
+                    />
+                ) }
+            />
+        );
 
         return <div className="direction-step-button-container">
             { this.getMover() }
             { ! isGroup &&
-                <MediaUpload
-                    onSelect={ this.onSelectImage }
-                    allowedTypes={ ALLOWED_MEDIA_TYPES }
-                    value={ id }
-                    render={ ( { open } ) => (
-                        <IconButton
-                            className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
-                            icon="format-image"
-                            onClick={ open }
-                        />
-                    ) }
-                />
+                <Fragment>
+                    { ! hasImages && mediaUpload }
+                    <MediaUpload
+                        onSelect={ this.onSelectImage }
+                        allowedTypes={ ALLOWED_MEDIA_TYPES }
+                        value={ id }
+                        render={ ( { open } ) => (
+                            <IconButton
+                                className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
+                                icon="format-image"
+                                onClick={ open }
+                            />
+                        ) }
+                    />
+                </Fragment>
             }
             <IconButton
                 className="direction-step-button direction-step-button-delete editor-inserter__toggle"
@@ -253,6 +282,22 @@ export default class DirectionStep extends Component {
     }
 
     /**
+     * Callback when an gallery from the media library has been inserted.
+     *
+     * @param {Object} images   The selected gallery images.
+     *
+     * @returns {void}
+     */
+    onSelectGalleryImages( images ) {
+        const {
+            onChangeGallery,
+            index
+        } = this.props;
+
+        onChangeGallery( images, index );
+    }
+
+    /**
      * Returns the image src from step contents.
      *
      * @param {array} contents The step contents.
@@ -299,10 +344,12 @@ export default class DirectionStep extends Component {
         const {
             isSelected,
             subElement,
+            index,
             step: {
                 id,
                 text,
-                isGroup
+                isGroup,
+                galleryImages
             }
         } = this.props;
 
@@ -319,17 +366,26 @@ export default class DirectionStep extends Component {
             <li className={ stepClassName } key={ id }>
                 {
                     !isGroup &&
-                    <RichText
-                        className="direction-step-text"
-                        tagName="p"
-                        unstableOnSetup={ this.setTextRef }
-                        key={ `${ id }-text` }
-                        value={ textContent }
-                        onChange={ this.onChangeText }
-                        placeholder={ __( "Enter step description", "wpzoom-recipe-card" ) }
-                        unstableOnFocus={ this.onFocusText }
-                        keepPlaceholderOnFocus={ true }
-                    />
+                    <Fragment>
+                        <RichText
+                            className="direction-step-text"
+                            tagName="p"
+                            unstableOnSetup={ this.setTextRef }
+                            key={ `${ id }-text` }
+                            value={ textContent }
+                            onChange={ this.onChangeText }
+                            placeholder={ __( "Enter step description", "wpzoom-recipe-card" ) }
+                            unstableOnFocus={ this.onFocusText }
+                            keepPlaceholderOnFocus={ true }
+                        />
+                        <DirectionGalleryEdit
+                            images={ galleryImages }
+                            stepIndex={ index }
+                            isSelected={ isSelected }
+                            className={ `${ stepClassName }-gallery` }
+                            setAttributes={ this.props.setAttributes }
+                        />
+                    </Fragment>
                 }
                 {
                     isGroup &&

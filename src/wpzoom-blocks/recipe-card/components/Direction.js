@@ -31,6 +31,7 @@ export default class Direction extends Component {
         this.state = { focus: "" };
 
         this.changeStep = this.changeStep.bind( this );
+        this.changeStepGallery = this.changeStepGallery.bind( this );
         this.insertStep = this.insertStep.bind( this );
         this.removeStep = this.removeStep.bind( this );
         this.swapSteps = this.swapSteps.bind( this );
@@ -193,6 +194,23 @@ export default class Direction extends Component {
         this.setFocus( fieldToFocus );
     }
 
+    changeStepGallery( images, index ) {
+        const steps = this.props.attributes.steps ? this.props.attributes.steps.slice() : [];
+
+        // If the index exceeds the number of steps, don't change anything.
+        if ( index >= steps.length ) {
+            return;
+        }
+
+        // Rebuild the step with the newly made changes.
+        steps[ index ] = {
+            ...steps[ index ],
+            galleryImages: images
+        };
+
+        this.props.setAttributes( { steps } );
+    }
+
     /**
      * Sets the focus to a specific step in the Direction block.
      *
@@ -338,6 +356,7 @@ export default class Direction extends Component {
                     index={ index }
                     editorRef={ this.setStepRef }
                     onChange={ this.changeStep }
+                    onChangeGallery={ this.changeStepGallery }
                     insertStep={ this.insertStep }
                     removeStep={ this.removeStep }
                     onFocus={ this.setFocusToStep }
@@ -347,6 +366,7 @@ export default class Direction extends Component {
                     isFirst={ index === 0 }
                     isLast={ index === this.props.attributes.steps.length - 1 }
                     isSelected={ focusIndex === `${ index }` }
+                    setAttributes={ this.props.setAttributes }
                 />
             );
         } );
