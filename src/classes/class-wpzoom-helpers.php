@@ -63,6 +63,11 @@ class WPZOOM_Helpers {
 
 	public function parse_block_settings( $attrs ) {
 		$settings = isset( $attrs['settings'][0] ) ? $attrs['settings'][0] : array();
+		$_settings = isset( $attrs['settings'][1] ) ? $attrs['settings'][1] : array();
+
+		// Merge settings
+		$settings = array_merge( $settings, $_settings );
+
 		$blockStyle = isset($attrs['className']) ? $this->get_block_style( $attrs['className'] ) : WPZOOM_Settings::get('wpzoom_rcb_settings_template');
 
 		if ( !isset( $settings['headerAlign'] ) ) {
@@ -121,6 +126,15 @@ class WPZOOM_Helpers {
 		}
 		if ( !isset( $settings['hide_header_image'] ) ) {
  			$settings['hide_header_image'] = false;
+ 		}
+ 		if ( !isset( $settings['foodLabels'] ) ) {
+ 			$settings['foodLabels'] = array();
+ 		}
+ 		if ( !isset( $settings['displayFoodLabels'] ) ) {
+ 			$settings['displayFoodLabels'] = WPZOOM_Settings::get('wpzoom_rcb_settings_display_food_labels');
+ 		}
+ 		if ( !isset( $settings['locationToShowFoodLabels'] ) ) {
+ 			$settings['locationToShowFoodLabels'] = WPZOOM_Settings::get('wpzoom_rcb_settings_location_to_show_food_labels');
  		}
 
 		return $settings;

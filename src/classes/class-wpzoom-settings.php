@@ -566,6 +566,42 @@ class WPZOOM_Settings {
 							),
 						)
 					),
+					array(
+						'id' 		=> 'wpzoom_section_recipe_food_labels',
+						'title' 	=> __( 'Food Labels', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-general',
+						'callback' 	=> '__return_false',
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_display_food_labels',
+								'title' 	=> __( 'Display Food Labels', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_display_food_labels',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Show food labels by default', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+                                    'preview'       => true,
+                                    'preview_pos'	=> 'top',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_location_to_show_food_labels',
+								'title' 	=> __( 'Where to show the food labels?', 'wpzoom-recipe-card' ),
+								'type'		=> 'select',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_location_to_show_food_labels',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Select where you want to show the food labels in recipe card.', 'wpzoom-recipe-card' ),
+									'default'		=> 'top',
+									'options' 		=> array(
+										'top' 		=> __( 'Top (Before Summary text)', 'wpzoom-recipe-card' ),
+										'bottom' 	=> __( 'Bottom (Below Notes)', 'wpzoom-recipe-card' ),
+									)
+								)
+							),
+						)
+					),
 				)
 			),
 			'appearance' => array(
@@ -873,16 +909,16 @@ class WPZOOM_Settings {
 					),
 				)
 			),
-			'interactivity' => array(
-				'tab_id' 		=> 'tab-interactivity',
+			'miscellaneous' => array(
+				'tab_id' 		=> 'tab-miscellaneous',
 				'tab_title' 	=> __( 'Miscellaneous', 'wpzoom-recipe-card' ),
-				'option_group' 	=> 'wpzoom-recipe-card-settings-interactivity',
+				'option_group' 	=> 'wpzoom-recipe-card-settings-miscellaneous',
 				'option_name' 	=> self::$option,
 				'sections' 		=> array(
 					array(
 						'id' 		=> 'wpzoom_section_snippets',
 						'title' 	=> __( 'Recipe Buttons', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
+						'page' 		=> 'wpzoom-recipe-card-settings-miscellaneous',
 						'callback' 	=> array( $this, 'section_recipe_snippets' ),
 						'fields' 	=> array(
 							array(
@@ -927,7 +963,7 @@ class WPZOOM_Settings {
 					array(
 						'id' 		=> 'wpzoom_section_print',
 						'title' 	=> __( 'Print', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
+						'page' 		=> 'wpzoom-recipe-card-settings-miscellaneous',
 						'callback' 	=> '__return_false',
 						'fields' 	=> array(
 							array(
@@ -992,7 +1028,7 @@ class WPZOOM_Settings {
 					array(
 						'id' 		=> 'wpzoom_rcb_settings_pinterest',
 						'title' 	=> __( 'Pinterest', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
+						'page' 		=> 'wpzoom-recipe-card-settings-miscellaneous',
 						'callback' 	=> '__return_false',
 						'fields' 	=> array(
 							array(
@@ -1044,7 +1080,7 @@ class WPZOOM_Settings {
 					array(
 						'id' 		=> 'wpzoom_section_rating_features',
 						'title' 	=> __( 'Rating Feature', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
+						'page' 		=> 'wpzoom-recipe-card-settings-miscellaneous',
 						'callback' 	=> array( $this, 'section_rating_feature_cb' ),
 						'fields' 	=> array(
 							array(
@@ -1104,7 +1140,7 @@ class WPZOOM_Settings {
 					array(
 						'id' 		=> 'wpzoom_section_lightbox',
 						'title' 	=> __( 'Lightbox', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-interactivity',
+						'page' 		=> 'wpzoom-recipe-card-settings-miscellaneous',
 						'callback' 	=> array( $this, 'section_lightbox_cb' ),
 						'fields' 	=> array(
 							array(

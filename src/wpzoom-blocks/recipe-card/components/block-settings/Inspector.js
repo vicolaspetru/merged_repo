@@ -43,6 +43,70 @@ const ALLOWED_MEDIA_TYPES = [ 'image' ];
 const NOT_ADDED = __( "Not added", "wpzoom-recipe-card" );
 const NOT_DISPLAYED = <Icon icon="hidden" title={ __( "Not displayed", "wpzoom-recipe-card" ) }/>;
 
+const coursesToken = [
+    __( "Appetizers", "wpzoom-recipe-card" ),
+    __( "Snacks", "wpzoom-recipe-card" ),
+    __( "Breakfast", "wpzoom-recipe-card" ),
+    __( "Brunch", "wpzoom-recipe-card" ),
+    __( "Dessert", "wpzoom-recipe-card" ),
+    __( "Drinks", "wpzoom-recipe-card" ),
+    __( "Dinner", "wpzoom-recipe-card" ),
+    __( "Main", "wpzoom-recipe-card" ),
+    __( "Lunch", "wpzoom-recipe-card" ),
+    __( "Salads", "wpzoom-recipe-card" ),
+    __( "Sides", "wpzoom-recipe-card" ),
+    __( "Soups", "wpzoom-recipe-card" ),
+];
+
+const cuisinesToken = [
+    __( "American", "wpzoom-recipe-card" ),
+    __( "Chinese", "wpzoom-recipe-card" ),
+    __( "French", "wpzoom-recipe-card" ),
+    __( "Indian", "wpzoom-recipe-card" ),
+    __( "Italian", "wpzoom-recipe-card" ),
+    __( "Japanese", "wpzoom-recipe-card" ),
+    __( "Mediterranean", "wpzoom-recipe-card" ),
+    __( "Mexican", "wpzoom-recipe-card" ),
+    __( "Southern", "wpzoom-recipe-card" ),
+    __( "Thai", "wpzoom-recipe-card" ),
+    __( "Other world cuisine", "wpzoom-recipe-card" ),
+];
+
+const difficultyToken = [
+    __( "Easy", "wpzoom-recipe-card" ),
+    __( "Medium", "wpzoom-recipe-card" ),
+    __( "Difficult", "wpzoom-recipe-card" ),
+];
+
+const keywordsToken = [];
+
+const colors = [
+    { name: __( "Dark", "wpzoom-recipe-card" ), color: '#222222' },
+    { name: __( "Orange", "wpzoom-recipe-card" ), color: '#FFA921' },
+    { name: __( "Red", "wpzoom-recipe-card" ), color: '#FF4E6A' },
+    { name: __( "Green", "wpzoom-recipe-card" ), color: '#B7C662' },
+];
+
+const foodLabels = [
+    { label: __( "Select a Food Label", "wpzoom-recipe-card" ), value: null, disabled: true },
+    { label: __( "Vegan", "wpzoom-recipe-card" ), value: 'vegan' },
+    { label: __( "Gluten Free", "wpzoom-recipe-card" ), value: 'gluten-free' },
+    { label: __( "Dairy Free" ), value: 'dairy-free' },
+    { label: __( "Palm Oil Free" ), value: 'palm-oil-free' },
+    { label: __( "Sugar Free" ), value: 'sugar-free' },
+    { label: __( "Phosphate Free" ), value: 'phosphate-free' },
+    // { label: __( "Low Fat" ), value: 'low-fat' },
+    // { label: __( "High Protein" ), value: 'high-protein' },
+    // { label: __( "Keto Option" ), value: 'keto-option' },
+    // { label: __( "Nut Free" ), value: 'nut-free' },
+    // { label: __( "Whole Grain" ), value: 'whole-grain' }
+];
+
+const foodLabelsLocation = [
+    { label: __( "Top (Before Summary text)", "wpzoom-recipe-card" ), value: 'top' },
+    { label: __( "Bottom (Below Notes)", "wpzoom-recipe-card" ), value: 'bottom' }
+];
+
 /**
  * Inspector controls
  */
@@ -86,7 +150,6 @@ export default class Inspector extends Component {
     componentDidMount() {
         this.setFeaturedImage();
         this.structuredDataTable();
-        this.structuredDataNotice();
         this.calculateTotalTime();
     }
 
@@ -363,7 +426,7 @@ export default class Inspector extends Component {
             }
         } );
 
-        this.setState( { structuredDataTable: { recipeIngredients, recipeInstructions } } );
+        this.setState( { structuredDataTable: { recipeIngredients, recipeInstructions } }, this.structuredDataNotice );
     }
 
     structuredDataNotice() {
@@ -515,50 +578,6 @@ export default class Inspector extends Component {
 
         const style = getBlockStyle( className );
         const imageSizeOptions = this.getImageSizeOptions();
-
-        const coursesToken = [
-            __( "Appetizers", "wpzoom-recipe-card" ),
-            __( "Snacks", "wpzoom-recipe-card" ),
-            __( "Breakfast", "wpzoom-recipe-card" ),
-            __( "Brunch", "wpzoom-recipe-card" ),
-            __( "Dessert", "wpzoom-recipe-card" ),
-            __( "Drinks", "wpzoom-recipe-card" ),
-            __( "Dinner", "wpzoom-recipe-card" ),
-            __( "Main", "wpzoom-recipe-card" ),
-            __( "Lunch", "wpzoom-recipe-card" ),
-            __( "Salads", "wpzoom-recipe-card" ),
-            __( "Sides", "wpzoom-recipe-card" ),
-            __( "Soups", "wpzoom-recipe-card" ),
-        ];
-
-        const cuisinesToken = [
-            __( "American", "wpzoom-recipe-card" ),
-            __( "Chinese", "wpzoom-recipe-card" ),
-            __( "French", "wpzoom-recipe-card" ),
-            __( "Indian", "wpzoom-recipe-card" ),
-            __( "Italian", "wpzoom-recipe-card" ),
-            __( "Japanese", "wpzoom-recipe-card" ),
-            __( "Mediterranean", "wpzoom-recipe-card" ),
-            __( "Mexican", "wpzoom-recipe-card" ),
-            __( "Southern", "wpzoom-recipe-card" ),
-            __( "Thai", "wpzoom-recipe-card" ),
-            __( "Other world cuisine", "wpzoom-recipe-card" ),
-        ];
-
-        const difficultyToken = [
-            __( "Easy", "wpzoom-recipe-card" ),
-            __( "Medium", "wpzoom-recipe-card" ),
-            __( "Difficult", "wpzoom-recipe-card" ),
-        ];
-
-        const keywordsToken = [];
-
-        const colors = [
-            { name: __( "Dark", "wpzoom-recipe-card" ), color: '#222222' },
-            { name: __( "Orange", "wpzoom-recipe-card" ), color: '#FFA921' },
-            { name: __( "Red", "wpzoom-recipe-card" ), color: '#FF4E6A' },
-            { name: __( "Green", "wpzoom-recipe-card" ), color: '#B7C662' },
-        ];
 
         return (
             <InspectorControls>
@@ -785,6 +804,27 @@ export default class Inspector extends Component {
                     hintLoading={ this.props.hintLoading }
                     { ...{ attributes, setAttributes, className } }
                 />
+                <PanelBody className="wpzoom-recipe-card-food-labels" initialOpen={ true } title={ __( "Food Labels", "wpzoom-recipe-card" ) }>
+                    <ToggleControl
+                        label={ __( "Display Food Labels", "wpzoom-recipe-card" ) }
+                        checked={ get( attributes, [ 'settings', 1, 'displayFoodLabels' ] ) }
+                        onChange={ display => this.onChangeSettings( display, 'displayFoodLabels', 1 ) }
+                    />
+                    <SelectControl
+                        multiple
+                        label={ __( "Select Food Labels", "wpzoom-recipe-card" ) }
+                        help={ __( "CMD + Click / Ctrl + Click to select multiple labels", "wpzoom-recipe-card" ) }
+                        value={ get( attributes, [ 'settings', 1, 'foodLabels' ] ) }
+                        options={ foodLabels }
+                        onChange={ label => this.onChangeSettings( label, 'foodLabels', 1 ) }
+                    />
+                    <SelectControl
+                        label={ __( "Where to show labels?", "wpzoom-recipe-card" ) }
+                        value={ get( attributes, [ 'settings', 1, 'locationToShowFoodLabels' ] ) }
+                        options={ foodLabelsLocation }
+                        onChange={ location => this.onChangeSettings( location, 'locationToShowFoodLabels', 1 ) }
+                    />
+                </PanelBody>
                 <PanelBody className="wpzoom-recipe-card-seo-settings" initialOpen={ true } title={ __( "Recipe Card SEO Settings", "wpzoom-recipe-card" ) }>
                     <BaseControl
                         id={ `${ id }-course` }

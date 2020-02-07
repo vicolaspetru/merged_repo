@@ -12,6 +12,7 @@ import Detail from "./Detail";
 import Ingredient from "./Ingredient";
 import Direction from "./Direction";
 import CallToAction from "./CTA";
+import FoodLabels from "./FoodLabels";
 import Inspector from "./Inspector";
 import ExtraOptionsModal from "./ExtraOptionsModal";
 import { stripHTML } from "../../../helpers/stringHelpers";
@@ -714,7 +715,10 @@ class RecipeCard extends Component {
 
                     </div>
                 }
-
+                <FoodLabels
+                    location="top"
+                    { ...{ attributes, setAttributes } }
+                />
                 <RichText
                     className="recipe-card-summary"
                     tagName="p"
@@ -810,6 +814,10 @@ class RecipeCard extends Component {
                     />
                     <p className="description">{ __( "Press Enter to add new note.", "wpzoom-recipe-card" ) }</p>
                 </div>
+                <FoodLabels
+                    location="bottom"
+                    { ...{ attributes, setAttributes } }
+                />
                 <CallToAction/>
                 <Inspector
                     media={ this.props.media }
