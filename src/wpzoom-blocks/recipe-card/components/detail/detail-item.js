@@ -6,7 +6,7 @@ import isUndefined from "lodash/isUndefined";
 import get from "lodash/get";
 
 /* Internal dependencies */
-import IconsModal from "./IconsModal";
+import IconsModal from "../icons-modal";
 
 /* WordPress dependencies */
 const { Component } = wp.element;

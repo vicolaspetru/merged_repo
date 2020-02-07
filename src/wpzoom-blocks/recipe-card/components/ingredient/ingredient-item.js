@@ -12,7 +12,7 @@ const { RichText } = wp.blockEditor;
 const { IconButton, TextControl } = wp.components;
 
 /* Internal dependencies */
-import { getBlockStyle } from "../../../helpers/getBlockStyle";
+import { getBlockStyle } from "@wpzoom/helpers";
 
 const parseIngredient = ( ingredient ) =>{
     if ( ! isString( ingredient ) ) {

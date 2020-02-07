@@ -1,4 +1,5 @@
 import trim from "lodash/trim";
+import split from "lodash/split";
 import includes from "lodash/includes";
 
 /**
@@ -17,4 +18,16 @@ export function excludeClassNames( className, exclude ) {
         }
     } );
     return classname;
+}
+
+/**
+ * Get block className without additions class names (e.g. is-style-).
+ *
+ * @param {array} className     The block classname.
+ *
+ * @returns {number} Block style.
+ */
+export function parseClassName( className ) {
+    let m = split( className, ' ' );
+    return m ? m[0] : className;
 }

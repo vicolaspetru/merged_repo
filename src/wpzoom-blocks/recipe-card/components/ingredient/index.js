@@ -11,9 +11,11 @@ import isUndefined from "lodash/isUndefined";
 import ReactHtmlParser from 'react-html-parser';
 
 /* Internal dependencies */
-import IngredientItem from "./IngredientItem";
-import { stripHTML } from "../../../helpers/stringHelpers";
-import { removeKeys } from "../../../helpers/removeKeys";
+import IngredientItem from "./ingredient-item";
+import {
+    stripHTML,
+    removeKeys
+} from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { RichText } = wp.blockEditor;

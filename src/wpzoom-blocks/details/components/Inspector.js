@@ -4,7 +4,7 @@ import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
 
 /* Internal dependencies */
-import { stripHTML } from "../../../helpers/stringHelpers";
+import { stripHTML } from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { Component, renderToString } = wp.element;

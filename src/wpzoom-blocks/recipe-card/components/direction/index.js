@@ -5,8 +5,8 @@ import { speak } from "@wordpress/a11y";
 import toNumber from "lodash/toNumber";
 
 /* Internal dependencies */
-import DirectionStep from "./DirectionStep";
-import { stripHTML } from "../../../helpers/stringHelpers";
+import DirectionStep from "./direction-step";
+import { stripHTML } from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { RichText } = wp.blockEditor;

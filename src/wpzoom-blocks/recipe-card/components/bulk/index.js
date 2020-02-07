@@ -14,7 +14,7 @@ import includes from "lodash/includes";
 import ReactHtmlParser from 'react-html-parser';
 
 /* Internal dependencies */
-import { stripHTML } from "../../../helpers/stringHelpers";
+import { stripHTML } from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { renderToString, Fragment } = wp.element;

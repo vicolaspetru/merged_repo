@@ -8,17 +8,19 @@ import isUndefined from "lodash/isUndefined";
 import ReactPlayer from "react-player";
 
 /* Internal dependencies */
-import Detail from "./Detail";
-import Ingredient from "./Ingredient";
-import Direction from "./Direction";
-import CallToAction from "./CTA";
-import FoodLabels from "./FoodLabels";
-import Inspector from "./Inspector";
-import ExtraOptionsModal from "./ExtraOptionsModal";
-import { stripHTML } from "../../../helpers/stringHelpers";
-import { pickRelevantMediaFiles } from "../../../helpers/pickRelevantMediaFiles";
-import { getBlockStyle } from "../../../helpers/getBlockStyle";
-import { generateId } from "../../../helpers/generateId";
+import Detail from "../detail";
+import Ingredient from "../ingredient";
+import Direction from "../direction";
+import CallToAction from "../call-to-action";
+import FoodLabels from "../food-labels";
+import Inspector from "../block-settings";
+import ExtraOptionsModal from "../bulk";
+import {
+    stripHTML,
+    pickRelevantMediaFiles,
+    getBlockStyle,
+    generateId
+} from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { Component, renderToString, Fragment } = wp.element;
@@ -52,8 +54,8 @@ const DEFAULT_QUERY = {
 };
 
 /* Import CSS. */
-import '../style.scss';
-import '../editor.scss';
+import '../../style.scss';
+import '../../editor.scss';
 
 /**
  * A Recipe Card block.

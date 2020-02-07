@@ -6,31 +6,12 @@ import isEmpty from "lodash/isEmpty";
 import isObject from "lodash/isObject";
 import isString from "lodash/isString";
 import forEach from "lodash/forEach";
-import includes from "lodash/includes";
 
 /* Internal dependencies */
-import { stripHTML } from "./stringHelpers";
+import { stripHTML } from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { renderToString } = wp.element;
-
-/**
- * Exclude uneeded class names.
- *
- * @param {array} className  	The block classname.
- * @param {array} exclude  		The classnames to exclude.
- *
- * @returns {string} className.
- */
-export function excludeClassNames( className, exclude ) {
-	let classname = className;
-	exclude.map( (item, index) => {
-		if ( includes( classname, item ) ) {
-			classname = trim( classname, item );
-		}
-	} );
-	return classname;
-}
 
 // parse value for ingredients and directions
 // render from array to string and strip HTML
@@ -41,7 +22,7 @@ export function parseValue( value, isGroup = false ) {
 
     if ( ! isEmpty( content ) ) {
         returnValue = stripHTML( renderToString( trim( content ) ) );
-        
+
         if ( isGroup ) {
             returnValue = `**${ returnValue }**`;
         }
@@ -51,12 +32,12 @@ export function parseValue( value, isGroup = false ) {
 
 export function parseObjectStyle( style ) {
     let css = '';
-    if ( isObject(style) ) {
-        forEach( style, (value, property) => {
+    if ( isObject( style ) ) {
+        forEach( style, ( value, property ) => {
             css += `${ property }: ${ value };`
-        });
+        } );
     }
-    if ( isString(style) ) {
+    if ( isString( style ) ) {
         css = style;
     }
     return css;
@@ -73,20 +54,20 @@ export function convertObjectToString( nodes, $type = '' ) {
 
     let output = '';
 
-    forEach( nodes, (node, index) => {
+    forEach( nodes, ( node, index ) => {
         if ( isString( node ) ) {
             output += node;
         } else {
-            const type     = get( node, ['type'] ) || '';
-            let children   = get( node, ['props', 'children'] ) || '';
+            const type     = get( node, [ 'type' ] ) || '';
+            let children   = get( node, [ 'props', 'children' ] ) || '';
             let startTag   = type ? '<'+type+'>' : '';
             let endTag     = type ? '</'+type+'>' : '';
 
             if ( 'img' === type ) {
-                const src = get( node, ['props', 'src'] ) || false;
+                const src = get( node, [ 'props', 'src' ] ) || false;
                 if ( src ) {
-                    const alt      = get( node, ['props', 'alt'] ) || '';
-                    const imgStyle = get( node, ['props', 'style'] ) || '';
+                    const alt      = get( node, [ 'props', 'alt' ] ) || '';
+                    const imgStyle = get( node, [ 'props', 'style' ] ) || '';
                     const imgClass = 'direction-step-image';
                     startTag = `<${ type } src="${ src }" alt="${ alt }" class="${ imgClass }" style="${ parseObjectStyle( imgStyle ) }" />`;
                 } else {
@@ -94,17 +75,17 @@ export function convertObjectToString( nodes, $type = '' ) {
                 }
                 endTag = '';
             } else if ( 'a' === type ) {
-                const rel        = get( node, ['props', 'rel'] ) || '';
-                const ariaLabel  = get( node, ['props', 'aria-label'] ) || '';
-                const href       = get( node, ['props', 'href'] ) || '#';
-                const target     = get( node, ['props', 'target'] ) || '_blank';
+                const rel        = get( node, [ 'props', 'rel' ] ) || '';
+                const ariaLabel  = get( node, [ 'props', 'aria-label' ] ) || '';
+                const href       = get( node, [ 'props', 'href' ] ) || '#';
+                const target     = get( node, [ 'props', 'target' ] ) || '_blank';
                 startTag = `<${ type } rel="${ rel }" aria-label="${ ariaLabel }" href="${ href }" target="${ target }">`;
             } else if ( 'br' === type ) {
                 endTag = '';
             }
             output += startTag + convertObjectToString( children, type ) + endTag;
         }
-    });
+    } );
 
     return output;
 }

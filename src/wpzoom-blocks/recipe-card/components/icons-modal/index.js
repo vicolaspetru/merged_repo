@@ -7,7 +7,7 @@ import isObject from "lodash/isObject";
 import replace from "lodash/replace";
 
 /* Internal dependencies */
-import Icons from "../../../utils/IconsArray";
+import Icons from "@wpzoom/utils";
 
 /* WordPress dependencies */
 const {

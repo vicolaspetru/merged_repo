@@ -9,14 +9,17 @@ import isNull from "lodash/isNull";
 import toString from "lodash/toString";
 import uniqueId from "lodash/uniqueId";
 import isUndefined from "lodash/isUndefined";
-import PostTaxonomies from "./PostTaxonomies";
 
 /* Internal dependencies */
-import VideoUpload from "./VideoUpload";
-import { stripHTML } from "../../../helpers/stringHelpers";
-import { getNumberFromString, convertMinutesToHours } from "../../../helpers/convertMinutesToHours";
-import { pickRelevantMediaFiles } from "../../../helpers/pickRelevantMediaFiles";
-import { getBlockStyle } from "../../../helpers/getBlockStyle";
+import PostTaxonomies from "../post-taxonomies";
+import VideoUpload from "../video-upload";
+import {
+    stripHTML,
+    getNumberFromString,
+    convertMinutesToHours,
+    pickRelevantMediaFiles,
+    getBlockStyle
+} from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { Component, renderToString, Fragment } = wp.element;

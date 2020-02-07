@@ -9,9 +9,11 @@ import isUndefined from "lodash/isUndefined";
 import ReactHtmlParser from "react-html-parser";
 
 /* Internal dependencies */
-import DirectionGalleryEdit from "./DirectionGalleryEdit";
-import { pickRelevantMediaFiles } from "../../../helpers/pickRelevantMediaFiles";
-import { matchIMGsrc } from "../../../helpers/stringHelpers";
+import DirectionGalleryEdit from "./direction-gallery-edit";
+import {
+    pickRelevantMediaFiles,
+    matchIMGsrc
+} from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { Component, Fragment } = wp.element;

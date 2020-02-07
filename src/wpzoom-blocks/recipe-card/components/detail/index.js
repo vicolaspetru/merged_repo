@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import get from "lodash/get";
 
 /* Internal dependencies */
-import DetailItem from "./DetailItem";
-import { stripHTML } from "../../../helpers/stringHelpers";
+import DetailItem from "./detail-item";
+import { stripHTML } from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { Component, renderToString } = wp.element;

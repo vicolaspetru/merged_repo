@@ -6,7 +6,7 @@ import { __, sprintf } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import DirectionGalleryImage from './DirectionGalleryImage';
+import DirectionGalleryImage from './direction-gallery-image';
 
 export const DirectionGallery = ( props ) => {
     const {

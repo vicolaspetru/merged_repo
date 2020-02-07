@@ -9,7 +9,7 @@ import {
 
 /* Internal dependencies */
 import { pickRelevantMediaFiles } from "./shared";
-import DirectionGallery from "./DirectionGallery";
+import DirectionGallery from "./direction-gallery";
 
 /* WordPress dependencies */
 import { __ } from "@wordpress/i18n";
