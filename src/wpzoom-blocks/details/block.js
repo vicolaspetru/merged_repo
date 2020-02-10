@@ -11,7 +11,7 @@ import { __ } from "@wordpress/i18n";
 /* Internal dependencies */
 import Detail from './components/Detail';
 import legacy from "./legacy";
-import Icons from "@wpzoom/utils";
+import { Icons } from "@wpzoom/utils";
 import { generateId } from "@wpzoom/helpers";
 import icon from "./icon";
 
