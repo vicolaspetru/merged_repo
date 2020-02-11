@@ -194,7 +194,15 @@ export default class Direction extends Component {
         this.setFocus( fieldToFocus );
     }
 
-    changeStepGallery( images, index ) {
+    /**
+     * Replaces the Direction step gallery at the given index
+     *
+     * @param  {object} attributes The attributes for gallery {images, ids}
+     * @param  {number} index      The index of step that needs to be changed.
+     *
+     * @return {void}              Update the gallery
+     */
+    changeStepGallery( attributes, index ) {
         const steps = this.props.attributes.steps ? this.props.attributes.steps.slice() : [];
 
         // If the index exceeds the number of steps, don't change anything.
@@ -205,7 +213,7 @@ export default class Direction extends Component {
         // Rebuild the step with the newly made changes.
         steps[ index ] = {
             ...steps[ index ],
-            galleryImages: images
+            gallery: attributes
         };
 
         this.props.setAttributes( { steps } );
@@ -366,6 +374,7 @@ export default class Direction extends Component {
                     isFirst={ index === 0 }
                     isLast={ index === this.props.attributes.steps.length - 1 }
                     isSelected={ focusIndex === `${ index }` }
+                    isRecipeCardSelected={ this.props.isRecipeCardSelected }
                     setAttributes={ this.props.setAttributes }
                 />
             );

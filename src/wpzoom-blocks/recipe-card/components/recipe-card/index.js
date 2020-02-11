@@ -735,10 +735,12 @@ class RecipeCard extends Component {
                 />
                 <Ingredient
                     generateId={ generateId }
+                    isRecipeCardSelected={ this.props.isRecipeCardSelected }
                     { ...{ attributes, setAttributes, className } }
                 />
                 <Direction
                     generateId={ generateId }
+                    isRecipeCardSelected={ this.props.isRecipeCardSelected }
                     { ...{ attributes, setAttributes, className } }
                 />
                 <div className="recipe-card-video">
@@ -869,7 +871,8 @@ const applyWithSelect = withSelect( ( select, props ) => {
     const {
         getEditedPostAttribute,
         getEditorSettings,
-        getPermalink
+        getPermalink,
+        getSelectedBlock
     } = select( 'core/editor' );
 
     const {
@@ -901,6 +904,9 @@ const applyWithSelect = withSelect( ( select, props ) => {
 
         return authorData;
     }
+
+    const selectedBlock = getSelectedBlock();
+    const isRecipeCardSelected = get( selectedBlock, 'name' ) === "wpzoom-recipe-card/block-recipe-card";
 
     const postType = getPostType( getEditedPostAttribute( 'type' ) );
     const postPermalink = getPermalink();
@@ -963,7 +969,8 @@ const applyWithSelect = withSelect( ( select, props ) => {
         tags,
         imageSizes,
         maxWidth,
-        isRTL
+        isRTL,
+        isRecipeCardSelected
     };
 } );
 

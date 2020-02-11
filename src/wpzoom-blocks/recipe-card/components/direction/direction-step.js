@@ -2,6 +2,8 @@
 import PropTypes from "prop-types";
 import { __ } from "@wordpress/i18n";
 import isShallowEqual from "@wordpress/is-shallow-equal/objects";
+import get from "lodash/get";
+import map from "lodash/map";
 import some from "lodash/some";
 import isObject from "lodash/isObject";
 import isString from "lodash/isString";
@@ -161,12 +163,13 @@ export default class DirectionStep extends Component {
             step: {
                 id,
                 isGroup,
-                galleryImages
+                gallery
             }
         } = this.props;
 
-        const hasImages = ! isUndefined( galleryImages ) && !! galleryImages.length;
-        const hasImagesWithId = hasImages && some( galleryImages, ( { id } ) => id );
+        const images = get( gallery, 'images' );
+        const hasImages = ! isUndefined( images ) && !! images.length;
+        const hasImagesWithId = hasImages && some( images, ( { id } ) => id );
 
         const mediaUploadGallery = (
             <MediaUpload
@@ -176,7 +179,7 @@ export default class DirectionStep extends Component {
                 accept="image/*"
                 allowedTypes={ ALLOWED_MEDIA_TYPES }
                 multiple
-                value={ hasImagesWithId ? galleryImages : undefined }
+                value={ hasImagesWithId ? images : undefined }
                 render={ ( { open } ) => (
                     <IconButton
                         className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
@@ -300,7 +303,16 @@ export default class DirectionStep extends Component {
             index
         } = this.props;
 
-        onChangeGallery( images, index );
+        let attributes = {};
+
+        if ( images ) {
+            attributes = {
+                images,
+                ids: map( images, 'id' ),
+            };
+        }
+
+        onChangeGallery( attributes, index );
     }
 
     /**
@@ -349,13 +361,14 @@ export default class DirectionStep extends Component {
     render() {
         const {
             isSelected,
+            isRecipeCardSelected,
             subElement,
             index,
             step: {
                 id,
                 text,
                 isGroup,
-                galleryImages
+                gallery
             }
         } = this.props;
 
@@ -385,12 +398,13 @@ export default class DirectionStep extends Component {
                             keepPlaceholderOnFocus={ true }
                         />
                         <DirectionGalleryEdit
-                            images={ galleryImages }
+                            images={ get( gallery, 'images' ) }
                             stepIndex={ index }
-                            isSelected={ isSelected }
-                            onFocusStep={ this.props.onFocus }
                             className={ `${ stepClassName }-gallery` }
+                            isRecipeCardSelected={ isRecipeCardSelected }
                             setAttributes={ this.props.setAttributes }
+                            onFocusStep={ this.props.onFocus }
+                            onChangeGallery={ this.props.onChangeGallery }
                         />
                     </Fragment>
                 }
@@ -409,6 +423,7 @@ export default class DirectionStep extends Component {
                     />
                 }
                 {
+                    isRecipeCardSelected &&
                     isSelectedText &&
                     <div className="direction-step-controls-container">
                         { this.getButtons() }
@@ -431,6 +446,7 @@ DirectionStep.propTypes = {
     onMoveDown: PropTypes.func.isRequired,
     subElement: PropTypes.string.isRequired,
     isSelected: PropTypes.bool.isRequired,
+    isRecipeCardSelected: PropTypes.bool.isRequired,
     isFirst: PropTypes.bool.isRequired,
     isLast: PropTypes.bool.isRequired,
 };

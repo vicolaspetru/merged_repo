@@ -241,6 +241,7 @@ export default class IngredientItem extends Component {
                 }
             },
             isSelected,
+            isRecipeCardSelected,
             subElement,
             index,
             onParseItem,
@@ -327,6 +328,7 @@ export default class IngredientItem extends Component {
                     />
                 }
                 {
+                    isRecipeCardSelected &&
                     ( isSelectedName || isSelectedAmount || isSelectedUnit ) &&
                     <div className="ingredient-item-controls-container">
                         { this.getButtons() }

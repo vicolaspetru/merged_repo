@@ -12,7 +12,7 @@ export const DirectionGallery = ( props ) => {
     const {
         images,
         className,
-        isSelected,
+        isRecipeCardSelected,
         selectedImage,
         onMoveBackward,
         onMoveForward,
@@ -40,7 +40,7 @@ export const DirectionGallery = ( props ) => {
                                 id={ img.id }
                                 isFirstItem={ index === 0 }
                                 isLastItem={ index + 1 === images.length }
-                                isSelected={ isSelected && selectedImage === index }
+                                isSelected={ isRecipeCardSelected && selectedImage === index }
                                 onMoveBackward={ onMoveBackward( index ) }
                                 onMoveForward={ onMoveForward( index ) }
                                 onRemove={ onRemoveImage( index ) }

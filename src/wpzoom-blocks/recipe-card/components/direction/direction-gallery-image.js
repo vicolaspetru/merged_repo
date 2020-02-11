@@ -53,7 +53,6 @@ class DirectionGalleryImage extends Component {
 
     componentDidUpdate( prevProps ) {
         const {
-            isSelected,
             image,
             url,
             __unstableMarkNextChangeAsNotPersistent,
@@ -80,7 +79,6 @@ class DirectionGalleryImage extends Component {
             onRemove,
             onMoveForward,
             onMoveBackward,
-            setAttributes,
             'aria-label': ariaLabel,
         } = this.props;
 

@@ -55,22 +55,20 @@ class DirectionGalleryEdit extends Component {
     }
 
     setAttributes( attributes ) {
-        // if ( attributes.ids ) {
-        //     throw new Error(
-        //         'The "ids" attribute should not be changed directly. It is managed automatically when "images" attribute changes'
-        //     );
-        // }
+        if ( attributes.ids ) {
+            throw new Error(
+                'The "ids" attribute should not be changed directly. It is managed automatically when "images" attribute changes'
+            );
+        }
 
-        console.log( attributes )
+        if ( attributes.images ) {
+            attributes = {
+                ...attributes,
+                ids: map( attributes.images, 'id' ),
+            };
+        }
 
-        // if ( attributes.images ) {
-        //     attributes = {
-        //         ...attributes,
-        //         ids: map( attributes.images, 'id' ),
-        //     };
-        // }
-
-        // this.props.setAttributes( attributes );
+        this.props.onChangeGallery( attributes, this.props.stepIndex )
     }
 
     onSelectImage( index ) {
@@ -123,9 +121,6 @@ class DirectionGalleryEdit extends Component {
     }
 
     onSelectImages( newImages ) {
-
-        console.log( newImages )
-
         const { sizeSlug } = this.props;
 
         this.setAttributes( {
@@ -171,8 +166,8 @@ class DirectionGalleryEdit extends Component {
     }
 
     componentDidUpdate( prevProps ) {
-        // Deselect images when deselecting the block
-        if ( ! this.props.isSelected && prevProps.isSelected ) {
+        // Deselect images when deselecting the Recipe Card Block
+        if ( ! this.props.isRecipeCardSelected && prevProps.isRecipeCardSelected ) {
             this.setState( {
                 selectedImage: null
             } );

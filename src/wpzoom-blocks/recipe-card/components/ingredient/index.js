@@ -513,6 +513,7 @@ export default class Ingredient extends Component {
         return this.props.attributes.ingredients.map( ( item, index ) => {
             return (
                 <IngredientItem
+                    { ...this.props }
                     key={ item.id }
                     item={ item }
                     index={ index }
@@ -530,7 +531,7 @@ export default class Ingredient extends Component {
                     isFirst={ index === 0 }
                     isLast={ index === this.props.attributes.ingredients.length - 1 }
                     isSelected={ focusIndex === `${ index }` }
-                    { ...this.props }
+                    isRecipeCardSelected={ this.props.isRecipeCardSelected }
                 />
             );
         } );
