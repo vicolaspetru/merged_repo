@@ -168,7 +168,7 @@ export default class DirectionStep extends Component {
         const hasImages = ! isUndefined( galleryImages ) && !! galleryImages.length;
         const hasImagesWithId = hasImages && some( galleryImages, ( { id } ) => id );
 
-        const mediaUpload = (
+        const mediaUploadGallery = (
             <MediaUpload
                 addToGallery={ hasImagesWithId }
                 isAppender={ hasImages }
@@ -187,23 +187,27 @@ export default class DirectionStep extends Component {
             />
         );
 
+        const mediaUploadImage = (
+            <MediaUpload
+                onSelect={ this.onSelectImage }
+                allowedTypes={ ALLOWED_MEDIA_TYPES }
+                value={ id }
+                render={ ( { open } ) => (
+                    <IconButton
+                        className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
+                        icon="format-image"
+                        onClick={ open }
+                    />
+                ) }
+            />
+        );
+
         return <div className="direction-step-button-container">
             { this.getMover() }
             { ! isGroup &&
                 <Fragment>
-                    { ! hasImages && mediaUpload }
-                    <MediaUpload
-                        onSelect={ this.onSelectImage }
-                        allowedTypes={ ALLOWED_MEDIA_TYPES }
-                        value={ id }
-                        render={ ( { open } ) => (
-                            <IconButton
-                                className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
-                                icon="format-image"
-                                onClick={ open }
-                            />
-                        ) }
-                    />
+                    { ! hasImages && mediaUploadGallery }
+                    { ! hasImages && mediaUploadImage }
                 </Fragment>
             }
             <IconButton
@@ -384,6 +388,7 @@ export default class DirectionStep extends Component {
                             images={ galleryImages }
                             stepIndex={ index }
                             isSelected={ isSelected }
+                            onFocusStep={ this.props.onFocus }
                             className={ `${ stepClassName }-gallery` }
                             setAttributes={ this.props.setAttributes }
                         />

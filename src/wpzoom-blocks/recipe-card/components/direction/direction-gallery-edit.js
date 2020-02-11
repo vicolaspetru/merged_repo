@@ -75,6 +75,8 @@ class DirectionGalleryEdit extends Component {
 
     onSelectImage( index ) {
         return () => {
+            this.props.onFocusStep( this.props.stepIndex, "text" );
+
             if ( this.state.selectedImage !== index ) {
                 this.setState( {
                     selectedImage: index,
