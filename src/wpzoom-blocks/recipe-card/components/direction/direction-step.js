@@ -50,7 +50,6 @@ export default class DirectionStep extends Component {
         this.onFocusText = this.onFocusText.bind( this );
         this.onChangeText = this.onChangeText.bind( this );
         this.onChangeGroupTitle = this.onChangeGroupTitle.bind( this );
-        this.onSelectGalleryImages = this.onSelectGalleryImages.bind( this );
     }
 
     /**
@@ -169,26 +168,6 @@ export default class DirectionStep extends Component {
 
         const images = get( gallery, 'images' );
         const hasImages = ! isUndefined( images ) && !! images.length;
-        const hasImagesWithId = hasImages && some( images, ( { id } ) => id );
-
-        const mediaUploadGallery = (
-            <MediaUpload
-                addToGallery={ hasImagesWithId }
-                isAppender={ hasImages }
-                onSelect={ this.onSelectGalleryImages }
-                accept="image/*"
-                allowedTypes={ ALLOWED_MEDIA_TYPES }
-                multiple
-                value={ hasImagesWithId ? images : undefined }
-                render={ ( { open } ) => (
-                    <IconButton
-                        className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
-                        icon="format-gallery"
-                        onClick={ open }
-                    />
-                ) }
-            />
-        );
 
         const mediaUploadImage = (
             <MediaUpload
@@ -209,7 +188,6 @@ export default class DirectionStep extends Component {
             { this.getMover() }
             { ! isGroup &&
                 <Fragment>
-                    { ! hasImages && mediaUploadGallery }
                     { ! hasImages && mediaUploadImage }
                 </Fragment>
             }
@@ -288,31 +266,6 @@ export default class DirectionStep extends Component {
         }
 
         onChange( newText, text, index );
-    }
-
-    /**
-     * Callback when an gallery from the media library has been inserted.
-     *
-     * @param {Object} images   The selected gallery images.
-     *
-     * @returns {void}
-     */
-    onSelectGalleryImages( images ) {
-        const {
-            onChangeGallery,
-            index
-        } = this.props;
-
-        let attributes = {};
-
-        if ( images ) {
-            attributes = {
-                images,
-                ids: map( images, 'id' ),
-            };
-        }
-
-        onChangeGallery( attributes, index );
     }
 
     /**

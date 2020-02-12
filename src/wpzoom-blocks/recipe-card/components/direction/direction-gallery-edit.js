@@ -205,8 +205,8 @@ class DirectionGalleryEdit extends Component {
                 disableMediaButtons={ hasImages && ! isSelected }
                 icon={ hasImages && sharedIcon }
                 labels={ {
-                    title: hasImages && __( 'Edit Gallery' ),
-                    instructions: hasImages && PLACEHOLDER_TEXT,
+                    title: hasImages ? __( 'Edit Gallery' ) : __( 'Add Gallery' ),
+                    instructions: ! hasImages && PLACEHOLDER_TEXT,
                 } }
                 onSelect={ this.onSelectImages }
                 accept="image/*"
@@ -216,7 +216,11 @@ class DirectionGalleryEdit extends Component {
             />
         );
 
-        if ( ! hasImages ) {
+        if ( ! hasImages && isSelected ) {
+            return mediaPlaceholder;
+        }
+
+        if ( ! hasImages && ! isSelected ) {
             return null;
         }
 
