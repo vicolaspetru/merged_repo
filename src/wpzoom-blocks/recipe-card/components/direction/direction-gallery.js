@@ -18,6 +18,7 @@ export const DirectionGallery = ( props ) => {
         onMoveForward,
         onRemoveImage,
         onSelectImage,
+        mediaPlaceholder,
         onSetImageAttributes,
     } = props;
 
@@ -52,6 +53,7 @@ export const DirectionGallery = ( props ) => {
                     );
                 } ) }
             </ul>
+            { mediaPlaceholder }
         </figure>
     );
 };

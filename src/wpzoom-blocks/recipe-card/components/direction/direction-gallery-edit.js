@@ -1,6 +1,7 @@
 /* External dependencies */
 import {
     map,
+    some,
     every,
     filter,
     forEach,
@@ -9,6 +10,7 @@ import {
 
 /* Internal dependencies */
 import { pickRelevantMediaFiles } from "./shared";
+import { sharedIcon } from './shared-icon';
 import DirectionGallery from "./direction-gallery";
 
 /* WordPress dependencies */
@@ -18,9 +20,17 @@ import { Component, Fragment, Platform } from "@wordpress/element";
 import { getBlobByURL, isBlobURL, revokeBlobURL } from "@wordpress/blob";
 import { withSelect } from "@wordpress/data";
 import { withViewportMatch } from "@wordpress/viewport";
+import { MediaPlaceholder } from "@wordpress/block-editor"
 
 /* Module constants */
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
+
+const PLACEHOLDER_TEXT = Platform.select( {
+    web: __(
+        'Drag images, upload new ones or select files from your library.'
+    ),
+    native: __( 'ADD MEDIA' ),
+} );
 
 /**
  * A Direction step gallery within a Direction block.
@@ -166,8 +176,8 @@ class DirectionGalleryEdit extends Component {
     }
 
     componentDidUpdate( prevProps ) {
-        // Deselect images when deselecting the Recipe Card Block
-        if ( ! this.props.isRecipeCardSelected && prevProps.isRecipeCardSelected ) {
+        // Deselect images when deselecting the step or Recipe Card Block
+        if ( ! this.props.isSelected && prevProps.isSelected ) {
             this.setState( {
                 selectedImage: null
             } );
@@ -180,9 +190,31 @@ class DirectionGalleryEdit extends Component {
      * @returns {Component} The direction step editor.
      */
     render() {
-        const { images } = this.props;
+        const {
+            images,
+            isSelected
+        } = this.props;
 
         const hasImages = ! isUndefined( images ) && !! images.length;
+        const hasImagesWithId = hasImages && some( images, ( { id } ) => id );
+
+        const mediaPlaceholder = (
+            <MediaPlaceholder
+                addToGallery={ hasImagesWithId }
+                isAppender={ hasImages }
+                disableMediaButtons={ hasImages && ! isSelected }
+                icon={ hasImages && sharedIcon }
+                labels={ {
+                    title: hasImages && __( 'Edit Gallery' ),
+                    instructions: hasImages && PLACEHOLDER_TEXT,
+                } }
+                onSelect={ this.onSelectImages }
+                accept="image/*"
+                allowedTypes={ ALLOWED_MEDIA_TYPES }
+                multiple
+                value={ hasImagesWithId ? images : undefined }
+            />
+        );
 
         if ( ! hasImages ) {
             return null;
@@ -192,6 +224,7 @@ class DirectionGalleryEdit extends Component {
             <DirectionGallery
                 { ...this.props }
                 selectedImage={ this.state.selectedImage }
+                mediaPlaceholder={ mediaPlaceholder }
                 onMoveBackward={ this.onMoveBackward }
                 onMoveForward={ this.onMoveForward }
                 onRemoveImage={ this.onRemoveImage }

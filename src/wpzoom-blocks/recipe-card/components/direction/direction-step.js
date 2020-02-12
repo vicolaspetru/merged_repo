@@ -401,6 +401,7 @@ export default class DirectionStep extends Component {
                             images={ get( gallery, 'images' ) }
                             stepIndex={ index }
                             className={ `${ stepClassName }-gallery` }
+                            isSelected={ isRecipeCardSelected && isSelected }
                             isRecipeCardSelected={ isRecipeCardSelected }
                             setAttributes={ this.props.setAttributes }
                             onFocusStep={ this.props.onFocus }
