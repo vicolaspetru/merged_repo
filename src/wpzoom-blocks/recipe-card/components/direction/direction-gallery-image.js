@@ -13,12 +13,11 @@ import { BACKSPACE, DELETE } from '@wordpress/keycodes';
 import { withSelect, withDispatch } from '@wordpress/data';
 import { isBlobURL } from '@wordpress/blob';
 import { compose } from '@wordpress/compose';
-import { close } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
-import { leftArrow, rightArrow } from './icons';
+import { leftArrow, rightArrow, close } from './icons';
 
 class DirectionGalleryImage extends Component {
     constructor() {
