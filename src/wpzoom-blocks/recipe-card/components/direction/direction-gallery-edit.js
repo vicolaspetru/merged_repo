@@ -1,4 +1,6 @@
-/* External dependencies */
+/**
+ * External dependencies
+ */
 import {
     map,
     some,
@@ -8,14 +10,19 @@ import {
     isUndefined
 } from "lodash";
 
-/* Internal dependencies */
+/**
+ * Internal dependencies
+ */
 import { pickRelevantMediaFiles } from "./shared";
 import { sharedIcon } from './shared-icon';
 import DirectionGallery from "./direction-gallery";
 
-/* WordPress dependencies */
+/**
+ * WordPress dependencies
+ */
 import { __ } from "@wordpress/i18n";
 import { compose } from "@wordpress/compose";
+import { withNotices } from "@wordpress/components";
 import { Component, Fragment, Platform } from "@wordpress/element";
 import { getBlobByURL, isBlobURL, revokeBlobURL } from "@wordpress/blob";
 import { withSelect } from "@wordpress/data";
@@ -26,10 +33,8 @@ import { MediaPlaceholder } from "@wordpress/block-editor"
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 const PLACEHOLDER_TEXT = Platform.select( {
-    web: __(
-        'Drag images, upload new ones or select files from your library.'
-    ),
-    native: __( 'ADD MEDIA' ),
+    web: __( "Drag images, upload new ones or select files from your library.", "wpzoom-recipe-card" ),
+    native: __( "ADD MEDIA", "wpzoom-recipe-card" ),
 } );
 
 /**
@@ -55,9 +60,7 @@ class DirectionGalleryEdit extends Component {
         this.onRemoveImage = this.onRemoveImage.bind( this );
         this.setImageAttributes = this.setImageAttributes.bind( this );
         this.setAttributes = this.setAttributes.bind( this );
-
-        // this.getImagesSizeOptions = this.getImagesSizeOptions.bind( this );
-        // this.updateImagesSize = this.updateImagesSize.bind( this );
+        this.onUploadError = this.onUploadError.bind( this );
 
         this.state = {
             selectedImage: null,
@@ -140,6 +143,12 @@ class DirectionGalleryEdit extends Component {
         } );
     }
 
+    onUploadError( message ) {
+        const { noticeOperations } = this.props;
+        noticeOperations.removeAllNotices();
+        noticeOperations.createErrorNotice( message );
+    }
+
     setImageAttributes( index, attributes ) {
         const { images } = this.props;
         if ( ! images[ index ] ) {
@@ -192,7 +201,8 @@ class DirectionGalleryEdit extends Component {
     render() {
         const {
             images,
-            isSelected
+            isSelected,
+            noticeUI
         } = this.props;
 
         const hasImages = ! isUndefined( images ) && !! images.length;
@@ -205,7 +215,7 @@ class DirectionGalleryEdit extends Component {
                 disableMediaButtons={ hasImages && ! isSelected }
                 icon={ hasImages && sharedIcon }
                 labels={ {
-                    title: hasImages ? __( 'Edit Gallery' ) : __( 'Add Gallery' ),
+                    title: hasImages ? __( "Edit Gallery", "wpzoom-recipe-card" ) : __( "Add Gallery", "wpzoom-recipe-card" ),
                     instructions: ! hasImages && PLACEHOLDER_TEXT,
                 } }
                 onSelect={ this.onSelectImages }
@@ -213,6 +223,8 @@ class DirectionGalleryEdit extends Component {
                 allowedTypes={ ALLOWED_MEDIA_TYPES }
                 multiple
                 value={ hasImagesWithId ? images : undefined }
+                onError={ this.onUploadError }
+                notices={ hasImages ? undefined : noticeUI }
             />
         );
 
@@ -225,21 +237,24 @@ class DirectionGalleryEdit extends Component {
         }
 
         return (
-            <DirectionGallery
-                { ...this.props }
-                selectedImage={ this.state.selectedImage }
-                mediaPlaceholder={ mediaPlaceholder }
-                onMoveBackward={ this.onMoveBackward }
-                onMoveForward={ this.onMoveForward }
-                onRemoveImage={ this.onRemoveImage }
-                onSelectImage={ this.onSelectImage }
-                onSetImageAttributes={ this.setImageAttributes }
-            />
+            <Fragment>
+                { noticeUI }
+                <DirectionGallery
+                    { ...this.props }
+                    selectedImage={ this.state.selectedImage }
+                    mediaPlaceholder={ mediaPlaceholder }
+                    onMoveBackward={ this.onMoveBackward }
+                    onMoveForward={ this.onMoveForward }
+                    onRemoveImage={ this.onRemoveImage }
+                    onSelectImage={ this.onSelectImage }
+                    onSetImageAttributes={ this.setImageAttributes }
+                />
+            </Fragment>
         );
     }
 }
 
-export default compose(
+export default compose( [
     withSelect( ( select ) => {
         const { getSettings } = select( 'core/block-editor' );
         const { mediaUpload } = getSettings();
@@ -248,5 +263,6 @@ export default compose(
             mediaUpload
         };
     } ),
+    withNotices,
     withViewportMatch( { isNarrow: '< small' } ),
-)( DirectionGalleryEdit );
+] )( DirectionGalleryEdit );
