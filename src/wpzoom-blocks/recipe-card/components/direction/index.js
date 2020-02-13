@@ -81,7 +81,7 @@ export default class Direction extends Component {
 
         // Rebuild the step with the newly made changes.
         steps[ index ] = {
-            id: steps[ index ].id,
+            ...steps[ index ],
             text: newText,
             jsonText: stripHTML( renderToString( newText ) ),
             isGroup: group
@@ -117,7 +117,8 @@ export default class Direction extends Component {
             id: this.props.generateId( "direction-step" ),
             text,
             jsonText: "",
-            isGroup: group
+            isGroup: group,
+            gallery: {}
         } );
 
         this.props.setAttributes( { steps } );

@@ -160,7 +160,7 @@ function ExtraOptionsModal(
                     const ParserHTML = ReactHtmlParser( match );
 
                     items[ index ] = {
-                        id: `ingredient-item-${m.index}`,
+                        ...ingredients[ index ],
                         name: ParserHTML,
                         jsonName: stripHTML( renderToString( trim( match ) ) ),
                         isGroup
@@ -174,7 +174,7 @@ function ExtraOptionsModal(
     }
 
     function onBulkAddDirections() {
-        let steps = [];
+        let directions = [];
         const regex = /([^.\n\t\r\v\f][a-zA-Z0-9].*)/gmi;
         let m; let index = 0;
 
@@ -196,8 +196,8 @@ function ExtraOptionsModal(
                     // Converting HTML strings into React components
                     const ParserHTML = ReactHtmlParser( match );
 
-                    steps[ index ] = {
-                        id: `direction-step-${m.index}`,
+                    directions[ index ] = {
+                        ...steps[ index ],
                         text: ParserHTML,
                         jsonText: stripHTML( renderToString( trim( match ) ) ),
                         isGroup
@@ -207,7 +207,7 @@ function ExtraOptionsModal(
             } );
         }
 
-        setAttributes( { steps } );
+        setAttributes( { steps: directions } );
         setState( { isOpen: false } );
     }
 
