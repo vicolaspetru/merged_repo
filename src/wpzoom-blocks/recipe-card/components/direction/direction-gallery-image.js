@@ -117,11 +117,11 @@ class DirectionGalleryImage extends Component {
         return (
             <figure className={ className }>
                 { href ? <a href={ href }>{ img }</a> : img }
-                <div className="block-library-gallery-item__move-menu">
+                <div className="direction-step-gallery-item__move-menu">
                     <Button
                         icon={ leftArrow }
                         onClick={ isFirstItem ? undefined : onMoveBackward }
-                        className="blocks-gallery-item__move-backward"
+                        className="direciton-step-gallery-item__move-backward"
                         label={ __( 'Move image backward' ) }
                         aria-disabled={ isFirstItem }
                         disabled={ ! isSelected }
@@ -129,17 +129,17 @@ class DirectionGalleryImage extends Component {
                     <Button
                         icon={ rightArrow }
                         onClick={ isLastItem ? undefined : onMoveForward }
-                        className="blocks-gallery-item__move-forward"
+                        className="direciton-step-gallery-item__move-forward"
                         label={ __( 'Move image forward' ) }
                         aria-disabled={ isLastItem }
                         disabled={ ! isSelected }
                     />
                 </div>
-                <div className="block-library-gallery-item__inline-menu">
+                <div className="direction-step-gallery-item__inline-menu">
                     <Button
                         icon={ close }
                         onClick={ onRemove }
-                        className="blocks-gallery-item__remove"
+                        className="direciton-step-gallery-item__remove"
                         label={ __( 'Remove image' ) }
                         disabled={ ! isSelected }
                     />

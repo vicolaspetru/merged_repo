@@ -124,21 +124,17 @@ class DirectionGalleryEdit extends Component {
 
     onRemoveImage( index ) {
         return () => {
-            const images = filter(
-                this.props.images,
-                ( img, i ) => index !== i
-            );
+            const images = filter( this.props.images, ( img, i ) => index !== i );
+
             this.setState( { selectedImage: null } );
             this.setAttributes( { images } );
         };
     }
 
     onSelectImages( newImages ) {
-        const { sizeSlug } = this.props;
-
         this.setAttributes( {
             images: newImages.map( ( newImage ) => ( {
-                ...pickRelevantMediaFiles( newImage, sizeSlug )
+                ...pickRelevantMediaFiles( newImage, 'wpzoom_rcb_block_step_image' )
             } ) )
         } );
     }

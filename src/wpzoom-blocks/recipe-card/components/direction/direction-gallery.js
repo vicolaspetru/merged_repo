@@ -23,8 +23,8 @@ export const DirectionGallery = ( props ) => {
     } = props;
 
     return (
-        <figure className={ className }>
-            <ul className="blocks-gallery-grid">
+        <div className={ className }>
+            <ul className="direction-step-gallery-grid">
                 { images.map( ( img, index ) => {
                     /* translators: %1$d is the order number of the image, %2$d is the total number of images. */
                     const ariaLabel = sprintf(
@@ -34,7 +34,7 @@ export const DirectionGallery = ( props ) => {
                     );
 
                     return (
-                        <li className="blocks-gallery-item" key={ img.id || img.url }>
+                        <li className="direction-step-gallery-item" key={ img.id || img.url }>
                             <DirectionGalleryImage
                                 url={ img.url }
                                 alt={ img.alt }
@@ -54,7 +54,7 @@ export const DirectionGallery = ( props ) => {
                 } ) }
             </ul>
             { mediaPlaceholder }
-        </figure>
+        </div>
     );
 };
 
