@@ -1153,9 +1153,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			if ( !$isGroup ) {
 				if ( ! empty( $step['text'] ) ) {
 					$text = $this->wrap_direction_text( $step['text'] );
+					$gallery = self::direction_gallery( $step );
 					$output .= sprintf(
 						'<li class="direction-step">%s</li>',
-						$text
+						$text . $gallery
 					);
 				}
 			} else {
@@ -1390,6 +1391,58 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 				$output .= $start_tag . $this->wrap_direction_text( $children, $type ) . $end_tag;
 			}
+		}
+
+		return $output;
+	}
+
+	public static function direction_gallery( $step ) {
+		$output = '';
+		$hasGalleryImages = isset( $step['gallery'] ) && isset( $step['gallery']['images'] ) && ! empty( $step['gallery']['images'] );
+
+		if ( $hasGalleryImages ) {
+
+			$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
+			$clickableDirectionImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instruction_images_lightbox' );
+
+			$output .= '<div class="direction-step-gallery">';
+			$output .= '<ul class="direction-step-gallery-grid">';
+
+			foreach ( $step['gallery']['images'] as $image ) {
+				$clickableImageSrc = wp_get_attachment_image_src( $image['id'], $clickableImageSize );
+				$attachment = wp_get_attachment_image(
+					$image['id'],
+					'wpzoom_rcb_block_step_image',
+					false,
+					array(
+						'title' => isset( $image['caption'] ) ? $image['caption'] : '',
+						'alt' => isset( $image['alt'] ) ? $image['alt'] : '',
+						'id' => "direction-step-gallery-image-{$image['id']}"
+					)
+				);
+
+				$output .= '<li class="direction-step-gallery-item">';
+
+				if ( $clickableDirectionImages === '1' && isset( $clickableImageSrc[0] ) ) {
+					$output .= sprintf(
+						'<figure><a class="direction-step-image-popup-link" href="%s">%s</a></figure>',
+						esc_url( $clickableImageSrc[0] ),
+						$attachment
+					);
+				}
+				else {
+					$output .= sprintf(
+						'<figure>%s</figure>',
+						$attachment
+					);
+				}
+
+				$output .= '</li>';
+			}
+
+			$output .= '</ul>';
+			$output .= '</div><!-- /.direction-step-gallery -->';
+
 		}
 
 		return $output;

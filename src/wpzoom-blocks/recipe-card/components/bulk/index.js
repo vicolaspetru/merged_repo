@@ -160,7 +160,7 @@ function ExtraOptionsModal(
                     const ParserHTML = ReactHtmlParser( match );
 
                     items[ index ] = {
-                        ...ingredients[ index ],
+                        id: get( ingredients, [ index, 'id' ] ) || `ingredient-item-${m.index}`,
                         name: ParserHTML,
                         jsonName: stripHTML( renderToString( trim( match ) ) ),
                         isGroup
