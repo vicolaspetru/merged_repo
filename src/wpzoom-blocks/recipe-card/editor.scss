@@ -289,6 +289,10 @@
 			margin-top: -9px;
 			margin-left: -9px;
 		}
+
+		.direction-step-gallery-placeholder:not(.is-appender) {
+			margin: $grid-size-large 0;
+		}
 	}
 	.direction-step-button-container {
 		text-align: right;

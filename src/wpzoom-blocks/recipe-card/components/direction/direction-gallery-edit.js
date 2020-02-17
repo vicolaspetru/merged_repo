@@ -209,6 +209,7 @@ class DirectionGalleryEdit extends Component {
                 addToGallery={ hasImagesWithId }
                 isAppender={ hasImages }
                 disableMediaButtons={ hasImages && ! isSelected }
+                className="direction-step-gallery-placeholder"
                 icon={ hasImages && sharedIcon }
                 labels={ {
                     title: hasImages ? __( "Edit Gallery", "wpzoom-recipe-card" ) : __( "Add Gallery", "wpzoom-recipe-card" ),
