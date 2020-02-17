@@ -1159,6 +1159,13 @@ class WPZOOM_Premium_Recipe_Card_Block {
 						$text . $gallery
 					);
 				}
+				elseif ( empty( $step['text'] ) && isset( $step['gallery'] ) ) {
+					$gallery = self::direction_gallery( $step );
+					$output .= sprintf(
+						'<li class="direction-step">%s</li>',
+						$gallery
+					);
+				}
 			} else {
 				if ( ! empty( $step['text'] ) ) {
 					$text = sprintf(
