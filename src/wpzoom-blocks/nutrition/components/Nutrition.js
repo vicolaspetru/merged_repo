@@ -56,8 +56,9 @@ class Nutrition extends Component {
 
         const newData = data || {};
 
-        const servings  = get( details, [ 0, 'value' ] );
-        const calories  = get( details, [ 3, 'value' ] );
+        const servings      = get( details, [ 0, 'value' ] );
+        const servings_unit = get( details, [ 0, 'unit' ] );
+        const calories      = get( details, [ 3, 'value' ] );
 
         if ( this.state.reloadValues ) {
             newData['servings'] = servings ? servings : get( data, 'servings' );
@@ -66,6 +67,9 @@ class Nutrition extends Component {
 
         if ( ! get( data, 'servings' ) ) {
             newData['servings'] = servings;
+        }
+        if ( ! get( data, 'serving-size-unit' ) ) {
+            newData['serving-size-unit'] = servings_unit;
         }
         if ( ! get( data, 'calories' ) ) {
             newData['calories'] = calories;
@@ -178,7 +182,7 @@ class Nutrition extends Component {
                         this.getValue( 'serving-size' ) &&
                         <Fragment>
                             <strong className="nutrition-facts-serving-size">{ this.getLabelTitle( 'serving-size' ) }</strong>
-                            <strong className="nutrition-facts-label nutrition-facts-right">{ this.getValue( 'serving-size' ) }{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                            <strong className="nutrition-facts-label nutrition-facts-right">{ this.getValue( 'serving-size' ) } { this.getValue( 'serving-size-unit' ) }</strong>
                         </Fragment>
                     }
                 </p>
@@ -526,6 +530,14 @@ class Nutrition extends Component {
                                 { label: __( "Horizontal", "wpzoom-recipe-card" ), value: 'horizontal' },
                             ] }
                             onChange={ newValue => this.onChangeSettings( newValue, 'layout-orientation' ) }
+                        />
+                        <TextControl
+                            key={ id }
+                            id={ `${ id }-serving-size-unit` }
+                            type="text"
+                            label={ __( "Serving Size Unit", "wpzoom-recipe-card" ) }
+                            value={ this.getValue( 'serving-size-unit' ) }
+                            onChange={ newValue => this.onChangeData( newValue, 'serving-size-unit' ) }
                         />
                     </PanelBody>
                 </InspectorControls>
