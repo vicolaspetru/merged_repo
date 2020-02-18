@@ -184,6 +184,7 @@ class WPZOOM_Nutrition_Block {
 		$measurements = array(
 			'g' => __('g', 'wpzoom-recipe-card'),
 			'mg' => __('mg', 'wpzoom-recipe-card'),
+			'serving-size-unit' => self::$data['serving-size-unit']
 		);
 
 		$output .= '<h2>'. esc_html__( 'Nutrition Facts', 'wpzoom-recipe-card' ) .'</h2>';
@@ -192,7 +193,7 @@ class WPZOOM_Nutrition_Block {
 			$output .= '<p><span class="nutrition-facts-serving">'. sprintf( __( '%s servings per container', 'wpzoom-recipe-card' ), self::$data['servings'] ) .'</span></p>';
 		}
 		if ( isset( self::$data['serving-size'] ) && ! empty( self::$data['serving-size'] ) ) {
-			$output .= '<p><strong class="nutrition-facts-serving-size">'. self::get_label_title( 'serving-size' ) .'</strong><strong class="nutrition-facts-label nutrition-facts-right">'. self::$data['serving-size'] . $measurements['g'] .'</strong></p>';
+			$output .= '<p><strong class="nutrition-facts-serving-size">'. self::get_label_title( 'serving-size' ) .'</strong><strong class="nutrition-facts-label nutrition-facts-right">'. self::$data['serving-size'] . ' '. $measurements['serving-size-unit'] .'</strong></p>';
 		}
 
 		$output .= '<hr class="nutrition-facts-hr"/>';

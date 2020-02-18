@@ -66,6 +66,7 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 = 2.6.4 =
 * Added Food Labels (Vegan, Gluten Free, Sugar Free ...)
+* Added option to add custom Serving Size unit for Nutrition Facts
 * Added `spoon(s)` unit to parsing ingredient unit
 
 = 2.6.3 =
