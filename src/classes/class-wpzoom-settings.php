@@ -1065,7 +1065,7 @@ class WPZOOM_Settings {
 									'default'		=> 'recipe_image',
 									'options' 		=> array(
 										'recipe_image' => __( 'Recipe Image', 'wpzoom-recipe-card' ),
-										'custom_image' => __( 'Custom Image per Recipe (Premium Only)', 'wpzoom-recipe-card' ),
+										'custom_image' => __( 'Custom Image per Recipe', 'wpzoom-recipe-card' ),
 									)
 								)
 							),
@@ -1081,7 +1081,7 @@ class WPZOOM_Settings {
 									'options' 		=> array(
 										'recipe_name' => __( 'Recipe Name', 'wpzoom-recipe-card' ),
 										'recipe_summary' => __( 'Recipe Summary', 'wpzoom-recipe-card' ),
-										'custom_text' => __( 'Custom Text (Premium Only)', 'wpzoom-recipe-card' ),
+										'custom_text' => __( 'Custom Text', 'wpzoom-recipe-card' ),
 									)
 								)
 							),

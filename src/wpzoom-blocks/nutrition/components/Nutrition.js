@@ -329,7 +329,7 @@ class Nutrition extends Component {
                             this.getValue( 'serving-size' ) &&
                             <Fragment>
                                 <strong className="nutrition-facts-serving-size">{ this.getLabelTitle( 'serving-size' ) }</strong>
-                                <strong className="nutrition-facts-label nutrition-facts-right">{ this.getValue( 'serving-size' ) }{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                <strong className="nutrition-facts-label nutrition-facts-right">{ this.getValue( 'serving-size' ) } { this.getValue( 'serving-size-unit' ) }</strong>
                             </Fragment>
                         }
                     </p>

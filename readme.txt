@@ -64,6 +64,10 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 == Changelog ==
 
 
+= 2.7.1 =
+* Fixed issue with Block Settings
+* Fixed issue with custom Serving Size unit for Nutrition Facts with Horizontal Layout
+
 = 2.7.0 =
 * Added Food Labels (Vegan, Gluten Free, Sugar Free, etc.)
 * Added option to add custom Serving Size unit for Nutrition Facts
