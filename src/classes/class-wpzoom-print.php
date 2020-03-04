@@ -15,8 +15,18 @@ class WPZOOM_Print {
     }
 
     public static function print_page() {
-        preg_match( '/[\/\?]wpzoom_rcb_print[\/=](\d+)(\/)?(\?.*)?(\/\?.*)?$/', $_SERVER['REQUEST_URI'], $print_url );
+        preg_match( '/[\/\?]wpzoom_rcb_print[\/=](\d+)([\/\?\&].*)?$/', $_SERVER['REQUEST_URI'], $print_url );
         $recipe_id = isset( $print_url[1] ) ? $print_url[1] : false;
+        $servings = 0;
+
+        if ( WPZOOM_Recipe_Card_Block_Gutenberg::is_pro() ) {
+            // We have some params, let's check
+            // extract params (e.g. /?servings=4&prep-time=15)
+            if ( isset( $print_url[2] ) && is_string( $print_url[2] ) ) {
+                preg_match_all( '/[\?|\&]([^=]+)\=([^&]+)/', $print_url[2], $params );
+                $servings = isset( $params[2][0] ) ? $params[2][0] : false;
+            }
+        }
 
         if ( $recipe_id ) {
             // Prevent WP Rocket lazy image loading on print page.
@@ -46,6 +56,10 @@ class WPZOOM_Print {
                     if ( $block['blockName'] === 'wpzoom-recipe-card/block-recipe-card' ) {
                         $has_WPZOOM_block = true;
                         $attributes = $block['attrs'];
+
+                        if ( WPZOOM_Recipe_Card_Block_Gutenberg::is_pro() ) {
+                            $attributes = self::set_print_servings( $attributes, $servings );
+                        }
                     }
                 }
             }
@@ -57,6 +71,15 @@ class WPZOOM_Print {
                 exit;
             }
         }
+    }
+
+    public static function set_print_servings( $attributes, $servings ) {
+        if ( isset( $attributes['details'] ) ) {
+            $attributes['details'][0]['value'] = intval( $servings );
+            $attributes['details'][0]['jsonValue'] = intval( $servings );
+        }
+
+        return $attributes;
     }
 }
 

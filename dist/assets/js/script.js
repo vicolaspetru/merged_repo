@@ -1,18 +1,27 @@
 ( function( $, wpzoomRecipeCard ) {
     'use scrict';
 
+    function wpzoom_set_servings_size_to_print_button() {
+        var servings_size = $( document ).find( '.wpzoom-recipe-card-print-link .btn-print-link' ).data( 'servings-size' );
+        $( document ).find( '.wp-block-wpzoom-recipe-card-block-print-recipe' ).data( 'servings-size', servings_size );
+    }
+
     function wpzoom_print_recipe( recipe_ID, servings ) {
         const urlParts = wpzoomRecipeCard.homeURL.split( /\?(.+)/ );
         let printUrl = urlParts[0];
 
         if ( wpzoomRecipeCard.permalinks ) {
-            printUrl += 'wpzoom_rcb_print/' + recipe_ID;
+            printUrl += 'wpzoom_rcb_print/' + recipe_ID + '/';
 
             if ( urlParts[1] ) {
                 printUrl += '?' + urlParts[1];
+                printUrl += '&servings=' + servings;
+            } else {
+                printUrl += '?servings=' + servings;
             }
         } else {
             printUrl += '?wpzoom_rcb_print=' + recipe_ID;
+            printUrl += '&servings=' + servings;
 
             if ( urlParts[1] ) {
                 printUrl += '&' + urlParts[1];
@@ -38,6 +47,8 @@
     }
 
     $( document ).ready( function () {
+
+        wpzoom_set_servings_size_to_print_button();
 
         $( ".wp-block-wpzoom-recipe-card-block-ingredients .ingredients-list li, .wp-block-wpzoom-recipe-card-block-recipe-card .ingredients-list li" ).click( function() {
             $( this ).toggleClass( "ticked" );
