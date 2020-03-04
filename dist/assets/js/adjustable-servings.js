@@ -57,7 +57,10 @@
                     amountElement.text( roundedAmount );
                 }
             }
-        } )
+        } );
+
+        // Update print button attribute
+        $( document ).find( '.btn-print-link, .wp-block-wpzoom-recipe-card-block-print-recipe' ).data( 'servings-size', servings );
     }
 
     function initTextField() {

@@ -186,6 +186,11 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         'wpzoomRecipeCard',
                         array(
                             'pluginURL' => WPZOOM_RCB_PLUGIN_URL,
+                            'homeURL' => self::get_home_url(),
+                            'permalinks' => get_option( 'permalink_structure' ),
+                            'ajax_url' => admin_url( 'admin-ajax.php' ),
+                            'nonce' => wp_create_nonce( 'wpzoom_rcb' ),
+                            'api_nonce' => wp_create_nonce( 'wp_rest' ),
                         )
                     );
 
@@ -391,6 +396,27 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             }
 
             return $custom_css;
+        }
+
+        /**
+         * Compatibility with multilingual plugins for home URL.
+         *
+         * @since 2.7.2
+         */
+        public static function get_home_url() {
+            $home_url = home_url();
+
+            // Polylang Compatibility.
+            if ( function_exists( 'pll_home_url' ) ) {
+                $home_url = pll_home_url();
+            }
+
+            // Add trailing slash unless there are query parameters.
+            if ( false === strpos( $home_url, '?' ) ) {
+                $home_url = trailingslashit( $home_url );
+            }
+
+            return $home_url;
         }
 	}
 }
