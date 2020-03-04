@@ -34,10 +34,10 @@ class WPZOOM_Print {
             $attributes = array();
             $content = $recipe->post_content;
 
-            // if ( 'publish' !== $recipe->post_status ) {
-            //     wp_redirect( home_url() );
-            //     exit();
-            // }
+            if ( 'publish' !== $recipe->post_status && '1' === WPZOOM_Settings::get( 'wpzoom_rcb_settings_print_only_published_posts' ) ) {
+                wp_redirect( home_url() );
+                exit();
+            }
 
             if ( has_blocks( $recipe->post_content ) ) {
                 $blocks = parse_blocks( $recipe->post_content );

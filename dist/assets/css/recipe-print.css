@@ -206,4 +206,41 @@ body.wpzoom-rcb-print {
     height: auto;
     display: block;
 }
-
+.wpzoom-rcb-print-block .recipe-card-notes {
+    border-top: 1px dashed rgba(0, 0, 0, .1);
+}
+.wpzoom-rcb-print-block .recipe-card-notes .recipe-card-notes-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.wpzoom-rcb-print-block .recipe-card-notes .recipe-card-notes-list > li:empty {
+    display:none;
+}
+.wpzoom-rcb-print-block .recipe-card-notes .recipe-card-notes-list > li {
+    position: relative;
+    background-color: #fbf9e7;
+    color: #736458;
+    margin: 0 0 10px;
+    padding: 10px 20px;
+    list-style-type: none;
+    font-size: 14px;
+}
+.wpzoom-rcb-print-block .recipe-card-notes .recipe-card-notes-list > li:last-child {
+	margin-bottom: 0;
+}
+.wpzoom-rcb-print-block .recipe-card-notes .recipe-card-notes-list > li:before {
+    content: "i";
+    position: absolute;
+    display: block;
+    color: #fff;
+    background-color: #000;
+    border-radius: 8px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 12px;
+    text-align: center;
+    left: -6px;
+    top: 10px;
+}

@@ -79,51 +79,51 @@ $helpers = new WPZOOM_Helpers();
 
             $recipe_card_image = '';
 
-            if ( $hasImage && isset( $image['url'] ) ) {
-                $img_id = $image['id'];
-                $alt    = ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
-                $img_class  = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? 'no-print' : '';
-                $img_class .= ' wpzoom-recipe-card-image';
+            if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ) {
+                if ( $hasImage && isset( $image['url'] ) ) {
+                    $img_id     = $image['id'];
+                    $alt        = ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
+                    $img_class  = ' wpzoom-recipe-card-image';
 
-                $attachment = wp_get_attachment_image(
-                    $img_id,
-                    'wpzoom-rcb-block-header-square',
-                    false,
-                    array(
-                        'alt' => $alt,
-                        'id' => $image['id'],
-                        'class' => trim( $img_class )
-                    )
-                );
+                    $attachment = wp_get_attachment_image(
+                        $img_id,
+                        'wpzoom-rcb-block-header-square',
+                        false,
+                        array(
+                            'alt' => $alt,
+                            'id' => $image['id'],
+                            'class' => trim( $img_class )
+                        )
+                    );
 
-                $recipe_card_image = '<div class="recipe-card-image">
-                    <figure>
-                        '. $attachment .'
-                    </figure>
-                </div>';
-            }
-            elseif ( ! $hasImage && ! empty( $recipe_thumbnail_url ) ) {
-                $img_id = $recipe_thumbnail_id;
-                $alt    = ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
-                $img_class  = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? 'no-print' : '';
-                $img_class .= ' wpzoom-recipe-card-image';
+                    $recipe_card_image = '<div class="recipe-card-image">
+                        <figure>
+                            '. $attachment .'
+                        </figure>
+                    </div>';
+                }
+                elseif ( ! $hasImage && ! empty( $recipe_thumbnail_url ) ) {
+                    $img_id     = $recipe_thumbnail_id;
+                    $alt        = ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
+                    $img_class  = ' wpzoom-recipe-card-image';
 
-                $attachment = wp_get_attachment_image(
-                    $img_id,
-                    'wpzoom-rcb-block-header-square',
-                    false,
-                    array(
-                        'alt' => $alt,
-                        'id' => $recipe_thumbnail_id,
-                        'class' => trim( $img_class )
-                    )
-                );
+                    $attachment = wp_get_attachment_image(
+                        $img_id,
+                        'wpzoom-rcb-block-header-square',
+                        false,
+                        array(
+                            'alt' => $alt,
+                            'id' => $recipe_thumbnail_id,
+                            'class' => trim( $img_class )
+                        )
+                    );
 
-                $recipe_card_image = '<div class="recipe-card-image">
-                    <figure>
-                        '. $attachment .'
-                    </figure>
-                </div>';
+                    $recipe_card_image = '<div class="recipe-card-image">
+                        <figure>
+                            '. $attachment .'
+                        </figure>
+                    </div>';
+                }
             }
 
             $recipe_card_heading = '
@@ -141,14 +141,16 @@ $helpers = new WPZOOM_Helpers();
                 '</div>';
 
             $summary_text = '';
-            if ( ! empty( $summary ) ) {
-                $summary_class = 'recipe-card-summary';
-                $summary_class .= '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_summary_text') ? ' no-print' : '';
-                $summary_text = sprintf(
-                    '<p class="%s">%s</p>',
-                    esc_attr( $summary_class ),
-                    $summary
-                );
+
+            if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_summary_text') ) {
+                if ( ! empty( $summary ) ) {
+                    $summary_class = 'recipe-card-summary';
+                    $summary_text = sprintf(
+                        '<p class="%s">%s</p>',
+                        esc_attr( $summary_class ),
+                        $summary
+                    );
+                }
             }
 
             $details_content = WPZOOM_Premium_Recipe_Card_Block::get_details_content( $details );
@@ -159,14 +161,15 @@ $helpers = new WPZOOM_Helpers();
 
             $strip_tags_notes = isset( $notes ) ? strip_tags($notes) : '';
             $notes = str_replace('<li></li>', '', $notes); // remove empty list item
+            $notesTitle = isset( $notesTitle ) ? $notesTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_notes_title');
             $notes_content = ! empty($strip_tags_notes) ?
                 sprintf(
                     '<div class="recipe-card-notes">
                         <h3 class="notes-title">%s</h3>
                         <ul class="recipe-card-notes-list">%s</ul>
                     </div>',
-                    @$notesTitle,
-                    @$notes
+                    $notesTitle,
+                    $notes
                 ) : '';
 
             $footer_copyright = ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_footer_copyright') ? '' :
