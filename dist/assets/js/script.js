@@ -3,7 +3,10 @@
 
     function wpzoom_set_servings_size_to_print_button() {
         var servings_size = $( document ).find( '.wpzoom-recipe-card-print-link .btn-print-link' ).data( 'servings-size' );
-        $( document ).find( '.wp-block-wpzoom-recipe-card-block-print-recipe' ).data( 'servings-size', servings_size );
+
+        if ( servings_size ) {
+            $( document ).find( '.wp-block-wpzoom-recipe-card-block-print-recipe' ).data( 'servings-size', servings_size );
+        }
     }
 
     function wpzoom_print_recipe( recipe_ID, servings ) {
@@ -15,13 +18,21 @@
 
             if ( urlParts[1] ) {
                 printUrl += '?' + urlParts[1];
-                printUrl += '&servings=' + servings;
+
+                if ( servings ) {
+                    printUrl += '&servings=' + servings;
+                }
             } else {
-                printUrl += '?servings=' + servings;
+                if ( servings ) {
+                    printUrl += '?servings=' + servings;
+                }
             }
         } else {
             printUrl += '?wpzoom_rcb_print=' + recipe_ID;
-            printUrl += '&servings=' + servings;
+
+            if ( servings ) {
+                printUrl += '&servings=' + servings;
+            }
 
             if ( urlParts[1] ) {
                 printUrl += '&' + urlParts[1];
@@ -33,6 +44,7 @@
             print_window.focus();
             print_window.document.title = document.title;
             print_window.history.pushState( '', 'Print Recipe', location.href.replace( location.hash, "" ) );
+            print_window.setPrintServings( servings );
 
             setTimeout( function() {
                 print_window.print();

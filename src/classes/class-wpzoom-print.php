@@ -56,10 +56,6 @@ class WPZOOM_Print {
                     if ( $block['blockName'] === 'wpzoom-recipe-card/block-recipe-card' ) {
                         $has_WPZOOM_block = true;
                         $attributes = $block['attrs'];
-
-                        if ( WPZOOM_Recipe_Card_Block_Gutenberg::is_pro() ) {
-                            $attributes = self::set_print_servings( $attributes, $servings );
-                        }
                     }
                 }
             }
@@ -71,15 +67,6 @@ class WPZOOM_Print {
                 exit;
             }
         }
-    }
-
-    public static function set_print_servings( $attributes, $servings ) {
-        if ( isset( $attributes['details'] ) ) {
-            $attributes['details'][0]['value'] = intval( $servings );
-            $attributes['details'][0]['jsonValue'] = intval( $servings );
-        }
-
-        return $attributes;
     }
 }
 

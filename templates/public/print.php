@@ -20,6 +20,8 @@ $helpers = new WPZOOM_Helpers();
         <meta name="robots" content="noindex">
         <?php wp_site_icon(); ?>
         <link rel="stylesheet" type="text/css" href="<?php echo WPZOOM_RCB_PLUGIN_URL . 'dist/assets/css/recipe-print.css?ver=' . WPZOOM_RCB_VERSION; ?>"/>
+        <script type="text/javascript" src="<?php echo includes_url( '/js/jquery/jquery.js' ); ?>"></script>
+        <script type="text/javascript" src="<?php echo WPZOOM_RCB_PLUGIN_URL . 'dist/assets/js/adjustable-servings.js?ver=' . WPZOOM_RCB_VERSION; ?>"></script>
     </head>
     <body class="wpzoom-rcb-print" data-recipe-id="<?php echo esc_attr( $recipe_id ); ?>">
         <?php

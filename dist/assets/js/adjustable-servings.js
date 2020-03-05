@@ -174,6 +174,20 @@
         } );
     }
 
+    window.setPrintServings = ( servings ) => {
+        if ( servings > 0 ) {
+            var $recipe = $( document ).find( '.wpzoom-rcb-print' );
+
+            $( '.detail-item-adjustable-servings' ).each( function() {
+                $( this ).text( servings );
+                $( this ).data( 'servings', servings );
+                $( this ).parents( '.detail-item' ).find( 'p.detail-item-value.only-print-visible' ).text( servings );
+            } );
+
+            updateServingSize( $recipe );
+        }
+    }
+
     $( document ).ready( function () {
         $( '.detail-item-adjustable-servings' ).each( function() {
             var $servingsElement = $( this ),
