@@ -95,6 +95,8 @@ class WPZOOM_Ingredients_Block {
 	 * @return string The block preceded by its JSON-LD script.
 	 */
 	public function render( $attributes, $content ) {
+		global $post;
+
 		if ( ! is_array( $attributes ) || ! is_singular() ) {
 			return $content;
 		}
@@ -110,12 +112,22 @@ class WPZOOM_Ingredients_Block {
 		$class = 'wp-block-wpzoom-recipe-card-block-ingredients';
 
 		$items = isset( $items ) ? $items : array();
-		$ingredients_content = $this->get_ingredients_content( $items );
+		$ingredients_content = self::get_ingredients_content( $items );
+
+		$btn_attributes = array(
+			'title' => __( 'Print ingredients...', 'wpzoom-recipe-card' )
+		);
+
+		if ( $post ) {
+			$btn_attributes = array_merge( $btn_attributes, array( 'data-recipe-id' => $post->ID ) );
+		}
+
+		$atts = self::$helpers->render_attributes( $btn_attributes );
 
 		$block_content = sprintf(
 			'<div id="%1$s" class="%2$s">
 				<div class="wpzoom-recipe-card-print-link %3$s">
-					<a class="btn-print-link no-print" href="#%1$s" title="%4$s">
+					<a class="btn-print-link no-print" href="#%1$s" %4$s>
 						<img class="icon-print-link" src="%5$s" alt="%6$s"/>%6$s
 					</a>
 				</div>
@@ -125,7 +137,7 @@ class WPZOOM_Ingredients_Block {
 			esc_attr( $id ),
 			esc_attr( $class ),
 			esc_attr( $print_visibility ),
-			__( 'Print ingredients...', 'wpzoom-recipe-card' ),
+			$atts,
 			esc_url( WPZOOM_RCB_PLUGIN_URL . 'dist/assets/images/printer.svg' ),
 			__( 'Print', 'wpzoom-recipe-card' ),
 			esc_html( $title ),
@@ -156,8 +168,8 @@ class WPZOOM_Ingredients_Block {
 		);
 	}
 
-	protected function get_ingredients_content( array $ingredients ) {
-		$ingredient_items = $this->get_ingredient_items( $ingredients );
+	public static function get_ingredients_content( array $ingredients ) {
+		$ingredient_items = self::get_ingredient_items( $ingredients );
 
 		$listClassNames = implode( ' ', array( 'ingredients-list' ) );
 
@@ -168,7 +180,7 @@ class WPZOOM_Ingredients_Block {
 		);
 	}
 
-	protected function get_ingredient_items( array $ingredients ) {
+	public static function get_ingredient_items( array $ingredients ) {
 		$output = '';
 
 		foreach ( $ingredients as $index => $ingredient ) {
@@ -179,7 +191,7 @@ class WPZOOM_Ingredients_Block {
 				if ( ! empty( $ingredient[ 'name' ] ) ) {
 					$name = sprintf(
 						'<p class="ingredient-item-name">%s</p>',
-						$this->wrap_ingredient_name( $ingredient['name'] )
+						self::wrap_ingredient_name( $ingredient['name'] )
 					);
 					$output .= sprintf(
 						'<li id="%s" class="ingredient-item">%s</li>',
@@ -191,7 +203,7 @@ class WPZOOM_Ingredients_Block {
 				if ( ! empty( $ingredient[ 'name' ] ) ) {
 					$name = sprintf(
 						'<strong class="ingredient-item-group-title">%s</strong>',
-						$this->wrap_ingredient_name( $ingredient['name'] )
+						self::wrap_ingredient_name( $ingredient['name'] )
 					);
 					$output .= sprintf(
 						'<li class="ingredient-item ingredient-item-group">%s</li>',
@@ -204,7 +216,7 @@ class WPZOOM_Ingredients_Block {
 		return force_balance_tags( $output );
 	}
 
-	protected function wrap_ingredient_name( $nodes, $type = '' ) {
+	public static function wrap_ingredient_name( $nodes, $type = '' ) {
 		if ( ! is_array( $nodes ) ) {
 			return $nodes;
 		}
@@ -232,7 +244,7 @@ class WPZOOM_Ingredients_Block {
 					$end_tag = "";
 				}
 
-				$output .= $start_tag . $this->wrap_ingredient_name( $children, $type ) . $end_tag;
+				$output .= $start_tag . self::wrap_ingredient_name( $children, $type ) . $end_tag;
 			}
 		}
 
