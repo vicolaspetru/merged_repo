@@ -1,10 +1,11 @@
-/* External dependencies */
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
 import PropTypes from "prop-types";
 import { __ } from "@wordpress/i18n";
 import isShallowEqual from "@wordpress/is-shallow-equal/objects";
 import get from "lodash/get";
-import map from "lodash/map";
-import some from "lodash/some";
 import isObject from "lodash/isObject";
 import isString from "lodash/isString";
 import isUndefined from "lodash/isUndefined";
@@ -328,6 +329,13 @@ export default class DirectionStep extends Component {
         const isSelectedText = isSelected && subElement === "text";
         const stepClassName = !isGroup ? "direction-step" : "direction-step direction-step-group";
 
+        const galleryClassName = classnames( {
+            'direction-step-gallery': ! isGroup,
+            'columns-2': get( setting_options, 'wpzoom_rcb_settings_gallery_columns' ) === '2',
+            'columns-3': get( setting_options, 'wpzoom_rcb_settings_gallery_columns' ) === '3',
+            'columns-4': get( setting_options, 'wpzoom_rcb_settings_gallery_columns' ) === '4'
+        } );
+
         let textContent = text;
         if ( isString( textContent ) ) {
             // Converting HTML strings into React components
@@ -353,7 +361,7 @@ export default class DirectionStep extends Component {
                         <DirectionGalleryEdit
                             images={ get( gallery, 'images' ) }
                             stepIndex={ index }
-                            className={ `${ stepClassName }-gallery` }
+                            className={ galleryClassName }
                             isSelected={ isRecipeCardSelected && isSelected }
                             isRecipeCardSelected={ isRecipeCardSelected }
                             setAttributes={ this.props.setAttributes }

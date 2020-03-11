@@ -1406,13 +1406,14 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	public static function direction_gallery( $step ) {
 		$output = '';
 		$hasGalleryImages = isset( $step['gallery'] ) && isset( $step['gallery']['images'] ) && ! empty( $step['gallery']['images'] );
+		$galleryColumns = 'columns-'. WPZOOM_Settings::get( 'wpzoom_rcb_settings_gallery_columns' ) .'';
 
 		if ( $hasGalleryImages ) {
 
 			$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
 			$clickableDirectionImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instruction_images_lightbox' );
 
-			$output .= '<div class="direction-step-gallery">';
+			$output .= '<div class="direction-step-gallery '. $galleryColumns .'">';
 			$output .= '<ul class="direction-step-gallery-grid">';
 
 			foreach ( $step['gallery']['images'] as $image ) {

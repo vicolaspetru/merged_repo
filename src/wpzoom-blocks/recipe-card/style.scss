@@ -258,7 +258,7 @@
 
             // Beyond mobile viewports, we allow up to 4 columns.
             @include break-small {
-                @for $i from 3 through 4 {
+                @for $i from 2 through 4 {
                     &.columns-#{ $i } .direction-step-gallery-item {
                         width: calc((100% - #{ $grid-size } * #{ $i - 1 }) / #{ $i });
                         margin-right: $grid-size;
@@ -273,7 +273,7 @@
                 }
 
                 // Unset the right margin on every rightmost gallery item to ensure center balance.
-                @for $column-count from 1 through 4 {
+                @for $column-count from 2 through 4 {
                     &.columns-#{ $column-count } .direction-step-gallery-item:nth-of-type(#{ $column-count }n) {
                         margin-right: 0;
                     }

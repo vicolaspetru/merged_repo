@@ -866,6 +866,30 @@ class WPZOOM_Settings {
 						)
 					),
 					array(
+						'id' 		=> 'wpzoom_section_recipe_directions_gallery',
+						'title' 	=> __( 'Directions Gallery', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
+						'callback' 	=> '__return_false',
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_gallery_columns',
+								'title' 	=> __( 'Columns', 'wpzoom-recipe-card' ),
+								'type'		=> 'select',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_gallery_columns',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Select columns layout for galleries in directions.', 'wpzoom-recipe-card' ),
+									'default'		=> '2',
+									'options' 		=> array(
+										'2' => __( '2 columns', 'wpzoom-recipe-card' ),
+										'3'	=> __( '3 columns', 'wpzoom-recipe-card' ),
+										'4'	=> __( '4 columns', 'wpzoom-recipe-card' ),
+									)
+								)
+							),
+						)
+					),
+					array(
 						'id' 		=> 'wpzoom_section_recipe_nutrition',
 						'title' 	=> __( 'Nutrition', 'wpzoom-recipe-card' ),
 						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
