@@ -2,8 +2,10 @@
 /**
  * Template to be used for the recipe print page.
  *
- * @since   2.7.2
- * @package WPZOOM_Recipe_Card_Blocks
+ * @since       2.7.2
+ * 
+ * @package     WPZOOM_Recipe_Card_Blocks
+ * @subpackage  WPZOOM_Recipe_Card_Blocks/templates/public
  */
 ?>
 <!DOCTYPE html>
