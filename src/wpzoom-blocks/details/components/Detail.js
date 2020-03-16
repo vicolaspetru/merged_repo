@@ -5,8 +5,10 @@ import { __ } from "@wordpress/i18n";
 /* Internal dependencies */
 import DetailItem from "./DetailItem";
 import Inspector from "./Inspector";
-import { stripHTML } from "../../../helpers/stringHelpers";
-import { generateId } from "../../../helpers/generateId";
+import {
+    stripHTML,
+    generateId
+} from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { RichText } = wp.blockEditor;

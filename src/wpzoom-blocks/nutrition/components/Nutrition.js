@@ -6,7 +6,7 @@ import filter from "lodash/filter";
 import findKey from "lodash/findKey";
 
 /* Internal dependencies */
-import { parseClassName } from "../../../helpers/getBlockStyle";
+import { parseClassName } from "@wpzoom/helpers";
 
 /* WordPress dependencies */
 const { Component, Fragment } = wp.element;

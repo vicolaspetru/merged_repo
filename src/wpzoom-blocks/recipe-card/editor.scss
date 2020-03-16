@@ -201,6 +201,98 @@
 		.direction-step-group-title {
 			font-weight: bold;
 		}
+
+		.direction-step-gallery-grid {
+			padding-left: 0;
+			margin-left: 0;
+			margin-bottom: 0;
+		}
+
+		.direction-step-gallery-item {
+			position: relative;
+
+			// Hide the focus outline that otherwise briefly appears when selecting a block.
+			figure:not(.is-selected):focus {
+				outline: none;
+			}
+
+			figure.is-selected {
+				outline: 4px solid #0085ba;
+			}
+
+			figure.is-transient img {
+				opacity: 0.3;
+			}
+
+			.is-selected .direction-step-gallery-item__move-menu,
+			.is-selected .direction-step-gallery-item__inline-menu {
+				background: $white;
+				border: 1px solid $dark-opacity-light-800;
+				border-radius: $radius-round-rectangle;
+				transition: box-shadow 0.2s ease-out;
+				@include reduce-motion("transition");
+
+				&:hover {
+					box-shadow: $shadow-toolbar;
+				}
+
+				.components-button {
+					color: $dark-opacity-300;
+					padding: 2px;
+					height: $icon-button-size-small;
+
+					// Remove hover box shadows, since they clash with the container.
+					&:not(:disabled):not([aria-disabled="true"]):not(.is-secondary):hover {
+						box-shadow: none;
+					}
+				}
+
+				.components-button:focus {
+					color: inherit;
+				}
+			}
+		}
+
+		.direction-step-gallery-item__move-menu,
+		.direction-step-gallery-item__inline-menu {
+			margin: $grid-size;
+			display: inline-flex;
+			z-index: z-index(".block-library-gallery-item__inline-menu");
+
+			.components-button {
+				color: transparent;
+			}
+		}
+
+		.direction-step-gallery-item__inline-menu {
+			position: absolute;
+			top: -2px;
+			right: -2px;
+		}
+
+		.direction-step-gallery-item__move-menu {
+			position: absolute;
+			top: -2px;
+			left: -2px;
+		}
+
+		.direction-step-gallery-item__move-backward,
+		.direction-step-gallery-item__move-forward,
+		.direction-step-gallery-item__remove {
+			padding: 0;
+		}
+
+		.direction-step-gallery-item .components-spinner {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -9px;
+			margin-left: -9px;
+		}
+
+		.direction-step-gallery-placeholder:not(.is-appender) {
+			margin: $grid-size-large 0;
+		}
 	}
 	.direction-step-button-container {
 		text-align: right;

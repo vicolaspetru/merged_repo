@@ -11,7 +11,7 @@ import isUndefined from "lodash/isUndefined";
 
 /* Internal dependencies */
 import Ingredient from './components/Ingredient';
-import { generateId } from "../../helpers/generateId";
+import { generateId } from "@wpzoom/helpers";
 import legacy from "./legacy";
 import icon from "./icon";
 

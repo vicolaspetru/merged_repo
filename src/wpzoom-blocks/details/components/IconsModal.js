@@ -2,12 +2,10 @@
 import { __ } from "@wordpress/i18n";
 import isUndefined from "lodash/isUndefined";
 import get from "lodash/get";
-import forEach from "lodash/forEach";
-import isObject from "lodash/isObject";
 import replace from "lodash/replace";
 
 /* Internal dependencies */
-import Icons from "../../../utils/IconsArray";
+import { filterIcons } from "@wpzoom/utils";
 
 /* WordPress dependencies */
 const {
@@ -56,32 +54,6 @@ function IconsModal (
         { label: __( "Dashicons", "wpzoom-recipe-card" ), value: 'dashicons' },
         { label: __( "Old Food icons", "wpzoom-recipe-card" ), value: 'oldicon' },
     ];
-
-    /**
-     * Filter icons by specified name
-     *
-     * @param {string} searchIcon The name of icon to be searched
-     *
-     * @returns {Object}
-     */
-    function filterIcons( searchIcon ) {
-        var collector = {};
-
-        if ( searchIcon === '' )
-            return Icons;
-
-        forEach( Icons, function ( iconsArray, key ) {
-            collector[ key ] = iconsArray.filter( function ( item ) {
-                if ( isObject( item ) ) {
-                    return item.icon.indexOf( searchIcon ) > -1;
-                }
-
-                return item.indexOf( searchIcon ) > -1;
-            } );
-        } );
-
-        return collector;
-    }
 
     /**
      * Handles the on change event on the detail icon editor.

@@ -129,19 +129,35 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
             if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ) {
                 if ( $hasImage && isset( $image['url'] ) ) {
                     $img_id     = $image['id'];
+                    $src        = $image['url'];
                     $alt        = ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
                     $img_class  = ' wpzoom-recipe-card-image';
 
-                    $attachment = wp_get_attachment_image(
-                        $img_id,
-                        'wpzoom-rcb-block-header-square',
-                        false,
-                        array(
-                            'alt' => $alt,
-                            'id' => $image['id'],
-                            'class' => trim( $img_class )
-                        )
-                    );
+                    // Check if attachment image is from imported content
+                    // in this case we don't have attachment in our upload directory
+                    $upl_dir = wp_upload_dir();
+                    $findpos = strpos( $src, $upl_dir['baseurl'] );
+
+                    if ( $findpos === false ) {
+                        $attachment = sprintf(
+                            '<img src="%s" alt="%s" class="%s"/>',
+                            $src,
+                            $alt,
+                            trim( $img_class )
+                        );
+                    }
+                    else {
+                        $attachment = wp_get_attachment_image(
+                            $img_id,
+                            'wpzoom-rcb-block-header-square',
+                            false,
+                            array(
+                                'alt' => $alt,
+                                'id' => $img_id,
+                                'class' => trim( $img_class )
+                            )
+                        );
+                    }
 
                     $recipe_card_image = '<div class="recipe-card-image">
                         <figure>
@@ -151,19 +167,35 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
                 }
                 elseif ( ! $hasImage && ! empty( $recipe_thumbnail_url ) ) {
                     $img_id     = $recipe_thumbnail_id;
+                    $src        = $recipe_thumbnail_url;
                     $alt        = ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
                     $img_class  = ' wpzoom-recipe-card-image';
 
-                    $attachment = wp_get_attachment_image(
-                        $img_id,
-                        'wpzoom-rcb-block-header-square',
-                        false,
-                        array(
-                            'alt' => $alt,
-                            'id' => $recipe_thumbnail_id,
-                            'class' => trim( $img_class )
-                        )
-                    );
+                    // Check if attachment image is from imported content
+                    // in this case we don't have attachment in our upload directory
+                    $upl_dir = wp_upload_dir();
+                    $findpos = strpos( $src, $upl_dir['baseurl'] );
+
+                    if ( $findpos === false ) {
+                        $attachment = sprintf(
+                            '<img src="%s" alt="%s" class="%s"/>',
+                            $src,
+                            $alt,
+                            trim( $img_class )
+                        );
+                    }
+                    else {
+                        $attachment = wp_get_attachment_image(
+                            $img_id,
+                            'wpzoom-rcb-block-header-square',
+                            false,
+                            array(
+                                'alt' => $alt,
+                                'id' => $img_id,
+                                'class' => trim( $img_class )
+                            )
+                        );
+                    }
 
                     $recipe_card_image = '<div class="recipe-card-image">
                         <figure>

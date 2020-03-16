@@ -401,16 +401,68 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		$recipe_card_image = '';
 
+		/**
+		 * Open image in Lighbox
+		 * 
+		 * @since 2.6.4
+		 */
+		$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
+		$clickableRecipeImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_recipe_image_lightbox' );
+
 		if ( $hasImage && isset( $image['url'] ) ) {
 			$img_id = $image['id'];
 			$src 	= $image['url'];
 			$alt 	= ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
+			$sizes 	= isset( $image['sizes'] ) ? $image['sizes'] : array();
+			$size 	= self::get_recipe_image_size( $sizes, $src );
 			$img_class  = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? 'no-print' : '';
 			$img_class .= ' wpzoom-recipe-card-image';
 
+			// Check if attachment image is from imported content
+			// in this case we don't have attachment in our upload directory
+			$upl_dir = wp_upload_dir();
+			$findpos = strpos( $src, $upl_dir['baseurl'] );
+
+			if ( $findpos === false ) {
+				$attachment = sprintf(
+					'<img src="%s" alt="%s" class="%s"/>',
+					$src,
+					$alt,
+					trim( $img_class )
+				);
+			}
+			else {
+				$attachment = wp_get_attachment_image(
+					$img_id,
+					$size,
+					false,
+					array(
+						'alt' => $alt,
+                        'id' => $img_id,
+                        'class' => trim( $img_class )
+					)
+				);
+			}
+
+			if ( $clickableRecipeImages === '1' ) {
+				$clickableImageSrc = wp_get_attachment_image_src( $img_id, $clickableImageSize );
+
+				if ( $findpos === false ) {
+					$clickableImageSrc[0] = $src;
+				}
+
+				if ( $clickableImageSrc && isset( $clickableImageSrc[0] ) ) {
+					$attachment = sprintf(
+						'<a class="recipe-card-image-popup-link" href="%s">%s</a>',
+						esc_url( $clickableImageSrc[0] ),
+						$attachment
+					);
+				}
+			}
+
 			$recipe_card_image = '<div class="recipe-card-image">
 				<figure>
-					'. sprintf( '<img id="%s" src="%s" alt="%s" class="%s"/>', $img_id, $src, $alt, trim($img_class) ) .'
+					'. $attachment .'
 					<figcaption>
 						'.
 							( self::$settings['pin_btn'] ? self::get_pinterest_button( array( 'url' => $pin_image ), $recipe_permalink, $pin_description ) : '' ).
@@ -424,12 +476,56 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$img_id = $recipe_thumbnail_id;
 			$src 	= $recipe_thumbnail_url;
 			$alt 	= ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
+			$sizes 	= isset( $image['sizes'] ) ? $image['sizes'] : array();
+			$size 	= self::get_recipe_image_size( $sizes, $src );
 			$img_class  = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? 'no-print' : '';
 			$img_class .= ' wpzoom-recipe-card-image';
 
+			// Check if attachment image is from imported content
+			// in this case we don't have attachment in our upload directory
+			$upl_dir = wp_upload_dir();
+			$findpos = strpos( $src, $upl_dir['baseurl'] );
+
+			if ( $findpos === false ) {
+				$attachment = sprintf(
+					'<img src="%s" alt="%s" class="%s"/>',
+					$src,
+					$alt,
+					trim( $img_class )
+				);
+			}
+			else {
+				$attachment = wp_get_attachment_image(
+					$img_id,
+					$size,
+					false,
+					array(
+						'alt' => $alt,
+	                    'id' => $img_id,
+	                    'class' => trim( $img_class )
+					)
+				);
+			}
+
+			if ( $clickableRecipeImages === '1' ) {
+				$clickableImageSrc = wp_get_attachment_image_src( $img_id, $clickableImageSize );
+
+				if ( $findpos === false ) {
+					$clickableImageSrc[0] = $src;
+				}
+
+				if ( $clickableImageSrc && isset( $clickableImageSrc[0] ) ) {
+					$attachment = sprintf(
+						'<a class="recipe-card-image-popup-link" href="%s">%s</a>',
+						esc_url( $clickableImageSrc[0] ),
+						$attachment
+					);
+				}
+			}
+
 			$recipe_card_image = '<div class="recipe-card-image">
 				<figure>
-					'. sprintf( '<img id="%s" src="%s" alt="%s" class="%s"/>', $img_id, $src, $alt, trim($img_class) ) .'
+					'. $attachment .'
 					<figcaption>
 						'.
 							( self::$settings['pin_btn'] ? self::get_pinterest_button( array( 'url' => $pin_image ), $recipe_permalink, $pin_description ) : '' ).
@@ -1111,9 +1207,18 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			if ( !$isGroup ) {
 				if ( ! empty( $step['text'] ) ) {
 					$text = self::wrap_direction_text( $step['text'] );
+					$gallery = self::direction_gallery( $step );
+
 					$output .= sprintf(
 						'<li class="direction-step">%s</li>',
-						$text
+						$text . $gallery
+					);
+				}
+				elseif ( empty( $step['text'] ) && isset( $step['gallery'] ) ) {
+					$gallery = self::direction_gallery( $step );
+					$output .= sprintf(
+						'<li class="direction-step">%s</li>',
+						$gallery
 					);
 				}
 			} else {
@@ -1241,18 +1346,98 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 				if ( 'img' === $type ) {
 					$src = isset( $node['props']['src'] ) ? $node['props']['src'] : false;
+
+					/**
+					 * Open images in Lighbox
+					 * 
+					 * @since 2.6.4
+					 */
+					$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
+					$clickableDirectionImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instruction_images_lightbox' );
+					$clickableImageSrc = false;
+
 					if ( $src ) {
+						$attachment_id = isset( $node['key'] ) ? $node['key'] : 0;
 						$alt = isset( $node['props']['alt'] ) ? $node['props']['alt'] : '';
 						$title = isset( $node['props']['title'] ) ? $node['props']['title'] : ( isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : self::$recipe->post_title );
 						$class = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_steps_image') ? 'no-print' : '';
 						$class .= ' direction-step-image';
 						$img_style = isset($node['props']['style']) ? $node['props']['style'] : '';
 
-						$start_tag = sprintf( '<%s src="%s" title="%s" alt="%s" class="%s" style="%s"/>', $type, $src, $title, $alt, trim($class), self::parseTagStyle($img_style) );
-					} else {
+						// Try to get attachment ID by image url if attribute `key` is not found in $node array
+						if ( ! $attachment_id ) {
+							$new_src = $src;
+
+							$re = '/-\d+[Xx]\d+\./m';
+							preg_match_all( $re, $src, $matches );
+
+							// Remove image size from url to be able to get attachment id
+							// e.g. .../wp-content/uploads/sites/30/2019/10/image-example-1-500x375.jpg
+							// 	 => .../wp-content/uploads/sites/30/2019/10/image-example-1.jpg
+							if ( isset( $matches[0][0] ) ) {
+								$new_src = str_replace( $matches[0][0], '.', $new_src );
+							}
+
+							// The found post ID, or 0 on failure.
+							$attachment_id = attachment_url_to_postid( $new_src );
+
+							if ( $attachment_id ) {
+								$attachment = wp_get_attachment_image( $attachment_id, 'wpzoom_rcb_block_step_image', false, array( 'title' => $title, 'alt' => $alt, 'class' => trim( $class ), 'style' => self::parseTagStyle( $img_style ) ) );
+							}
+						}
+						else {
+							$attachment = wp_get_attachment_image( $attachment_id, 'wpzoom_rcb_block_step_image', false, array( 'title' => $title, 'alt' => $alt, 'class' => trim( $class ), 'style' => self::parseTagStyle( $img_style ) ) );
+						}
+
+						if ( $clickableDirectionImages === '1' ) {
+							$clickableImageSrc = wp_get_attachment_image_src( $attachment_id, $clickableImageSize );
+
+							if ( $clickableImageSrc && isset( $clickableImageSrc[0] ) ) {
+								$start_tag = sprintf(
+									'<a class="direction-step-image-popup-link" href="%s">%s',
+									esc_url( $clickableImageSrc[0] ),
+									$attachment
+								);
+							}
+							else {
+								$start_tag = sprintf(
+									'<%s src="%s" title="%s" alt="%s" class="%s" style="%s"/>',
+									$type,
+									$src,
+									$title,
+									$alt,
+									trim( $class ),
+									self::parseTagStyle( $img_style )
+								);
+							}
+						}
+						else {
+							if ( $attachment ) {
+								$start_tag = $attachment;
+							}
+							else {
+								$start_tag = sprintf(
+									'<%s src="%s" title="%s" alt="%s" class="%s" style="%s"/>',
+									$type,
+									$src,
+									$title,
+									$alt,
+									trim( $class ),
+									self::parseTagStyle( $img_style )
+								);
+							}
+						}
+					}
+					else {
 						$start_tag = "";
 					}
-					$end_tag = "";
+
+					if ( $clickableDirectionImages === '1' && $clickableImageSrc ) {
+						$end_tag = "</a>";
+					}
+					else {
+						$end_tag = "";
+					}
 				}
 				elseif ( 'a' === $type ) {
 					$rel 		= isset( $node['props']['rel'] ) ? $node['props']['rel'] : '';
@@ -1305,6 +1490,59 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 				$output .= $start_tag . self::wrap_ingredient_name( $children, $type ) . $end_tag;
 			}
+		}
+
+		return $output;
+	}
+
+	public static function direction_gallery( $step ) {
+		$output = '';
+		$hasGalleryImages = isset( $step['gallery'] ) && isset( $step['gallery']['images'] ) && ! empty( $step['gallery']['images'] );
+		$galleryColumns = 'columns-'. WPZOOM_Settings::get( 'wpzoom_rcb_settings_gallery_columns' ) .'';
+
+		if ( $hasGalleryImages ) {
+
+			$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
+			$clickableDirectionImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instruction_images_lightbox' );
+
+			$output .= '<div class="direction-step-gallery '. $galleryColumns .'">';
+			$output .= '<ul class="direction-step-gallery-grid">';
+
+			foreach ( $step['gallery']['images'] as $image ) {
+				$clickableImageSrc = wp_get_attachment_image_src( $image['id'], $clickableImageSize );
+				$attachment = wp_get_attachment_image(
+					$image['id'],
+					'wpzoom_rcb_block_step_image',
+					false,
+					array(
+						'title' => isset( $image['caption'] ) ? $image['caption'] : '',
+						'alt' => isset( $image['alt'] ) ? $image['alt'] : '',
+						'id' => "direction-step-gallery-image-{$image['id']}"
+					)
+				);
+
+				$output .= '<li class="direction-step-gallery-item">';
+
+				if ( $clickableDirectionImages === '1' && isset( $clickableImageSrc[0] ) ) {
+					$output .= sprintf(
+						'<figure><a class="direction-step-image-popup-link" href="%s">%s</a></figure>',
+						esc_url( $clickableImageSrc[0] ),
+						$attachment
+					);
+				}
+				else {
+					$output .= sprintf(
+						'<figure>%s</figure>',
+						$attachment
+					);
+				}
+
+				$output .= '</li>';
+			}
+
+			$output .= '</ul>';
+			$output .= '</div><!-- /.direction-step-gallery -->';
+
 		}
 
 		return $output;
@@ -1651,6 +1889,35 @@ class WPZOOM_Premium_Recipe_Card_Block {
     	ob_end_clean();
 
     	return $content;
+    }
+
+    /**
+     * Get recipe card image size name
+     * 
+     * @since 2.6.4
+     * 
+     * @return object
+     */
+    public static function get_recipe_image_size( $sizes, $src ) {
+    	if ( is_array( $sizes ) && ! empty( $sizes ) ) {
+    		foreach ( $sizes as $size_name => $size_attrs ) {
+    			if ( isset( $size_attrs['url'] ) ) {
+    				if ( $size_attrs['url'] === $src ) {
+    					$size = $size_name;
+    				}
+    			}
+    			elseif ( isset( $size_attrs['source_url'] ) ) {
+    				if ( $size_attrs['source_url'] === $src ) {
+    					$size = $size_name;
+    				}
+    			}
+    		}
+    	}
+    	else {
+    		$size = 'wpzoom-rcb-block-header';
+    	}
+
+    	return $size;
     }
 
     /**

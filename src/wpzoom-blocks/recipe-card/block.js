@@ -11,8 +11,8 @@ import map from "lodash/map";
 import isNull from "lodash/isNull";
 
 /* Internal dependencies */
-import RecipeCard from "./components/RecipeCard";
-import { generateId } from "../../helpers/generateId";
+import RecipeCard from "./components/recipe-card";
+import { generateId } from "@wpzoom/helpers";
 import icon from "./icon";
 
 /* WordPress dependencies */

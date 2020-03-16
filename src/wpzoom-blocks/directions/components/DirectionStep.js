@@ -9,7 +9,7 @@ const { RichText, MediaUpload } = wp.blockEditor;
 const { IconButton } = wp.components;
 
 /* Internal dependencies */
-import { pickRelevantMediaFiles } from "../../../helpers/pickRelevantMediaFiles";
+import { pickRelevantMediaFiles } from "@wpzoom/helpers";
 
 /* Module constants */
 const ALLOWED_MEDIA_TYPES = [ 'image' ];

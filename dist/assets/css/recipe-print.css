@@ -206,6 +206,127 @@ body.wpzoom-rcb-print {
     height: auto;
     display: block;
 }
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-image-popup-link,
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step img {
+    display: block;
+    clear:both
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery {
+    margin:8px 0
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style:none
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item {
+    margin: 0 8px 8px 0;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position:relative
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item:last-child {
+    margin-right:0
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item figure {
+    margin: 0;
+    height:100%
+}
+
+@supports ((position: -webkit-sticky) or(position: sticky)) {
+    .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item figure {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: end;
+        align-items: flex-end;
+        -ms-flex-pack: start;
+        justify-content:flex-start
+    }
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin:0
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item img {
+    width:100%
+}
+
+@supports ((position: -webkit-sticky) or(position: sticky)) {
+    .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item img {
+        width:auto
+    }
+}
+
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-item {
+    width:calc((100% - 8px) / 2)
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-item:nth-of-type(even) {
+    margin-right:0
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-1 .direction-step-gallery-item {
+    width: 100%;
+    margin-right:0
+}
+
+@media (min-width: 600px) {
+    .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-2 .direction-step-gallery-item {
+        width: calc((100% - 8px * 1) / 2);
+        margin-right:8px
+    }
+
+    @supports (-ms-ime-align: auto) {
+        .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-2 .direction-step-gallery-item {
+            width:calc((100% - 8px * 1) / 2 - 1px)
+        }
+	}
+
+    .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-3 .direction-step-gallery-item {
+        width: calc((100% - 8px * 2) / 3);
+        margin-right:8px
+    }
+
+    @supports (-ms-ime-align: auto) {
+        .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-3 .direction-step-gallery-item {
+            width:calc((100% - 8px * 2) / 3 - 1px)
+        }
+	}
+
+    .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-4 .direction-step-gallery-item {
+        width: calc((100% - 8px * 3) / 4);
+        margin-right:8px
+    }
+
+    @supports (-ms-ime-align: auto) {
+        .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-4 .direction-step-gallery-item {
+            width:calc((100% - 8px * 3) / 4 - 1px)
+        }
+	}
+
+    .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-2 .direction-step-gallery-item:nth-of-type(2n) {
+        margin-right:0
+    }
+
+    .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-3 .direction-step-gallery-item:nth-of-type(3n) {
+        margin-right:0
+    }
+
+    .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.columns-4 .direction-step-gallery-item:nth-of-type(4n) {
+        margin-right:0
+    }
+}
+
 .wpzoom-print-recipe-card-block .recipe-card-notes {
     border-top: 1px dashed rgba(0, 0, 0, .1);
 }
