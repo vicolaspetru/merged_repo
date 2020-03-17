@@ -5,15 +5,17 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
+/**
+ * Internal dependencies
+ */
+import icon from './icon';
 
-/* Internal dependencies */
-import icon from "./icon";
-
-/* WordPress dependencies */
-const { Fragment } = wp.element;
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Register: Ingredients Gutenberg Block.

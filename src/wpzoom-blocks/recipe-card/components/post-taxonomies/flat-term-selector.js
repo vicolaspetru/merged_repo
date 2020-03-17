@@ -1,26 +1,28 @@
 /**
  * External dependencies
  */
-import { __, _x, sprintf } from "@wordpress/i18n";
-import escapeString from 'lodash/escape';
-import find from 'lodash/find';
-import get from 'lodash/get';
-import invoke from 'lodash/invoke';
-import isEmpty from 'lodash/isEmpty';
-import map from 'lodash/map';
-import throttle from 'lodash/throttle';
-import unescapeString from 'lodash/unescape';
-import uniqBy from 'lodash/uniqBy';
+import {
+    get,
+    map,
+    find,
+    invoke,
+    isEmpty,
+    uniqBy,
+    throttle,
+    escape as escapeString,
+    unescape as unescapeString
+} from 'lodash';
 
 /**
  * WordPress dependencies
  */
-const { Component } = wp.element;
-const { FormTokenField, withFilters } = wp.components;
-const { withSelect, withDispatch } = wp.data;
-const { compose } = wp.compose;
-const { apiFetch } = wp;
-const { addQueryArgs } = wp.url;
+import { __, _x, sprintf } from '@wordpress/i18n';
+import { Component } from '@wordpress/element';
+import { FormTokenField, withFilters } from '@wordpress/components';
+import { withSelect, withDispatch } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
+import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
 
 /**
  * Module constants

@@ -1,18 +1,21 @@
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import get from "lodash/get";
-import ReactPlayer from "react-player";
+/**
+ * External dependencies
+ */
+import { get } from 'lodash';
+import ReactPlayer from 'react-player';
 
-/* Internal dependencies */
-import { excludeClassNames } from "@wpzoom/helpers";
+/**
+ * Internal dependencies
+ */
+import { excludeClassNames } from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { Component, Fragment, createRef } = wp.element;
-const {
-    mediaUpload,
-    URLInput
-} = wp.editor;
-const {
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { Component, Fragment, createRef } from '@wordpress/element';
+import { mediaUpload, URLInput } from '@wordpress/editor';
+import {
     BaseControl,
     PanelBody,
     ToggleControl,
@@ -20,15 +23,17 @@ const {
     Disabled,
     IconButton,
     withNotices
-} = wp.components;
-const {
+} from '@wordpress/components';
+import {
     URLPopover,
     MediaPlaceholder,
     MediaUpload
-} = wp.blockEditor;
-const { getBlobByURL, isBlobURL } = wp.blob;
+} from '@wordpress/block-editor';
+import { getBlobByURL, isBlobURL } from '@wordpress/blob';
 
-/* Module constants */
+/**
+ * Module constants
+ */
 const ALLOWED_MEDIA_TYPES = [ 'video' ];
 const VIDEO_POSTER_ALLOWED_MEDIA_TYPES = [ 'image' ];
 

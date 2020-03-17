@@ -1,12 +1,12 @@
 /**
- * WordPress dependencies
- */
-import { __, sprintf } from '@wordpress/i18n';
-
-/**
  * Internal dependencies
  */
 import DirectionGalleryImage from './direction-gallery-image';
+
+/**
+ * WordPress dependencies
+ */
+import { __, sprintf } from '@wordpress/i18n';
 
 export const DirectionGallery = ( props ) => {
     const {

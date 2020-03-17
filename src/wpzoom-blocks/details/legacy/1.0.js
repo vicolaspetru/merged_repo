@@ -5,14 +5,20 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/* Internal dependencies */
-import FoodIcons from "../components/FoodIcons";
-import get from 'lodash/get';
-import times from 'lodash/times';
+/**
+ * External dependencies
+ */
+import { get, times } from 'lodash';
 
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-const { RichText } = wp.blockEditor;
+/**
+ * Internal dependencies
+ */
+import FoodIcons from './FoodIcons';
+
+/**
+ * WordPress dependencies
+ */
+import { RichText } from '@wordpress/block-editor';
 
 
 /**

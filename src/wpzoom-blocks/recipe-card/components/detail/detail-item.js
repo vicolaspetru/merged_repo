@@ -1,16 +1,24 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
-import isUndefined from "lodash/isUndefined";
-import get from "lodash/get";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    isUndefined
+} from 'lodash';
+import PropTypes from 'prop-types';
 
-/* Internal dependencies */
-import IconsModal from "../icons-modal";
+/**
+ * Internal dependencies
+ */
+import IconsModal from '../icons-modal';
 
-/* WordPress dependencies */
-const { Component } = wp.element;
-const { TextControl } = wp.components;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import { Component } from '@wordpress/element';
+import { TextControl } from '@wordpress/components';
 
 /**
  * A Detail items within a Details block.

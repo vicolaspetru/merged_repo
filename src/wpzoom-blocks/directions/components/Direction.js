@@ -1,24 +1,29 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import { speak } from "@wordpress/a11y";
-import toNumber from "lodash/toNumber";
+/**
+ * External dependencies
+ */
+import { toNumber } from 'lodash';
+import PropTypes from 'prop-types';
 
-/* Internal dependencies */
-import DirectionStep from "./DirectionStep";
-import Inspector from "./Inspector";
+/**
+ * Internal dependencies
+ */
+import DirectionStep from './DirectionStep';
+import Inspector from './Inspector';
 import {
     stripHTML,
     generateId
-} from "@wpzoom/helpers";
+} from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { RichText } = wp.blockEditor;
-const { IconButton } = wp.components;
-const { Component, renderToString } = wp.element;
-const { pluginURL } = window.wpzoomRecipeCard;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { speak } from '@wordpress/a11y';
+import { RichText } from '@wordpress/block-editor';
+import { IconButton } from '@wordpress/components';
+import { Component, renderToString } from '@wordpress/element';
 
-/* Import CSS. */
+/* Import Styles */
 import '../style.scss';
 import '../editor.scss';
 
@@ -405,6 +410,7 @@ export default class Direction extends Component {
     render() {
         const { attributes, setAttributes, className } = this.props;
         const { title, id, print_visibility } = attributes;
+        const { pluginURL } = wpzoomRecipeCard;
 
         const classNames     = [ "", className ].filter( ( item ) => item ).join( " " );
         const listClassNames = [ "directions-list" ].filter( ( item ) => item ).join( " " );

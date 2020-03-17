@@ -1,16 +1,22 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
-import get from "lodash/get";
+/**
+ * External dependencies
+ */
+import { get } from 'lodash';
+import PropTypes from 'prop-types';
 
-/* Internal dependencies */
-import IconsModal from "./IconsModal";
+/**
+ * Internal dependencies
+ */
+import IconsModal from './IconsModal';
 
-/* WordPress dependencies */
-const { Component } = wp.element;
-const { RichText } = wp.blockEditor;
-const { IconButton } = wp.components;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import { Component } from '@wordpress/element';
+import { RichText } from '@wordpress/block-editor';
+import { IconButton } from '@wordpress/components';
 
 /**
  * A Detail items within a Details block.

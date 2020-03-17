@@ -1,28 +1,30 @@
 /**
  * External dependencies
  */
-import { __, _x, _n, sprintf } from "@wordpress/i18n";
-import get from 'lodash/get';
-import unescapeString from 'lodash/unescape';
-import without from 'lodash/without';
-import find from 'lodash/find';
-import some from 'lodash/some';
-import invoke from 'lodash/invoke';
-
-/**
- * WordPress dependencies
- */
-const { Component } = wp.element;
-const { TreeSelect, withSpokenMessages, withFilters, Button } = wp.components;
-const { withSelect, withDispatch } = wp.data;
-const { withInstanceId, compose } = wp.compose;
-const { apiFetch } = wp;
-const { addQueryArgs } = wp.url;
+import {
+    get,
+    find,
+    some,
+    invoke,
+    without,
+    unescape as unescapeString
+} from 'lodash';
 
 /**
  * Internal dependencies
  */
 import { buildTermsTree } from '@wpzoom/utils';
+
+/**
+ * WordPress dependencies
+ */
+import { __, _x, _n, sprintf } from '@wordpress/i18n';
+import { Component } from '@wordpress/element';
+import { TreeSelect, withSpokenMessages, withFilters, Button } from '@wordpress/components';
+import { withSelect, withDispatch } from '@wordpress/data';
+import { withInstanceId, compose } from '@wordpress/compose';
+import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
 
 /**
  * Module Constants

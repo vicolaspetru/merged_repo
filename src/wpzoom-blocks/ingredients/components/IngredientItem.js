@@ -1,12 +1,17 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
+/**
+ * External dependencies
+ */
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-/* WordPress dependencies */
-const { Component, Fragment } = wp.element;
-const { RichText } = wp.blockEditor;
-const { IconButton } = wp.components;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import { Component, Fragment } from '@wordpress/element';
+import { RichText } from '@wordpress/block-editor';
+import { IconButton } from '@wordpress/components';
 
 /**
  * A Ingredient item within a Ingredient block.
@@ -204,7 +209,10 @@ export default class IngredientItem extends Component {
         } = this.props;
         const { id, name, isGroup } = item;
         const isSelectedName = isSelected && subElement === "name";
-        const itemClassName = !isGroup ? "ingredient-item" : "ingredient-item ingredient-item-group";
+        const itemClassName = classnames( {
+            'ingredient-item': !isGroup,
+            'ingredient-item ingredient-item-group': isGroup
+        } );
 
         return (
             <li className={ itemClassName } key={ id }>

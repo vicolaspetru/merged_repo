@@ -1,21 +1,58 @@
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import get from "lodash/get";
-import isUndefined from "lodash/isUndefined";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    isUndefined
+} from 'lodash';
 
-/* Internal dependencies */
-import { stripHTML } from "@wpzoom/helpers";
+/**
+ * Internal dependencies
+ */
+import { stripHTML } from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { Component, renderToString } = wp.element;
-const { InspectorControls } = wp.blockEditor;
-const {
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { Component, renderToString } from '@wordpress/element';
+import { InspectorControls } from '@wordpress/block-editor';
+import {
     BaseControl,
     PanelBody,
     RangeControl,
     TextControl,
     FormTokenField,
-} = wp.components;
+} from '@wordpress/components';
+
+/**
+ * Module constants
+ */
+const coursesToken = [
+    __( "Appetizer & Snaks", "wpzoom-recipe-card" ),
+    __( "Breakfast & Brunch", "wpzoom-recipe-card" ),
+    __( "Dessert", "wpzoom-recipe-card" ),
+    __( "Drinks", "wpzoom-recipe-card" ),
+    __( "Main Course", "wpzoom-recipe-card" ),
+    __( "Salad", "wpzoom-recipe-card" ),
+    __( "Soup", "wpzoom-recipe-card" ),
+];
+
+const cuisinesToken = [
+    __( "American", "wpzoom-recipe-card" ),
+    __( "Chinese", "wpzoom-recipe-card" ),
+    __( "French", "wpzoom-recipe-card" ),
+    __( "Indian", "wpzoom-recipe-card" ),
+    __( "Italian", "wpzoom-recipe-card" ),
+    __( "Japanese", "wpzoom-recipe-card" ),
+    __( "Mediterranean", "wpzoom-recipe-card" ),
+    __( "Mexican", "wpzoom-recipe-card" ),
+    __( "Southern", "wpzoom-recipe-card" ),
+    __( "Thai", "wpzoom-recipe-card" ),
+    __( "Other world cuisine", "wpzoom-recipe-card" ),
+];
+
+const keywordsToken = [];
 
 /**
  * Inspector controls
@@ -49,7 +86,6 @@ export default class Inspector extends Component {
      * @returns {Component} The Details block settings.
      */
     render() {
-
         const {
             attributes,
             setAttributes
@@ -63,32 +99,6 @@ export default class Inspector extends Component {
             details,
             columns
         } = attributes;
-
-        const coursesToken = [
-            __( "Appetizer & Snaks", "wpzoom-recipe-card" ),
-            __( "Breakfast & Brunch", "wpzoom-recipe-card" ),
-            __( "Dessert", "wpzoom-recipe-card" ),
-            __( "Drinks", "wpzoom-recipe-card" ),
-            __( "Main Course", "wpzoom-recipe-card" ),
-            __( "Salad", "wpzoom-recipe-card" ),
-            __( "Soup", "wpzoom-recipe-card" ),
-        ];
-
-        const cuisinesToken = [
-            __( "American", "wpzoom-recipe-card" ),
-            __( "Chinese", "wpzoom-recipe-card" ),
-            __( "French", "wpzoom-recipe-card" ),
-            __( "Indian", "wpzoom-recipe-card" ),
-            __( "Italian", "wpzoom-recipe-card" ),
-            __( "Japanese", "wpzoom-recipe-card" ),
-            __( "Mediterranean", "wpzoom-recipe-card" ),
-            __( "Mexican", "wpzoom-recipe-card" ),
-            __( "Southern", "wpzoom-recipe-card" ),
-            __( "Thai", "wpzoom-recipe-card" ),
-            __( "Other world cuisine", "wpzoom-recipe-card" ),
-        ];
-
-        const keywordsToken = [];
 
         this.valuesMinMax( columns );
 

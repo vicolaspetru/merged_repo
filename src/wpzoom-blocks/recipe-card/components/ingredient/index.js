@@ -1,26 +1,34 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import { speak } from "@wordpress/a11y";
-import get from "lodash/get";
-import trim from "lodash/trim";
-import replace from "lodash/replace";
-import includes from "lodash/includes";
-import toNumber from "lodash/toNumber";
-import isUndefined from "lodash/isUndefined";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    trim,
+    replace,
+    includes,
+    toNumber,
+    isUndefined
+} from 'lodash';
+import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
 
-/* Internal dependencies */
-import IngredientItem from "./ingredient-item";
+/**
+ * Internal dependencies
+ */
+import IngredientItem from './ingredient-item';
 import {
     stripHTML,
     removeKeys
-} from "@wpzoom/helpers";
+} from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { RichText } = wp.blockEditor;
-const { IconButton } = wp.components;
-const { Component, renderToString } = wp.element;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { speak } from '@wordpress/a11y';
+import { RichText } from '@wordpress/block-editor';
+import { IconButton } from '@wordpress/components';
+import { Component, renderToString } from '@wordpress/element';
 
 /**
  * A Ingredient item within a Ingredient block.

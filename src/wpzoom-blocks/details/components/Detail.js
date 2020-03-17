@@ -1,21 +1,27 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
+/**
+ * External dependencies
+ */
+import PropTypes from 'prop-types';
 
-/* Internal dependencies */
-import DetailItem from "./DetailItem";
-import Inspector from "./Inspector";
+/**
+ * Internal dependencies
+ */
+import DetailItem from './DetailItem';
+import Inspector from './Inspector';
 import {
     stripHTML,
     generateId
-} from "@wpzoom/helpers";
+} from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { RichText } = wp.blockEditor;
-const { IconButton } = wp.components;
-const { Component, renderToString } = wp.element;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { RichText } from '@wordpress/block-editor';
+import { IconButton } from '@wordpress/components';
+import { Component, renderToString } from '@wordpress/element';
 
-/* Import CSS. */
+/* Import Styles */
 import '../style.scss';
 import '../editor.scss';
 

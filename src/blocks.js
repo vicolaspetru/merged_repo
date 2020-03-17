@@ -17,7 +17,9 @@ import "./wpzoom-blocks/print-recipe/block.js";
 import "./wpzoom-blocks/recipe-card/block.js";
 import "./wpzoom-blocks/nutrition/block.js";
 
-/* Internal dependencies */
+/**
+ * Internal dependencies
+ */
 import icon from "./icon";
 
 ( function() {

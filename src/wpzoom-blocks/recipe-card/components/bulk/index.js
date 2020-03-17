@@ -1,32 +1,40 @@
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import get from "lodash/get";
-import trim from "lodash/trim";
-import isNull from "lodash/isNull";
-import isEmpty from "lodash/isEmpty";
-import isObject from "lodash/isObject";
-import isString from "lodash/isString";
-import isUndefined from "lodash/isUndefined";
-import filter from "lodash/filter";
-import forEach from "lodash/forEach";
-import indexOf from "lodash/indexOf";
-import includes from "lodash/includes";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    trim,
+    isNull,
+    isEmpty,
+    isObject,
+    isString,
+    isUndefined,
+    filter,
+    forEach,
+    indexOf,
+    includes
+} from 'lodash';
 import ReactHtmlParser from 'react-html-parser';
 
-/* Internal dependencies */
-import { stripHTML } from "@wpzoom/helpers";
+/**
+ * Internal dependencies
+ */
+import { stripHTML } from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { renderToString, Fragment } = wp.element;
-const {
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { renderToString, Fragment } from '@wordpress/element';
+import {
     Button,
     IconButton,
     Modal,
     Toolbar,
     TextareaControl
-} = wp.components;
-const { withState } = wp.compose;
-const { select } = wp.data;
+} from '@wordpress/components';
+import { withState } from '@wordpress/compose';
+import { select } from '@wordpress/data';
 
 /**
  * We need to stop the keypress event here, because block.js is firing

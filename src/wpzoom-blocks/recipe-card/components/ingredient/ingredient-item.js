@@ -1,18 +1,27 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
-import get from "lodash/get";
-import isString from "lodash/isString";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    isString
+} from 'lodash';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import ingredientParser from 'ingredients-parser';
 
-/* WordPress dependencies */
-const { Component, Fragment } = wp.element;
-const { RichText } = wp.blockEditor;
-const { IconButton, TextControl } = wp.components;
+/**
+ * Internal dependencies
+ */
+import { getBlockStyle } from '@wpzoom/helpers';
 
-/* Internal dependencies */
-import { getBlockStyle } from "@wpzoom/helpers";
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import { Component, Fragment } from '@wordpress/element';
+import { RichText } from '@wordpress/block-editor';
+import { IconButton, TextControl } from '@wordpress/components';
 
 const parseIngredient = ( ingredient ) =>{
     if ( ! isString( ingredient ) ) {
@@ -272,7 +281,10 @@ export default class IngredientItem extends Component {
         const isSelectedName = isSelected && subElement === "name";
         const isSelectedAmount = isSelected && subElement === "amount";
         const isSelectedUnit = isSelected && subElement === "unit";
-        const itemClassName = !isGroup ? "ingredient-item" : "ingredient-item ingredient-item-group";
+        const itemClassName = classnames( {
+            'ingredient-item': !isGroup,
+            'ingredient-item ingredient-item-group': isGroup
+        } );
 
         const unit = get( this.props.item, [ 'parse', 'unit' ] );
         const amount = get( this.props.item, [ 'parse', 'amount' ] );

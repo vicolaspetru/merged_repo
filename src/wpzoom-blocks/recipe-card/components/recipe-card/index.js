@@ -1,46 +1,53 @@
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import get from "lodash/get";
-import map from "lodash/map";
-import isEmpty from "lodash/isEmpty";
-import invoke from "lodash/invoke";
-import isUndefined from "lodash/isUndefined";
-import ReactPlayer from "react-player";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    map,
+    invoke,
+    isEmpty,
+    isUndefined
+} from 'lodash';
+import classnames from 'classnames';
+import ReactPlayer from 'react-player';
 
-/* Internal dependencies */
-import Detail from "../detail";
-import Ingredient from "../ingredient";
-import Direction from "../direction";
-import CallToAction from "../call-to-action";
-import FoodLabels from "../food-labels";
-import Inspector from "../block-settings";
-import ExtraOptionsModal from "../bulk";
+/**
+ * Internal dependencies
+ */
+import Detail from '../detail';
+import Ingredient from '../ingredient';
+import Direction from '../direction';
+import CallToAction from '../call-to-action';
+import FoodLabels from '../food-labels';
+import Inspector from '../block-settings';
+import ExtraOptionsModal from '../bulk';
 import {
     stripHTML,
     pickRelevantMediaFiles,
     getBlockStyle,
     generateId
-} from "@wpzoom/helpers";
+} from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { Component, renderToString, Fragment } = wp.element;
-const {
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { Component, renderToString, Fragment } from '@wordpress/element';
+import {
     Button,
     Placeholder,
     Spinner,
     Disabled
-} = wp.components;
-
-const {
+} from '@wordpress/components';
+import {
     RichText,
     BlockControls,
     MediaUpload,
-} = wp.blockEditor;
-
-const { withSelect } = wp.data;
-const { compose } = wp.compose;
-const { apiFetch } = wp;
-const { addQueryArgs } = wp.url;
+} from '@wordpress/block-editor';
+import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
+import apiFetch from '@wordpress/api-fetch';
+import { addQueryArgs } from '@wordpress/url';
 
 /**
  * Module Constants
@@ -53,7 +60,7 @@ const DEFAULT_QUERY = {
     _fields: 'id,name,parent',
 };
 
-/* Import CSS. */
+/* Import Styles */
 import '../../style.scss';
 import '../../editor.scss';
 
@@ -362,6 +369,14 @@ class RecipeCard extends Component {
         } = this.props;
 
         const {
+            wpzoom_rcb_settings_pin_description,
+            wpzoom_rcb_settings_heading_content_align,
+            wpzoom_rcb_settings_course_taxonomy,
+            wpzoom_rcb_settings_cuisine_taxonomy,
+            wpzoom_rcb_settings_difficulty_taxonomy
+        } = settingOptions;
+
+        const {
             id,
             recipeTitle,
             summary,
@@ -395,19 +410,17 @@ class RecipeCard extends Component {
         const postThumbnail = pickRelevantMediaFiles( media, 'header' );
 
         const style = getBlockStyle( className );
-        const loadingClass = this.state.isLoading ? 'is-loading-block' : '';
-        const hideRecipeImgClass = hide_header_image ? 'recipe-card-noimage' : '';
         const videoType = get( video, 'type' );
 
         let pin_description = recipeTitle;
         let headerContentAlign = headerAlign;
         let customAuthorName;
 
-        if ( get( settingOptions, 'wpzoom_rcb_settings_pin_description' ) === 'recipe_summary' ) {
+        if ( wpzoom_rcb_settings_pin_description === 'recipe_summary' ) {
             pin_description = jsonSummary;
         }
         if ( isUndefined( headerAlign ) ) {
-            headerContentAlign = get( settingOptions, 'wpzoom_rcb_settings_heading_content_align' );
+            headerContentAlign = wpzoom_rcb_settings_heading_content_align;
         }
         if ( 'simple' === style ) {
             headerContentAlign = 'left';
@@ -420,7 +433,6 @@ class RecipeCard extends Component {
 
         const regex = /is-style-(\S*)/g;
         let m = regex.exec( className );
-        let classNames = m !== null ? [ className, `header-content-align-${ headerContentAlign }`, loadingClass, hideRecipeImgClass ] : [ className, `is-style-${ style }`, `header-content-align-${ headerContentAlign }`, loadingClass, hideRecipeImgClass ];
 
         let printStyles = [];
 
@@ -437,7 +449,13 @@ class RecipeCard extends Component {
             }
         }
 
-        const RecipeCardClassName = classNames.filter( ( item ) => item ).join( " " );
+        const RecipeCardClassName = classnames( {
+            'is-loading-block': this.state.isLoading,
+            'recipe-card-noimage': hide_header_image,
+            [`header-content-align-${ headerContentAlign }`]: true,
+            [`is-style-${ style }`]: m === null,
+            [ className ]: true
+        } );
         const PrintClasses = [ "wpzoom-recipe-card-print-link" ].filter( ( item ) => item ).join( " " );
         const PinterestClasses = [ "wpzoom-recipe-card-pinit" ].filter( ( item ) => item ).join( " " );
         const pinitURL = `https://www.pinterest.com/pin/create/button/?url=${ postPermalink }&media=${ get( image, [ 'url' ] ) || get( postThumbnail, [ 'url' ] ) }&description=${ pin_description }`;
@@ -540,17 +558,17 @@ class RecipeCard extends Component {
                                 <Fragment key="recipe-card-metadata">
                                     {
                                         displayCourse &&
-                                        '1' !== get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
+                                        '1' !== wpzoom_rcb_settings_course_taxonomy &&
                                         <span className="recipe-card-course">{ __( "Course", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty( course ) ? course.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span>
                                     }
                                     {
                                         displayCuisine &&
-                                        '1' !== get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
+                                        '1' !== wpzoom_rcb_settings_cuisine_taxonomy &&
                                         <span className="recipe-card-cuisine">{ __( "Cuisine", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty( cuisine ) ? cuisine.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span>
                                     }
                                     {
                                         displayDifficulty &&
-                                        '1' !== get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
+                                        '1' !== wpzoom_rcb_settings_difficulty_taxonomy &&
                                         <span className="recipe-card-difficulty">{ __( "Difficulty", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty( difficulty ) ? difficulty.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span>
                                     }
                                 </Fragment>
@@ -559,17 +577,17 @@ class RecipeCard extends Component {
                                 <Fragment key="recipe-card-terms">
                                     {
                                         displayCourse &&
-                                        '1' === get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
+                                        '1' === wpzoom_rcb_settings_course_taxonomy &&
                                         <span className="recipe-card-course">{ __( "Course", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_courses' ) }</mark></span>
                                     }
                                     {
                                         displayCuisine &&
-                                        '1' === get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
+                                        '1' === wpzoom_rcb_settings_cuisine_taxonomy &&
                                         <span className="recipe-card-cuisine">{ __( "Cuisine", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_cuisines' ) }</mark></span>
                                     }
                                     {
                                         displayDifficulty &&
-                                        '1' === get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
+                                        '1' === wpzoom_rcb_settings_difficulty_taxonomy &&
                                         <span className="recipe-card-difficulty">{ __( "Difficulty", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_difficulties' ) }</mark></span>
                                     }
                                 </Fragment>
@@ -672,17 +690,17 @@ class RecipeCard extends Component {
                                     <Fragment key="recipe-card-metadata">
                                         {
                                             displayCourse &&
-                                            '1' !== get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
+                                            '1' !== wpzoom_rcb_settings_course_taxonomy &&
                                             <span className="recipe-card-course">{ __( "Course", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty( course ) ? course.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span>
                                         }
                                         {
                                             displayCuisine &&
-                                            '1' !== get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
+                                            '1' !== wpzoom_rcb_settings_cuisine_taxonomy &&
                                             <span className="recipe-card-cuisine">{ __( "Cuisine", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty( cuisine ) ? cuisine.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span>
                                         }
                                         {
                                             displayDifficulty &&
-                                            '1' !== get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
+                                            '1' !== wpzoom_rcb_settings_difficulty_taxonomy &&
                                             <span className="recipe-card-difficulty">{ __( "Difficulty", "wpzoom-recipe-card" ) }: <mark>{ ! RichText.isEmpty( difficulty ) ? difficulty.filter( ( item ) => item ).join( ", " ) : __( "Not added", "wpzoom-recipe-card" ) }</mark></span>
                                         }
                                     </Fragment>
@@ -691,17 +709,17 @@ class RecipeCard extends Component {
                                     <Fragment key="recipe-card-terms">
                                         {
                                             displayCourse &&
-                                            '1' === get( settingOptions, 'wpzoom_rcb_settings_course_taxonomy' ) &&
+                                            '1' === wpzoom_rcb_settings_course_taxonomy &&
                                             <span className="recipe-card-course">{ __( "Course", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_courses' ) }</mark></span>
                                         }
                                         {
                                             displayCuisine &&
-                                            '1' === get( settingOptions, 'wpzoom_rcb_settings_cuisine_taxonomy' ) &&
+                                            '1' === wpzoom_rcb_settings_cuisine_taxonomy &&
                                             <span className="recipe-card-cuisine">{ __( "Cuisine", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_cuisines' ) }</mark></span>
                                         }
                                         {
                                             displayDifficulty &&
-                                            '1' === get( settingOptions, 'wpzoom_rcb_settings_difficulty_taxonomy' ) &&
+                                            '1' === wpzoom_rcb_settings_difficulty_taxonomy &&
                                             <span className="recipe-card-difficulty">{ __( "Difficulty", "wpzoom-recipe-card" ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_difficulties' ) }</mark></span>
                                         }
                                     </Fragment>

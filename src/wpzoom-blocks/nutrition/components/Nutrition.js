@@ -1,30 +1,42 @@
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import get from "lodash/get";
-import ceil from "lodash/ceil";
-import filter from "lodash/filter";
-import findKey from "lodash/findKey";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    ceil,
+    filter,
+    findKey
+} from 'lodash';
 
-/* Internal dependencies */
-import { parseClassName } from "@wpzoom/helpers";
+/**
+ * Internal dependencies
+ */
+import { parseClassName } from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { Component, Fragment } = wp.element;
-const { withSelect } = wp.data;
-const { compose } = wp.compose;
-const {
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { Component, Fragment } from '@wordpress/element';
+import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
+import {
     TextControl,
     PanelBody,
     Button,
     SelectControl
-} = wp.components;
-const { InspectorControls } = wp.blockEditor;
+} from '@wordpress/components';
+import { InspectorControls } from '@wordpress/block-editor';
 
-/* Import CSS. */
+/**
+ * Module constants
+ */
+const { nutritionFactsLabel } = wpzoomRecipeCard;
+const { labels } = nutritionFactsLabel;
+
+/* Import Styles */
 import '../style.scss';
 import '../editor.scss';
-
-const labels = wpzoomRecipeCard.nutritionFactsLabel;
 
 class Nutrition extends Component {
     constructor( props ) {

@@ -1,22 +1,39 @@
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import isUndefined from "lodash/isUndefined";
-import get from "lodash/get";
-import replace from "lodash/replace";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    isUndefined,
+    replace
+} from 'lodash';
 
-/* Internal dependencies */
-import { filterIcons } from "@wpzoom/utils";
+/**
+ * Internal dependencies
+ */
+import { filterIcons } from '@wpzoom/utils';
 
-/* WordPress dependencies */
-const {
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import {
     IconButton,
     Modal,
     TabPanel,
     SelectControl,
     TextControl
-} = wp.components;
-const { Fragment } = wp.element;
-const { withState } = wp.compose;
+} from '@wordpress/components';
+import { Fragment } from '@wordpress/element';
+import { withState } from '@wordpress/compose';
+
+/**
+ * Module constants
+ */
+const iconsSets = [
+    { label: __( "Foodicons", "wpzoom-recipe-card" ), value: 'foodicons' },
+    { label: __( "Dashicons", "wpzoom-recipe-card" ), value: 'dashicons' },
+    { label: __( "Old Food icons", "wpzoom-recipe-card" ), value: 'oldicon' },
+];
 
 /**
  * A Icons Modal within a Details block.
@@ -48,12 +65,6 @@ function IconsModal (
     _prefix = _prefix || iconSet;
 
     const activeIcon = get( details, [ toInsert, 'icon' ] );
-
-    const iconsSets = [
-        { label: __( "Foodicons", "wpzoom-recipe-card" ), value: 'foodicons' },
-        { label: __( "Dashicons", "wpzoom-recipe-card" ), value: 'dashicons' },
-        { label: __( "Old Food icons", "wpzoom-recipe-card" ), value: 'oldicon' },
-    ];
 
     /**
      * Handles the on change event on the detail icon editor.

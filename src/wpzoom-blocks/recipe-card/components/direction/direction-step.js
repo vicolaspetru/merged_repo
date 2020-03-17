@@ -1,31 +1,44 @@
 /**
  * External dependencies
  */
+import {
+    get,
+    isObject,
+    isString,
+    isUndefined
+} from 'lodash';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
-import get from "lodash/get";
-import isObject from "lodash/isObject";
-import isString from "lodash/isString";
-import isUndefined from "lodash/isUndefined";
-import ReactHtmlParser from "react-html-parser";
+import ReactHtmlParser from 'react-html-parser';
 
-/* Internal dependencies */
-import DirectionGalleryEdit from "./direction-gallery-edit";
+/**
+ * Internal dependencies
+ */
+import DirectionGalleryEdit from './direction-gallery-edit';
 import {
     pickRelevantMediaFiles,
     matchIMGsrc
-} from "@wpzoom/helpers";
+} from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { Component, Fragment } = wp.element;
-const { RichText, MediaUpload } = wp.blockEditor;
-const { IconButton } = wp.components;
-const { setting_options } = wpzoomRecipeCard;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import { Component, Fragment } from '@wordpress/element';
+import { RichText, MediaUpload } from '@wordpress/block-editor';
+import { IconButton } from '@wordpress/components';
 
-/* Module constants */
+/**
+ * Module constants
+ */
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
+
+const { setting_options } = wpzoomRecipeCard;
+const {
+    wpzoom_rcb_settings_gallery_columns,
+    wpzoom_rcb_settings_print_show_steps_image
+} = setting_options;
 
 /**
  * A Direction step within a Direction block.
@@ -250,13 +263,16 @@ export default class DirectionStep extends Component {
         let newText = text.slice();
 
         const relevantMedia = pickRelevantMediaFiles( media, 'step' );
+        const imgClassNames = classnames( {
+            'no-print': wpzoom_rcb_settings_print_show_steps_image === '0'
+        } );
         const image = (
             <img
                 key={ relevantMedia.id }
                 alt={ relevantMedia.alt }
                 title={ relevantMedia.title }
                 src={ relevantMedia.url }
-                className={ setting_options.wpzoom_rcb_settings_print_show_steps_image === '0' ? 'no-print' : '' }
+                className={ imgClassNames }
             />
         );
 
@@ -331,9 +347,7 @@ export default class DirectionStep extends Component {
 
         const galleryClassName = classnames( {
             'direction-step-gallery': ! isGroup,
-            'columns-2': get( setting_options, 'wpzoom_rcb_settings_gallery_columns' ) === '2',
-            'columns-3': get( setting_options, 'wpzoom_rcb_settings_gallery_columns' ) === '3',
-            'columns-4': get( setting_options, 'wpzoom_rcb_settings_gallery_columns' ) === '4'
+            [`columns-${ wpzoom_rcb_settings_gallery_columns }`]: true
         } );
 
         let textContent = text;

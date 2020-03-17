@@ -5,18 +5,24 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import isUndefined from "lodash/isUndefined";
+/**
+ * External dependencies
+ */
+import { isUndefined } from 'lodash';
 
-/* Internal dependencies */
+/**
+ * Internal dependencies
+ */
 import Direction from './components/Direction';
-import { generateId } from "@wpzoom/helpers";
-import legacy from "./legacy";
-import icon from "./icon";
+import legacy from './legacy';
+import icon from './icon';
+import { generateId } from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { registerBlockType } from '@wordpress/blocks';
 
 const deprecatedAttr = {
     title: {

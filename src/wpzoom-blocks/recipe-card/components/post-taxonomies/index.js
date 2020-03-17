@@ -1,23 +1,25 @@
 /**
  * External dependencies
  */
-import has from 'lodash/has';
-import filter from 'lodash/filter';
-import identity from 'lodash/identity';
-import includes from 'lodash/includes';
-
-/**
- * WordPress dependencies
- */
-const { Fragment } = wp.element;
-const { withSelect } = wp.data;
-const { compose } = wp.compose;
+import {
+    has,
+    filter,
+    identity,
+    includes
+} from 'lodash';
 
 /**
  * Internal dependencies
  */
 import HierarchicalTermSelector from './hierarchical-term-selector';
 import FlatTermSelector from './flat-term-selector';
+
+/**
+ * WordPress dependencies
+ */
+import { Fragment } from '@wordpress/element';
+import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
 
 export function PostTaxonomies( { postType, taxonomies, taxonomyWrapper = identity } ) {
     const availableTaxonomies = filter( taxonomies, ( taxonomy ) => {

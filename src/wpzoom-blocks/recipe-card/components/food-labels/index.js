@@ -1,12 +1,14 @@
-/* External dependencies */
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    isEmpty
+} from 'lodash';
 
-/* WordPress dependencies */
-const { Component } = wp.element;
-
-/* Internal dependencies */
+/**
+ * Internal dependencies
+ */
 import {
     dairyFree,
     glutenFree,
@@ -14,7 +16,13 @@ import {
     phosphateFree,
     sugarFree,
     vegan
-} from "./library";
+} from './library';
+
+/**
+ * WordPress dependencies
+ */
+import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import { Component } from '@wordpress/element';
 
 const iconsSVG = {
     'vegan': vegan,

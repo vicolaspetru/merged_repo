@@ -5,19 +5,32 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import map from "lodash/map";
-import isNull from "lodash/isNull";
+/**
+ * External dependencies
+ */
+import {
+    map,
+    isNull
+} from 'lodash';
 
-/* Internal dependencies */
-import RecipeCard from "./components/recipe-card";
-import { generateId } from "@wpzoom/helpers";
-import icon from "./icon";
+/**
+ * Internal dependencies
+ */
+import RecipeCard from './components/recipe-card';
+import { generateId } from '@wpzoom/helpers';
+import icon from './icon';
 
-/* WordPress dependencies */
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { registerBlockType } from '@wordpress/blocks';
+
+/**
+ * Module constants
+ */
 const { setting_options, pluginURL } = wpzoomRecipeCard;
+const { wpzoom_rcb_settings_template } = setting_options;
 
 /**
  * Register: Ingredients Gutenberg Block.
@@ -72,17 +85,17 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
         {
             name: 'default',
             label: __( "Default", "wpzoom-recipe-card" ),
-            isDefault: setting_options.wpzoom_rcb_settings_template === 'default'
+            isDefault: wpzoom_rcb_settings_template === 'default'
         },
         {
             name: 'newdesign',
             label: __( "New Design", "wpzoom-recipe-card" ),
-            isDefault: setting_options.wpzoom_rcb_settings_template === 'newdesign'
+            isDefault: wpzoom_rcb_settings_template === 'newdesign'
         },
         {
             name: 'simple',
             label: __( "Simple Design", "wpzoom-recipe-card" ),
-            isDefault: setting_options.wpzoom_rcb_settings_template === 'simple'
+            isDefault: wpzoom_rcb_settings_template === 'simple'
         }
     ],
 

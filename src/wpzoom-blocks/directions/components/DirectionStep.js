@@ -1,17 +1,26 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
+/**
+ * External dependencies
+ */
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-/* WordPress dependencies */
-const { Component, Fragment } = wp.element;
-const { RichText, MediaUpload } = wp.blockEditor;
-const { IconButton } = wp.components;
+/**
+ * Internal dependencies
+ */
+import { pickRelevantMediaFiles } from '@wpzoom/helpers';
 
-/* Internal dependencies */
-import { pickRelevantMediaFiles } from "@wpzoom/helpers";
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import { Component, Fragment } from '@wordpress/element';
+import { RichText, MediaUpload } from '@wordpress/block-editor';
+import { IconButton } from '@wordpress/components';
 
-/* Module constants */
+/**
+ * Module constants
+ */
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 /**
@@ -289,7 +298,11 @@ export default class DirectionStep extends Component {
         } = this.props;
         const { id, text, isGroup } = step;
         const isSelectedText = isSelected && subElement === "text";
-        const stepClassName = !isGroup ? "direction-step" : "direction-step direction-step-group";
+
+        const stepClassName = classnames( {
+            'direction-step': !isGroup,
+            'direction-step direction-step-group': isGroup
+        } );
 
         return (
             <li className={ stepClassName } key={ id }>

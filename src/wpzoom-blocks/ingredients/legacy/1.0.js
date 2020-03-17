@@ -5,10 +5,11 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-const { RichText } = wp.blockEditor;
-const { pluginURL } = window.wpzoomRecipeCard; // Import pluginURL from window.wpzoomRecipeCard
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { RichText } from '@wordpress/block-editor';
 
 
 /**
@@ -27,6 +28,7 @@ export default function LegacyIngredient( props ) {
         print_visibility,
         className
     } = props.attributes;
+    const { pluginURL } = wpzoomRecipeCard;
 
     return (
         <div className={ className } id={ id }>

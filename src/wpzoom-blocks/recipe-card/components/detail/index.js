@@ -1,13 +1,19 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import get from "lodash/get";
+/**
+ * External dependencies
+ */
+import { get } from 'lodash';
+import PropTypes from 'prop-types';
 
-/* Internal dependencies */
-import DetailItem from "./detail-item";
-import { stripHTML } from "@wpzoom/helpers";
+/**
+ * Internal dependencies
+ */
+import DetailItem from './detail-item';
+import { stripHTML } from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { Component, renderToString } = wp.element;
+/**
+ * WordPress dependencies
+ */
+import { Component, renderToString } from '@wordpress/element';
 
 /**
  * A Detail item within a Detail block.

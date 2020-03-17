@@ -1,30 +1,38 @@
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
-import get from "lodash/get";
-import map from "lodash/map";
-import compact from "lodash/compact";
-import isEmpty from "lodash/isEmpty";
-import isNull from "lodash/isNull";
-import toString from "lodash/toString";
-import uniqueId from "lodash/uniqueId";
-import isUndefined from "lodash/isUndefined";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    map,
+    compact,
+    isEmpty,
+    isNull,
+    toString,
+    uniqueId,
+    isUndefined
+} from 'lodash';
 
-/* Internal dependencies */
-import PostTaxonomies from "../post-taxonomies";
-import VideoUpload from "../video-upload";
+/**
+ * Internal dependencies
+ */
+import PostTaxonomies from '../post-taxonomies';
+import VideoUpload from '../video-upload';
 import {
     stripHTML,
     getNumberFromString,
     convertMinutesToHours,
     pickRelevantMediaFiles,
     getBlockStyle
-} from "@wpzoom/helpers";
+} from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { Component, renderToString, Fragment } = wp.element;
-const { RichText, InspectorControls, MediaUpload } = wp.blockEditor;
-const {
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import { Component, renderToString, Fragment } from '@wordpress/element';
+import { RichText, InspectorControls, MediaUpload } from '@wordpress/block-editor';
+import {
     BaseControl,
     PanelBody,
     PanelRow,
@@ -37,7 +45,7 @@ const {
     SelectControl,
     Notice,
     Icon
-} = wp.components;
+} from '@wordpress/components';
 
 /**
  * Module Constants

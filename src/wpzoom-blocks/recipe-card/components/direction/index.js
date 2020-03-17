@@ -1,17 +1,23 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import { speak } from "@wordpress/a11y";
-import toNumber from "lodash/toNumber";
+/**
+ * External dependencies
+ */
+import { toNumber } from 'lodash';
+import PropTypes from 'prop-types';
 
-/* Internal dependencies */
-import DirectionStep from "./direction-step";
-import { stripHTML } from "@wpzoom/helpers";
+/**
+ * Internal dependencies
+ */
+import DirectionStep from './direction-step';
+import { stripHTML } from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { RichText } = wp.blockEditor;
-const { IconButton } = wp.components;
-const { Component, renderToString } = wp.element;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { speak } from '@wordpress/a11y';
+import { RichText } from '@wordpress/block-editor';
+import { IconButton } from '@wordpress/components';
+import { Component, renderToString } from '@wordpress/element';
 
 /**
  * A Direction step within a Direction block.

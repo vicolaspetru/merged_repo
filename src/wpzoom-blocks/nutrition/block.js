@@ -5,14 +5,16 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-
-/* Internal dependencies */
+/**
+ * Internal dependencies
+ */
 import Nutrition from './components/Nutrition';
 
-/* WordPress dependencies */
-const { registerBlockType } = wp.blocks;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Register: Nutrition Gutenberg Block.

@@ -1,5 +1,7 @@
-/* WordPress dependencies */
-const { Component } = wp.element;
+/**
+ * WordPress dependencies
+ */
+import { Component } from '@wordpress/element';
 
 export default class FoodIcons extends Component {
     shouldComponentUpdate( nextProps ) {

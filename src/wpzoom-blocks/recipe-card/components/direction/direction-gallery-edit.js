@@ -8,28 +8,30 @@ import {
     filter,
     forEach,
     isUndefined
-} from "lodash";
+} from 'lodash';
 
 /**
  * Internal dependencies
  */
-import { pickRelevantMediaFiles } from "./shared";
+import { pickRelevantMediaFiles } from './shared';
 import { sharedIcon } from './shared-icon';
-import DirectionGallery from "./direction-gallery";
+import DirectionGallery from './direction-gallery';
 
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
-import { compose } from "@wordpress/compose";
-import { withNotices } from "@wordpress/components";
-import { Component, Fragment, Platform } from "@wordpress/element";
-import { getBlobByURL, isBlobURL, revokeBlobURL } from "@wordpress/blob";
-import { withSelect } from "@wordpress/data";
-import { withViewportMatch } from "@wordpress/viewport";
-import { MediaPlaceholder } from "@wordpress/block-editor"
+import { __ } from '@wordpress/i18n';
+import { compose } from '@wordpress/compose';
+import { withNotices } from '@wordpress/components';
+import { Component, Fragment, Platform } from '@wordpress/element';
+import { getBlobByURL, isBlobURL, revokeBlobURL } from '@wordpress/blob';
+import { withSelect } from '@wordpress/data';
+import { withViewportMatch } from '@wordpress/viewport';
+import { MediaPlaceholder } from '@wordpress/block-editor';
 
-/* Module constants */
+/**
+ * Module constants
+ */
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 const PLACEHOLDER_TEXT = Platform.select( {
