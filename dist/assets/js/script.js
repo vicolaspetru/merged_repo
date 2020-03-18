@@ -73,8 +73,37 @@
 
         wpzoom_set_servings_size_to_print_button();
 
-        $( ".wp-block-wpzoom-recipe-card-block-ingredients .ingredients-list li, .wp-block-wpzoom-recipe-card-block-recipe-card .ingredients-list li" ).click( function() {
+        $( ".wp-block-wpzoom-recipe-card-block-ingredients .ingredients-list li, .wp-block-wpzoom-recipe-card-block-recipe-card .ingredients-list li" ).click( function( e ) {
+            // Don't do any actions if clicked on link
+            if ( e.target.nodeName === 'A' ) {
+                return;
+            }
             $( this ).toggleClass( "ticked" );
+        } );
+
+        let instances = 0;
+
+        $( ".wp-block-wpzoom-recipe-card-block-ingredients .ingredients-list li, .wp-block-wpzoom-recipe-card-block-recipe-card .ingredients-list li" ).on( 'mouseover', function( e ) {
+            const $ingredientName = $( this ).find( '.ingredient-item-name' );
+            const hasStrikeThrough = $ingredientName.hasClass( 'is-strikethrough-active' );
+
+            // Check if strikethrough is disabled
+            if ( instances === 0 && ! hasStrikeThrough ) {
+                instances = 0;
+                return;
+            }
+
+            // Remove strike through if hover on link
+            if ( e.target.nodeName === 'A' ) {
+                $ingredientName.removeClass( 'is-strikethrough-active' );
+            }
+            else {
+                if ( ! hasStrikeThrough ) {
+                    $ingredientName.addClass( 'is-strikethrough-active' );
+                }
+            }
+
+            instances++;
         } );
 
         $( ".wpzoom-recipe-card-print-link .btn-print-link, .wp-block-wpzoom-recipe-card-block-print-recipe" ).each( function() {

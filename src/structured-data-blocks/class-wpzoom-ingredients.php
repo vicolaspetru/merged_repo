@@ -182,6 +182,7 @@ class WPZOOM_Ingredients_Block {
 
 	public static function get_ingredient_items( array $ingredients ) {
 		$output = '';
+		$strikethrough = WPZOOM_Settings::get( 'wpzoom_rcb_settings_ingredients_strikethrough' ) === '1' ? ' is-strikethrough-active' : '';
 
 		foreach ( $ingredients as $index => $ingredient ) {
 			$name = '';
@@ -190,7 +191,8 @@ class WPZOOM_Ingredients_Block {
 			if ( !$isGroup ) {
 				if ( ! empty( $ingredient[ 'name' ] ) ) {
 					$name = sprintf(
-						'<p class="ingredient-item-name">%s</p>',
+						'<p class="ingredient-item-name%s">%s</p>',
+						$strikethrough,
 						self::wrap_ingredient_name( $ingredient['name'] )
 					);
 					$output .= sprintf(

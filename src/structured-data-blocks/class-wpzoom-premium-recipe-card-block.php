@@ -1120,6 +1120,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 	public static function get_ingredient_items( array $ingredients ) {
 		$output = '';
+		$strikethrough = WPZOOM_Settings::get( 'wpzoom_rcb_settings_ingredients_strikethrough' ) === '1' ? ' is-strikethrough-active' : '';
 
 		foreach ( $ingredients as $index => $ingredient ) {
 			$tick = $name = '';
@@ -1157,7 +1158,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					$name = sprintf( '<span class="wpzoom-rcb-ingredient-name">%s</span>', self::wrap_ingredient_name( $ingredient['name'] ) );
 
 					$name = sprintf(
-						'<p class="ingredient-item-name">%s %s %s</p>',
+						'<p class="ingredient-item-name%s">%s %s %s</p>',
+						$strikethrough,
 						$amount,
 						$unit,
 						$name
