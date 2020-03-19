@@ -1513,7 +1513,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			foreach ( $step['gallery']['images'] as $image ) {
 
 				// Skip image if url is a blob url.
-				if ( ! self::is_blob_URL( $image['url'] ) ) {
+				if ( self::is_blob_URL( $image['url'] ) ) {
 					continue;
 				}
 
