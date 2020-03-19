@@ -1511,6 +1511,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$output .= '<ul class="direction-step-gallery-grid">';
 
 			foreach ( $step['gallery']['images'] as $image ) {
+
+				// Skip image if url is a blob url.
+				if ( ! self::is_blob_URL( $image['url'] ) ) {
+					continue;
+				}
+
 				$clickableImageSrc = wp_get_attachment_image_src( $image['id'], $clickableImageSize );
 				$attachment = wp_get_attachment_image(
 					$image['id'],
@@ -1966,5 +1972,21 @@ class WPZOOM_Premium_Recipe_Card_Block {
         }
 
         return sprintf( '<ul class="food-labels-list">%s</ul>', $drawLabels );
+    }
+
+    /**
+     * Check whether a url is a blob url.
+     * 
+     * @since 2.7.2
+     *
+     * @param string $url 	The URL.
+     *
+     * @return boolean 		Is the url a blob url?
+     */
+    public static function is_blob_URL( $url ) {
+    	if ( ! is_string( $url ) || empty( $url ) ) {
+    		return false;
+    	}
+		return strpos( $url, 'blob:' ) === 0;
     }
 }
