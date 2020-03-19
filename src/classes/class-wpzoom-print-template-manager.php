@@ -105,7 +105,7 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
             // Store variables
             $settings       = self::$helpers->parse_block_settings( $attributes );
 
-            WPZOOM_Premium_Recipe_Card_Block::$recipeBlockID = esc_attr( $id );
+            WPZOOM_Premium_Recipe_Card_Block::$recipeBlockID = isset( $id ) ? esc_attr( $id ) : 'wpzoom-premium-recipe-card';
             WPZOOM_Premium_Recipe_Card_Block::$attributes = $attributes;
             WPZOOM_Premium_Recipe_Card_Block::$settings = $settings;
 
@@ -239,7 +239,7 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
             $food_labels_content_bottom = WPZOOM_Premium_Recipe_Card_Block::get_food_labels_content( 'bottom' );
 
             $strip_tags_notes = isset( $notes ) ? strip_tags($notes) : '';
-            $notes = str_replace('<li></li>', '', $notes); // remove empty list item
+            $notes = isset( $notes ) ? str_replace('<li></li>', '', $notes) : ''; // remove empty list item
             $notesTitle = isset( $notesTitle ) ? $notesTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_notes_title');
             $notes_content = ! empty($strip_tags_notes) ?
                 sprintf(
@@ -267,8 +267,8 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
 
             $block_content = sprintf(
                 '<div class="%1$s" id="%2$s">%3$s</div>',
-                esc_attr( trim($RecipeCardClassName) ),
-                esc_attr( $recipeBlockID ),
+                esc_attr( trim( $RecipeCardClassName ) ),
+                esc_attr( WPZOOM_Premium_Recipe_Card_Block::$recipeBlockID ),
                 $recipe_card_image .
                 $recipe_card_heading .
                 $details_content .
