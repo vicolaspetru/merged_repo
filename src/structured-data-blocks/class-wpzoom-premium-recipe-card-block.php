@@ -1088,7 +1088,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		return force_balance_tags( $output );
 	}
 
-	public function get_steps_content( array $steps ) {
+	public static function get_steps_content( array $steps ) {
 		$direction_items = self::get_direction_items( $steps );
 
 		$listClassNames = implode( ' ', array( 'directions-list' ) );
@@ -1316,7 +1316,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	 * @since 2.2.0
 	 * @return void
 	 */
-	public function get_video_content() {
+	public static function get_video_content() {
 		$attributes = self::$attributes;
 		$hasVideo = isset( $attributes['hasVideo'] ) && $attributes['hasVideo'];
 		$output = '';
