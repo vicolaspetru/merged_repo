@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Internal dependencies
  */
 import DirectionGalleryImage from './direction-gallery-image';
@@ -22,8 +27,13 @@ export const DirectionGallery = ( props ) => {
         onSetImageAttributes,
     } = props;
 
+    const galleryClassName = classnames( {
+        [className]: true,
+        'is-editor-gallery': true
+    } );
+
     return (
-        <div className={ className }>
+        <div className={ galleryClassName }>
             <ul className="direction-step-gallery-grid">
                 { images.map( ( img, index ) => {
                     /* translators: %1$d is the order number of the image, %2$d is the total number of images. */

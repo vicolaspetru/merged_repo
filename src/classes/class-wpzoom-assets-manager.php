@@ -103,6 +103,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
 				$dependencies = array( 'jquery' );
 			}
+            elseif ( $this->_slug . '-masonry-gallery' === $handle ) {
+                $dependencies = array( 'jquery', 'imagesloaded' );
+            }
 
 			return $dependencies;
 		}
@@ -208,6 +211,14 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         WPZOOM_RCB_VERSION,
                         true
                     );
+
+                    wp_enqueue_script(
+                        $this->_slug . '-masonry-gallery',
+                        $this->asset_source( 'js', 'masonry-gallery.js' ),
+                        $this->get_dependencies( $this->_slug . '-masonry-gallery' ),
+                        WPZOOM_RCB_VERSION,
+                        true
+                    );
                 }
 
             }
@@ -235,6 +246,14 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                 $this->get_dependencies( $this->_slug . '-js' ), // Dependencies, defined above.
                 WPZOOM_RCB_VERSION,
                 true // Enqueue the script in the footer.
+            );
+
+            wp_enqueue_script(
+                $this->_slug . '-masonry-gallery',
+                $this->asset_source( 'js', 'masonry-gallery.js' ),
+                $this->get_dependencies( $this->_slug . '-masonry-gallery' ),
+                WPZOOM_RCB_VERSION,
+                true
             );
 
             // Tell to WordPress that our script contains translations

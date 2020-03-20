@@ -32,7 +32,7 @@ import { InspectorControls } from '@wordpress/block-editor';
  * Module constants
  */
 const { nutritionFactsLabel } = wpzoomRecipeCard;
-const { labels } = nutritionFactsLabel;
+const labels = nutritionFactsLabel;
 
 /* Import Styles */
 import '../style.scss';

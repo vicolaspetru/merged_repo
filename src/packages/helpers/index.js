@@ -1,4 +1,4 @@
 /**
  * Internal dependencies
  */
-export * from "./functions";
+export * from './functions';

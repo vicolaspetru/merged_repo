@@ -1,5 +1,10 @@
-import get from "lodash/get";
-import pick from "lodash/pick";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    pick
+} from 'lodash';
 
 export const pickRelevantMediaFiles = ( image, target ) => {
     const defaults = {

@@ -1,6 +1,11 @@
-import trim from "lodash/trim";
-import split from "lodash/split";
-import includes from "lodash/includes";
+/**
+ * External dependencies
+ */
+import {
+    trim,
+    split,
+    includes
+} from 'lodash';
 
 /**
  * Exclude uneeded class names.

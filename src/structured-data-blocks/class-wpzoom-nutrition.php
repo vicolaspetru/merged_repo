@@ -184,7 +184,7 @@ class WPZOOM_Nutrition_Block {
 		$measurements = array(
 			'g' => __('g', 'wpzoom-recipe-card'),
 			'mg' => __('mg', 'wpzoom-recipe-card'),
-			'serving-size-unit' => self::$data['serving-size-unit']
+			'serving-size-unit' => isset( self::$data['serving-size-unit'] ) ? self::$data['serving-size-unit'] : __('g', 'wpzoom-recipe-card')
 		);
 
 		$output .= '<h2>'. esc_html__( 'Nutrition Facts', 'wpzoom-recipe-card' ) .'</h2>';
@@ -303,7 +303,7 @@ class WPZOOM_Nutrition_Block {
 		$measurements = array(
 			'g' => __('g', 'wpzoom-recipe-card'),
 			'mg' => __('mg', 'wpzoom-recipe-card'),
-			'serving-size-unit' => self::$data['serving-size-unit']
+			'serving-size-unit' => isset( self::$data['serving-size-unit'] ) ? self::$data['serving-size-unit'] : __('g', 'wpzoom-recipe-card')
 		);
 
 		$output .= '<div class="horizontal-column-1">';

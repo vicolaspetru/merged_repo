@@ -9,19 +9,24 @@
  * Webpack is compiling as the input file.
  */
 
-import "./wpzoom-blocks/details/block.js";
-import "./wpzoom-blocks/directions/block.js";
-import "./wpzoom-blocks/ingredients/block.js";
-import "./wpzoom-blocks/jump-to-recipe/block.js";
-import "./wpzoom-blocks/print-recipe/block.js";
-import "./wpzoom-blocks/recipe-card/block.js";
-import "./wpzoom-blocks/nutrition/block.js";
+import './wpzoom-blocks/details/block.js';
+import './wpzoom-blocks/directions/block.js';
+import './wpzoom-blocks/ingredients/block.js';
+import './wpzoom-blocks/jump-to-recipe/block.js';
+import './wpzoom-blocks/print-recipe/block.js';
+import './wpzoom-blocks/recipe-card/block.js';
+import './wpzoom-blocks/nutrition/block.js';
 
 /**
  * Internal dependencies
  */
-import icon from "./icon";
+import icon from './icon';
+
+/**
+ * WordPress dependencies
+ */
+import { updateCategory } from '@wordpress/blocks';
 
 ( function() {
-    wp.blocks.updateCategory( 'wpzoom-recipe-card', { icon } );
+    updateCategory( 'wpzoom-recipe-card', { icon } );
 } )();

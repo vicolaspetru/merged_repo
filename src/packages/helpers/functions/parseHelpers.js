@@ -1,17 +1,25 @@
-/* External dependencies */
-import get from "lodash/get";
-import trim from "lodash/trim";
-import isNull from "lodash/isNull";
-import isEmpty from "lodash/isEmpty";
-import isObject from "lodash/isObject";
-import isString from "lodash/isString";
-import forEach from "lodash/forEach";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    trim,
+    isNull,
+    isEmpty,
+    isObject,
+    isString,
+    forEach
+} from 'lodash';
 
-/* Internal dependencies */
-import { stripHTML } from "@wpzoom/helpers";
+/**
+ * Internal dependencies
+ */
+import { stripHTML } from '@wpzoom/helpers';
 
-/* WordPress dependencies */
-const { renderToString } = wp.element;
+/**
+ * WordPress dependencies
+ */
+import { renderToString } from '@wordpress/element';
 
 // parse value for ingredients and directions
 // render from array to string and strip HTML

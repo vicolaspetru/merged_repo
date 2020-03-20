@@ -202,61 +202,89 @@
 			font-weight: bold;
 		}
 
-		.direction-step-gallery-grid {
-			padding-left: 0;
-			margin-left: 0;
-			margin-bottom: 0;
-		}
+		.direction-step-gallery {
+            .direction-step-gallery-grid {
+                display: flex;
+                flex-wrap: wrap;
+                @include reset-list;
 
-		.direction-step-gallery-item {
-			position: relative;
+                .direction-step-gallery-item {
+                    // Add space between thumbnails, and unset right most thumbnails later.
+                    margin: 0 $grid-size $grid-size 0;
+                    display: flex;
+                    flex-grow: 1;
+                    flex-direction: column;
+                    justify-content: center;
+                    position: relative;
 
-			// Hide the focus outline that otherwise briefly appears when selecting a block.
-			figure:not(.is-selected):focus {
-				outline: none;
-			}
+                    &:last-child {
+                        margin-right: 0;
+                    }
 
-			figure.is-selected {
-				outline: 4px solid #0085ba;
-			}
+                    // Hide the focus outline that otherwise briefly appears when selecting a block.
+                    figure:not(.is-selected):focus {
+                    	outline: none;
+                    }
 
-			figure.is-transient img {
-				opacity: 0.3;
-			}
+                    figure.is-selected {
+                    	outline: 4px solid #0085ba;
+                    }
 
-			.is-selected .direction-step-gallery-item__move-menu,
-			.is-selected .direction-step-gallery-item__inline-menu {
-				background: $white;
-				border: 1px solid $dark-opacity-light-800;
-				border-radius: $radius-round-rectangle;
-				transition: box-shadow 0.2s ease-out;
-				@include reduce-motion("transition");
+                    figure.is-transient img {
+                    	opacity: 0.3;
+                    }
 
-				&:hover {
-					box-shadow: $shadow-toolbar;
-				}
+                    .is-selected .direction-step-gallery-item__move-menu,
+                    .is-selected .direction-step-gallery-item__inline-menu {
+                    	background: $white;
+                    	visibility: visible;
+                    	border: 1px solid $dark-opacity-light-800;
+                    	border-radius: $radius-round-rectangle;
+                    	transition: box-shadow 0.2s ease-out;
+                    	@include reduce-motion("transition");
 
-				.components-button {
-					color: $dark-opacity-300;
-					padding: 2px;
-					height: $icon-button-size-small;
+                    	&:hover {
+                    		box-shadow: $shadow-toolbar;
+                    	}
 
-					// Remove hover box shadows, since they clash with the container.
-					&:not(:disabled):not([aria-disabled="true"]):not(.is-secondary):hover {
-						box-shadow: none;
-					}
-				}
+                    	.components-button {
+                    		color: $dark-opacity-300;
+                    		padding: 2px;
+                    		height: $icon-button-size-small;
 
-				.components-button:focus {
-					color: inherit;
-				}
-			}
-		}
+                    		// Remove hover box shadows, since they clash with the container.
+                    		&:not(:disabled):not([aria-disabled="true"]):not(.is-secondary):hover {
+                    			box-shadow: none;
+                    		}
+                    	}
+
+                    	.components-button:focus {
+                    		color: inherit;
+                    	}
+                    }
+                }
+            }
+
+            @for $i from 2 through 4 {
+                &.columns-#{ $i } .direction-step-gallery-item {
+                    width: calc(100% / #{ $i  } - #{ $grid-size * $i });
+                    margin-right: $grid-size;
+
+                    // Rules inside this query are only run by Microsoft Edge.
+                    // Edge miscalculates `calc`, so we have to add some buffer.
+                    // See also https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/15637241/
+                    @supports (-ms-ime-align:auto) {
+                        width: calc(100% / #{ $i  } - #{ $grid-size * $i } - 1px);
+                    }
+                }
+            }
+        }
 
 		.direction-step-gallery-item__move-menu,
 		.direction-step-gallery-item__inline-menu {
 			margin: $grid-size;
 			display: inline-flex;
+			visibility: hidden;
 			z-index: z-index(".block-library-gallery-item__inline-menu");
 
 			.components-button {

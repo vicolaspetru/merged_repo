@@ -1,7 +1,10 @@
+/**
+ * External dependencies
+ */
 import {
     forEach,
     isObject
-} from "lodash";
+} from 'lodash';
 
 const Icons = {
     "oldicon": [

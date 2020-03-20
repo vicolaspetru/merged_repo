@@ -1500,14 +1500,15 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	public static function direction_gallery( $step ) {
 		$output = '';
 		$hasGalleryImages = isset( $step['gallery'] ) && isset( $step['gallery']['images'] ) && ! empty( $step['gallery']['images'] );
-		$galleryColumns = 'columns-'. WPZOOM_Settings::get( 'wpzoom_rcb_settings_gallery_columns' ) .'';
+		$gridColumns = WPZOOM_Settings::get( 'wpzoom_rcb_settings_gallery_columns' );
+		$galleryColumns = 'columns-'. $gridColumns .'';
 
 		if ( $hasGalleryImages ) {
 
 			$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
 			$clickableDirectionImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instruction_images_lightbox' );
 
-			$output .= '<div class="direction-step-gallery '. $galleryColumns .'">';
+			$output .= '<div class="direction-step-gallery '. $galleryColumns .'" data-grid-columns="'. $gridColumns .'">';
 			$output .= '<ul class="direction-step-gallery-grid">';
 
 			foreach ( $step['gallery']['images'] as $image ) {
@@ -1777,6 +1778,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	private static function cta_build_link( $url, $attr, $symbol = '@' ) {
         $target   = WPZOOM_Settings::get( 'wpzoom_rcb_settings_cta_target' );
         $nofollow = WPZOOM_Settings::get( 'wpzoom_rcb_settings_cta_add_nofollow' );
+
+        if ( empty( $attr ) ) {
+        	return '';
+        }
 
         return sprintf(
         	'<a href="%s" target="%s" %s>%s</a>',

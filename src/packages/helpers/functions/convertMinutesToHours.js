@@ -1,7 +1,16 @@
-import { _n } from "@wordpress/i18n";
-import floor from "lodash/floor";
-import toNumber from "lodash/toNumber";
-import isNull from "lodash/isNull";
+/**
+ * External dependencies
+ */
+import {
+    floor,
+    isNull,
+    toNumber
+} from 'lodash';
+
+/**
+ * WordPress dependencies
+ */
+import { _n } from '@wordpress/i18n';
 
 export function getNumberFromString( string ) {
     const re = /\d+/g;
