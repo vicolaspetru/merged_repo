@@ -56,16 +56,7 @@
             print_window.document.title = document.title;
             print_window.history.pushState( '', 'Print Recipe', location.href.replace( location.hash, "" ) );
             print_window.setPrintServings( servings );
-
-            setTimeout( function() {
-                print_window.print();
-            }, 250 );
-
-            print_window.onfocus = function() {
-                setTimeout( function() {
-                    print_window.close();
-                }, 250 );
-            }
+            print_window.rebuildPrintMasonry( print_window );
         };
     }
 

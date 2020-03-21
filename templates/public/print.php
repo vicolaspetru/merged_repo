@@ -19,7 +19,11 @@
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Libre Franklin:100,100i,200,200i,300,300i,400,400i,600,600i,700,700i"/>
         <link rel="stylesheet" type="text/css" href="<?php echo WPZOOM_RCB_PLUGIN_URL . 'dist/assets/css/recipe-print.css?ver=' . WPZOOM_RCB_VERSION; ?>"/>
         <script type="text/javascript" src="<?php echo includes_url( '/js/jquery/jquery.js' ); ?>"></script>
+        <script type="text/javascript" src="<?php echo includes_url( '/js/imagesloaded.min.js' ); ?>"></script>
+        <script type="text/javascript" src="<?php echo includes_url( '/js/masonry.min.js' ); ?>"></script>
+        <script type="text/javascript" src="<?php echo includes_url( '/js/jquery/jquery.masonry.min.js' ); ?>"></script>
         <script type="text/javascript" src="<?php echo WPZOOM_RCB_PLUGIN_URL . 'dist/assets/js/adjustable-servings.js?ver=' . WPZOOM_RCB_VERSION; ?>"></script>
+        <script type="text/javascript" src="<?php echo WPZOOM_RCB_PLUGIN_URL . 'dist/assets/js/masonry-gallery.js?ver=' . WPZOOM_RCB_VERSION; ?>"></script>
     </head>
     <body class="wpzoom-rcb-print" data-recipe-id="<?php echo esc_attr( $recipe_id ); ?>">
         <?php

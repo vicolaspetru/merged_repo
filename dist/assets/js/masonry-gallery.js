@@ -21,6 +21,7 @@
             var Masonry = $grid.masonry( {
                 itemSelector,
                 columnWidth,
+                transitionDuration: '0.2s',
                 percentPosition: true,
                 gutter: gridGutter
             } );
@@ -73,6 +74,42 @@
         }
 
         masonry( event, '.direction-step-gallery-item', columnWidth );
+    }
+
+    window.rebuildPrintMasonry = ( print_window ) => {
+        var $gridGallery = $( document ).find( '.direction-step-gallery' ),
+            $grid = $( document ).find( '.direction-step-gallery-grid' ),
+            gridCol = $gridGallery.data( 'grid-columns' );
+
+        $gridGallery.removeClass( `columns-${ gridCol }` ).addClass( 'columns-4' );
+
+        $grid.imagesLoaded( function() {
+            var PrintMasonry = $grid.masonry( {
+                // disable initial layout
+                initLayout: false,
+                columnWidth: '.direction-step-gallery-item',
+                percentPosition: true,
+                gutter: 8
+            } );
+
+            // bind event
+            PrintMasonry.masonry( 'on', 'layoutComplete', function() {
+                setTimeout( function() {
+                    print_window.print();
+                }, 500 );
+
+                print_window.onfocus = function() {
+                    setTimeout( function() {
+                        print_window.close();
+                    }, 500 );
+                }
+            } );
+
+            // trigger initial layout
+            setTimeout( function() {
+                PrintMasonry.masonry();
+            }, 250 )
+        } );
     }
 
     W.on( 'resize load', function() {

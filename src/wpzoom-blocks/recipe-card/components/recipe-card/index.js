@@ -449,13 +449,13 @@ class RecipeCard extends Component {
             }
         }
 
-        const RecipeCardClassName = classnames( {
-            'is-loading-block': this.state.isLoading,
-            'recipe-card-noimage': hide_header_image,
-            [`header-content-align-${ headerContentAlign }`]: true,
-            [`is-style-${ style }`]: m === null,
-            [ className ]: true
-        } );
+        const RecipeCardClassName = classnames(
+            className, {
+                'is-loading-block': this.state.isLoading,
+                'recipe-card-noimage': hide_header_image,
+                [`header-content-align-${ headerContentAlign }`]: true,
+                [`is-style-${ style }`]: m === null
+            } );
         const PrintClasses = [ "wpzoom-recipe-card-print-link" ].filter( ( item ) => item ).join( " " );
         const PinterestClasses = [ "wpzoom-recipe-card-pinit" ].filter( ( item ) => item ).join( " " );
         const pinitURL = `https://www.pinterest.com/pin/create/button/?url=${ postPermalink }&media=${ get( image, [ 'url' ] ) || get( postThumbnail, [ 'url' ] ) }&description=${ pin_description }`;
