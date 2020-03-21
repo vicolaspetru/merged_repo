@@ -203,82 +203,68 @@
 		}
 
 		.direction-step-gallery {
-            .direction-step-gallery-grid {
-                display: flex;
-                flex-wrap: wrap;
-                @include reset-list;
+			&.is-loading {
+				.components-spinner {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate( -50%, -50% );
+					z-index: 1;
+				}
+			}
+		}
 
-                .direction-step-gallery-item {
-                    // Add space between thumbnails, and unset right most thumbnails later.
-                    margin: 0 $grid-size $grid-size 0;
-                    display: flex;
-                    flex-grow: 1;
-                    flex-direction: column;
-                    justify-content: center;
-                    position: relative;
+		.direction-step-gallery-grid {
+			padding-left: 0;
+			margin-left: 0;
+			margin-bottom: 0;
+		}
 
-                    &:last-child {
-                        margin-right: 0;
-                    }
+		.direction-step-gallery-item {
+			position: relative;
 
-                    // Hide the focus outline that otherwise briefly appears when selecting a block.
-                    figure:not(.is-selected):focus {
-                    	outline: none;
-                    }
+			// Hide the focus outline that otherwise briefly appears when selecting a block.
+			figure:not(.is-selected):focus {
+				outline: none;
+			}
 
-                    figure.is-selected {
-                    	outline: 4px solid #0085ba;
-                    }
+			figure.is-selected {
+				outline: 4px solid #0085ba;
+			}
 
-                    figure.is-transient img {
-                    	opacity: 0.3;
-                    }
+			figure.is-transient img {
+				opacity: 0.3;
+			}
 
-                    .is-selected .direction-step-gallery-item__move-menu,
-                    .is-selected .direction-step-gallery-item__inline-menu {
-                    	background: $white;
-                    	visibility: visible;
-                    	border: 1px solid $dark-opacity-light-800;
-                    	border-radius: $radius-round-rectangle;
-                    	transition: box-shadow 0.2s ease-out;
-                    	@include reduce-motion("transition");
+			.is-selected .direction-step-gallery-item__move-menu,
+			.is-selected .direction-step-gallery-item__inline-menu {
+				background: $white;
+				visibility: visible;
+				border: 1px solid $dark-opacity-light-800;
+				border-radius: $radius-round-rectangle;
+				transition: box-shadow 0.2s ease-out;
+				@include reduce-motion("transition");
 
-                    	&:hover {
-                    		box-shadow: $shadow-toolbar;
-                    	}
+				&:hover {
+					box-shadow: $shadow-toolbar;
+				}
 
-                    	.components-button {
-                    		color: $dark-opacity-300;
-                    		padding: 2px;
-                    		height: $icon-button-size-small;
+				.components-button {
+					color: $dark-opacity-300;
+					padding: 2px;
+					height: $icon-button-size-small;
 
-                    		// Remove hover box shadows, since they clash with the container.
-                    		&:not(:disabled):not([aria-disabled="true"]):not(.is-secondary):hover {
-                    			box-shadow: none;
-                    		}
-                    	}
+					// Remove hover box shadows, since they clash with the container.
+					&:not(:disabled):not([aria-disabled="true"]):not(.is-secondary):hover {
+						box-shadow: none;
+					}
+				}
 
-                    	.components-button:focus {
-                    		color: inherit;
-                    	}
-                    }
-                }
-            }
-
-            @for $i from 2 through 4 {
-                &.columns-#{ $i } .direction-step-gallery-item {
-                    width: calc(100% / #{ $i  } - #{ $grid-size * $i });
-                    margin-right: $grid-size;
-
-                    // Rules inside this query are only run by Microsoft Edge.
-                    // Edge miscalculates `calc`, so we have to add some buffer.
-                    // See also https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/15637241/
-                    @supports (-ms-ime-align:auto) {
-                        width: calc(100% / #{ $i  } - #{ $grid-size * $i } - 1px);
-                    }
-                }
-            }
-        }
+				.components-button:focus {
+					color: inherit;
+				}
+			}
+		}
 
 		.direction-step-gallery-item__move-menu,
 		.direction-step-gallery-item__inline-menu {

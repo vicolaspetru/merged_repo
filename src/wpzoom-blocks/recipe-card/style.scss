@@ -200,41 +200,38 @@
             margin: $grid-size 0;
             position: relative;
 
-            // Only for front-end styles
-            &:not(.is-editor-gallery) {
-                .direction-step-gallery-grid {
-                    display: flex;
-                    flex-flow: column wrap;
-                    height: 300px;
-                    visibility: visible;
-                    width: 100%;
-                    @include reset-list;
+            .direction-step-gallery-grid {
+                @include reset-list;
 
-                    .direction-step-gallery-item {
-                        // Add space between thumbnails, and unset right most thumbnails later.
-                        margin: 0 $grid-size $grid-size 0;
-                        list-style-type: none;
-                        position: relative;
-                        box-sizing: border-box;
-                    }
+                &:not(.masonry) {
+                    display: flex;
+                    flex-wrap: wrap;
                 }
 
-                &.is-loading {
-                    .direction-step-gallery-grid {
-                        visibility: hidden;
-                        overflow: hidden;
-                    }
-                    .direction-step-gallery-preloader {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: #fff;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
+                .direction-step-gallery-item {
+                    margin: 0;
+                    margin-bottom: $grid-size;
+                    list-style-type: none;
+                    position: relative;
+                    box-sizing: border-box;
+                }
+            }
+
+            &.is-loading {
+                .direction-step-gallery-grid {
+                    visibility: hidden;
+                    overflow: hidden;
+                }
+                .direction-step-gallery-preloader {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #fff;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
             }
 
@@ -269,28 +266,24 @@
                 }
             }
 
-            &:not(.is-editor-gallery) {
-                // On mobile and responsive viewports, we allow only 1 or 2 columns at the most.
-                .direction-step-gallery-item {
-                    width: calc((100% - #{ $grid-size }) / 2);
-                }
+            .direction-step-gallery-item {
+                width: calc((100% - #{ $grid-size }) / 2);
+            }
 
-                &.columns-1 .direction-step-gallery-item {
-                    width: 100%;
-                    margin-right: 0;
-                }
+            &.columns-1 .direction-step-gallery-item {
+                width: 100%;
+                margin-right: 0;
+            }
 
-                @for $i from 2 through 4 {
-                    &.columns-#{ $i } .direction-step-gallery-item {
-                        width: calc((100% - #{ $grid-size } * #{ $i - 1 }) / #{ $i });
-                        margin-right: $grid-size;
+            @for $i from 2 through 4 {
+                &.columns-#{ $i } .direction-step-gallery-item {
+                    width: calc((100% - #{ $grid-size } * #{ $i - 1 }) / #{ $i });
 
-                        // Rules inside this query are only run by Microsoft Edge.
-                        // Edge miscalculates `calc`, so we have to add some buffer.
-                        // See also https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/15637241/
-                        @supports (-ms-ime-align:auto) {
-                            width: calc((100% - #{ $grid-size } * #{ $i - 1 }) / #{ $i } - 1px);
-                        }
+                    // Rules inside this query are only run by Microsoft Edge.
+                    // Edge miscalculates `calc`, so we have to add some buffer.
+                    // See also https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/15637241/
+                    @supports (-ms-ime-align:auto) {
+                        width: calc((100% - #{ $grid-size } * #{ $i - 1 }) / #{ $i } - 1px);
                     }
                 }
             }

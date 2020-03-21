@@ -104,7 +104,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 				$dependencies = array( 'jquery' );
 			}
             elseif ( $this->_slug . '-masonry-gallery' === $handle ) {
-                $dependencies = array( 'jquery', 'imagesloaded' );
+                $dependencies = array( 'jquery-masonry', 'imagesloaded' );
             }
 
 			return $dependencies;

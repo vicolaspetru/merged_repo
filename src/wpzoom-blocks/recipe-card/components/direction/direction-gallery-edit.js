@@ -63,9 +63,11 @@ class DirectionGalleryEdit extends Component {
         this.setImageAttributes = this.setImageAttributes.bind( this );
         this.setAttributes = this.setAttributes.bind( this );
         this.onUploadError = this.onUploadError.bind( this );
+        this.handleImagesLoaded = this.handleImagesLoaded.bind( this );
 
         this.state = {
             selectedImage: null,
+            isLoadingImages: true
         };
     }
 
@@ -191,6 +193,12 @@ class DirectionGalleryEdit extends Component {
         }
     }
 
+    handleImagesLoaded( imagesLoadedInstance ) {
+        if ( imagesLoadedInstance.isComplete && this.state.isLoadingImages === true ) {
+            this.setState( { isLoadingImages: false } );
+        }
+    }
+
     /**
      * Renders this component.
      *
@@ -241,12 +249,14 @@ class DirectionGalleryEdit extends Component {
                 <DirectionGallery
                     { ...this.props }
                     selectedImage={ this.state.selectedImage }
+                    isLoading={ this.state.isLoadingImages }
                     mediaPlaceholder={ mediaPlaceholder }
                     onMoveBackward={ this.onMoveBackward }
                     onMoveForward={ this.onMoveForward }
                     onRemoveImage={ this.onRemoveImage }
                     onSelectImage={ this.onSelectImage }
                     onSetImageAttributes={ this.setImageAttributes }
+                    handleImagesLoaded={ this.handleImagesLoaded }
                 />
             </Fragment>
         );
