@@ -194,6 +194,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                             'ajax_url' => admin_url( 'admin-ajax.php' ),
                             'nonce' => wp_create_nonce( 'wpzoom_rcb' ),
                             'api_nonce' => wp_create_nonce( 'wp_rest' ),
+                            'strings' => array(
+                                'loading-gallery-media' => __( 'Loading gallery media', 'wpzoom-recipe-card' )
+                            )
                         )
                     );
 

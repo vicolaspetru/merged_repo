@@ -1,4 +1,4 @@
-( function( $ ) {
+( function( $, wpzoomRecipeCard ) {
     'use scrict';
 
     const W = $( window );
@@ -47,7 +47,7 @@
 
         if ( event === 'ready' ) {
             $gridGallery.addClass( 'is-loading' );
-            $gridGallery.append( '<div class="direction-step-gallery-preloader">Loading gallery media...</div>' );
+            $gridGallery.append( '<div class="direction-step-gallery-preloader">'+ wpzoomRecipeCard.strings['loading-gallery-media'] +'...</div>' );
         }
 
         /**
@@ -120,4 +120,4 @@
         rebuildMasonry( 'ready' );
     } );
 
-} )( jQuery );
+} )( jQuery, wpzoomRecipeCard );
