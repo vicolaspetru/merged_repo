@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import { includes } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -42,7 +43,7 @@ class DirectionGalleryImage extends Component {
         if (
             this.container === document.activeElement &&
             this.props.isSelected &&
-            [ BACKSPACE, DELETE ].indexOf( event.keyCode ) !== -1
+            includes( [ BACKSPACE, DELETE ], event.keyCode )
         ) {
             event.stopPropagation();
             event.preventDefault();
@@ -72,6 +73,7 @@ class DirectionGalleryImage extends Component {
             id,
             linkTo,
             link,
+            galleryId,
             isFirstItem,
             isLastItem,
             isSelected,
@@ -98,6 +100,7 @@ class DirectionGalleryImage extends Component {
                     src={ url }
                     alt={ alt }
                     data-id={ id }
+                    id={ `${ galleryId }-${ id }` }
                     onClick={ this.onSelectImage }
                     onFocus={ this.onSelectImage }
                     onKeyDown={ this.onRemoveImage }

@@ -7,7 +7,8 @@ import {
     every,
     filter,
     forEach,
-    isUndefined
+    isUndefined,
+    includes
 } from 'lodash';
 
 /**
@@ -23,7 +24,8 @@ import DirectionGallery from './direction-gallery';
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withNotices } from '@wordpress/components';
-import { Component, Fragment, Platform } from '@wordpress/element';
+import { Component, Platform } from '@wordpress/element';
+import { LEFT, RIGHT } from '@wordpress/keycodes';
 import { getBlobByURL, isBlobURL, revokeBlobURL } from '@wordpress/blob';
 import { withSelect } from '@wordpress/data';
 import { withViewportMatch } from '@wordpress/viewport';
@@ -57,6 +59,7 @@ class DirectionGalleryEdit extends Component {
         this.onSelectImage = this.onSelectImage.bind( this );
         this.onSelectImages = this.onSelectImages.bind( this );
         this.onMove = this.onMove.bind( this );
+        this.onKeyDown = this.onKeyDown.bind( this );
         this.onMoveForward = this.onMoveForward.bind( this );
         this.onMoveBackward = this.onMoveBackward.bind( this );
         this.onRemoveImage = this.onRemoveImage.bind( this );
@@ -124,6 +127,33 @@ class DirectionGalleryEdit extends Component {
             }
             this.onMove( oldIndex, oldIndex - 1 );
         };
+    }
+
+    onKeyDown( event ) {
+        if ( includes( [ LEFT, RIGHT ], event.keyCode ) ) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        if ( includes( [ RIGHT ], event.keyCode ) ) {
+            this.onSelectForward( this.state.selectedImage );
+        }
+        if ( includes( [ LEFT ], event.keyCode ) ) {
+            this.onSelectBackward( this.state.selectedImage );
+        }
+    }
+
+    onSelectForward( oldIndex ) {
+        if ( oldIndex === this.props.images.length - 1 ) {
+            return;
+        }
+        this.setState( { selectedImage: oldIndex + 1 } );
+    }
+
+    onSelectBackward( oldIndex ) {
+        if ( oldIndex === 0 ) {
+            return;
+        }
+        this.setState( { selectedImage: oldIndex - 1 } );
     }
 
     onRemoveImage( index ) {
@@ -213,6 +243,7 @@ class DirectionGalleryEdit extends Component {
 
         const hasImages = ! isUndefined( images ) && !! images.length;
         const hasImagesWithId = hasImages && some( images, ( { id } ) => id );
+        const galleryId = `direction-${ this.props.stepIndex }-gallery`;
 
         const mediaPlaceholder = (
             <MediaPlaceholder
@@ -244,10 +275,14 @@ class DirectionGalleryEdit extends Component {
         }
 
         return (
-            <Fragment>
+            <div
+                id={ galleryId }
+                onKeyDown={ this.onKeyDown }
+            >
                 { noticeUI }
                 <DirectionGallery
                     { ...this.props }
+                    galleryId={ galleryId }
                     selectedImage={ this.state.selectedImage }
                     isLoading={ this.state.isLoadingImages }
                     mediaPlaceholder={ mediaPlaceholder }
@@ -258,7 +293,7 @@ class DirectionGalleryEdit extends Component {
                     onSetImageAttributes={ this.setImageAttributes }
                     handleImagesLoaded={ this.handleImagesLoaded }
                 />
-            </Fragment>
+            </div>
         );
     }
 }

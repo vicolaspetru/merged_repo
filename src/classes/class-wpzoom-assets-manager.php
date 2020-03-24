@@ -251,14 +251,6 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                 true // Enqueue the script in the footer.
             );
 
-            wp_enqueue_script(
-                $this->_slug . '-masonry-gallery',
-                $this->asset_source( 'js', 'masonry-gallery.js' ),
-                $this->get_dependencies( $this->_slug . '-masonry-gallery' ),
-                WPZOOM_RCB_VERSION,
-                true
-            );
-
             // Tell to WordPress that our script contains translations
             // this function was added in 5.0 version
             if ( function_exists( 'wp_set_script_translations' ) ) {
