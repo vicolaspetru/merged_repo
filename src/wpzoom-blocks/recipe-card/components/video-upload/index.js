@@ -19,6 +19,8 @@ import {
     BaseControl,
     PanelBody,
     ToggleControl,
+    TextControl,
+    TextareaControl,
     Button,
     Disabled,
     IconButton,
@@ -124,6 +126,20 @@ class VideoUpload extends Component {
             } = this.props;
             const newObj = { ...video };
             newObj.settings[ attribute ] = newValue;
+            setAttributes( { video: newObj } );
+        }
+    }
+
+    onChangeVideoData( attribute ) {
+        return ( newValue ) => {
+            const {
+                setAttributes,
+                attributes: {
+                    video
+                }
+            } = this.props;
+            const newObj = { ...video };
+            newObj[ attribute ] = newValue;
             setAttributes( { video: newObj } );
         }
     }
@@ -339,6 +355,28 @@ class VideoUpload extends Component {
                         </Fragment>
                     }
                 </BaseControl>
+                {
+                    hasVideo &&
+                    ! editing &&
+                    <Fragment>
+                        <TextControl
+                            id={ `${ id }-video-title` }
+                            instanceId={ `${ id }-video-title` }
+                            type="text"
+                            label={ __( "Video Title", "wpzoom-recipe-card" ) }
+                            value={ get( video, 'title' ) }
+                            onChange={ this.onChangeVideoData( 'title' ) }
+                        />
+                        <TextareaControl
+                            id={ `${ id }-video-description` }
+                            instanceId={ `${ id }-video-description` }
+                            type="text"
+                            label={ __( "Video Description", "wpzoom-recipe-card" ) }
+                            value={ get( video, 'description' ) }
+                            onChange={ this.onChangeVideoData( 'description' ) }
+                        />
+                    </Fragment>
+                }
                 {
                     hasVideo &&
                     'self-hosted' === type &&
