@@ -169,7 +169,6 @@ export default class Inspector extends Component {
         const prevAttributes = prevProps.attributes;
 
         if ( ! attributes.hasImage && this.props.media !== prevProps.media ) {
-            this.props.hintLoading();
             this.setFeaturedImage();
         }
 
@@ -182,7 +181,6 @@ export default class Inspector extends Component {
         }
 
         if ( ! this.state.isCalculatedTotalTime ) {
-            this.props.hintLoading();
             this.calculateTotalTime();
         }
     }
@@ -200,7 +198,6 @@ export default class Inspector extends Component {
         } = this.props;
 
         if ( hasImage || ! media ) {
-            this.props.hintLoading( false );
             return;
         }
 
@@ -216,8 +213,6 @@ export default class Inspector extends Component {
                 sizes: get( media, [ 'sizes' ] ) || get( media, [ 'media_details', 'sizes' ] )
             }
         } );
-
-        setTimeout( this.props.hintLoading.bind( this, false ), 250 );
     }
 
     onSelectImage( media ) {
@@ -513,16 +508,19 @@ export default class Inspector extends Component {
         const totalTimeValue = get( details, [ index, 'value' ] );
 
         if ( ! this.state.isCalculateBtnClick && ! isUndefined( totalTimeValue ) && ! isEmpty( totalTimeValue ) && 0 != totalTimeValue ) {
-            setTimeout( this.props.hintLoading.bind( this, false ), 250 );
-            this.setState( { isCalculatedTotalTime: true, isCalculateBtnClick: false } );
+            this.setState( {
+                isCalculatedTotalTime: true,
+                isCalculateBtnClick: false
+            } );
             return;
         }
 
         if ( '' != prepTime && '' != cookTime && totalTime > 0 ) {
             this.onChangeDetail( toString( totalTime ), index, 'value' )
-
-            setTimeout( this.props.hintLoading.bind( this, false ), 250 );
-            this.setState( { isCalculatedTotalTime: true, isCalculateBtnClick: false } );
+            this.setState( {
+                isCalculatedTotalTime: true,
+                isCalculateBtnClick: false
+            } );
         }
     }
 
@@ -812,7 +810,6 @@ export default class Inspector extends Component {
                     }
                 </PanelBody>
                 <VideoUpload
-                    hintLoading={ this.props.hintLoading }
                     { ...{ attributes, setAttributes, className } }
                 />
                 <PanelBody className="wpzoom-recipe-card-food-labels" initialOpen={ true } title={ __( "Food Labels", "wpzoom-recipe-card" ) }>

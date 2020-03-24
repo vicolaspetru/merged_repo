@@ -80,7 +80,6 @@ class RecipeCard extends Component {
 
         this.setFocus = this.setFocus.bind( this );
         this.onBulkAdd = this.onBulkAdd.bind( this );
-        this.hintLoading = this.hintLoading.bind( this );
         this.onSelectImage = this.onSelectImage.bind( this );
 
         this.editorRefs = {};
@@ -342,10 +341,6 @@ class RecipeCard extends Component {
                 }
             }
         } );
-    }
-
-    hintLoading( isLoading = true ) {
-        this.setState( { isLoading } );
     }
 
     onBulkAdd() {
@@ -850,7 +845,6 @@ class RecipeCard extends Component {
                     imageSizes={ this.props.imageSizes }
                     maxWidth={ this.props.maxWidth }
                     isRTL={ this.props.isRTL }
-                    hintLoading={ this.hintLoading }
                     settingOptions={ settingOptions }
                     coursesTaxonomy={ coursesTaxonomy }
                     cuisinesTaxonomy={ cuisinesTaxonomy }

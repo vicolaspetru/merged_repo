@@ -45,8 +45,7 @@ class VideoUpload extends Component {
         // without setting the actual value outside of the edit UI
         this.state = {
             editing: get( this.props.attributes.video, 'url' ) === undefined,
-            isVisible: false,
-            isLoading: false
+            isVisible: false
         };
 
         this.videoPlayer = createRef();
@@ -93,14 +92,6 @@ class VideoUpload extends Component {
 
         const posterURL = get( video, 'poster.url' );
         const prevPosterURL = get( prevProps.attributes.video, 'poster.url' );
-
-        if ( this.state.isLoading && ! prevState.isLoading ) {
-            setTimeout( this.props.hintLoading.bind( this ) );
-        }
-
-        if ( hasVideo && ! prevProps.attributes.hasVideo || this.state.isLoading !== prevState.isLoading ) {
-            setTimeout( this.props.hintLoading.bind( this, false ), 250 );
-        }
 
         if ( hasVideo && posterURL !== prevPosterURL ) {
             this.videoPlayer.current.load();
@@ -152,14 +143,14 @@ class VideoUpload extends Component {
             newObj.type = 'embed';
 
             setAttributes( { hasVideo: true, video: newObj } );
-            this.setState( { hasVideo: true, editing: false, isLoading: true } );
+            this.setState( { editing: false } );
         }
     }
 
     onRemoveVideo() {
         const { setAttributes } = this.props;
         setAttributes( { hasVideo: false, video: undefined } );
-        this.setState( { hasVideo: false, editing: true, isLoading: false } );
+        this.setState( { editing: true } );
     }
 
     onRemovePoster() {
@@ -191,7 +182,7 @@ class VideoUpload extends Component {
         newObj.url = url;
         newObj.type = 'embed';
 
-        setAttributes( { hasVideo: true, video: newObj, isLoading: true } );
+        setAttributes( { hasVideo: true, video: newObj } );
     }
 
     openURLPopover() {
@@ -260,7 +251,7 @@ class VideoUpload extends Component {
                     }
                 }
             } );
-            this.setState( { hasVideo: true, editing: false, isLoading: true } );
+            this.setState( { editing: false } );
         }
 
         return (
