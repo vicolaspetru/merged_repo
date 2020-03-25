@@ -1,3 +1,5 @@
+/*global wpzoomRecipeCard*/
+
 /**
  * BLOCK: block-ingredients
  *
@@ -29,27 +31,27 @@ const deprecatedAttr = {
         type: 'array',
         selector: '.ingredients-title',
         source: 'children',
-        default: wpzoomRecipeCard.setting_options.wpzoom_rcb_settings_ingredients_title
+        default: wpzoomRecipeCard.setting_options.wpzoom_rcb_settings_ingredients_title,
     },
     id: {
         type: 'string',
     },
     print_visibility: {
         type: 'string',
-        default: 'visible'
+        default: 'visible',
     },
     jsonTitle: {
-        type: "string",
+        type: 'string',
     },
     items: {
-        type: "array",
+        type: 'array',
     },
     content: {
         type: 'array',
         selector: '.ingredients-list',
-        source: 'children'
-    }
-}
+        source: 'children',
+    },
+};
 
 /**
  * Register: Ingredients Gutenberg Block.
@@ -66,7 +68,7 @@ const deprecatedAttr = {
  */
 registerBlockType( 'wpzoom-recipe-card/block-ingredients', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( "Ingredients", "wpzoom-recipe-card" ), // Block title.
+    title: __( 'Ingredients', 'wpzoom-recipe-card' ), // Block title.
     icon: {
         // // Specifying a background color to appear with the icon e.g.: in the inserter.
         // background: '#2EA55F',
@@ -81,39 +83,39 @@ registerBlockType( 'wpzoom-recipe-card/block-ingredients', {
         multiple: true,
     },
     keywords: [
-        __( "ingredients", "wpzoom-recipe-card" ),
-        __( "wpzoom", "wpzoom-recipe-card" ),
-        __( "recipe", "wpzoom-recipe-card" ),
+        __( 'ingredients', 'wpzoom-recipe-card' ),
+        __( 'wpzoom', 'wpzoom-recipe-card' ),
+        __( 'recipe', 'wpzoom-recipe-card' ),
     ],
     example: {
         attributes: {
             items: [
                 {
-                    id: generateId( "ingredient-item" ),
+                    id: generateId( 'ingredient-item' ),
                     isGroup: false,
-                    name: [ "Lorem ipsum dolor sit amet" ]
+                    name: [ 'Lorem ipsum dolor sit amet' ],
                 },
                 {
-                    id: generateId( "ingredient-item" ),
+                    id: generateId( 'ingredient-item' ),
                     isGroup: false,
-                    name: [ "Praesent feugiat dui eu pretium eleifend" ]
+                    name: [ 'Praesent feugiat dui eu pretium eleifend' ],
                 },
                 {
-                    id: generateId( "ingredient-item" ),
+                    id: generateId( 'ingredient-item' ),
                     isGroup: true,
-                    name: [ "Group Title here" ]
+                    name: [ 'Group Title here' ],
                 },
                 {
-                    id: generateId( "ingredient-item" ),
+                    id: generateId( 'ingredient-item' ),
                     isGroup: false,
-                    name: [ "Aenean nec diam a augue efficitur venenatis" ]
+                    name: [ 'Aenean nec diam a augue efficitur venenatis' ],
                 },
                 {
-                    id: generateId( "ingredient-item" ),
+                    id: generateId( 'ingredient-item' ),
                     isGroup: false,
-                    name: [ "Pellentesque habitant morbi" ]
-                }
-            ]
+                    name: [ 'Pellentesque habitant morbi' ],
+                },
+            ],
         },
     },
 
@@ -124,6 +126,7 @@ registerBlockType( 'wpzoom-recipe-card/block-ingredients', {
      * The "edit" property must be a valid function.
      *
      * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+     * @returns {Component} Ingredient Component
      */
     edit: ( { attributes, setAttributes, className } ) => {
         const items = attributes.items ? attributes.items.slice() : [];
@@ -134,11 +137,11 @@ registerBlockType( 'wpzoom-recipe-card/block-ingredients', {
             const content = attributes.content;
 
             if ( items.length === 0 ) {
-                for ( var i = 0; i < content.length; i++ ) {
-                    if ( ! isUndefined( content[i].props ) ) {
+                for ( let i = 0; i < content.length; i++ ) {
+                    if ( ! isUndefined( content[ i ].props ) ) {
                         items.push( {
-                            id: generateId( "ingredient-item" ),
-                            name: content[i].props.children
+                            id: generateId( 'ingredient-item' ),
+                            name: content[ i ].props.children,
                         } );
                     }
                 }
@@ -151,21 +154,21 @@ registerBlockType( 'wpzoom-recipe-card/block-ingredients', {
         if ( ! items || items.length === 0 ) {
             attributes.items = [
                 {
-                    id: generateId( "ingredient-item" ),
-                    name: []
+                    id: generateId( 'ingredient-item' ),
+                    name: [],
                 },
                 {
-                    id: generateId( "ingredient-item" ),
-                    name: []
+                    id: generateId( 'ingredient-item' ),
+                    name: [],
                 },
                 {
-                    id: generateId( "ingredient-item" ),
-                    name: []
+                    id: generateId( 'ingredient-item' ),
+                    name: [],
                 },
                 {
-                    id: generateId( "ingredient-item" ),
-                    name: []
-                }
+                    id: generateId( 'ingredient-item' ),
+                    name: [],
+                },
             ];
         }
 
@@ -185,6 +188,4 @@ registerBlockType( 'wpzoom-recipe-card/block-ingredients', {
     ],
 
 } );
-
-
 

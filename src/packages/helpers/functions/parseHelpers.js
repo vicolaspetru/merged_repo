@@ -8,7 +8,7 @@ import {
     isEmpty,
     isObject,
     isString,
-    forEach
+    forEach,
 } from 'lodash';
 
 /**
@@ -42,7 +42,7 @@ export function parseObjectStyle( style ) {
     let css = '';
     if ( isObject( style ) ) {
         forEach( style, ( value, property ) => {
-            css += `${ property }: ${ value };`
+            css += `${ property }: ${ value };`;
         } );
     }
     if ( isString( style ) ) {
@@ -51,7 +51,7 @@ export function parseObjectStyle( style ) {
     return css;
 }
 
-export function convertObjectToString( nodes, $type = '' ) {
+export function convertObjectToString( nodes ) {
     if ( isString( nodes ) ) {
         return nodes;
     }
@@ -62,14 +62,14 @@ export function convertObjectToString( nodes, $type = '' ) {
 
     let output = '';
 
-    forEach( nodes, ( node, index ) => {
+    forEach( nodes, ( node ) => {
         if ( isString( node ) ) {
             output += node;
         } else {
             const type     = get( node, [ 'type' ] ) || '';
-            let children   = get( node, [ 'props', 'children' ] ) || '';
-            let startTag   = type ? '<'+type+'>' : '';
-            let endTag     = type ? '</'+type+'>' : '';
+            const children   = get( node, [ 'props', 'children' ] ) || '';
+            let startTag   = type ? '<' + type + '>' : '';
+            let endTag     = type ? '</' + type + '>' : '';
 
             if ( 'img' === type ) {
                 const src = get( node, [ 'props', 'src' ] ) || false;
@@ -91,7 +91,7 @@ export function convertObjectToString( nodes, $type = '' ) {
             } else if ( 'br' === type ) {
                 endTag = '';
             }
-            output += startTag + convertObjectToString( children, type ) + endTag;
+            output += startTag + convertObjectToString( children ) + endTag;
         }
     } );
 

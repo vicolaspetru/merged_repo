@@ -32,8 +32,8 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 registerBlockType( 'wpzoom-recipe-card/block-jump-to-recipe', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( "Jump To Recipe", "wpzoom-recipe-card" ), // Block title.
-    description: __( "A button to jump to a WPZOOM Recipe Card on the same page.", "wpzoom-recipe-card" ),
+    title: __( 'Jump To Recipe', 'wpzoom-recipe-card' ), // Block title.
+    description: __( 'A button to jump to a WPZOOM Recipe Card on the same page.', 'wpzoom-recipe-card' ),
     icon: {
         // // Specifying a background color to appear with the icon e.g.: in the inserter.
         // background: '#2EA55F',
@@ -46,12 +46,12 @@ registerBlockType( 'wpzoom-recipe-card/block-jump-to-recipe', {
     // Allow only one Recipe Card Block per post.
     supports: {
         multiple: false,
-        html: false
+        html: false,
     },
     keywords: [
-        __( "Recipe Card", "wpzoom-recipe-card" ),
-        __( "Block Recipe Card", "wpzoom-recipe-card" ),
-        __( "WPZOOM", "wpzoom-recipe-card" ),
+        __( 'Recipe Card', 'wpzoom-recipe-card' ),
+        __( 'Block Recipe Card', 'wpzoom-recipe-card' ),
+        __( 'WPZOOM', 'wpzoom-recipe-card' ),
     ],
 
     /**
@@ -61,6 +61,7 @@ registerBlockType( 'wpzoom-recipe-card/block-jump-to-recipe', {
      * The "edit" property must be a valid function.
      *
      * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+     * @returns {Component} Jump to Recipe Component
      */
     edit: ( { attributes, className } ) => {
         const { id, text } = attributes;
@@ -75,9 +76,7 @@ registerBlockType( 'wpzoom-recipe-card/block-jump-to-recipe', {
     save() {
         // Rendering in PHP
         return null;
-    }
+    },
 
 } );
-
-
 

@@ -10,7 +10,7 @@ import {
     uniqBy,
     throttle,
     escape as escapeString,
-    unescape as unescapeString
+    unescape as unescapeString,
 } from 'lodash';
 
 /**

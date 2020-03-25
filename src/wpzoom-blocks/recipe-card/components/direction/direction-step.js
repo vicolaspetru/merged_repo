@@ -1,3 +1,5 @@
+/*global wpzoomRecipeCard*/
+
 /**
  * External dependencies
  */
@@ -5,7 +7,7 @@ import {
     get,
     isObject,
     isString,
-    isUndefined
+    isUndefined,
 } from 'lodash';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -17,14 +19,14 @@ import ReactHtmlParser from 'react-html-parser';
 import DirectionGalleryEdit from './direction-gallery-edit';
 import {
     pickRelevantMediaFiles,
-    matchIMGsrc
+    matchIMGsrc,
 } from '@wpzoom/helpers';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 import { Component, Fragment } from '@wordpress/element';
 import { RichText, MediaUpload } from '@wordpress/block-editor';
 import { IconButton } from '@wordpress/components';
@@ -37,14 +39,13 @@ const ALLOWED_MEDIA_TYPES = [ 'image' ];
 const { setting_options } = wpzoomRecipeCard;
 const {
     wpzoom_rcb_settings_gallery_columns,
-    wpzoom_rcb_settings_print_show_steps_image
+    wpzoom_rcb_settings_print_show_steps_image,
 } = setting_options;
 
 /**
  * A Direction step within a Direction block.
  */
 export default class DirectionStep extends Component {
-
     /**
      * Constructs a DirectionStep editor component.
      *
@@ -116,7 +117,7 @@ export default class DirectionStep extends Component {
      * @returns {void}
      */
     setTextRef( ref ) {
-        this.props.editorRef( this.props.index, "text", ref );
+        this.props.editorRef( this.props.index, 'text', ref );
     }
 
     /**
@@ -125,7 +126,7 @@ export default class DirectionStep extends Component {
      * @returns {void}
      */
     onFocusText() {
-        this.props.onFocus( this.props.index, "text" );
+        this.props.onFocus( this.props.index, 'text' );
     }
 
     /**
@@ -140,7 +141,7 @@ export default class DirectionStep extends Component {
             onChange,
             index,
             step: {
-                text
+                text,
             },
         } = this.props;
 
@@ -159,7 +160,7 @@ export default class DirectionStep extends Component {
             onChange,
             index,
             step: {
-                text
+                text,
             },
         } = this.props;
 
@@ -176,8 +177,8 @@ export default class DirectionStep extends Component {
             step: {
                 id,
                 isGroup,
-                gallery
-            }
+                gallery,
+            },
         } = this.props;
 
         const images = get( gallery, 'images' );
@@ -208,13 +209,13 @@ export default class DirectionStep extends Component {
             <IconButton
                 className="direction-step-button direction-step-button-delete editor-inserter__toggle"
                 icon="trash"
-                label={ __( "Delete step", "wpzoom-recipe-card" ) }
+                label={ __( 'Delete step', 'wpzoom-recipe-card' ) }
                 onClick={ this.onRemoveStep }
             />
             <IconButton
                 className="direction-step-button direction-step-button-add editor-inserter__toggle"
                 icon="editor-break"
-                label={ __( "Insert step", "wpzoom-recipe-card" ) }
+                label={ __( 'Insert step', 'wpzoom-recipe-card' ) }
                 onClick={ this.onInsertStep }
             />
         </div>;
@@ -231,14 +232,14 @@ export default class DirectionStep extends Component {
                 className="editor-block-mover__control"
                 onClick={ this.onMoveStepUp }
                 icon="arrow-up-alt2"
-                label={ __( "Move step up", "wpzoom-recipe-card" ) }
+                label={ __( 'Move step up', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isFirst }
             />
             <IconButton
                 className="editor-block-mover__control"
                 onClick={ this.onMoveStepDown }
                 icon="arrow-down-alt2"
-                label={ __( "Move step down", "wpzoom-recipe-card" ) }
+                label={ __( 'Move step down', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isLast }
             />
         </Fragment>;
@@ -256,15 +257,15 @@ export default class DirectionStep extends Component {
             onChange,
             index,
             step: {
-                text
-            }
+                text,
+            },
         } = this.props;
 
         let newText = text.slice();
 
         const relevantMedia = pickRelevantMediaFiles( media, 'step' );
         const imgClassNames = classnames( {
-            'no-print': wpzoom_rcb_settings_print_show_steps_image === '0'
+            'no-print': wpzoom_rcb_settings_print_show_steps_image === '0',
         } );
         const image = (
             <img
@@ -289,6 +290,7 @@ export default class DirectionStep extends Component {
      * Returns the image src from step contents.
      *
      * @param {array} contents The step contents.
+     * @param {number} index The step index.
      *
      * @returns {string|boolean} The image src or false if none is found.
      */
@@ -298,7 +300,7 @@ export default class DirectionStep extends Component {
             image = matchIMGsrc( contents );
         }
         if ( isObject( contents ) ) {
-            image = contents.filter( ( node ) => node && node.type && node.type === "img" );
+            image = contents.filter( ( node ) => node && node.type && node.type === 'img' );
         }
 
         if ( ! image || ! image[ index ] ) {
@@ -307,9 +309,8 @@ export default class DirectionStep extends Component {
 
         if ( ! isUndefined( image[ index ].props ) ) {
             return image[ index ].props.src;
-        } else {
-            return image[ index ];
         }
+        return image[ index ];
     }
 
     /**
@@ -338,16 +339,16 @@ export default class DirectionStep extends Component {
                 id,
                 text,
                 isGroup,
-                gallery
-            }
+                gallery,
+            },
         } = this.props;
 
-        const isSelectedText = isSelected && subElement === "text";
-        const stepClassName = !isGroup ? "direction-step" : "direction-step direction-step-group";
+        const isSelectedText = isSelected && subElement === 'text';
+        const stepClassName = ! isGroup ? 'direction-step' : 'direction-step direction-step-group';
 
         const galleryClassName = classnames( {
             'direction-step-gallery': ! isGroup,
-            [`columns-${ wpzoom_rcb_settings_gallery_columns }`]: true
+            [ `columns-${ wpzoom_rcb_settings_gallery_columns }` ]: true,
         } );
 
         let textContent = text;
@@ -359,7 +360,7 @@ export default class DirectionStep extends Component {
         return (
             <li className={ stepClassName } key={ id }>
                 {
-                    !isGroup &&
+                    ! isGroup &&
                     <Fragment>
                         <RichText
                             className="direction-step-text"
@@ -368,7 +369,7 @@ export default class DirectionStep extends Component {
                             key={ `${ id }-text` }
                             value={ textContent }
                             onChange={ this.onChangeText }
-                            placeholder={ __( "Enter step description", "wpzoom-recipe-card" ) }
+                            placeholder={ __( 'Enter step description', 'wpzoom-recipe-card' ) }
                             unstableOnFocus={ this.onFocusText }
                             keepPlaceholderOnFocus={ true }
                         />
@@ -393,7 +394,7 @@ export default class DirectionStep extends Component {
                         key={ `${ id }-group-title` }
                         value={ textContent }
                         onChange={ this.onChangeGroupTitle }
-                        placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
+                        placeholder={ __( 'Enter group title', 'wpzoom-recipe-card' ) }
                         unstableOnFocus={ this.onFocusText }
                         keepPlaceholderOnFocus={ true }
                     />

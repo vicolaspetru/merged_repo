@@ -29,4 +29,4 @@ import { updateCategory } from '@wordpress/blocks';
 
 ( function() {
     updateCategory( 'wpzoom-recipe-card', { icon } );
-} )();
+}() );

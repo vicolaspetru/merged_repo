@@ -3,7 +3,7 @@
  */
 import {
     get,
-    isEmpty
+    isEmpty,
 } from 'lodash';
 
 /**
@@ -15,35 +15,31 @@ import {
     palmOilFree,
     phosphateFree,
     sugarFree,
-    vegan
+    vegan,
 } from './library';
 
 /**
  * WordPress dependencies
  */
-import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 import { Component } from '@wordpress/element';
 
 const iconsSVG = {
-    'vegan': vegan,
+    vegan: vegan,
     'gluten-free': glutenFree,
     'dairy-free': dairyFree,
     'palm-oil-free': palmOilFree,
     'sugar-free': sugarFree,
-    'phosphate-free': phosphateFree
+    'phosphate-free': phosphateFree,
 };
 
 export default class FoodLabels extends Component {
-    constructor() {
-        super( ...arguments );
-    }
-
     drawIconLabel() {
         const { attributes: { settings } } = this.props;
 
-        let foodLabels = get( settings, [ 1, 'foodLabels' ] ) || [];
-        let displayFoodLabels = get( settings, [ 1, 'displayFoodLabels' ] ) || false;
-        let foodLabelsLocation = get( settings, [ 1, 'locationToShowFoodLabels' ] ) || 'top';
+        const foodLabels = get( settings, [ 1, 'foodLabels' ] ) || [];
+        const displayFoodLabels = get( settings, [ 1, 'displayFoodLabels' ] ) || false;
+        const foodLabelsLocation = get( settings, [ 1, 'locationToShowFoodLabels' ] ) || 'top';
 
         if ( isEmpty( foodLabels ) || ! displayFoodLabels || this.props.location !== foodLabelsLocation ) {
             return null;
@@ -51,11 +47,11 @@ export default class FoodLabels extends Component {
 
         let drawLabels = [];
 
-        drawLabels = foodLabels.map( ( label, index ) => {
+        drawLabels = foodLabels.map( ( label ) => {
             if ( iconsSVG[ label ] ) {
                 return ( <li>{ iconsSVG[ label ] }</li> );
             }
-        } )
+        } );
 
         return <ul className="food-labels-list">{ drawLabels }</ul>;
     }
@@ -76,6 +72,6 @@ export default class FoodLabels extends Component {
             <div className="recipe-card-food-labels">
                 { this.drawIconLabel() }
             </div>
-        )
+        );
     }
 }

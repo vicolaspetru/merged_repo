@@ -1,3 +1,5 @@
+/*global wpzoomRecipeCard*/
+
 /**
  * External dependencies
  */
@@ -11,7 +13,7 @@ import DirectionStep from './DirectionStep';
 import Inspector from './Inspector';
 import {
     stripHTML,
-    generateId
+    generateId,
 } from '@wpzoom/helpers';
 
 /**
@@ -31,7 +33,6 @@ import '../editor.scss';
  * A Direction step within a Direction block.
  */
 export default class Direction extends Component {
-
     /**
      * Constructs a Direction editor component.
      *
@@ -42,7 +43,7 @@ export default class Direction extends Component {
     constructor( props ) {
         super( props );
 
-        this.state = { focus: "" };
+        this.state = { focus: '' };
 
         this.changeStep = this.changeStep.bind( this );
         this.insertStep = this.insertStep.bind( this );
@@ -99,8 +100,8 @@ export default class Direction extends Component {
             ...steps[ index ],
             text: newText,
             jsonText: stripHTML( renderToString( newText ) ),
-            isGroup: group
-        }
+            isGroup: group,
+        };
 
         const imageSrc = DirectionStep.getImageSrc( newText );
 
@@ -135,10 +136,10 @@ export default class Direction extends Component {
         }
 
         steps.splice( index + 1, 0, {
-            id: generateId( "direction-step" ),
+            id: generateId( 'direction-step' ),
             text,
-            jsonText: "",
-            isGroup: group
+            jsonText: '',
+            isGroup: group,
         } );
 
         this.props.setAttributes( { steps } );
@@ -149,7 +150,7 @@ export default class Direction extends Component {
             return;
         }
 
-        speak( __( "New step added", "wpzoom-recipe-card" ) );
+        speak( __( 'New step added', 'wpzoom-recipe-card' ) );
     }
 
     /**
@@ -173,7 +174,7 @@ export default class Direction extends Component {
 
         this.props.setAttributes( { steps } );
 
-        const [ focusIndex, subElement ] = this.state.focus.split( ":" );
+        const [ focusIndex, subElement ] = this.state.focus.split( ':' );
         if ( focusIndex === `${ index1 }` ) {
             this.setFocus( `${ index2 }:${ subElement }` );
         }
@@ -207,14 +208,14 @@ export default class Direction extends Component {
         const indexToRemove = steps.length;
         delete this.editorRefs[ `${ indexToRemove }:text` ];
 
-        let fieldToFocus = "title";
+        let fieldToFocus = 'title';
         if ( this.editorRefs[ `${ index - 1 }:text` ] ) {
             fieldToFocus = `${ index - 1 }:text`;
         }
 
         this.setFocus( fieldToFocus );
 
-        speak( __( "Step removed", "wpzoom-recipe-card" ) );
+        speak( __( 'Step removed', 'wpzoom-recipe-card' ) );
     }
 
     /**
@@ -253,8 +254,8 @@ export default class Direction extends Component {
      * @returns {void}
      */
     onAddGroupButtonClick() {
-        let [ focusIndex, subElement ] = this.state.focus.split( ":" );
-        focusIndex = focusIndex != '' && focusIndex != 'title' ? toNumber( focusIndex ) : null;
+        let [ focusIndex ] = this.state.focus.split( ':' );
+        focusIndex = focusIndex !== '' && focusIndex !== 'title' ? toNumber( focusIndex ) : null;
         this.insertStep( focusIndex, [], true, true );
     }
 
@@ -279,7 +280,7 @@ export default class Direction extends Component {
      * @returns {void}
      */
     setFocusToTitle() {
-        this.setFocus( "title" );
+        this.setFocus( 'title' );
     }
 
     /**
@@ -338,7 +339,7 @@ export default class Direction extends Component {
     onChangeTitle( value ) {
         this.props.setAttributes( {
             title: value,
-            jsonTitle: stripHTML( renderToString( value ) )
+            jsonTitle: stripHTML( renderToString( value ) ),
         } );
     }
 
@@ -352,7 +353,7 @@ export default class Direction extends Component {
             return null;
         }
 
-        const [ focusIndex, subElement ] = this.state.focus.split( ":" );
+        const [ focusIndex, subElement ] = this.state.focus.split( ':' );
 
         return this.props.attributes.steps.map( ( step, index ) => {
             return (
@@ -389,14 +390,14 @@ export default class Direction extends Component {
                     onClick={ this.onAddStepButtonClick }
                     className="editor-inserter__toggle"
                 >
-                    <span className="components-icon-button-text">{ __( "Add step", "wpzoom-recipe-card" ) }</span>
+                    <span className="components-icon-button-text">{ __( 'Add step', 'wpzoom-recipe-card' ) }</span>
                 </IconButton>
                 <IconButton
                     icon="editor-insertmore"
                     onClick={ this.onAddGroupButtonClick }
                     className="editor-inserter__toggle"
                 >
-                    <span className="components-icon-button-text">{ __( "Add direction group", "wpzoom-recipe-card" ) }</span>
+                    <span className="components-icon-button-text">{ __( 'Add direction group', 'wpzoom-recipe-card' ) }</span>
                 </IconButton>
             </div>
         );
@@ -412,14 +413,14 @@ export default class Direction extends Component {
         const { title, id, print_visibility } = attributes;
         const { pluginURL } = wpzoomRecipeCard;
 
-        const classNames     = [ "", className ].filter( ( item ) => item ).join( " " );
-        const listClassNames = [ "directions-list" ].filter( ( item ) => item ).join( " " );
+        const classNames     = [ '', className ].filter( ( item ) => item ).join( ' ' );
+        const listClassNames = [ 'directions-list' ].filter( ( item ) => item ).join( ' ' );
 
         return (
             <div className={ classNames } id={ id }>
                 <div className={ 'wpzoom-recipe-card-print-link' + ' ' + print_visibility }>
-                    <a className="btn-print-link no-print" href={ '#'+ id } title={ __( "Print directions...", "wpzoom-recipe-card" ) }>
-                        <img className="icon-print-link" src={ pluginURL + 'dist/assets/images/printer.svg' } alt={ __( "Print", "wpzoom-recipe-card" ) }/>{ __( "Print", "wpzoom-recipe-card" ) }
+                    <a className="btn-print-link no-print" href={ '#' + id } title={ __( 'Print directions...', 'wpzoom-recipe-card' ) }>
+                        <img className="icon-print-link" src={ pluginURL + 'dist/assets/images/printer.svg' } alt={ __( 'Print', 'wpzoom-recipe-card' ) } />{ __( 'Print', 'wpzoom-recipe-card' ) }
                     </a>
                 </div>
                 <RichText
@@ -431,7 +432,7 @@ export default class Direction extends Component {
                     setFocusedElement={ this.setFocusToTitle }
                     onChange={ this.onChangeTitle }
                     unstableOnSetup={ this.setTitleRef }
-                    placeholder={ __( "Write Directions title", "wpzoom-recipe-card" ) }
+                    placeholder={ __( 'Write Directions title', 'wpzoom-recipe-card' ) }
                     keepPlaceholderOnFocus={ true }
                 />
                 <ul className={ listClassNames }>{ this.getSteps() }</ul>
@@ -440,7 +441,6 @@ export default class Direction extends Component {
             </div>
         );
     }
-
 }
 
 Direction.propTypes = {
@@ -450,5 +450,5 @@ Direction.propTypes = {
 };
 
 Direction.defaultProps = {
-    className: "",
+    className: '',
 };

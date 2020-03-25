@@ -23,7 +23,7 @@ const masonryOptions = {
     transitionDuration: 0,
     percentPosition: true,
     gutter: 8,
-    columnWidth: '.direction-step-gallery-item'
+    columnWidth: '.direction-step-gallery-item',
 };
 
 export const DirectionGallery = ( props ) => {
@@ -46,23 +46,23 @@ export const DirectionGallery = ( props ) => {
     const galleryClassName = classnames(
         className, {
             'is-editor-gallery': true,
-            'is-loading': isLoading
+            'is-loading': isLoading,
         }
     );
 
     const masonryClasses = classnames( {
-        'direction-step-gallery-grid': true
+        'direction-step-gallery-grid': true,
     } );
 
     const focusOnKeyDown = ( imgId ) => {
         document.getElementById( `${ galleryId }-${ imgId }` ).focus();
-    }
+    };
 
     return (
         <Fragment>
             <div className={ galleryClassName }>
                 {
-                    isLoading && <Spinner/>
+                    isLoading && <Spinner />
                 }
                 <Masonry
                     elementType={ 'ul' }
@@ -97,7 +97,7 @@ export const DirectionGallery = ( props ) => {
                                     galleryId={ galleryId }
                                     isFirstItem={ index === 0 }
                                     isLastItem={ index + 1 === images.length }
-                                    isSelected={ isSelected}
+                                    isSelected={ isSelected }
                                     onMoveBackward={ onMoveBackward( index ) }
                                     onMoveForward={ onMoveForward( index ) }
                                     onRemove={ onRemoveImage( index ) }

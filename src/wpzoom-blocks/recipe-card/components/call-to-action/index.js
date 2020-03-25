@@ -1,3 +1,5 @@
+/*global wpzoomRecipeCard*/
+
 /**
  * External dependencies
  */
@@ -29,7 +31,7 @@ const {
     wpzoom_rcb_settings_pinterest_cta_bg_color,
     wpzoom_rcb_settings_pinterest_cta_text_color,
     wpzoom_rcb_settings_facebook_cta_bg_color,
-    wpzoom_rcb_settings_facebook_cta_text_color
+    wpzoom_rcb_settings_facebook_cta_text_color,
 } = setting_options;
 
 const igUsername        = wpzoom_rcb_settings_instagram_cta_profile;
@@ -46,10 +48,6 @@ const facebookTitle     = wpzoom_rcb_settings_facebook_cta_title;
 const facebookSubtitle  = wpzoom_rcb_settings_facebook_cta_subtitle;
 
 export default class CTA extends Component {
-    constructor() {
-        super( ...arguments );
-    }
-
     buildLink( url, attr, symbol = '@' ) {
         const target   = wpzoom_rcb_settings_cta_target;
         const nofollow = wpzoom_rcb_settings_cta_add_nofollow;
@@ -58,7 +56,7 @@ export default class CTA extends Component {
             return '';
         }
 
-        return `<a href="${ url }/${ attr }" target="${ 1 == target ? '_blank' : '_self' }" ${ 1 == nofollow ? 'rel="nofollow"' : '' }>${ symbol }${ attr }</a>`;
+        return `<a href="${ url }/${ attr }" target="${ 1 === target ? '_blank' : '_self' }" ${ 1 === nofollow ? 'rel="nofollow"' : '' }>${ symbol }${ attr }</a>`;
     }
 
     buildStyles( brand ) {
@@ -69,27 +67,25 @@ export default class CTA extends Component {
         if ( 'instagram' === brand ) {
             backgroundColor = wpzoom_rcb_settings_instagram_cta_bg_color;
             textColor = wpzoom_rcb_settings_instagram_cta_text_color;
-        }
-        else if ( 'pinterest' === brand ) {
+        } else if ( 'pinterest' === brand ) {
             backgroundColor = wpzoom_rcb_settings_pinterest_cta_bg_color;
             textColor = wpzoom_rcb_settings_pinterest_cta_text_color;
-        }
-        else if ( 'facebook' === brand ) {
+        } else if ( 'facebook' === brand ) {
             backgroundColor = wpzoom_rcb_settings_facebook_cta_bg_color;
             textColor = wpzoom_rcb_settings_facebook_cta_text_color;
         }
 
-        if ( '' != backgroundColor ) {
+        if ( '' !== backgroundColor ) {
             styles = {
                 ...styles,
-                'background-color': backgroundColor
-            }
+                'background-color': backgroundColor,
+            };
         }
-        if ( '' != textColor ) {
+        if ( '' !== textColor ) {
             styles = {
                 ...styles,
-                'color': textColor
-            }
+                color: textColor,
+            };
         }
 
         return styles;
@@ -114,8 +110,8 @@ export default class CTA extends Component {
     }
 
     parseFacebookText( text ) {
-        text = this.buildLink( facebookURL, '', __( "Like us", "wpzoom-recipe-card" ) );
-        text += ' '+ __( "on Facebook", "wpzoom-recipe-card" );
+        text = this.buildLink( facebookURL, '', __( 'Like us', 'wpzoom-recipe-card' ) );
+        text += ' ' + __( 'on Facebook', 'wpzoom-recipe-card' );
 
         return ReactHtmlParser( text );
     }
@@ -124,7 +120,7 @@ export default class CTA extends Component {
         return (
             <Fragment>
                 {
-                    '' != igUsername &&
+                    '' !== igUsername &&
                     <div className="recipe-card-cta-instagram" style={ this.buildStyles( 'instagram' ) }>
                         <div className="cta-brand-icon"><i className="fab fa-instagram"></i></div>
                         <div className="cta-text-wrapper">
@@ -134,7 +130,7 @@ export default class CTA extends Component {
                     </div>
                 }
                 {
-                    '' != pinUsername &&
+                    '' !== pinUsername &&
                     <div className="recipe-card-cta-pinterest" style={ this.buildStyles( 'pinterest' ) }>
                         <div className="cta-brand-icon"><i className="fab fa-pinterest"></i></div>
                         <div className="cta-text-wrapper">
@@ -144,7 +140,7 @@ export default class CTA extends Component {
                     </div>
                 }
                 {
-                    '' != facebookURL &&
+                    '' !== facebookURL &&
                     <div className="recipe-card-cta-facebook" style={ this.buildStyles( 'facebook' ) }>
                         <div className="cta-brand-icon"><i className="fab fa-facebook"></i></div>
                         <div className="cta-text-wrapper">
@@ -154,6 +150,6 @@ export default class CTA extends Component {
                     </div>
                 }
             </Fragment>
-        )
+        );
     }
 }

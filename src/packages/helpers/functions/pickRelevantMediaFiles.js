@@ -3,18 +3,18 @@
  */
 import {
     get,
-    pick
+    pick,
 } from 'lodash';
 
 export const pickRelevantMediaFiles = ( image, target ) => {
     const defaults = {
-        'id': null,
-        'link': '',
-        'url': null,
-        'caption': '',
-        'sizes': null,
-        'alt': '',
-        'title': ''
+        id: null,
+        link: '',
+        url: null,
+        caption: '',
+        sizes: null,
+        alt: '',
+        title: '',
     };
     let imageProps;
 
@@ -29,13 +29,11 @@ export const pickRelevantMediaFiles = ( image, target ) => {
         const thumbnail = get( image, [ 'sizes', 'thumbnail', 'url' ] ) || get( image, [ 'media_details', 'sizes', 'thumbnail', 'source_url' ] );
 
         if ( 'step' === target ) {
-            imageProps.url = wpzoom_rcb_block_step_image || large || image.url || image.source_url;
-        }
-        else if ( 'ingredient' === target ) {
-            imageProps.url = medium || thumbnail || image.url || image.source_url;
-        }
-        else if ( 'header' === target ) {
-            imageProps.url = wpzoom_rcb_block_header || large || image.url || image.source_url;
+            imageProps.url = wpzoom_rcb_block_step_image || large || original;
+        } else if ( 'ingredient' === target ) {
+            imageProps.url = medium || thumbnail || original;
+        } else if ( 'header' === target ) {
+            imageProps.url = wpzoom_rcb_block_header || large || original;
         }
     }
 

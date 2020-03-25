@@ -19,7 +19,6 @@ import { Component, renderToString } from '@wordpress/element';
  * A Detail item within a Detail block.
  */
 export default class Detail extends Component {
-
     /**
      * Constructs a Detail editor component.
      *
@@ -30,7 +29,7 @@ export default class Detail extends Component {
     constructor( props ) {
         super( props );
 
-        this.state = { focus: "" };
+        this.state = { focus: '' };
 
         this.changeDetail = this.changeDetail.bind( this );
         this.insertDetail = this.insertDetail.bind( this );
@@ -122,14 +121,14 @@ export default class Detail extends Component {
         }
 
         details.splice( index + 1, 0, {
-            id: this.props.generateId( "detail-item" ),
+            id: this.props.generateId( 'detail-item' ),
             icon,
             label,
             value,
             unit,
-            jsonLabel: "",
-            jsonValue: "",
-            jsonUnit: "",
+            jsonLabel: '',
+            jsonValue: '',
+            jsonUnit: '',
         } );
 
         this.props.setAttributes( { details } );
@@ -172,7 +171,7 @@ export default class Detail extends Component {
         delete this.editorRefs[ `${ indexToRemove }:value` ];
         delete this.editorRefs[ `${ indexToRemove }:unit` ];
 
-        let fieldToFocus = "label";
+        let fieldToFocus = 'label';
         if ( this.editorRefs[ `${ index - 1 }:label` ] ) {
             fieldToFocus = `${ index - 1 }:label`;
         } else if ( this.editorRefs[ `${ index - 1 }:value` ] ) {
@@ -239,7 +238,6 @@ export default class Detail extends Component {
         this.editorRefs[ `${ detailIndex }:${ part }` ] = ref;
     }
 
-
     /**
      * Returns an array of Details item components to be rendered on screen.
      *
@@ -255,31 +253,31 @@ export default class Detail extends Component {
                         displayPrepTime,
                         displayCalories,
                         displayCookingTime,
-                        displayTotalTime
-                    }
-                }
-            }
+                        displayTotalTime,
+                    },
+                },
+            },
         } = this.props;
 
         if ( ! details ) {
             return null;
         }
 
-        const [ focusIndex, subElement ] = this.state.focus.split( ":" );
+        const [ focusIndex, subElement ] = this.state.focus.split( ':' );
 
         return details.map( ( item, index ) => {
             const id = get( item, 'id' );
             const label = get( item, 'label' );
 
-            if ( 0 === index && displayServings ||
-                1 === index && displayPrepTime ||
-                2 === index && displayCookingTime ||
-                8 === index && displayTotalTime ||
-                3 === index && displayCalories ||
-                4 === index && label ||
-                5 === index && label ||
-                6 === index && label ||
-                7 === index && label
+            if ( ( 0 === index && displayServings ) ||
+                ( 1 === index && displayPrepTime ) ||
+                ( 2 === index && displayCookingTime ) ||
+                ( 8 === index && displayTotalTime ) ||
+                ( 3 === index && displayCalories ) ||
+                ( 4 === index && label ) ||
+                ( 5 === index && label ) ||
+                ( 6 === index && label ) ||
+                ( 7 === index && label )
             ) {
                 return (
                     <DetailItem
@@ -303,8 +301,8 @@ export default class Detail extends Component {
     }
 
     render() {
-        const classNames    = [ "recipe-card-details" ].filter( ( item ) => item ).join( " " );
-        const detailClasses = [ "details-items" ].filter( ( item ) => item ).join( " " );
+        const classNames    = [ 'recipe-card-details' ].filter( ( item ) => item ).join( ' ' );
+        const detailClasses = [ 'details-items' ].filter( ( item ) => item ).join( ' ' );
 
         return (
             <div className={ classNames }>
@@ -312,7 +310,6 @@ export default class Detail extends Component {
             </div>
         );
     }
-
 }
 
 Detail.propTypes = {
@@ -322,5 +319,5 @@ Detail.propTypes = {
 };
 
 Detail.defaultProps = {
-    className: "",
+    className: '',
 };

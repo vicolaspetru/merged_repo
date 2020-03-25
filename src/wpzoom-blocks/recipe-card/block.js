@@ -5,12 +5,14 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
+/*global wpzoomRecipeCard*/
+
 /**
  * External dependencies
  */
 import {
     map,
-    isNull
+    isNull,
 } from 'lodash';
 
 /**
@@ -47,8 +49,8 @@ const { wpzoom_rcb_settings_template } = setting_options;
  */
 registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( "Premium Recipe Card", "wpzoom-recipe-card" ), // Block title.
-    description: __( "Display a Premium Recipe Card box with recipe metadata.", "wpzoom-recipe-card" ),
+    title: __( 'Premium Recipe Card', 'wpzoom-recipe-card' ), // Block title.
+    description: __( 'Display a Premium Recipe Card box with recipe metadata.', 'wpzoom-recipe-card' ),
     icon: {
         // Specifying a background color to appear with the icon e.g.: in the inserter.
         // background: '#FDA921',
@@ -63,40 +65,40 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
         multiple: false,
     },
     keywords: [
-        __( "Recipe Card", "wpzoom-recipe-card" ),
-        __( "Premium Recipe Card", "wpzoom-recipe-card" ),
-        __( "WPZOOM", "wpzoom-recipe-card" ),
+        __( 'Recipe Card', 'wpzoom-recipe-card' ),
+        __( 'Premium Recipe Card', 'wpzoom-recipe-card' ),
+        __( 'WPZOOM', 'wpzoom-recipe-card' ),
     ],
     example: {
         attributes: {
-            recipeTitle: __( "Your recipe title goes here", "wpzoom-recipe-card" ),
+            recipeTitle: __( 'Your recipe title goes here', 'wpzoom-recipe-card' ),
             hasImage: true,
             image: {
                 id: 0,
                 url: pluginURL + 'dist/assets/images/examples/recipe-card-image-example-1.jpg',
             },
-            course: [ __( "Main", "wpzoom-recipe-card" ) ],
-            cuisine: [ __( "Italian", "wpzoom-recipe-card" ) ],
-            difficulty: [ __( "Medium", "wpzoom-recipe-card" ) ],
+            course: [ __( 'Main', 'wpzoom-recipe-card' ) ],
+            cuisine: [ __( 'Italian', 'wpzoom-recipe-card' ) ],
+            difficulty: [ __( 'Medium', 'wpzoom-recipe-card' ) ],
         },
     },
     styles: [
         // Mark style as default.
         {
             name: 'default',
-            label: __( "Default", "wpzoom-recipe-card" ),
-            isDefault: wpzoom_rcb_settings_template === 'default'
+            label: __( 'Default', 'wpzoom-recipe-card' ),
+            isDefault: wpzoom_rcb_settings_template === 'default',
         },
         {
             name: 'newdesign',
-            label: __( "New Design", "wpzoom-recipe-card" ),
-            isDefault: wpzoom_rcb_settings_template === 'newdesign'
+            label: __( 'New Design', 'wpzoom-recipe-card' ),
+            isDefault: wpzoom_rcb_settings_template === 'newdesign',
         },
         {
             name: 'simple',
-            label: __( "Simple Design", "wpzoom-recipe-card" ),
-            isDefault: wpzoom_rcb_settings_template === 'simple'
-        }
+            label: __( 'Simple Design', 'wpzoom-recipe-card' ),
+            isDefault: wpzoom_rcb_settings_template === 'simple',
+        },
     ],
 
     /**
@@ -106,48 +108,47 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
      * The "edit" property must be a valid function.
      *
      * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+     *
+     * @returns {Component} RecipeCard Component
      */
     edit: ( { attributes, setAttributes, className } ) => {
         // Fix issue with null value for custom details items
         // Add default value instead of null
         const customDetailsDetaults = [
             {
-                'id': generateId( "detail-item" ),
-                'iconSet': 'fa',
-                '_prefix': 'far',
-                'icon': 'clock'
+                id: generateId( 'detail-item' ),
+                iconSet: 'fa',
+                _prefix: 'far',
+                icon: 'clock',
             },
             {
-                'id': generateId( "detail-item" ),
-                'iconSet': 'oldicon',
-                'icon': 'chef-cooking'
+                id: generateId( 'detail-item' ),
+                iconSet: 'oldicon',
+                icon: 'chef-cooking',
             },
             {
-                'id': generateId( "detail-item" ),
-                'iconSet': 'oldicon',
-                'icon': 'food-1'
+                id: generateId( 'detail-item' ),
+                iconSet: 'oldicon',
+                icon: 'food-1',
             },
             {
-                'id': generateId( "detail-item" ),
-                'iconSet': 'fa',
-                '_prefix': 'fas',
-                'icon': 'sort-amount-down'
-            }
+                id: generateId( 'detail-item' ),
+                iconSet: 'fa',
+                _prefix: 'fas',
+                icon: 'sort-amount-down',
+            },
         ];
 
         attributes.details = map( attributes.details, ( item, index ) => {
             if ( isNull( item ) ) {
                 if ( 4 === index ) {
-                    return customDetailsDetaults[0];
-                }
-                else if ( 5 === index ) {
-                    return customDetailsDetaults[1];
-                }
-                else if ( 6 === index ) {
-                    return customDetailsDetaults[2];
-                }
-                else if ( 7 === index ) {
-                    return customDetailsDetaults[3];
+                    return customDetailsDetaults[ 0 ];
+                } else if ( 5 === index ) {
+                    return customDetailsDetaults[ 1 ];
+                } else if ( 6 === index ) {
+                    return customDetailsDetaults[ 2 ];
+                } else if ( 7 === index ) {
+                    return customDetailsDetaults[ 3 ];
                 }
             } else {
                 return item;
@@ -160,9 +161,7 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
     save() {
         // Rendering in PHP
         return null;
-    }
+    },
 
 } );
-
-
 

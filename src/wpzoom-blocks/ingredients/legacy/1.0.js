@@ -1,3 +1,5 @@
+/*global wpzoomRecipeCard*/
+
 /**
  * BLOCK: block-ingredients
  *
@@ -10,7 +12,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
-
 
 /**
  * Returns the component to be used to render
@@ -26,15 +27,15 @@ export default function LegacyIngredient( props ) {
         title,
         content,
         print_visibility,
-        className
+        className,
     } = props.attributes;
     const { pluginURL } = wpzoomRecipeCard;
 
     return (
         <div className={ className } id={ id }>
             <div className={ 'wpzoom-recipe-card-print-link' + ' ' + print_visibility }>
-                <a className="btn-print-link no-print" href={ '#'+id } title={ __( 'Print ingredients...' ) }>
-                    <img className="icon-print-link" src={ pluginURL + 'dist/assets/images/printer.svg' } alt={ __( 'Print' ) }/>{ __( 'Print' ) }
+                <a className="btn-print-link no-print" href={ '#' + id } title={ __( 'Print ingredients...' ) }>
+                    <img className="icon-print-link" src={ pluginURL + 'dist/assets/images/printer.svg' } alt={ __( 'Print' ) } />{ __( 'Print' ) }
                 </a>
             </div>
             <RichText.Content

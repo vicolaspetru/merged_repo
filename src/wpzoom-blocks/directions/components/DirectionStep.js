@@ -13,7 +13,7 @@ import { pickRelevantMediaFiles } from '@wpzoom/helpers';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 import { Component, Fragment } from '@wordpress/element';
 import { RichText, MediaUpload } from '@wordpress/block-editor';
 import { IconButton } from '@wordpress/components';
@@ -27,7 +27,6 @@ const ALLOWED_MEDIA_TYPES = [ 'image' ];
  * A Direction step within a Direction block.
  */
 export default class DirectionStep extends Component {
-
     /**
      * Constructs a DirectionStep editor component.
      *
@@ -99,7 +98,7 @@ export default class DirectionStep extends Component {
      * @returns {void}
      */
     setTextRef( ref ) {
-        this.props.editorRef( this.props.index, "text", ref );
+        this.props.editorRef( this.props.index, 'text', ref );
     }
 
     /**
@@ -108,7 +107,7 @@ export default class DirectionStep extends Component {
      * @returns {void}
      */
     onFocusText() {
-        this.props.onFocus( this.props.index, "text" );
+        this.props.onFocus( this.props.index, 'text' );
     }
 
     /**
@@ -123,7 +122,7 @@ export default class DirectionStep extends Component {
             onChange,
             index,
             step: {
-                text
+                text,
             },
         } = this.props;
 
@@ -142,7 +141,7 @@ export default class DirectionStep extends Component {
             onChange,
             index,
             step: {
-                text
+                text,
             },
         } = this.props;
 
@@ -158,8 +157,8 @@ export default class DirectionStep extends Component {
         const {
             step: {
                 id,
-                isGroup
-            }
+                isGroup,
+            },
         } = this.props;
 
         return <div className="direction-step-button-container">
@@ -181,13 +180,13 @@ export default class DirectionStep extends Component {
             <IconButton
                 className="direction-step-button direction-step-button-delete editor-inserter__toggle"
                 icon="trash"
-                label={ __( "Delete step", "wpzoom-recipe-card" ) }
+                label={ __( 'Delete step', 'wpzoom-recipe-card' ) }
                 onClick={ this.onRemoveStep }
             />
             <IconButton
                 className="direction-step-button direction-step-button-add editor-inserter__toggle"
                 icon="editor-break"
-                label={ __( "Insert step", "wpzoom-recipe-card" ) }
+                label={ __( 'Insert step', 'wpzoom-recipe-card' ) }
                 onClick={ this.onInsertStep }
             />
         </div>;
@@ -204,14 +203,14 @@ export default class DirectionStep extends Component {
                 className="editor-block-mover__control"
                 onClick={ this.onMoveStepUp }
                 icon="arrow-up-alt2"
-                label={ __( "Move step up", "wpzoom-recipe-card" ) }
+                label={ __( 'Move step up', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isFirst }
             />
             <IconButton
                 className="editor-block-mover__control"
                 onClick={ this.onMoveStepDown }
                 icon="arrow-down-alt2"
-                label={ __( "Move step down", "wpzoom-recipe-card" ) }
+                label={ __( 'Move step down', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isLast }
             />
         </Fragment>;
@@ -229,8 +228,8 @@ export default class DirectionStep extends Component {
             onChange,
             index,
             step: {
-                text
-            }
+                text,
+            },
         } = this.props;
         let newText = text.slice();
 
@@ -265,7 +264,7 @@ export default class DirectionStep extends Component {
             return false;
         }
 
-        const image = contents.filter( ( node ) => node && node.type && node.type === "img" )[ 0 ];
+        const image = contents.filter( ( node ) => node && node.type && node.type === 'img' )[ 0 ];
 
         if ( ! image ) {
             return false;
@@ -294,20 +293,20 @@ export default class DirectionStep extends Component {
         const {
             isSelected,
             subElement,
-            step
+            step,
         } = this.props;
         const { id, text, isGroup } = step;
-        const isSelectedText = isSelected && subElement === "text";
+        const isSelectedText = isSelected && subElement === 'text';
 
         const stepClassName = classnames( {
-            'direction-step': !isGroup,
-            'direction-step direction-step-group': isGroup
+            'direction-step': ! isGroup,
+            'direction-step direction-step-group': isGroup,
         } );
 
         return (
             <li className={ stepClassName } key={ id }>
                 {
-                    !isGroup &&
+                    ! isGroup &&
                     <RichText
                         className="direction-step-text"
                         tagName="p"
@@ -315,7 +314,7 @@ export default class DirectionStep extends Component {
                         key={ `${ id }-text` }
                         value={ text }
                         onChange={ this.onChangeText }
-                        placeholder={ __( "Enter step description", "wpzoom-recipe-card" ) }
+                        placeholder={ __( 'Enter step description', 'wpzoom-recipe-card' ) }
                         unstableOnFocus={ this.onFocusText }
                         keepPlaceholderOnFocus={ true }
                     />
@@ -329,7 +328,7 @@ export default class DirectionStep extends Component {
                         key={ `${ id }-group-title` }
                         value={ text }
                         onChange={ this.onChangeGroupTitle }
-                        placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
+                        placeholder={ __( 'Enter group title', 'wpzoom-recipe-card' ) }
                         unstableOnFocus={ this.onFocusText }
                         keepPlaceholderOnFocus={ true }
                     />

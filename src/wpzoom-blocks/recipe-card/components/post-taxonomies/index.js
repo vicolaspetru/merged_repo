@@ -5,7 +5,7 @@ import {
     has,
     filter,
     identity,
-    includes
+    includes,
 } from 'lodash';
 
 /**
@@ -25,9 +25,8 @@ export function PostTaxonomies( { postType, taxonomies, taxonomyWrapper = identi
     const availableTaxonomies = filter( taxonomies, ( taxonomy ) => {
         if ( has( taxonomy, 'types' ) ) {
             return includes( taxonomy.types, postType );
-        } else {
-            return false;
         }
+        return false;
     } );
     const visibleTaxonomies = filter( availableTaxonomies, ( taxonomy ) => taxonomy.visibility.custom_show_ui );
     return visibleTaxonomies.map( ( taxonomy ) => {
@@ -50,8 +49,8 @@ export default compose( [
         const { postType, taxonomies } = props;
 
         return {
-            postType: !postType ? select( 'core/editor' ).getCurrentPostType() : postType,
-            taxonomies: !taxonomies ? select( 'core' ).getTaxonomies( { per_page: -1 } ) : taxonomies
+            postType: ! postType ? select( 'core/editor' ).getCurrentPostType() : postType,
+            taxonomies: ! taxonomies ? select( 'core' ).getTaxonomies( { per_page: -1 } ) : taxonomies,
         };
     } ),
 ] )( PostTaxonomies );

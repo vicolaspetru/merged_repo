@@ -7,7 +7,7 @@ import {
     replace,
     includes,
     toNumber,
-    isUndefined
+    isUndefined,
 } from 'lodash';
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
@@ -18,7 +18,7 @@ import ReactHtmlParser from 'react-html-parser';
 import IngredientItem from './ingredient-item';
 import {
     stripHTML,
-    removeKeys
+    removeKeys,
 } from '@wpzoom/helpers';
 
 /**
@@ -34,7 +34,6 @@ import { Component, renderToString } from '@wordpress/element';
  * A Ingredient item within a Ingredient block.
  */
 export default class Ingredient extends Component {
-
     /**
      * Constructs a Ingredient editor component.
      *
@@ -45,7 +44,7 @@ export default class Ingredient extends Component {
     constructor( props ) {
         super( props );
 
-        this.state = { focus: "" };
+        this.state = { focus: '' };
 
         this.changeItem = this.changeItem.bind( this );
         this.changeAmount = this.changeAmount.bind( this );
@@ -103,8 +102,8 @@ export default class Ingredient extends Component {
             ...ingredients[ index ],
             name: newName,
             jsonName: stripHTML( renderToString( newName ) ),
-            isGroup: group
-        }
+            isGroup: group,
+        };
 
         this.props.setAttributes( { ingredients } );
     }
@@ -133,10 +132,10 @@ export default class Ingredient extends Component {
         }
 
         ingredients.splice( index + 1, 0, {
-            id: this.props.generateId( "ingredient-item" ),
+            id: this.props.generateId( 'ingredient-item' ),
             name,
-            jsonName: "",
-            isGroup: group
+            jsonName: '',
+            isGroup: group,
         } );
 
         this.props.setAttributes( { ingredients } );
@@ -147,7 +146,7 @@ export default class Ingredient extends Component {
             return;
         }
 
-        speak( __( "New ingredient added", "wpzoom-recipe-card" ) );
+        speak( __( 'New ingredient added', 'wpzoom-recipe-card' ) );
     }
 
     /**
@@ -171,7 +170,7 @@ export default class Ingredient extends Component {
 
         this.props.setAttributes( { ingredients } );
 
-        const [ focusIndex, subElement ] = this.state.focus.split( ":" );
+        const [ focusIndex, subElement ] = this.state.focus.split( ':' );
         if ( focusIndex === `${ index1 }` ) {
             this.setFocus( `${ index2 }:${ subElement }` );
         }
@@ -205,14 +204,14 @@ export default class Ingredient extends Component {
         const indexToRemove = ingredients.length;
         delete this.editorRefs[ `${ indexToRemove }:name` ];
 
-        let fieldToFocus = "ingredientsTitle";
+        let fieldToFocus = 'ingredientsTitle';
         if ( this.editorRefs[ `${ index - 1 }:name` ] ) {
             fieldToFocus = `${ index - 1 }:name`;
         }
 
         this.setFocus( fieldToFocus );
 
-        speak( __( "Ingredient removed", "wpzoom-recipe-card" ) );
+        speak( __( 'Ingredient removed', 'wpzoom-recipe-card' ) );
     }
 
     /**
@@ -244,7 +243,7 @@ export default class Ingredient extends Component {
      */
     setAmountUnitName( parsedArray, index ) {
         const ingredients = this.props.attributes.ingredients ? this.props.attributes.ingredients.slice() : [];
-        const [ focusIndex, subElement ] = this.state.focus.split( ":" );
+        const [ focusIndex, subElement ] = this.state.focus.split( ':' );
 
         // stop parsing when typing ingredient name or input is focus
         if ( index === toNumber( focusIndex ) && 'name' === subElement ) {
@@ -261,9 +260,9 @@ export default class Ingredient extends Component {
             return;
         }
 
-        let unit = get( parsedArray, 'unit' ) || get( ingredients, [ index, 'parse', 'unit' ] );
-        let amount = get( parsedArray, 'amount' ) || get( ingredients, [ index, 'parse', 'amount' ] );
-        let ingredient = get( parsedArray, 'ingredient' ) || get( ingredients, [ index, 'parse', 'ingredient' ] );
+        const unit = get( parsedArray, 'unit' ) || get( ingredients, [ index, 'parse', 'unit' ] );
+        const amount = get( parsedArray, 'amount' ) || get( ingredients, [ index, 'parse', 'amount' ] );
+        const ingredient = get( parsedArray, 'ingredient' ) || get( ingredients, [ index, 'parse', 'ingredient' ] );
 
         // We can't parse amount unit and ingredient name from Ingredient item, so in this case we need to stop further execution
         if ( isUndefined( amount ) || isUndefined( unit ) || isUndefined( ingredient ) ) {
@@ -275,20 +274,19 @@ export default class Ingredient extends Component {
             return;
         }
 
-        if ( !get( ingredients, [ index, 'parse', 'amount' ] ) || !get( ingredients, [ index, 'parse', 'unit' ] ) ) {
-
+        if ( ! get( ingredients, [ index, 'parse', 'amount' ] ) || ! get( ingredients, [ index, 'parse', 'unit' ] ) ) {
             /*
              * We need to modify name to be without amount and unit
              * First we will convert name object to string and then replace the amount and unit with empty replacement
              * After that we'll convert back to React HTML Object
              */
-            let stringName = renderToString( ingredients[index].name );
+            let stringName = renderToString( ingredients[ index ].name );
 
             if ( includes( stringName, amount ) || includes( stringName, unit ) ) {
                 stringName = replace( stringName, amount, '' );
                 stringName = replace( stringName, unit, '' );
 
-                var obj = ReactHtmlParser( trim( stringName ) );
+                const obj = ReactHtmlParser( trim( stringName ) );
 
                 // remove unneded property keys
                 removeKeys( obj, [ '_owner', '$$typeof', 'key' ] );
@@ -299,17 +297,16 @@ export default class Ingredient extends Component {
                 ingredients[ index ].name = newName;
                 ingredients[ index ].jsonName = stripHTML( stringName );
             }
-
         }
 
         if ( isUndefined( ingredients[ index ].parse ) ) {
-            ingredients[ index ].parse = {}
+            ingredients[ index ].parse = {};
         }
 
         /*
          * All looks right, now we can update ingredient item attributes
          */
-        ingredients[ index ].parse = { ...{ amount, unit, ingredient } }
+        ingredients[ index ].parse = { ...{ amount, unit, ingredient } };
 
         this.props.setAttributes( { ingredients } );
     }
@@ -345,14 +342,14 @@ export default class Ingredient extends Component {
         }
 
         if ( isUndefined( ingredients[ index ].parse ) ) {
-            ingredients[ index ].parse = {}
+            ingredients[ index ].parse = {};
         }
 
         // Rebuild the item with the newly made changes.
         ingredients[ index ].parse = {
             ...ingredients[ index ].parse,
-            amount: newAmount
-        }
+            amount: newAmount,
+        };
 
         this.props.setAttributes( { ingredients } );
     }
@@ -388,14 +385,14 @@ export default class Ingredient extends Component {
         }
 
         if ( isUndefined( ingredients[ index ].parse ) ) {
-            ingredients[ index ].parse = {}
+            ingredients[ index ].parse = {};
         }
 
         // Rebuild the item with the newly made changes.
         ingredients[ index ].parse = {
             ...ingredients[ index ].parse,
-            unit: newUnit
-        }
+            unit: newUnit,
+        };
 
         this.props.setAttributes( { ingredients } );
     }
@@ -417,8 +414,8 @@ export default class Ingredient extends Component {
      * @returns {void}
      */
     onAddGroupButtonClick() {
-        let [ focusIndex, subElement ] = this.state.focus.split( ":" );
-        focusIndex = focusIndex != '' && focusIndex != 'ingredientsTitle' ? toNumber( focusIndex ) : null;
+        let [ focusIndex ] = this.state.focus.split( ':' );
+        focusIndex = focusIndex !== '' && focusIndex !== 'ingredientsTitle' ? toNumber( focusIndex ) : null;
         this.insertItem( focusIndex, [], true, true );
     }
 
@@ -443,7 +440,7 @@ export default class Ingredient extends Component {
      * @returns {void}
      */
     setFocusToTitle() {
-        this.setFocus( "ingredientsTitle" );
+        this.setFocus( 'ingredientsTitle' );
     }
 
     /**
@@ -502,7 +499,7 @@ export default class Ingredient extends Component {
     onChangeTitle( value ) {
         this.props.setAttributes( {
             ingredientsTitle: value,
-            jsonIngredientsTitle: stripHTML( renderToString( value ) )
+            jsonIngredientsTitle: stripHTML( renderToString( value ) ),
         } );
     }
 
@@ -516,7 +513,7 @@ export default class Ingredient extends Component {
             return null;
         }
 
-        const [ focusIndex, subElement ] = this.state.focus.split( ":" );
+        const [ focusIndex, subElement ] = this.state.focus.split( ':' );
 
         return this.props.attributes.ingredients.map( ( item, index ) => {
             return (
@@ -558,14 +555,14 @@ export default class Ingredient extends Component {
                     onClick={ this.onAddIngredientButtonClick }
                     className="editor-inserter__toggle"
                 >
-                    <span className="components-icon-button-text">{ __( "Add ingredient", "wpzoom-recipe-card" ) }</span>
+                    <span className="components-icon-button-text">{ __( 'Add ingredient', 'wpzoom-recipe-card' ) }</span>
                 </IconButton>
                 <IconButton
                     icon="editor-insertmore"
                     onClick={ this.onAddGroupButtonClick }
                     className="editor-inserter__toggle"
                 >
-                    <span className="components-icon-button-text">{ __( "Add ingredient group", "wpzoom-recipe-card" ) }</span>
+                    <span className="components-icon-button-text">{ __( 'Add ingredient group', 'wpzoom-recipe-card' ) }</span>
                 </IconButton>
             </div>
         );
@@ -582,14 +579,14 @@ export default class Ingredient extends Component {
                 ingredientsTitle,
                 settings: {
                     0: {
-                        ingredientsLayout
-                    }
-                }
-            }
+                        ingredientsLayout,
+                    },
+                },
+            },
         } = this.props;
 
-        const classNames     = [ "recipe-card-ingredients" ].filter( ( item ) => item ).join( " " );
-        const listClassNames = [ "ingredients-list", `layout-${ ingredientsLayout }` ].filter( ( item ) => item ).join( " " );
+        const classNames     = [ 'recipe-card-ingredients' ].filter( ( item ) => item ).join( ' ' );
+        const listClassNames = [ 'ingredients-list', `layout-${ ingredientsLayout }` ].filter( ( item ) => item ).join( ' ' );
 
         return (
             <div className={ classNames }>
@@ -601,7 +598,7 @@ export default class Ingredient extends Component {
                     unstableOnFocus={ this.setFocusToTitle }
                     onChange={ this.onChangeTitle }
                     unstableOnSetup={ this.setTitleRef }
-                    placeholder={ __( "Write Ingredients title", "wpzoom-recipe-card" ) }
+                    placeholder={ __( 'Write Ingredients title', 'wpzoom-recipe-card' ) }
                     keepPlaceholderOnFocus={ true }
                 />
                 <ul className={ listClassNames }>{ this.getItems() }</ul>
@@ -609,7 +606,6 @@ export default class Ingredient extends Component {
             </div>
         );
     }
-
 }
 
 Ingredient.propTypes = {
@@ -619,5 +615,5 @@ Ingredient.propTypes = {
 };
 
 Ingredient.defaultProps = {
-    className: "",
+    className: '',
 };

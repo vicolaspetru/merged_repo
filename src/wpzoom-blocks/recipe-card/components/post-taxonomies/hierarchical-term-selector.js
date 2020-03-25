@@ -7,7 +7,7 @@ import {
     some,
     invoke,
     without,
-    unescape as unescapeString
+    unescape as unescapeString,
 } from 'lodash';
 
 /**

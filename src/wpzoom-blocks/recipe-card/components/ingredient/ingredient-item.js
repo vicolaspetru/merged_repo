@@ -3,7 +3,7 @@
  */
 import {
     get,
-    isString
+    isString,
 } from 'lodash';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -18,7 +18,7 @@ import { getBlockStyle } from '@wpzoom/helpers';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import isShallowEqual from '@wordpress/is-shallow-equal/objects';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 import { Component, Fragment } from '@wordpress/element';
 import { RichText } from '@wordpress/block-editor';
 import { IconButton, TextControl } from '@wordpress/components';
@@ -27,15 +27,14 @@ const parseIngredient = ( ingredient ) =>{
     if ( ! isString( ingredient ) ) {
         return;
     }
-    var result = ingredientParser.parse( ingredient );
+    const result = ingredientParser.parse( ingredient );
     return result;
-}
+};
 
 /**
  * A Ingredient item within a Ingredient block.
  */
 export default class IngredientItem extends Component {
-
     /**
      * Constructs a IngredientItem editor component.
      *
@@ -108,7 +107,7 @@ export default class IngredientItem extends Component {
      * @returns {void}
      */
     setNameRef( ref ) {
-        this.props.editorRef( this.props.index, "name", ref );
+        this.props.editorRef( this.props.index, 'name', ref );
     }
 
     /**
@@ -117,7 +116,7 @@ export default class IngredientItem extends Component {
      * @returns {void}
      */
     onFocusName() {
-        this.props.onFocus( this.props.index, "name" );
+        this.props.onFocus( this.props.index, 'name' );
     }
 
     /**
@@ -126,7 +125,7 @@ export default class IngredientItem extends Component {
      * @returns {void}
      */
     onFocusAmount() {
-        this.props.onFocus( this.props.index, "amount" );
+        this.props.onFocus( this.props.index, 'amount' );
     }
 
     /**
@@ -135,7 +134,7 @@ export default class IngredientItem extends Component {
      * @returns {void}
      */
     onFocusUnit() {
-        this.props.onFocus( this.props.index, "unit" );
+        this.props.onFocus( this.props.index, 'unit' );
     }
 
     /**
@@ -150,7 +149,7 @@ export default class IngredientItem extends Component {
             onChange,
             index,
             item: {
-                name
+                name,
             },
         } = this.props;
 
@@ -169,7 +168,7 @@ export default class IngredientItem extends Component {
             onChange,
             index,
             item: {
-                name
+                name,
             },
         } = this.props;
 
@@ -187,13 +186,13 @@ export default class IngredientItem extends Component {
             <IconButton
                 className="ingredient-item-button ingredient-item-button-delete editor-inserter__toggle"
                 icon="trash"
-                label={ __( "Delete ingredient", "wpzoom-recipe-card" ) }
+                label={ __( 'Delete ingredient', 'wpzoom-recipe-card' ) }
                 onClick={ this.onRemoveIngredient }
             />
             <IconButton
                 className="ingredient-item-button ingredient-item-button-add editor-inserter__toggle"
                 icon="editor-break"
-                label={ __( "Insert ingredient", "wpzoom-recipe-card" ) }
+                label={ __( 'Insert ingredient', 'wpzoom-recipe-card' ) }
                 onClick={ this.onInsertIngredient }
             />
         </div>;
@@ -210,14 +209,14 @@ export default class IngredientItem extends Component {
                 className="editor-block-mover__control"
                 onClick={ this.onMoveIngredientUp }
                 icon="arrow-up-alt2"
-                label={ __( "Move item up", "wpzoom-recipe-card" ) }
+                label={ __( 'Move item up', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isFirst }
             />
             <IconButton
                 className="editor-block-mover__control"
                 onClick={ this.onMoveIngredientDown }
                 icon="arrow-down-alt2"
-                label={ __( "Move item down", "wpzoom-recipe-card" ) }
+                label={ __( 'Move item down', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isLast }
             />
         </Fragment>;
@@ -245,9 +244,9 @@ export default class IngredientItem extends Component {
             attributes: {
                 settings: {
                     0: {
-                        primary_color
-                    }
-                }
+                        primary_color,
+                    },
+                },
             },
             isSelected,
             isRecipeCardSelected,
@@ -260,8 +259,8 @@ export default class IngredientItem extends Component {
                 id,
                 name,
                 jsonName,
-                isGroup
-            }
+                isGroup,
+            },
         } = this.props;
 
         /*
@@ -270,20 +269,20 @@ export default class IngredientItem extends Component {
         onParseItem( parseIngredient( jsonName ), index );
 
         let tickStyles = [];
-        let style = getBlockStyle( className );
+        const style = getBlockStyle( className );
 
-        if ( '' != primary_color ) {
+        if ( '' !== primary_color ) {
             if ( 'newdesign' === style || 'simple' === style ) {
-                tickStyles = { 'border': `2px solid ${ primary_color }` };
+                tickStyles = { border: `2px solid ${ primary_color }` };
             }
         }
 
-        const isSelectedName = isSelected && subElement === "name";
-        const isSelectedAmount = isSelected && subElement === "amount";
-        const isSelectedUnit = isSelected && subElement === "unit";
+        const isSelectedName = isSelected && subElement === 'name';
+        const isSelectedAmount = isSelected && subElement === 'amount';
+        const isSelectedUnit = isSelected && subElement === 'unit';
         const itemClassName = classnames( {
-            'ingredient-item': !isGroup,
-            'ingredient-item ingredient-item-group': isGroup
+            'ingredient-item': ! isGroup,
+            'ingredient-item ingredient-item-group': isGroup,
         } );
 
         const unit = get( this.props.item, [ 'parse', 'unit' ] );
@@ -292,14 +291,14 @@ export default class IngredientItem extends Component {
         return (
             <li className={ itemClassName } key={ id }>
                 {
-                    !isGroup &&
+                    ! isGroup &&
                     <Fragment>
                         <span className="tick-circle" style={ tickStyles }></span>
                         <div className="ingredient-item-name">
                             <TextControl
                                 instanceId={ `${ id }-${ index }-amount` }
                                 type="text"
-                                placeholder={ __( "amount", "wpzoom-recipe-card" ) }
+                                placeholder={ __( 'amount', 'wpzoom-recipe-card' ) }
                                 value={ amount }
                                 onChange={ newValue => onChangeAmount( newValue, amount, index ) }
                                 onFocus={ this.onFocusAmount }
@@ -307,7 +306,7 @@ export default class IngredientItem extends Component {
                             <TextControl
                                 instanceId={ `${ id }-${ index }-unit` }
                                 type="text"
-                                placeholder={ __( "unit", "wpzoom-recipe-card" ) }
+                                placeholder={ __( 'unit', 'wpzoom-recipe-card' ) }
                                 value={ unit }
                                 onChange={ newValue => onChangeUnit( newValue, unit, index ) }
                                 onFocus={ this.onFocusUnit }
@@ -318,7 +317,7 @@ export default class IngredientItem extends Component {
                                 key={ `${ id }-${ index }-name` }
                                 value={ name }
                                 onChange={ this.onChangeName }
-                                placeholder={ __( "Enter ingredient name", "wpzoom-recipe-card" ) }
+                                placeholder={ __( 'Enter ingredient name', 'wpzoom-recipe-card' ) }
                                 unstableOnFocus={ this.onFocusName }
                                 keepPlaceholderOnFocus={ true }
                             />
@@ -334,7 +333,7 @@ export default class IngredientItem extends Component {
                         key={ `${ id }-${ index }-group-title` }
                         value={ name }
                         onChange={ this.onChangeGroupTitle }
-                        placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
+                        placeholder={ __( 'Enter group title', 'wpzoom-recipe-card' ) }
                         unstableOnFocus={ this.onFocusName }
                         keepPlaceholderOnFocus={ true }
                     />

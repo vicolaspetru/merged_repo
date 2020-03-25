@@ -20,7 +20,6 @@ import FoodIcons from './FoodIcons';
  */
 import { RichText } from '@wordpress/block-editor';
 
-
 /**
  * Returns the component to be used to render
  * the Details block on Wordpress (e.g. not in the editor).
@@ -31,14 +30,13 @@ import { RichText } from '@wordpress/block-editor';
  */
 export default function LegacyDetails( props ) {
     const { title, details, columns } = props.attributes;
-    const { className } = props;
     const detailClasses = 'col-' + columns;
 
     return (
         <div className={ detailClasses }>
             <RichText.Content
                 value={ title }
-                tagName='h3'
+                tagName="h3"
                 className="details-title"
             />
             { times( columns, ( index ) => {
@@ -52,18 +50,18 @@ export default function LegacyDetails( props ) {
                             { icon ? <span
                                     className="detail-item-icon"
                                     icon-name={ icon }>
-                                <FoodIcons icon={ icon }/>
+                                <FoodIcons icon={ icon } />
                             </span> : ''
                             }
                             { ! RichText.isEmpty( label ) && <RichText.Content
                                     value={ label }
-                                    tagName='span'
+                                    tagName="span"
                                     className="detail-item-label"
                                 />
                             }
                             { ! RichText.isEmpty( value ) && <RichText.Content
                                     value={ value }
-                                    tagName='p'
+                                    tagName="p"
                                     className="detail-item-value"
                                 />
                             }

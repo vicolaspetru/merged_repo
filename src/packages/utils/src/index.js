@@ -1,5 +1,5 @@
 export {
     default as Icons,
-    filterIcons
+    filterIcons,
 } from './IconsArray';
 export { buildTermsTree } from './terms';

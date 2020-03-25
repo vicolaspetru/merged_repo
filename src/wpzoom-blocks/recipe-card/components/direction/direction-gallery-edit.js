@@ -8,7 +8,7 @@ import {
     filter,
     forEach,
     isUndefined,
-    includes
+    includes,
 } from 'lodash';
 
 /**
@@ -37,15 +37,14 @@ import { MediaPlaceholder } from '@wordpress/block-editor';
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 const PLACEHOLDER_TEXT = Platform.select( {
-    web: __( "Drag images, upload new ones or select files from your library.", "wpzoom-recipe-card" ),
-    native: __( "ADD MEDIA", "wpzoom-recipe-card" ),
+    web: __( 'Drag images, upload new ones or select files from your library.', 'wpzoom-recipe-card' ),
+    native: __( 'ADD MEDIA', 'wpzoom-recipe-card' ),
 } );
 
 /**
  * A Direction step gallery within a Direction block.
  */
 class DirectionGalleryEdit extends Component {
-
     /**
      * Constructs a DirectionStep editor component.
      *
@@ -70,7 +69,7 @@ class DirectionGalleryEdit extends Component {
 
         this.state = {
             selectedImage: null,
-            isLoadingImages: true
+            isLoadingImages: true,
         };
     }
 
@@ -88,12 +87,12 @@ class DirectionGalleryEdit extends Component {
             };
         }
 
-        this.props.onChangeGallery( attributes, this.props.stepIndex )
+        this.props.onChangeGallery( attributes, this.props.stepIndex );
     }
 
     onSelectImage( index ) {
         return () => {
-            this.props.onFocusStep( this.props.stepIndex, "text" );
+            this.props.onFocusStep( this.props.stepIndex, 'text' );
 
             if ( this.state.selectedImage !== index ) {
                 this.setState( {
@@ -168,8 +167,8 @@ class DirectionGalleryEdit extends Component {
     onSelectImages( newImages ) {
         this.setAttributes( {
             images: newImages.map( ( newImage ) => ( {
-                ...pickRelevantMediaFiles( newImage, 'wpzoom_rcb_block_step_image' )
-            } ) )
+                ...pickRelevantMediaFiles( newImage, 'wpzoom_rcb_block_step_image' ),
+            } ) ),
         } );
     }
 
@@ -218,7 +217,7 @@ class DirectionGalleryEdit extends Component {
         // Deselect images when deselecting the step or Recipe Card Block
         if ( ! this.props.isSelected && prevProps.isSelected ) {
             this.setState( {
-                selectedImage: null
+                selectedImage: null,
             } );
         }
     }
@@ -238,7 +237,7 @@ class DirectionGalleryEdit extends Component {
         const {
             images,
             isSelected,
-            noticeUI
+            noticeUI,
         } = this.props;
 
         const hasImages = ! isUndefined( images ) && !! images.length;
@@ -253,7 +252,7 @@ class DirectionGalleryEdit extends Component {
                 className="direction-step-gallery-placeholder"
                 icon={ hasImages && sharedIcon }
                 labels={ {
-                    title: hasImages ? __( "Edit Gallery", "wpzoom-recipe-card" ) : __( "Add Gallery", "wpzoom-recipe-card" ),
+                    title: hasImages ? __( 'Edit Gallery', 'wpzoom-recipe-card' ) : __( 'Add Gallery', 'wpzoom-recipe-card' ),
                     instructions: ! hasImages && PLACEHOLDER_TEXT,
                 } }
                 onSelect={ this.onSelectImages }
@@ -304,7 +303,7 @@ export default compose( [
         const { mediaUpload } = getSettings();
 
         return {
-            mediaUpload
+            mediaUpload,
         };
     } ),
     withNotices,

@@ -1,3 +1,5 @@
+/*global wpzoomRecipeCard*/
+
 /**
  * Get block style.
  *
@@ -8,6 +10,6 @@
 export function getBlockStyle( className ) {
     const { setting_options } = wpzoomRecipeCard;
     const regex = /is-style-(\S*)/g;
-    let m = regex.exec( className );
-    return m !== null ? m[1] : setting_options.wpzoom_rcb_settings_template;
+    const m = regex.exec( className );
+    return m !== null ? m[ 1 ] : setting_options.wpzoom_rcb_settings_template;
 }

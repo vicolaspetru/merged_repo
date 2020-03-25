@@ -24,12 +24,12 @@ import {
     Button,
     Disabled,
     IconButton,
-    withNotices
+    withNotices,
 } from '@wordpress/components';
 import {
     URLPopover,
     MediaPlaceholder,
-    MediaUpload
+    MediaUpload,
 } from '@wordpress/block-editor';
 import { getBlobByURL, isBlobURL } from '@wordpress/blob';
 
@@ -39,7 +39,6 @@ import { getBlobByURL, isBlobURL } from '@wordpress/blob';
 const ALLOWED_MEDIA_TYPES = [ 'video' ];
 const VIDEO_POSTER_ALLOWED_MEDIA_TYPES = [ 'image' ];
 
-
 class VideoUpload extends Component {
     constructor( props ) {
         super( props );
@@ -47,7 +46,7 @@ class VideoUpload extends Component {
         // without setting the actual value outside of the edit UI
         this.state = {
             editing: get( this.props.attributes.video, 'url' ) === undefined,
-            isVisible: false
+            isVisible: false,
         };
 
         this.videoPlayer = createRef();
@@ -89,7 +88,7 @@ class VideoUpload extends Component {
         }
     }
 
-    componentDidUpdate( prevProps, prevState ) {
+    componentDidUpdate( prevProps ) {
         const { hasVideo, video } = this.props.attributes;
 
         const posterURL = get( video, 'poster.url' );
@@ -104,14 +103,14 @@ class VideoUpload extends Component {
         const {
             setAttributes,
             attributes: {
-                video
-            }
+                video,
+            },
         } = this.props;
         const newObj = { ...video };
 
         newObj.poster = {
             id: get( media, 'id' ),
-            url: get( media, 'url' )
+            url: get( media, 'url' ),
         };
         setAttributes( { video: newObj } );
     }
@@ -121,13 +120,13 @@ class VideoUpload extends Component {
             const {
                 setAttributes,
                 attributes: {
-                    video
-                }
+                    video,
+                },
             } = this.props;
             const newObj = { ...video };
             newObj.settings[ attribute ] = newValue;
             setAttributes( { video: newObj } );
-        }
+        };
     }
 
     onChangeVideoData( attribute ) {
@@ -135,13 +134,13 @@ class VideoUpload extends Component {
             const {
                 setAttributes,
                 attributes: {
-                    video
-                }
+                    video,
+                },
             } = this.props;
             const newObj = { ...video };
             newObj[ attribute ] = newValue;
             setAttributes( { video: newObj } );
-        }
+        };
     }
 
     onSelectURL( newURL ) {
@@ -173,8 +172,8 @@ class VideoUpload extends Component {
         const {
             setAttributes,
             attributes: {
-                video
-            }
+                video,
+            },
         } = this.props;
         const newObj = { ...video };
 
@@ -187,7 +186,7 @@ class VideoUpload extends Component {
     }
 
     getAutoplayHelp( checked ) {
-        return checked ? __( "Note: Many browsers can only autoplay the videos with sound off, so you'll need to enable muted attribute to the video too.", "wpzoom-recipe-card" ) : null;
+        return checked ? __( 'Note: Many browsers can only autoplay the videos with sound off, so you\'ll need to enable muted attribute to the video too.', 'wpzoom-recipe-card' ) : null;
     }
 
     onChangeURL( url ) {
@@ -263,19 +262,19 @@ class VideoUpload extends Component {
                         autoplay: false,
                         loop: false,
                         muted: false,
-                        controls: true
-                    }
-                }
+                        controls: true,
+                    },
+                },
             } );
             this.setState( { editing: false } );
-        }
+        };
 
         return (
-            <PanelBody className="wpzoom-recipe-card-video-settings" initialOpen={ true } title={ __( "Recipe Card Video Settings", "wpzoom-recipe-card" ) }>
+            <PanelBody className="wpzoom-recipe-card-video-settings" initialOpen={ true } title={ __( 'Recipe Card Video Settings', 'wpzoom-recipe-card' ) }>
                 <BaseControl
                     id={ `${ id }-video` }
                     className="editor-video__recipe-card"
-                    label={ __( "Recipe Card Video", "wpzoom-recipe-card" ) }
+                    label={ __( 'Recipe Card Video', 'wpzoom-recipe-card' ) }
                 >
                     {
                         editing &&
@@ -297,7 +296,7 @@ class VideoUpload extends Component {
                         ! editing &&
                         <Fragment>
                             <div className="editor-video__url-input-container">
-                                <Button isDefault onClick={ this.openURLPopover }>{ __( "Edit URL", "wpzoom-recipe-card" ) }</Button>
+                                <Button isDefault onClick={ this.openURLPopover }>{ __( 'Edit URL', 'wpzoom-recipe-card' ) }</Button>
                                 { isVisible && (
                                     <URLPopover
                                         onClose={ this.closeURLPopover }
@@ -307,7 +306,7 @@ class VideoUpload extends Component {
                                             value={ url }
                                             onChange={ ( url ) => this.onChangeURL( url ) }
                                         />
-                                        <IconButton icon="editor-break" label={ __( "Apply", "wpzoom-recipe-card" ) } onClick={ this.onSubmitURL } />
+                                        <IconButton icon="editor-break" label={ __( 'Apply', 'wpzoom-recipe-card' ) } onClick={ this.onSubmitURL } />
                                     </URLPopover>
                                 ) }
                             </div>
@@ -316,8 +315,8 @@ class VideoUpload extends Component {
                                 height="auto"
                                 url={ url }
                             />
-                            <br/>
-                            <Button isLink="true" isDestructive="true" onClick={ this.onRemoveVideo }>{ __( "Remove Recipe Video", "wpzoom-recipe-card" ) }</Button>
+                            <br />
+                            <Button isLink="true" isDestructive="true" onClick={ this.onRemoveVideo }>{ __( 'Remove Recipe Video', 'wpzoom-recipe-card' ) }</Button>
                         </Fragment>
                     }
                     {
@@ -347,11 +346,11 @@ class VideoUpload extends Component {
                                         isLarge
                                         onClick={ open }
                                     >
-                                        { __( "Replace Video", "wpzoom-recipe-card" ) }
+                                        { __( 'Replace Video', 'wpzoom-recipe-card' ) }
                                     </Button>
                                 ) }
                             />
-                            <Button isLink="true" isDestructive="true" onClick={ this.onRemoveVideo }>{ __( "Remove Recipe Video", "wpzoom-recipe-card" ) }</Button>
+                            <Button isLink="true" isDestructive="true" onClick={ this.onRemoveVideo }>{ __( 'Remove Recipe Video', 'wpzoom-recipe-card' ) }</Button>
                         </Fragment>
                     }
                 </BaseControl>
@@ -363,7 +362,7 @@ class VideoUpload extends Component {
                             id={ `${ id }-video-title` }
                             instanceId={ `${ id }-video-title` }
                             type="text"
-                            label={ __( "Video Title", "wpzoom-recipe-card" ) }
+                            label={ __( 'Video Title', 'wpzoom-recipe-card' ) }
                             value={ get( video, 'title' ) }
                             onChange={ this.onChangeVideoData( 'title' ) }
                         />
@@ -371,7 +370,7 @@ class VideoUpload extends Component {
                             id={ `${ id }-video-description` }
                             instanceId={ `${ id }-video-description` }
                             type="text"
-                            label={ __( "Video Description", "wpzoom-recipe-card" ) }
+                            label={ __( 'Video Description', 'wpzoom-recipe-card' ) }
                             value={ get( video, 'description' ) }
                             onChange={ this.onChangeVideoData( 'description' ) }
                         />
@@ -383,23 +382,23 @@ class VideoUpload extends Component {
                     ! editing &&
                     <Fragment>
                         <ToggleControl
-                            label={ __( "Autoplay", "wpzoom-recipe-card" ) }
+                            label={ __( 'Autoplay', 'wpzoom-recipe-card' ) }
                             checked={ autoplay }
                             onChange={ this.toggleAttributes( 'autoplay' ) }
                             help={ this.getAutoplayHelp }
                         />
                         <ToggleControl
-                            label={ __( "Loop", "wpzoom-recipe-card" ) }
+                            label={ __( 'Loop', 'wpzoom-recipe-card' ) }
                             checked={ loop }
                             onChange={ this.toggleAttributes( 'loop' ) }
                         />
                         <ToggleControl
-                            label={ __( "Muted", "wpzoom-recipe-card" ) }
+                            label={ __( 'Muted', 'wpzoom-recipe-card' ) }
                             checked={ muted }
                             onChange={ this.toggleAttributes( 'muted' ) }
                         />
                         <ToggleControl
-                            label={ __( "Playback Controls", "wpzoom-recipe-card" ) }
+                            label={ __( 'Playback Controls', 'wpzoom-recipe-card' ) }
                             checked={ controls }
                             onChange={ this.toggleAttributes( 'controls' ) }
                         />
@@ -411,7 +410,7 @@ class VideoUpload extends Component {
                     ! editing &&
                     <BaseControl
                         id={ `${ id }-video-poster` }
-                        label={ __( "Video Poster", "wpzoom-recipe-card" ) }
+                        label={ __( 'Video Poster', 'wpzoom-recipe-card' ) }
                     >
                         <div>
                             <MediaUpload
@@ -426,20 +425,20 @@ class VideoUpload extends Component {
                                         ref={ this.posterImageButton }
                                     >
                                         {
-                                            posterURL ? __( "Replace Poster", "wpzoom-recipe-card" ) : __( "Select Poster Image", "wpzoom-recipe-card" )
+                                            posterURL ? __( 'Replace Poster', 'wpzoom-recipe-card' ) : __( 'Select Poster Image', 'wpzoom-recipe-card' )
                                         }
                                     </Button>
                                 ) }
                             />
                             {
                                 posterURL &&
-                                <Button isLink="true" isDestructive="true" onClick={ this.onRemovePoster }>{ __( "Remove Poster Image", "wpzoom-recipe-card" ) }</Button>
+                                <Button isLink="true" isDestructive="true" onClick={ this.onRemovePoster }>{ __( 'Remove Poster Image', 'wpzoom-recipe-card' ) }</Button>
                             }
                         </div>
                     </BaseControl>
                 }
             </PanelBody>
-        )
+        );
     }
 }
 

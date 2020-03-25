@@ -16,7 +16,7 @@ import { Component, Fragment } from '@wordpress/element';
 import { Button, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { BACKSPACE, DELETE } from '@wordpress/keycodes';
-import { withSelect, withDispatch } from '@wordpress/data';
+import { withSelect } from '@wordpress/data';
 import { isBlobURL } from '@wordpress/blob';
 import { compose } from '@wordpress/compose';
 
@@ -51,14 +51,12 @@ class DirectionGalleryImage extends Component {
         }
     }
 
-    componentDidUpdate( prevProps ) {
+    componentDidUpdate() {
         const {
             image,
             url,
-            __unstableMarkNextChangeAsNotPersistent,
         } = this.props;
         if ( image && ! url ) {
-            __unstableMarkNextChangeAsNotPersistent();
             this.props.setAttributes( {
                 url: image.source_url,
                 alt: image.alt_text,
@@ -94,7 +92,13 @@ class DirectionGalleryImage extends Component {
             break;
         }
 
+        // Disable reason: Image itself is not meant to be
+        // interactive, but should direct image selection and unfocus caption fields
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
         const img = (
+            // Disable reason: Image itself is not meant to be interactive, but should
+            // direct image selection and unfocus caption fields.
+            /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
             <Fragment>
                 <img
                     src={ url }
@@ -110,6 +114,7 @@ class DirectionGalleryImage extends Component {
                 />
                 { isBlobURL( url ) && <Spinner /> }
             </Fragment>
+            /* eslint-enable jsx-a11y/no-noninteractive-element-interactions */
         );
 
         const className = classnames( {
@@ -159,14 +164,6 @@ export default compose( [
 
         return {
             image: id ? getMedia( id ) : null,
-        };
-    } ),
-    withDispatch( ( dispatch ) => {
-        const { __unstableMarkNextChangeAsNotPersistent } = dispatch(
-            'core/block-editor'
-        );
-        return {
-            __unstableMarkNextChangeAsNotPersistent,
         };
     } ),
 ] )( DirectionGalleryImage );
