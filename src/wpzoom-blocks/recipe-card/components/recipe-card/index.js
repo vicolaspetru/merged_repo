@@ -23,6 +23,7 @@ import CallToAction from '../call-to-action';
 import FoodLabels from '../food-labels';
 import Inspector from '../block-settings';
 import ExtraOptionsModal from '../bulk';
+import { sharedIcon } from './shared-icon';
 import {
     stripHTML,
     pickRelevantMediaFiles,
@@ -34,17 +35,22 @@ import {
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component, renderToString, Fragment } from '@wordpress/element';
 import {
-    Button,
+    Component,
+    renderToString,
+    Fragment,
+    Platform,
+} from '@wordpress/element';
+import {
     Placeholder,
     Spinner,
     Disabled,
+    withNotices,
 } from '@wordpress/components';
 import {
     RichText,
     BlockControls,
-    MediaUpload,
+    MediaPlaceholder,
 } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
@@ -61,8 +67,14 @@ const DEFAULT_QUERY = {
     order: 'asc',
     _fields: 'id,name,parent',
 };
+const PLACEHOLDER_TEXT = Platform.select( {
+    web: __( 'Drag image, upload new one or select file from your library.', 'wpzoom-recipe-card' ),
+    native: __( 'ADD MEDIA', 'wpzoom-recipe-card' ),
+} );
 
-/* Import Styles */
+/**
+ * Import Styles
+ */
 import '../../style.scss';
 import '../../editor.scss';
 
@@ -83,6 +95,7 @@ class RecipeCard extends Component {
         this.setFocus = this.setFocus.bind( this );
         this.onBulkAdd = this.onBulkAdd.bind( this );
         this.onSelectImage = this.onSelectImage.bind( this );
+        this.onUploadError = this.onUploadError.bind( this );
 
         this.editorRefs = {};
         this.state = {
@@ -317,6 +330,12 @@ class RecipeCard extends Component {
         } );
     }
 
+    onUploadError( message ) {
+        const { noticeOperations } = this.props;
+        noticeOperations.removeAllNotices();
+        noticeOperations.createErrorNotice( message );
+    }
+
     renderTerms( taxonomy ) {
         const { terms = [] } = this.props;
 
@@ -363,6 +382,7 @@ class RecipeCard extends Component {
             coursesTaxonomy,
             cuisinesTaxonomy,
             difficultiesTaxonomy,
+            noticeUI,
         } = this.props;
 
         const {
@@ -405,6 +425,7 @@ class RecipeCard extends Component {
         } = attributes;
 
         const postThumbnail = pickRelevantMediaFiles( media, 'header' );
+        const hasImageWithId = hasImage && ! isUndefined( get( image, 'id' ) );
 
         const style = getBlockStyle( className );
         const videoType = get( video, 'type' );
@@ -457,48 +478,42 @@ class RecipeCard extends Component {
         const PinterestClasses = [ 'wpzoom-recipe-card-pinit' ].filter( ( item ) => item ).join( ' ' );
         const pinitURL = `https://www.pinterest.com/pin/create/button/?url=${ postPermalink }&media=${ get( image, [ 'url' ] ) || get( postThumbnail, [ 'url' ] ) }&description=${ pin_description }`;
 
+        const loadingSpinnerPlaceholder = (
+            <Placeholder
+                className="wpzoom-recipe-card-loading-spinner"
+                label={ __( 'Loading...', 'wpzoom-recipe-card' ) }
+            >
+                <Spinner />
+            </Placeholder>
+        );
+
+        const mediaPlaceholder = (
+            <MediaPlaceholder
+                addToGallery={ false }
+                disableMediaButtons={ hasImage && ! this.props.isRecipeCardSelected }
+                className="recipe-card-image-placeholder"
+                icon={ ! hasImage && sharedIcon }
+                labels={ {
+                    title: ! hasImage && __( 'Recipe Card Image', 'wpzoom-recipe-card' ),
+                    instructions: ! hasImage && PLACEHOLDER_TEXT,
+                } }
+                onSelect={ this.onSelectImage }
+                accept="image/*"
+                allowedTypes={ ALLOWED_MEDIA_TYPES }
+                value={ hasImageWithId ? image : undefined }
+                onError={ this.onUploadError }
+                notices={ hasImage ? undefined : noticeUI }
+            />
+        );
+
         return (
             <div className={ RecipeCardClassName } id={ id }>
-
-                {
-                    this.state.isLoading &&
-                    <Placeholder
-                        className="wpzoom-recipe-card-loading-spinner"
-                        label={ __( 'Loading...', 'wpzoom-recipe-card' ) }
-                    >
-                        <Spinner />
-                    </Placeholder>
-                }
-
+                { noticeUI }
+                { this.state.isLoading && loadingSpinnerPlaceholder }
                 {
                     'simple' !== style &&
                     <Fragment>
-
-                        {
-                            ! hasImage &&
-                                <Placeholder
-                                    icon="format-image"
-                                    className="recipe-card-image-placeholder"
-                                    label={ __( 'Recipe Image', 'wpzoom-recipe-card' ) }
-                                    instructions={ __( 'Select an image file from your library.', 'wpzoom-recipe-card' ) }
-                                >
-                                    <MediaUpload
-                                        onSelect={ this.onSelectImage }
-                                        allowedTypes={ ALLOWED_MEDIA_TYPES }
-                                        value="0"
-                                        render={ ( { open } ) => (
-                                            <Button
-                                                onClick={ open }
-                                                isButton="true"
-                                                isDefault="true"
-                                                isLarge="true"
-                                            >
-                                                { __( 'Media Library', 'wpzoom-recipe-card' ) }
-                                            </Button>
-                                        ) }
-                                    />
-                                </Placeholder>
-                        }
+                        { ! hasImage && mediaPlaceholder }
                         {
                             hasImage &&
                             <div className="recipe-card-image-preview">
@@ -602,32 +617,7 @@ class RecipeCard extends Component {
                 {
                     'simple' === style &&
                     <div className="recipe-card-header-wrap">
-
-                        {
-                            ! hasImage &&
-                                <Placeholder
-                                    icon="format-image"
-                                    className="recipe-card-image-placeholder"
-                                    label={ __( 'Recipe Image', 'wpzoom-recipe-card' ) }
-                                    instructions={ __( 'Select an image file from your library.', 'wpzoom-recipe-card' ) }
-                                >
-                                    <MediaUpload
-                                        onSelect={ this.onSelectImage }
-                                        allowedTypes={ ALLOWED_MEDIA_TYPES }
-                                        value="0"
-                                        render={ ( { open } ) => (
-                                            <Button
-                                                onClick={ open }
-                                                isButton="true"
-                                                isDefault="true"
-                                                isLarge="true"
-                                            >
-                                                { __( 'Media Library', 'wpzoom-recipe-card' ) }
-                                            </Button>
-                                        ) }
-                                    />
-                                </Placeholder>
-                        }
+                        { ! hasImage && mediaPlaceholder }
                         {
                             hasImage &&
                             <div className="recipe-card-image-preview">
@@ -988,6 +978,7 @@ const applyWithSelect = withSelect( ( select, props ) => {
 } );
 
 export default compose(
-    applyWithSelect
+    applyWithSelect,
+    withNotices
 )( RecipeCard );
 
