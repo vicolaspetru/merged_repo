@@ -6,7 +6,7 @@ import {
     pick,
 } from 'lodash';
 
-export const pickRelevantMediaFiles = ( image, target ) => {
+export const pickRelevantMediaFiles = ( image, sizeSlug = 'large' ) => {
     const defaults = {
         id: null,
         link: '',
@@ -16,29 +16,27 @@ export const pickRelevantMediaFiles = ( image, target ) => {
         alt: '',
         title: '',
     };
-    let imageProps;
 
-    if ( image ) {
-        imageProps = pick( image, [ 'alt', 'id', 'link', 'caption', 'title' ] );
-
-        const original = get( image, [ 'url' ] ) || get( image, [ 'source_url' ] );
-        const wpzoom_rcb_block_step_image = get( image, [ 'sizes', 'wpzoom-rcb-block-step-image', 'url' ] ) || get( image, [ 'media_details', 'sizes', 'wpzoom-rcb-block-step-image', 'source_url' ] );
-        const wpzoom_rcb_block_header = get( image, [ 'sizes', 'wpzoom-rcb-block-header', 'url' ] ) || get( image, [ 'media_details', 'sizes', 'wpzoom-rcb-block-header', 'source_url' ] );
-        const wpzoom_rcb_block_header_square = get( image, [ 'sizes', 'wpzoom-rcb-block-header-square', 'url' ] ) || get( image, [ 'media_details', 'sizes', 'wpzoom-rcb-block-header-square', 'source_url' ] );
-        const large = get( image, [ 'sizes', 'large', 'url' ] ) || get( image, [ 'media_details', 'sizes', 'large', 'source_url' ] );
-        const medium = get( image, [ 'sizes', 'medium', 'url' ] ) || get( image, [ 'media_details', 'sizes', 'medium', 'source_url' ] );
-        const thumbnail = get( image, [ 'sizes', 'thumbnail', 'url' ] ) || get( image, [ 'media_details', 'sizes', 'thumbnail', 'source_url' ] );
-
-        if ( 'step' === target ) {
-            imageProps.url = wpzoom_rcb_block_step_image || large || original;
-        } else if ( 'ingredient' === target ) {
-            imageProps.url = medium || thumbnail || original;
-        } else if ( 'header' === target ) {
-            imageProps.url = wpzoom_rcb_block_header || large || original;
-        } else if ( 'header-square' === target ) {
-            imageProps.url = wpzoom_rcb_block_header_square || original;
-        }
+    if ( ! image ) {
+        return defaults;
     }
 
-    return imageProps || defaults;
+    const imageProps = pick( image, [ 'alt', 'id', 'link', 'caption', 'title' ] );
+    const pickedSize =
+        get( image, [ 'sizes', sizeSlug, 'url' ] ) ||
+        get( image, [ 'media_details', 'sizes', sizeSlug, 'source_url' ] );
+    const original =
+        get( image, [ 'url' ] ) ||
+        get( image, [ 'source_url' ] );
+    const fullUrl =
+        get( image, [ 'sizes', 'full', 'url' ] ) ||
+        get( image, [ 'media_details', 'sizes', 'full', 'source_url' ] );
+
+    imageProps.url = pickedSize || original;
+
+    if ( fullUrl ) {
+        imageProps.fullUrl = fullUrl;
+    }
+
+    return imageProps;
 };

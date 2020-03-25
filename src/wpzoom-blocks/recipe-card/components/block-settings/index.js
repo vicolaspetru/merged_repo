@@ -194,13 +194,21 @@ export default class Inspector extends Component {
                 hasImage,
             },
             setAttributes,
+            className,
         } = this.props;
 
         if ( hasImage || ! media ) {
             return;
         }
 
-        const relevantMedia = pickRelevantMediaFiles( media, 'header' );
+        const activeStyle = getBlockStyle( className );
+        let sizeSlug = 'wpzoom-rcb-block-header';
+
+        if ( 'simple' === activeStyle ) {
+            sizeSlug = 'wpzoom-rcb-block-header-square';
+        }
+
+        const relevantMedia = pickRelevantMediaFiles( media, sizeSlug );
 
         setAttributes( {
             hasImage: ! isNull( relevantMedia.id ),
@@ -215,8 +223,16 @@ export default class Inspector extends Component {
     }
 
     onSelectImage( media ) {
-        const { setAttributes } = this.props;
-        const relevantMedia = pickRelevantMediaFiles( media, 'header' );
+        const { setAttributes, className } = this.props;
+
+        const activeStyle = getBlockStyle( className );
+        let sizeSlug = 'wpzoom-rcb-block-header';
+
+        if ( 'simple' === activeStyle ) {
+            sizeSlug = 'wpzoom-rcb-block-header-square';
+        }
+
+        const relevantMedia = pickRelevantMediaFiles( media, sizeSlug );
 
         setAttributes( {
             hasImage: ! isNull( relevantMedia.id ),
@@ -237,7 +253,7 @@ export default class Inspector extends Component {
             },
             setAttributes,
         } = this.props;
-        const relevantMedia = pickRelevantMediaFiles( media, 'header' );
+        const relevantMedia = pickRelevantMediaFiles( media, 'wpzoom-rcb-block-header' );
 
         const newSettings = settings ? settings.slice() : [];
 
@@ -614,7 +630,7 @@ export default class Inspector extends Component {
             },
         } = attributes;
 
-        const style = getBlockStyle( className );
+        const activeStyle = getBlockStyle( className );
         const imageSizeOptions = this.getImageSizeOptions();
 
         return (
@@ -770,7 +786,7 @@ export default class Inspector extends Component {
                         />
                     }
                     {
-                        'simple' !== style &&
+                        'simple' !== activeStyle &&
                         <BaseControl
                             id={ `${ id }-heading-align` }
                             label={ __( 'Header Content Align', 'wpzoom-recipe-card' ) }
@@ -820,7 +836,7 @@ export default class Inspector extends Component {
                         />
                     </BaseControl>
                     {
-                        style === 'newdesign' &&
+                        'newdesign' === activeStyle &&
                             <BaseControl
                                 id={ `${ id }-ingredients-layout` }
                                 label={ __( 'Ingredients Layout', 'wpzoom-recipe-card' ) }

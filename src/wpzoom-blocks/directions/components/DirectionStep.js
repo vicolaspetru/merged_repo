@@ -233,7 +233,7 @@ export default class DirectionStep extends Component {
         } = this.props;
         let newText = text.slice();
 
-        const relevantMedia = pickRelevantMediaFiles( media, 'step' );
+        const relevantMedia = pickRelevantMediaFiles( media, 'wpzoom-rcb-block-step-image' );
         const image = (
             <img
                 key={ relevantMedia.id }

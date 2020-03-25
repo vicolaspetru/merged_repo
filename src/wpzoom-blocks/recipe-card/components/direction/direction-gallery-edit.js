@@ -14,7 +14,7 @@ import {
 /**
  * Internal dependencies
  */
-import { pickRelevantMediaFiles } from './shared';
+import { pickRelevantMediaFiles } from '@wpzoom/helpers';
 import { sharedIcon } from './shared-icon';
 import DirectionGallery from './direction-gallery';
 
@@ -167,7 +167,7 @@ class DirectionGalleryEdit extends Component {
     onSelectImages( newImages ) {
         this.setAttributes( {
             images: newImages.map( ( newImage ) => ( {
-                ...pickRelevantMediaFiles( newImage, 'wpzoom_rcb_block_step_image' ),
+                ...pickRelevantMediaFiles( newImage, 'wpzoom-rcb-block-step-image' ),
             } ) ),
         } );
     }

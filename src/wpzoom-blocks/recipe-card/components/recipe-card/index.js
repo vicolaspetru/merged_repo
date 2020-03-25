@@ -316,7 +316,15 @@ class RecipeCard extends Component {
     }
 
     onSelectImage( media ) {
-        const relevantMedia = pickRelevantMediaFiles( media, 'header' );
+        const { className } = this.props;
+        const activeStyle = getBlockStyle( className );
+        let sizeSlug = 'wpzoom-rcb-block-header';
+
+        if ( 'simple' === activeStyle ) {
+            sizeSlug = 'wpzoom-rcb-block-header-square';
+        }
+
+        const relevantMedia = pickRelevantMediaFiles( media, sizeSlug );
 
         this.props.setAttributes( {
             hasImage: true,
@@ -376,8 +384,6 @@ class RecipeCard extends Component {
             postType,
             postTitle,
             postAuthor,
-            postPermalink,
-            media,
             settingOptions,
             coursesTaxonomy,
             cuisinesTaxonomy,
@@ -386,7 +392,6 @@ class RecipeCard extends Component {
         } = this.props;
 
         const {
-            wpzoom_rcb_settings_pin_description,
             wpzoom_rcb_settings_heading_content_align,
             wpzoom_rcb_settings_course_taxonomy,
             wpzoom_rcb_settings_cuisine_taxonomy,
@@ -397,7 +402,6 @@ class RecipeCard extends Component {
             id,
             recipeTitle,
             summary,
-            jsonSummary,
             notesTitle,
             notes,
             course,
@@ -424,27 +428,20 @@ class RecipeCard extends Component {
             },
         } = attributes;
 
-        const postThumbnail = pickRelevantMediaFiles( media, 'header' );
         const hasImageWithId = hasImage && ! isUndefined( get( image, 'id' ) );
-
-        const style = getBlockStyle( className );
+        const activeStyle = getBlockStyle( className );
         const videoType = get( video, 'type' );
 
-        let pin_description = recipeTitle;
         let headerContentAlign = headerAlign;
-        let customAuthorName;
 
-        if ( wpzoom_rcb_settings_pin_description === 'recipe_summary' ) {
-            pin_description = jsonSummary;
-        }
         if ( isUndefined( headerAlign ) ) {
             headerContentAlign = wpzoom_rcb_settings_heading_content_align;
         }
-        if ( 'simple' === style ) {
+        if ( 'simple' === activeStyle ) {
             headerContentAlign = 'left';
         }
 
-        customAuthorName = custom_author_name;
+        let customAuthorName = custom_author_name;
         if ( custom_author_name === '' ) {
             customAuthorName = postAuthor;
         }
@@ -455,11 +452,11 @@ class RecipeCard extends Component {
         let printStyles = [];
 
         if ( '' !== primary_color ) {
-            if ( 'default' === style || 'simple' === style ) {
+            if ( 'default' === activeStyle || 'simple' === activeStyle ) {
                 printStyles = {
                     'background-color': `${ primary_color }`,
                 };
-            } else if ( 'newdesign' === style ) {
+            } else if ( 'newdesign' === activeStyle ) {
                 printStyles = {
                     'background-color': `${ primary_color }`,
                     'box-shadow': `0 5px 40px ${ primary_color }`,
@@ -472,11 +469,14 @@ class RecipeCard extends Component {
                 'is-loading-block': this.state.isLoading,
                 'recipe-card-noimage': hide_header_image,
                 [ `header-content-align-${ headerContentAlign }` ]: true,
-                [ `is-style-${ style }` ]: m === null,
+                [ `is-style-${ activeStyle }` ]: m === null,
             } );
-        const PrintClasses = [ 'wpzoom-recipe-card-print-link' ].filter( ( item ) => item ).join( ' ' );
-        const PinterestClasses = [ 'wpzoom-recipe-card-pinit' ].filter( ( item ) => item ).join( ' ' );
-        const pinitURL = `https://www.pinterest.com/pin/create/button/?url=${ postPermalink }&media=${ get( image, [ 'url' ] ) || get( postThumbnail, [ 'url' ] ) }&description=${ pin_description }`;
+        const PrintClasses = classnames(
+            'wpzoom-recipe-card-print-link'
+        );
+        const PinterestClasses = classnames(
+            'wpzoom-recipe-card-pinit'
+        );
 
         const loadingSpinnerPlaceholder = (
             <Placeholder
@@ -506,12 +506,30 @@ class RecipeCard extends Component {
             />
         );
 
+        const pinterestButton = (
+            <div className={ PinterestClasses }>
+                <a className="btn-pinit-link no-print" data-pin-do="buttonPin" href="#" data-pin-custom="true">
+                    <i className="icon-pinit-link"></i>
+                    <span>{ __( 'Pin', 'wpzoom-recipe-card' ) }</span>
+                </a>
+            </div>
+        );
+
+        const printButton = (
+            <div className={ PrintClasses }>
+                <a className="btn-print-link no-print" href={ `#${ id }` } title={ __( 'Print directions...', 'wpzoom-recipe-card' ) } style={ printStyles }>
+                    <i className="icon-print-link"></i>
+                    <span>{ __( 'Print', 'wpzoom-recipe-card' ) }</span>
+                </a>
+            </div>
+        );
+
         return (
             <div className={ RecipeCardClassName } id={ id }>
                 { noticeUI }
                 { this.state.isLoading && loadingSpinnerPlaceholder }
                 {
-                    'simple' !== style &&
+                    'simple' !== activeStyle &&
                     <Fragment>
                         { ! hasImage && mediaPlaceholder }
                         {
@@ -522,24 +540,8 @@ class RecipeCard extends Component {
                                         <img src={ get( image, [ 'url' ] ) } id={ get( image, [ 'id' ] ) } alt={ recipeTitle } />
                                         <figcaption>
                                             <Disabled>
-                                                {
-                                                    pin_btn &&
-                                                    <div className={ PinterestClasses }>
-                                                        <a className="btn-pinit-link no-print" data-pin-do="buttonPin" href={ pinitURL } data-pin-custom="true">
-                                                            <i className="icon-pinit-link"></i>
-                                                            <span>{ __( 'Pin', 'wpzoom-recipe-card' ) }</span>
-                                                        </a>
-                                                    </div>
-                                                }
-                                                {
-                                                    print_btn &&
-                                                    <div className={ PrintClasses }>
-                                                        <a className="btn-print-link no-print" href={ '#' + id } title={ __( 'Print directions...', 'wpzoom-recipe-card' ) } style={ printStyles }>
-                                                            <i className="icon-print-link"></i>
-                                                            <span>{ __( 'Print', 'wpzoom-recipe-card' ) }</span>
-                                                        </a>
-                                                    </div>
-                                                }
+                                                { pin_btn && pinterestButton }
+                                                { print_btn && printButton }
                                             </Disabled>
                                         </figcaption>
                                     </figure>
@@ -615,7 +617,7 @@ class RecipeCard extends Component {
                 }
 
                 {
-                    'simple' === style &&
+                    'simple' === activeStyle &&
                     <div className="recipe-card-header-wrap">
                         { ! hasImage && mediaPlaceholder }
                         {
@@ -626,24 +628,8 @@ class RecipeCard extends Component {
                                         <img src={ get( image, [ 'url' ] ) } id={ get( image, [ 'id' ] ) } alt={ recipeTitle } />
                                         <figcaption>
                                             <Disabled>
-                                                {
-                                                    pin_btn &&
-                                                    <div className={ PinterestClasses }>
-                                                        <a className="btn-pinit-link no-print" data-pin-do="buttonPin" href={ pinitURL } data-pin-custom="true">
-                                                            <i className="icon-pinit-link"></i>
-                                                            <span>{ __( 'Pin', 'wpzoom-recipe-card' ) }</span>
-                                                        </a>
-                                                    </div>
-                                                }
-                                                {
-                                                    print_btn &&
-                                                    <div className={ PrintClasses }>
-                                                        <a className="btn-print-link no-print" href={ '#' + id } title={ __( 'Print directions...', 'wpzoom-recipe-card' ) } style={ printStyles }>
-                                                            <i className="icon-print-link"></i>
-                                                            <span>{ __( 'Print', 'wpzoom-recipe-card' ) }</span>
-                                                        </a>
-                                                    </div>
-                                                }
+                                                { pin_btn && pinterestButton }
+                                                { print_btn && printButton }
                                             </Disabled>
                                         </figcaption>
                                     </figure>
@@ -874,7 +860,6 @@ const applyWithSelect = withSelect( ( select, props ) => {
     const {
         getEditedPostAttribute,
         getEditorSettings,
-        getPermalink,
         getSelectedBlock,
     } = select( 'core/editor' );
 
@@ -912,7 +897,6 @@ const applyWithSelect = withSelect( ( select, props ) => {
     const isRecipeCardSelected = get( selectedBlock, 'name' ) === 'wpzoom-recipe-card/block-recipe-card';
 
     const postType = getPostType( getEditedPostAttribute( 'type' ) );
-    const postPermalink = getPermalink();
     const categories = getEditedPostAttribute( 'categories' );
     const tags = getEditedPostAttribute( 'tags' );
     const postTitle = getEditedPostAttribute( 'title' );
@@ -960,7 +944,6 @@ const applyWithSelect = withSelect( ( select, props ) => {
         media: id ? getMedia( id ) : false,
         postTitle,
         postType,
-        postPermalink,
         postAuthor,
         settingOptions: setting_options,
         licenseStatus: license_status,

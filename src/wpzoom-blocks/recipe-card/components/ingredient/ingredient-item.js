@@ -269,10 +269,10 @@ export default class IngredientItem extends Component {
         onParseItem( parseIngredient( jsonName ), index );
 
         let tickStyles = [];
-        const style = getBlockStyle( className );
+        const activeStyle = getBlockStyle( className );
 
         if ( '' !== primary_color ) {
-            if ( 'newdesign' === style || 'simple' === style ) {
+            if ( 'newdesign' === activeStyle || 'simple' === activeStyle ) {
                 tickStyles = { border: `2px solid ${ primary_color }` };
             }
         }
