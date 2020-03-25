@@ -1,15 +1,56 @@
 /*global wpzoomRecipeCard*/
 
 /**
+ * External dependencies.
+ */
+import { get, find } from 'lodash';
+
+/**
+ * Constants
+ */
+const {
+    setting_options: {
+        wpzoom_rcb_settings_template,
+    },
+} = wpzoomRecipeCard;
+const TokenList = wp.tokenList;
+const availableStyles = [
+    {
+        name: 'default',
+        isDefault: 'default' === wpzoom_rcb_settings_template,
+    },
+    {
+        name: 'newdesign',
+        isDefault: 'newdesign' === wpzoom_rcb_settings_template,
+    },
+    {
+        name: 'simple',
+        isDefault: 'simple' === wpzoom_rcb_settings_template,
+    },
+];
+
+/**
  * Get block style.
  *
- * @param {array} className  	The block classname.
+ * @param {array} className     The block classname.
  *
  * @returns {number} Block style.
  */
 export function getBlockStyle( className ) {
-    const { setting_options } = wpzoomRecipeCard;
-    const regex = /is-style-(\S*)/g;
-    const m = regex.exec( className );
-    return m !== null ? m[ 1 ] : setting_options.wpzoom_rcb_settings_template;
+    for ( const style of new TokenList( className ).values() ) {
+        if ( style.indexOf( 'is-style-' ) === -1 ) {
+            continue;
+        }
+
+        const potentialStyleName = style.substring( 9 );
+        const activeStyle = find( availableStyles, { name: potentialStyleName } );
+
+        if ( activeStyle ) {
+            return get( activeStyle, 'name' );
+        }
+    }
+
+    const defaultStyle = find( availableStyles, { isDefault: true } );
+
+    return get( defaultStyle, 'name' );
 }
