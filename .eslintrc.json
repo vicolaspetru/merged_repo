@@ -38,7 +38,7 @@
     "rules": {
         "array-bracket-spacing": ["error", "always"],
         "brace-style": ["error", "1tbs"],
-        "camelcase": ["error", { "properties": "never" }],
+        "camelcase": "off",
         "comma-dangle": ["error", "always-multiline"],
         "comma-spacing": [
             "warn",
