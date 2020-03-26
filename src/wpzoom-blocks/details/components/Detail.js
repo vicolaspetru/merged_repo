@@ -18,7 +18,7 @@ import {
  */
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
-import { IconButton } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 import { Component, renderToString } from '@wordpress/element';
 
 /* Import Styles */
@@ -317,13 +317,13 @@ export default class Detail extends Component {
      */
     getAddItemButton() {
         return (
-            <IconButton
+            <Button
                 icon="insert"
                 onClick={ this.onAddDetailButtonClick }
                 className="editor-inserter__toggle"
             >
                 <span className="components-icon-button-text">{ __( 'Add item', 'wpzoom-recipe-card' ) }</span>
-            </IconButton>
+            </Button>
         );
     }
 

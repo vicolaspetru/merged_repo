@@ -27,7 +27,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { RichText } from '@wordpress/block-editor';
-import { IconButton } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 import { Component, renderToString } from '@wordpress/element';
 
 /**
@@ -550,20 +550,20 @@ export default class Ingredient extends Component {
     getAddItemButton() {
         return (
             <div className="ingredients-add-buttons">
-                <IconButton
+                <Button
                     icon="insert"
                     onClick={ this.onAddIngredientButtonClick }
                     className="editor-inserter__toggle"
                 >
                     <span className="components-icon-button-text">{ __( 'Add ingredient', 'wpzoom-recipe-card' ) }</span>
-                </IconButton>
-                <IconButton
+                </Button>
+                <Button
                     icon="editor-insertmore"
                     onClick={ this.onAddGroupButtonClick }
                     className="editor-inserter__toggle"
                 >
                     <span className="components-icon-button-text">{ __( 'Add ingredient group', 'wpzoom-recipe-card' ) }</span>
-                </IconButton>
+                </Button>
             </div>
         );
     }

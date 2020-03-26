@@ -531,7 +531,7 @@ class Nutrition extends Component {
                 <Button
                     className={ `${ blockClassName }-reload-values` }
                     title={ __( 'In case you made some changes to Recipe Card, press button to Reload values.', 'wpzoom-recipe-card' ) }
-                    isDefault
+                    isSecondary
                     isLarge
                     onClick={ () => this.setState( { reloadValues: true, isDataPreFill: false } ) }
                 >

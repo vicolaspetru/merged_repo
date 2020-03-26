@@ -684,7 +684,7 @@ export default class Inspector extends Component {
                                     value={ get( image, [ 'id' ] ) }
                                     render={ ( { open } ) => (
                                         <Button
-                                            isDefault
+                                            isSecondary
                                             isLarge
                                             onClick={ open }
                                         >
@@ -1119,7 +1119,7 @@ export default class Inspector extends Component {
                                 />
                                 <span>{ get( details, [ 8, 'unit' ] ) }</span>
                                 <Button
-                                    isDefault
+                                    isSecondary
                                     className="editor-calculate-total-time"
                                     onClick={ () => this.setState( { isCalculatedTotalTime: false, isCalculateBtnClick: true } ) }
                                 >

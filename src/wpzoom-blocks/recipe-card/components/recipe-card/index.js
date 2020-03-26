@@ -860,8 +860,9 @@ const applyWithSelect = withSelect( ( select, props ) => {
     const {
         getEditedPostAttribute,
         getEditorSettings,
-        getSelectedBlock,
     } = select( 'core/editor' );
+
+    const { getSelectedBlock } = select( 'core/block-editor' );
 
     const {
         maxWidth,

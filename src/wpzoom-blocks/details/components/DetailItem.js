@@ -16,7 +16,7 @@ import { __ } from '@wordpress/i18n';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { Component } from '@wordpress/element';
 import { RichText } from '@wordpress/block-editor';
-import { IconButton } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 
 /**
  * A Detail items within a Details block.
@@ -159,13 +159,13 @@ export default class DetailItem extends Component {
      */
     getButtons() {
         return <div className="detail-item-button-container">
-            <IconButton
+            <Button
                 className="detail-item-button detail-item-button-delete editor-inserter__toggle"
                 icon="trash"
                 label={ __( 'Delete item', 'wpzoom-recipe-card' ) }
                 onClick={ this.onRemoveDetail }
             />
-            <IconButton
+            <Button
                 className="detail-item-button detail-item-button-add editor-inserter__toggle"
                 icon="editor-break"
                 label={ __( 'Insert item', 'wpzoom-recipe-card' ) }

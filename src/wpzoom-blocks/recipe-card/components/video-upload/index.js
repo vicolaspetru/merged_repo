@@ -23,7 +23,6 @@ import {
     TextareaControl,
     Button,
     Disabled,
-    IconButton,
     withNotices,
 } from '@wordpress/components';
 import {
@@ -296,7 +295,12 @@ class VideoUpload extends Component {
                         ! editing &&
                         <Fragment>
                             <div className="editor-video__url-input-container">
-                                <Button isDefault onClick={ this.openURLPopover }>{ __( 'Edit URL', 'wpzoom-recipe-card' ) }</Button>
+                                <Button
+                                    isSecondary
+                                    onClick={ this.openURLPopover }
+                                >
+                                    { __( 'Edit URL', 'wpzoom-recipe-card' ) }
+                                </Button>
                                 { isVisible && (
                                     <URLPopover
                                         onClose={ this.closeURLPopover }
@@ -306,7 +310,7 @@ class VideoUpload extends Component {
                                             value={ url }
                                             onChange={ ( url ) => this.onChangeURL( url ) }
                                         />
-                                        <IconButton icon="editor-break" label={ __( 'Apply', 'wpzoom-recipe-card' ) } onClick={ this.onSubmitURL } />
+                                        <Button icon="editor-break" label={ __( 'Apply', 'wpzoom-recipe-card' ) } onClick={ this.onSubmitURL } />
                                     </URLPopover>
                                 ) }
                             </div>
@@ -342,7 +346,7 @@ class VideoUpload extends Component {
                                 value={ id }
                                 render={ ( { open } ) => (
                                     <Button
-                                        isDefault
+                                        isSecondary
                                         isLarge
                                         onClick={ open }
                                     >
@@ -419,7 +423,7 @@ class VideoUpload extends Component {
                                 value={ posterId }
                                 render={ ( { open } ) => (
                                     <Button
-                                        isDefault
+                                        isSecondary
                                         isLarge
                                         onClick={ open }
                                         ref={ this.posterImageButton }

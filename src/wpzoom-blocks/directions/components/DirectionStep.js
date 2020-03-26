@@ -16,7 +16,7 @@ import { __ } from '@wordpress/i18n';
 import isShallowEqual from '@wordpress/is-shallow-equal';
 import { Component, Fragment } from '@wordpress/element';
 import { RichText, MediaUpload } from '@wordpress/block-editor';
-import { IconButton } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 
 /**
  * Module constants
@@ -169,7 +169,7 @@ export default class DirectionStep extends Component {
                 allowedTypes={ ALLOWED_MEDIA_TYPES }
                 value={ id }
                 render={ ( { open } ) => (
-                    <IconButton
+                    <Button
                         className="direction-step-button direction-step-button-add-image editor-inserter__toggle direction-step-add-media"
                         icon="format-image"
                         onClick={ open }
@@ -177,13 +177,13 @@ export default class DirectionStep extends Component {
                 ) }
             />
             }
-            <IconButton
+            <Button
                 className="direction-step-button direction-step-button-delete editor-inserter__toggle"
                 icon="trash"
                 label={ __( 'Delete step', 'wpzoom-recipe-card' ) }
                 onClick={ this.onRemoveStep }
             />
-            <IconButton
+            <Button
                 className="direction-step-button direction-step-button-add editor-inserter__toggle"
                 icon="editor-break"
                 label={ __( 'Insert step', 'wpzoom-recipe-card' ) }
@@ -199,14 +199,14 @@ export default class DirectionStep extends Component {
      */
     getMover() {
         return <Fragment>
-            <IconButton
+            <Button
                 className="editor-block-mover__control"
                 onClick={ this.onMoveStepUp }
                 icon="arrow-up-alt2"
                 label={ __( 'Move step up', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isFirst }
             />
-            <IconButton
+            <Button
                 className="editor-block-mover__control"
                 onClick={ this.onMoveStepDown }
                 icon="arrow-down-alt2"

@@ -455,10 +455,10 @@ class HierarchicalTermSelector extends Component {
                         />
                     }
                 <Button
-                        isDefault
-                        type="submit"
-                        className="editor-post-taxonomies__hierarchical-terms-submit"
-                    >
+                    isSecondary
+                    type="submit"
+                    className="editor-post-taxonomies__hierarchical-terms-submit"
+                >
                     { newTermSubmitLabel }
                 </Button>
             </form>

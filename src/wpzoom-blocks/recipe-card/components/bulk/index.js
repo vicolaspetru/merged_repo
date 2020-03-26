@@ -28,7 +28,6 @@ import { __ } from '@wordpress/i18n';
 import { renderToString, Fragment } from '@wordpress/element';
 import {
     Button,
-    IconButton,
     Modal,
     Toolbar,
     TextareaControl,
@@ -257,7 +256,7 @@ function ExtraOptionsModal(
             {
                 toToolBar &&
                 <Toolbar>
-                    <IconButton
+                    <Button
                         icon="edit"
                         className="wpzoom-recipe-card__extra-options"
                         label={ __( 'Recipe Card extra options', 'wpzoom-recipe-card' ) }
@@ -269,7 +268,7 @@ function ExtraOptionsModal(
                         } }
                     >
                         { __( 'Bulk Add', 'wpzoom-recipe-card' ) }
-                    </IconButton>
+                    </Button>
                 </Toolbar>
             }
             {
@@ -303,7 +302,9 @@ function ExtraOptionsModal(
                             </div>
                         </div>
                         <div className="form-group">
-                            <Button isDefault onClick={ () => setState( { isOpen: false } ) }>
+                            <Button
+                                onClick={ () => setState( { isOpen: false } ) }
+                            >
                                 { __( 'Cancel', 'wpzoom-recipe-card' ) }
                             </Button>
                             {
