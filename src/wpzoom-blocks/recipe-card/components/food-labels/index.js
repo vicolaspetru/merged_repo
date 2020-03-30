@@ -21,7 +21,7 @@ import {
 /**
  * WordPress dependencies
  */
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
 import { Component } from '@wordpress/element';
 
 const iconsSVG = {
@@ -64,7 +64,7 @@ export default class FoodLabels extends Component {
      * @returns {boolean} Whether or not the component should perform an update.
      */
     shouldComponentUpdate( nextProps ) {
-        return ! isShallowEqual( nextProps, this.props );
+        return ! isShallowEqualObjects( nextProps, this.props );
     }
 
     render() {

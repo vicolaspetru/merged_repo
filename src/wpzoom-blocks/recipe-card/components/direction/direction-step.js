@@ -26,7 +26,7 @@ import {
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
 import { Component, Fragment } from '@wordpress/element';
 import { RichText, MediaUpload } from '@wordpress/block-editor';
 import { Button } from '@wordpress/components';
@@ -321,7 +321,7 @@ export default class DirectionStep extends Component {
      * @returns {boolean} Whether or not the component should perform an update.
      */
     shouldComponentUpdate( nextProps ) {
-        return ! isShallowEqual( nextProps, this.props );
+        return ! isShallowEqualObjects( nextProps, this.props );
     }
 
     /**

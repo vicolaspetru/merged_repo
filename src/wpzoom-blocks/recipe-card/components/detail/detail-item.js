@@ -16,7 +16,7 @@ import IconsModal from '../icons-modal';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
 import { Component } from '@wordpress/element';
 import { TextControl } from '@wordpress/components';
 
@@ -172,7 +172,7 @@ export default class DetailItem extends Component {
      * @returns {boolean} Whether or not the component should perform an update.
      */
     shouldComponentUpdate( nextProps ) {
-        return ! isShallowEqual( nextProps, this.props );
+        return ! isShallowEqualObjects( nextProps, this.props );
     }
 
     render() {

@@ -29,7 +29,7 @@ import {
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import isShallowEqual from '@wordpress/is-shallow-equal';
+import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
 import { Component, renderToString, Fragment } from '@wordpress/element';
 import { RichText, InspectorControls, MediaUpload } from '@wordpress/block-editor';
 import {
@@ -175,7 +175,7 @@ export default class Inspector extends Component {
             this.structuredDataTable();
         }
 
-        if ( ! isShallowEqual( attributes, prevAttributes ) ) {
+        if ( ! isShallowEqualObjects( attributes, prevAttributes ) ) {
             this.structuredDataNotice();
         }
 
