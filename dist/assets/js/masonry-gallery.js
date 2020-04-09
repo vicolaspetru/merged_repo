@@ -5,7 +5,7 @@
     const B = $( 'body' );
     const D = $( document );
 
-    var $gridGallery = $( '.direction-step-gallery' ),
+    let $gridGallery = $( '.direction-step-gallery' ),
         $grid = $( '.direction-step-gallery-grid' ),
         desktopGridCol = $gridGallery.data( 'grid-columns' ),
         tabletGridCol = desktopGridCol > 2 ? 3 : 2,
@@ -18,12 +18,12 @@
 
     function masonry( event, itemSelector, columnWidth ) {
         $grid.imagesLoaded( function() {
-            var Masonry = $grid.masonry( {
+            const Masonry = $grid.masonry( {
                 itemSelector,
                 columnWidth,
                 transitionDuration: '0.2s',
                 percentPosition: true,
-                gutter: gridGutter
+                gutter: gridGutter,
             } );
 
             Masonry.on( 'layoutComplete', function() {
@@ -47,7 +47,7 @@
 
         if ( event === 'ready' ) {
             $gridGallery.addClass( 'is-loading' );
-            $gridGallery.append( '<div class="direction-step-gallery-preloader">'+ wpzoomRecipeCard.strings['loading-gallery-media'] +'...</div>' );
+            $gridGallery.append( `<div class="direction-step-gallery-preloader">${ wpzoomRecipeCard.strings[ 'loading-gallery-media' ] }...</div>` );
         }
 
         /**
@@ -59,14 +59,12 @@
                 $gridGallery.removeClass( `columns-${ tabletGridCol } columns-${ mobileGridCol }` );
                 $gridGallery.addClass( `columns-${ desktopGridCol }` );
             }
-        }
-        else if ( W.width() < breakXLarge && W.width() >= breakMobile ) {
+        } else if ( W.width() < breakXLarge && W.width() >= breakMobile ) {
             if ( ! $gridGallery.hasClass( `columns-${ tabletGridCol }` ) ) {
                 $gridGallery.removeClass( `columns-${ desktopGridCol } columns-${ mobileGridCol }` );
                 $gridGallery.addClass( `columns-${ tabletGridCol }` );
             }
-        }
-        else {
+        } else {
             if ( ! $gridGallery.hasClass( `columns-${ mobileGridCol }` ) ) {
                 $gridGallery.removeClass( `columns-${ desktopGridCol } columns-${ tabletGridCol }` );
                 $gridGallery.addClass( `columns-${ mobileGridCol }` );
@@ -77,19 +75,33 @@
     }
 
     window.rebuildPrintMasonry = ( print_window ) => {
-        var $gridGallery = $( document ).find( '.direction-step-gallery' ),
+        let $gridGallery = $( document ).find( '.direction-step-gallery' ),
             $grid = $( document ).find( '.direction-step-gallery-grid' ),
             gridCol = $gridGallery.data( 'grid-columns' );
+
+        if ( ! $gridGallery.length ) {
+            setTimeout( function() {
+                print_window.print();
+            }, 500 );
+
+            print_window.onfocus = function() {
+                setTimeout( function() {
+                    print_window.close();
+                }, 500 );
+            };
+
+            return;
+        }
 
         $gridGallery.removeClass( `columns-${ gridCol }` ).addClass( 'columns-4' );
 
         $grid.imagesLoaded( function() {
-            var PrintMasonry = $grid.masonry( {
+            const PrintMasonry = $grid.masonry( {
                 // disable initial layout
                 initLayout: false,
                 columnWidth: '.direction-step-gallery-item',
                 percentPosition: true,
-                gutter: 8
+                gutter: 8,
             } );
 
             // bind event
@@ -102,22 +114,21 @@
                     setTimeout( function() {
                         print_window.close();
                     }, 500 );
-                }
+                };
             } );
 
             // trigger initial layout
             setTimeout( function() {
                 PrintMasonry.masonry();
-            }, 250 )
+            }, 250 );
         } );
-    }
+    };
 
     W.on( 'resize load', function() {
         rebuildMasonry( 'resize load' );
     } );
 
-    D.ready( function () {
+    D.ready( function() {
         rebuildMasonry( 'ready' );
     } );
-
-} )( jQuery, wpzoomRecipeCard );
+}( jQuery, wpzoomRecipeCard ) );
