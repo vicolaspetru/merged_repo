@@ -163,7 +163,7 @@ function ExtraOptionsModal(
 
             // The result can be accessed through the `m`-variable.
             forEach( m, ( match, groupIndex ) => {
-                if ( groupIndex === '1' ) {
+                if ( groupIndex === 1 ) {
                     const isGroup = includes( match, '**' ); // check for group title if contains **Text**
 
                     if ( isGroup ) {
@@ -200,7 +200,7 @@ function ExtraOptionsModal(
 
             // The result can be accessed through the `m`-variable.
             forEach( m, ( match, groupIndex ) => {
-                if ( groupIndex === '1' ) {
+                if ( groupIndex === 1 ) {
                     const isGroup = includes( match, '**' ); // check for group title if contains **Text**
 
                     if ( isGroup ) {
