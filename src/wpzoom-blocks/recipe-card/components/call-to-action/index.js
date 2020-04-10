@@ -116,6 +116,15 @@ export default class CTA extends Component {
         return ReactHtmlParser( text );
     }
 
+    /**
+     * Prevent CTA from being rerendered.
+     *
+     * @returns {boolean} Whether or not the component should perform an update.
+     */
+    shouldComponentUpdate() {
+        return false;
+    }
+
     render() {
         return (
             <Fragment>

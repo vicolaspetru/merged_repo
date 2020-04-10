@@ -21,8 +21,7 @@ import {
 /**
  * WordPress dependencies
  */
-import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
-import { Component } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 const iconsSVG = {
     vegan: vegan,
@@ -33,15 +32,20 @@ const iconsSVG = {
     'phosphate-free': phosphateFree,
 };
 
-export default class FoodLabels extends Component {
-    drawIconLabel() {
-        const { attributes: { settings } } = this.props;
+const FoodLabels = ( props ) => {
+    const {
+        attributes: {
+            settings,
+        },
+        location,
+    } = props;
+    const displayFoodLabels = get( settings, [ 1, 'displayFoodLabels' ] ) || false;
 
+    const drawIconLabel = () => {
         const foodLabels = get( settings, [ 1, 'foodLabels' ] ) || [];
-        const displayFoodLabels = get( settings, [ 1, 'displayFoodLabels' ] ) || false;
         const foodLabelsLocation = get( settings, [ 1, 'locationToShowFoodLabels' ] ) || 'top';
 
-        if ( isEmpty( foodLabels ) || ! displayFoodLabels || this.props.location !== foodLabelsLocation ) {
+        if ( isEmpty( foodLabels ) || location !== foodLabelsLocation ) {
             return null;
         }
 
@@ -54,24 +58,17 @@ export default class FoodLabels extends Component {
         } );
 
         return <ul className="food-labels-list">{ drawLabels }</ul>;
-    }
+    };
 
-    /**
-     * Perform a shallow equal to prevent every step item from being rerendered.
-     *
-     * @param {object} nextProps The next props the component will receive.
-     *
-     * @returns {boolean} Whether or not the component should perform an update.
-     */
-    shouldComponentUpdate( nextProps ) {
-        return ! isShallowEqualObjects( nextProps, this.props );
-    }
+    return (
+        <Fragment>
+            { displayFoodLabels &&
+                <div className="recipe-card-food-labels">
+                    { drawIconLabel() }
+                </div>
+            }
+        </Fragment>
+    );
+};
 
-    render() {
-        return (
-            <div className="recipe-card-food-labels">
-                { this.drawIconLabel() }
-            </div>
-        );
-    }
-}
+export default FoodLabels;

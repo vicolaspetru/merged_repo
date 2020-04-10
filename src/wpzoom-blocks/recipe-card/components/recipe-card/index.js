@@ -11,7 +11,6 @@ import {
     isUndefined,
 } from 'lodash';
 import classnames from 'classnames';
-import ReactPlayer from 'react-player';
 
 /**
  * Internal dependencies
@@ -21,6 +20,8 @@ import Ingredient from '../ingredient';
 import Direction from '../direction';
 import CallToAction from '../call-to-action';
 import FoodLabels from '../food-labels';
+import Video from '../video';
+import Notes from '../notes';
 import Inspector from '../block-settings';
 import ExtraOptionsModal from '../bulk';
 import { sharedIcon } from './shared-icon';
@@ -388,6 +389,7 @@ class RecipeCard extends Component {
             coursesTaxonomy,
             cuisinesTaxonomy,
             difficultiesTaxonomy,
+            isRecipeCardSelected,
             noticeUI,
         } = this.props;
 
@@ -402,14 +404,9 @@ class RecipeCard extends Component {
             id,
             recipeTitle,
             summary,
-            notesTitle,
-            notes,
             course,
             cuisine,
             difficulty,
-            hasVideo,
-            video,
-            videoTitle,
             hasImage,
             image,
             settings: {
@@ -430,7 +427,6 @@ class RecipeCard extends Component {
 
         const hasImageWithId = hasImage && ! isUndefined( get( image, 'id' ) );
         const activeStyle = getBlockStyle( className );
-        const videoType = get( video, 'type' );
 
         let headerContentAlign = headerAlign;
 
@@ -490,7 +486,7 @@ class RecipeCard extends Component {
         const mediaPlaceholder = (
             <MediaPlaceholder
                 addToGallery={ false }
-                disableMediaButtons={ hasImage && ! this.props.isRecipeCardSelected }
+                disableMediaButtons={ hasImage && ! isRecipeCardSelected }
                 className="recipe-card-image-placeholder"
                 icon={ ! hasImage && sharedIcon }
                 labels={ {
@@ -525,120 +521,57 @@ class RecipeCard extends Component {
         );
 
         return (
-            <div className={ RecipeCardClassName } id={ id }>
-                { noticeUI }
-                { this.state.isLoading && loadingSpinnerPlaceholder }
-                {
-                    'simple' !== activeStyle &&
-                    <Fragment>
-                        { ! hasImage && mediaPlaceholder }
-                        {
-                            hasImage &&
-                            <div className="recipe-card-image-preview">
-                                <div className="recipe-card-image">
-                                    <figure>
-                                        <img src={ get( image, [ 'url' ] ) } id={ get( image, [ 'id' ] ) } alt={ recipeTitle } />
-                                        <figcaption>
-                                            <Disabled>
-                                                { pin_btn && pinterestButton }
-                                                { print_btn && printButton }
-                                            </Disabled>
-                                        </figcaption>
-                                    </figure>
-                                </div>
-                            </div>
-                        }
-                        <div className="recipe-card-heading">
-                            <RichText
-                                className="recipe-card-title"
-                                tagName="h2"
-                                format="string"
-                                value={ recipeTitle }
-                                unstableOnFocus={ () => this.setFocus( 'recipeTitle' ) }
-                                onChange={ newTitle => setAttributes( { recipeTitle: newTitle } ) }
-                                onSetup={ ( ref ) => {
-                                    this.editorRefs.recipeTitle = ref;
-                                } }
-                                placeholder={ __( 'Enter the title of your recipe', 'wpzoom-recipe-card' ) }
-                                keepPlaceholderOnFocus={ true }
-                            />
-                            {
-                                displayAuthor &&
-                                <span className="recipe-card-author">
-                                    { __( 'Recipe by', 'wpzoom-recipe-card' ) } { customAuthorName }
-                                </span>
-                            }
-                            {
-                                <Fragment key="recipe-card-metadata">
-                                    {
-                                        displayCourse &&
-                                        '1' !== wpzoom_rcb_settings_course_taxonomy &&
-                                        <span className="recipe-card-course">{ __( 'Course', 'wpzoom-recipe-card' ) }: <mark>{ ! RichText.isEmpty( course ) ? course.filter( ( item ) => item ).join( ', ' ) : __( 'Not added', 'wpzoom-recipe-card' ) }</mark></span>
-                                    }
-                                    {
-                                        displayCuisine &&
-                                        '1' !== wpzoom_rcb_settings_cuisine_taxonomy &&
-                                        <span className="recipe-card-cuisine">{ __( 'Cuisine', 'wpzoom-recipe-card' ) }: <mark>{ ! RichText.isEmpty( cuisine ) ? cuisine.filter( ( item ) => item ).join( ', ' ) : __( 'Not added', 'wpzoom-recipe-card' ) }</mark></span>
-                                    }
-                                    {
-                                        displayDifficulty &&
-                                        '1' !== wpzoom_rcb_settings_difficulty_taxonomy &&
-                                        <span className="recipe-card-difficulty">{ __( 'Difficulty', 'wpzoom-recipe-card' ) }: <mark>{ ! RichText.isEmpty( difficulty ) ? difficulty.filter( ( item ) => item ).join( ', ' ) : __( 'Not added', 'wpzoom-recipe-card' ) }</mark></span>
-                                    }
-                                </Fragment>
-                            }
-                            {
-                                <Fragment key="recipe-card-terms">
-                                    {
-                                        displayCourse &&
-                                        '1' === wpzoom_rcb_settings_course_taxonomy &&
-                                        <span className="recipe-card-course">{ __( 'Course', 'wpzoom-recipe-card' ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_courses' ) }</mark></span>
-                                    }
-                                    {
-                                        displayCuisine &&
-                                        '1' === wpzoom_rcb_settings_cuisine_taxonomy &&
-                                        <span className="recipe-card-cuisine">{ __( 'Cuisine', 'wpzoom-recipe-card' ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_cuisines' ) }</mark></span>
-                                    }
-                                    {
-                                        displayDifficulty &&
-                                        '1' === wpzoom_rcb_settings_difficulty_taxonomy &&
-                                        <span className="recipe-card-difficulty">{ __( 'Difficulty', 'wpzoom-recipe-card' ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_difficulties' ) }</mark></span>
-                                    }
-                                </Fragment>
-                            }
-                            <p className="description">{ __( 'You can add or edit these details in the Block Options on the right →', 'wpzoom-recipe-card' ) }</p>
-                        </div>
-                        <Detail
-                            generateId={ generateId }
-                            { ...{ attributes, setAttributes, className } }
+            <Fragment>
+                { isRecipeCardSelected && (
+                    <Inspector
+                        media={ this.props.media }
+                        categories={ this.props.categories }
+                        postTitle={ postTitle }
+                        postType={ postType }
+                        postAuthor={ postAuthor }
+                        imageSizes={ this.props.imageSizes }
+                        maxWidth={ this.props.maxWidth }
+                        isRTL={ this.props.isRTL }
+                        settingOptions={ settingOptions }
+                        coursesTaxonomy={ coursesTaxonomy }
+                        cuisinesTaxonomy={ cuisinesTaxonomy }
+                        difficultiesTaxonomy={ difficultiesTaxonomy }
+                        { ...{ attributes, setAttributes, className } }
+                    />
+                ) }
+                { isRecipeCardSelected && (
+                    <BlockControls>
+                        <ExtraOptionsModal
+                            ingredients={ this.props.attributes.ingredients }
+                            steps={ this.props.attributes.steps }
+                            setAttributes={ this.props.setAttributes }
+                            onBulkAdd={ this.onBulkAdd }
                         />
-
-                    </Fragment>
-                }
-
-                {
-                    'simple' === activeStyle &&
-                    <div className="recipe-card-header-wrap">
-                        { ! hasImage && mediaPlaceholder }
-                        {
-                            hasImage &&
-                            <div className="recipe-card-image-preview">
-                                <div className="recipe-card-image">
-                                    <figure>
-                                        <img src={ get( image, [ 'url' ] ) } id={ get( image, [ 'id' ] ) } alt={ recipeTitle } />
-                                        <figcaption>
-                                            <Disabled>
-                                                { pin_btn && pinterestButton }
-                                                { print_btn && printButton }
-                                            </Disabled>
-                                        </figcaption>
-                                    </figure>
+                    </BlockControls>
+                ) }
+                <div className={ RecipeCardClassName } id={ id }>
+                    { noticeUI }
+                    { this.state.isLoading && loadingSpinnerPlaceholder }
+                    {
+                        'simple' !== activeStyle &&
+                        <Fragment>
+                            { ! hasImage && mediaPlaceholder }
+                            {
+                                hasImage &&
+                                <div className="recipe-card-image-preview">
+                                    <div className="recipe-card-image">
+                                        <figure>
+                                            <img src={ get( image, [ 'url' ] ) } id={ get( image, [ 'id' ] ) } alt={ recipeTitle } />
+                                            <figcaption>
+                                                <Disabled>
+                                                    { pin_btn && pinterestButton }
+                                                    { print_btn && printButton }
+                                                </Disabled>
+                                            </figcaption>
+                                        </figure>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-
-                        <div className="recipe-card-along-image">
-
+                            }
                             <div className="recipe-card-heading">
                                 <RichText
                                     className="recipe-card-title"
@@ -704,140 +637,142 @@ class RecipeCard extends Component {
                                 { ...{ attributes, setAttributes, className } }
                             />
 
-                        </div>
+                        </Fragment>
+                    }
 
-                    </div>
-                }
-                <FoodLabels
-                    location="top"
-                    { ...{ attributes, setAttributes } }
-                />
-                <RichText
-                    className="recipe-card-summary"
-                    tagName="p"
-                    value={ summary }
-                    unstableOnFocus={ () => this.setFocus( 'summary' ) }
-                    onChange={ ( newSummary ) => setAttributes( { summary: newSummary, jsonSummary: stripHTML( renderToString( newSummary ) ) } ) }
-                    onSetup={ ( ref ) => {
-                        this.editorRefs.summary = ref;
-                    } }
-                    placeholder={ __( 'Enter a short recipe description.', 'wpzoom-recipe-card' ) }
-                    keepPlaceholderOnFocus={ true }
-                />
-                <Ingredient
-                    generateId={ generateId }
-                    isRecipeCardSelected={ this.props.isRecipeCardSelected }
-                    { ...{ attributes, setAttributes, className } }
-                />
-                <Direction
-                    generateId={ generateId }
-                    isRecipeCardSelected={ this.props.isRecipeCardSelected }
-                    { ...{ attributes, setAttributes, className } }
-                />
-                <div className="recipe-card-video">
+                    {
+                        'simple' === activeStyle &&
+                        <div className="recipe-card-header-wrap">
+                            { ! hasImage && mediaPlaceholder }
+                            {
+                                hasImage &&
+                                <div className="recipe-card-image-preview">
+                                    <div className="recipe-card-image">
+                                        <figure>
+                                            <img src={ get( image, [ 'url' ] ) } id={ get( image, [ 'id' ] ) } alt={ recipeTitle } />
+                                            <figcaption>
+                                                <Disabled>
+                                                    { pin_btn && pinterestButton }
+                                                    { print_btn && printButton }
+                                                </Disabled>
+                                            </figcaption>
+                                        </figure>
+                                    </div>
+                                </div>
+                            }
+
+                            <div className="recipe-card-along-image">
+
+                                <div className="recipe-card-heading">
+                                    <RichText
+                                        className="recipe-card-title"
+                                        tagName="h2"
+                                        format="string"
+                                        value={ recipeTitle }
+                                        unstableOnFocus={ () => this.setFocus( 'recipeTitle' ) }
+                                        onChange={ newTitle => setAttributes( { recipeTitle: newTitle } ) }
+                                        onSetup={ ( ref ) => {
+                                            this.editorRefs.recipeTitle = ref;
+                                        } }
+                                        placeholder={ __( 'Enter the title of your recipe', 'wpzoom-recipe-card' ) }
+                                        keepPlaceholderOnFocus={ true }
+                                    />
+                                    {
+                                        displayAuthor &&
+                                        <span className="recipe-card-author">
+                                            { __( 'Recipe by', 'wpzoom-recipe-card' ) } { customAuthorName }
+                                        </span>
+                                    }
+                                    {
+                                        <Fragment key="recipe-card-metadata">
+                                            {
+                                                displayCourse &&
+                                                '1' !== wpzoom_rcb_settings_course_taxonomy &&
+                                                <span className="recipe-card-course">{ __( 'Course', 'wpzoom-recipe-card' ) }: <mark>{ ! RichText.isEmpty( course ) ? course.filter( ( item ) => item ).join( ', ' ) : __( 'Not added', 'wpzoom-recipe-card' ) }</mark></span>
+                                            }
+                                            {
+                                                displayCuisine &&
+                                                '1' !== wpzoom_rcb_settings_cuisine_taxonomy &&
+                                                <span className="recipe-card-cuisine">{ __( 'Cuisine', 'wpzoom-recipe-card' ) }: <mark>{ ! RichText.isEmpty( cuisine ) ? cuisine.filter( ( item ) => item ).join( ', ' ) : __( 'Not added', 'wpzoom-recipe-card' ) }</mark></span>
+                                            }
+                                            {
+                                                displayDifficulty &&
+                                                '1' !== wpzoom_rcb_settings_difficulty_taxonomy &&
+                                                <span className="recipe-card-difficulty">{ __( 'Difficulty', 'wpzoom-recipe-card' ) }: <mark>{ ! RichText.isEmpty( difficulty ) ? difficulty.filter( ( item ) => item ).join( ', ' ) : __( 'Not added', 'wpzoom-recipe-card' ) }</mark></span>
+                                            }
+                                        </Fragment>
+                                    }
+                                    {
+                                        <Fragment key="recipe-card-terms">
+                                            {
+                                                displayCourse &&
+                                                '1' === wpzoom_rcb_settings_course_taxonomy &&
+                                                <span className="recipe-card-course">{ __( 'Course', 'wpzoom-recipe-card' ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_courses' ) }</mark></span>
+                                            }
+                                            {
+                                                displayCuisine &&
+                                                '1' === wpzoom_rcb_settings_cuisine_taxonomy &&
+                                                <span className="recipe-card-cuisine">{ __( 'Cuisine', 'wpzoom-recipe-card' ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_cuisines' ) }</mark></span>
+                                            }
+                                            {
+                                                displayDifficulty &&
+                                                '1' === wpzoom_rcb_settings_difficulty_taxonomy &&
+                                                <span className="recipe-card-difficulty">{ __( 'Difficulty', 'wpzoom-recipe-card' ) }: <mark>{ this.renderTerms( 'wpzoom_rcb_difficulties' ) }</mark></span>
+                                            }
+                                        </Fragment>
+                                    }
+                                    <p className="description">{ __( 'You can add or edit these details in the Block Options on the right →', 'wpzoom-recipe-card' ) }</p>
+                                </div>
+                                <Detail
+                                    generateId={ generateId }
+                                    { ...{ attributes, setAttributes, className } }
+                                />
+
+                            </div>
+
+                        </div>
+                    }
+                    <FoodLabels
+                        location="top"
+                        { ...{ attributes, setAttributes } }
+                    />
                     <RichText
-                        tagName="h3"
-                        className="video-title"
-                        format="string"
-                        value={ videoTitle }
-                        unstableOnFocus={ () => this.setFocus( 'videoTitle' ) }
-                        onChange={ ( videoTitle ) => setAttributes( { videoTitle } ) }
+                        className="recipe-card-summary"
+                        tagName="p"
+                        value={ summary }
+                        unstableOnFocus={ () => this.setFocus( 'summary' ) }
+                        onChange={ ( newSummary ) => setAttributes( { summary: newSummary, jsonSummary: stripHTML( renderToString( newSummary ) ) } ) }
                         onSetup={ ( ref ) => {
-                            this.editorRefs.videoTitle = ref;
+                            this.editorRefs.summary = ref;
                         } }
-                        placeholder={ __( 'Write Recipe Video title', 'wpzoom-recipe-card' ) }
+                        placeholder={ __( 'Enter a short recipe description.', 'wpzoom-recipe-card' ) }
                         keepPlaceholderOnFocus={ true }
                     />
-                    {
-                        ! hasVideo &&
-                        <Placeholder
-                            icon="video-alt3"
-                            className="wpzoom-recipe-card-video-placeholder"
-                            instructions={ __( 'You can add a video here from Recipe Card Video Settings in the right sidebar', 'wpzoom-recipe-card' ) }
-                            label={ __( 'Recipe Card Video', 'wpzoom-recipe-card' ) }
-                        />
-                    }
-                    {
-                        hasVideo &&
-                        'embed' === videoType &&
-                        <Fragment>
-                            <ReactPlayer
-                                width="100%"
-                                height="340px"
-                                url={ get( video, 'url' ) }
-                            />
-                        </Fragment>
-                    }
-                    {
-                        hasVideo &&
-                        'self-hosted' === videoType &&
-                        <Fragment>
-                            <video
-                                controls={ get( video, 'settings.controls' ) }
-                                poster={ get( video, 'poster.url' ) }
-                                src={ get( video, 'url' ) }
-                            />
-                        </Fragment>
-                    }
+                    <Ingredient
+                        generateId={ generateId }
+                        isRecipeCardSelected={ isRecipeCardSelected }
+                        { ...{ attributes, setAttributes, className } }
+                    />
+                    <Direction
+                        generateId={ generateId }
+                        isRecipeCardSelected={ isRecipeCardSelected }
+                        { ...{ attributes, setAttributes, className } }
+                    />
+                    <Video
+                        onFocus={ this.setFocus }
+                        { ...{ attributes, setAttributes } }
+                    />
+                    <Notes
+                        onFocus={ this.setFocus }
+                        { ...{ attributes, setAttributes } }
+                    />
+                    <FoodLabels
+                        location="bottom"
+                        { ...{ attributes, setAttributes } }
+                    />
+                    <CallToAction />
                 </div>
-                <div className="recipe-card-notes">
-                    <RichText
-                        tagName="h3"
-                        className="notes-title"
-                        format="string"
-                        value={ notesTitle }
-                        unstableOnFocus={ () => this.setFocus( 'notesTitle' ) }
-                        onChange={ ( notesTitle ) => setAttributes( { notesTitle } ) }
-                        onSetup={ ( ref ) => {
-                            this.editorRefs.notesTitle = ref;
-                        } }
-                        placeholder={ __( 'Write Notes title', 'wpzoom-recipe-card' ) }
-                        keepPlaceholderOnFocus={ true }
-                    />
-                    <RichText
-                        className="recipe-card-notes-list"
-                        tagName="ul"
-                        multiline="li"
-                        value={ notes }
-                        unstableOnFocus={ () => this.setFocus( 'notes' ) }
-                        onChange={ ( newNote ) => setAttributes( { notes: newNote } ) }
-                        onSetup={ ( ref ) => {
-                            this.editorRefs.notes = ref;
-                        } }
-                        placeholder={ __( 'Enter Note text for your recipe.', 'wpzoom-recipe-card' ) }
-                        keepPlaceholderOnFocus={ true }
-                    />
-                    <p className="description">{ __( 'Press Enter to add new note.', 'wpzoom-recipe-card' ) }</p>
-                </div>
-                <FoodLabels
-                    location="bottom"
-                    { ...{ attributes, setAttributes } }
-                />
-                <CallToAction />
-                <Inspector
-                    media={ this.props.media }
-                    categories={ this.props.categories }
-                    postTitle={ postTitle }
-                    postType={ postType }
-                    postAuthor={ postAuthor }
-                    imageSizes={ this.props.imageSizes }
-                    maxWidth={ this.props.maxWidth }
-                    isRTL={ this.props.isRTL }
-                    settingOptions={ settingOptions }
-                    coursesTaxonomy={ coursesTaxonomy }
-                    cuisinesTaxonomy={ cuisinesTaxonomy }
-                    difficultiesTaxonomy={ difficultiesTaxonomy }
-                    { ...{ attributes, setAttributes, className } }
-                />
-                <BlockControls>
-                    <ExtraOptionsModal
-                        ingredients={ this.props.attributes.ingredients }
-                        steps={ this.props.attributes.steps }
-                        setAttributes={ this.props.setAttributes }
-                        onBulkAdd={ this.onBulkAdd }
-                    />
-                </BlockControls>
-            </div>
+            </Fragment>
         );
     }
 }
@@ -848,6 +783,8 @@ const applyWithSelect = withSelect( ( select, props ) => {
             image,
             hasImage,
         },
+        clientId,
+        isSelected,
     } = props;
 
     const {
@@ -862,7 +799,10 @@ const applyWithSelect = withSelect( ( select, props ) => {
         getEditorSettings,
     } = select( 'core/editor' );
 
-    const { getSelectedBlock } = select( 'core/block-editor' );
+    const {
+        getBlockHierarchyRootClientId,
+        getSelectedBlockClientId,
+    } = select( 'core/block-editor' );
 
     const {
         maxWidth,
@@ -894,8 +834,9 @@ const applyWithSelect = withSelect( ( select, props ) => {
         return authorData;
     };
 
-    const selectedBlock = getSelectedBlock();
-    const isRecipeCardSelected = get( selectedBlock, 'name' ) === 'wpzoom-recipe-card/block-recipe-card';
+    // Get clientID of the parent block.
+    const rootClientId = getBlockHierarchyRootClientId( clientId );
+    const selectedRootClientId = getBlockHierarchyRootClientId( getSelectedBlockClientId() );
 
     const postType = getPostType( getEditedPostAttribute( 'type' ) );
     const categories = getEditedPostAttribute( 'categories' );
@@ -957,7 +898,7 @@ const applyWithSelect = withSelect( ( select, props ) => {
         imageSizes,
         maxWidth,
         isRTL,
-        isRecipeCardSelected,
+        isRecipeCardSelected: isSelected || rootClientId === selectedRootClientId,
     };
 } );
 

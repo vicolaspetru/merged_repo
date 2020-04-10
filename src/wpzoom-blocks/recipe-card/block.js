@@ -111,7 +111,7 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
      *
      * @returns {Component} RecipeCard Component
      */
-    edit: ( { attributes, setAttributes, className } ) => {
+    edit: ( { attributes, setAttributes, className, clientId, isSelected } ) => {
         // Fix issue with null value for custom details items
         // Add default value instead of null
         const customDetailsDetaults = [
@@ -155,7 +155,7 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
             }
         } );
 
-        return <RecipeCard { ...{ attributes, setAttributes, className } } />;
+        return <RecipeCard { ...{ attributes, setAttributes, className, clientId, isSelected } } />;
     },
 
     save() {
