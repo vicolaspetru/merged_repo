@@ -1,18 +1,22 @@
-/* External dependencies */
-import PropTypes from "prop-types";
-import { __ } from "@wordpress/i18n";
-import isShallowEqual from "@wordpress/is-shallow-equal/objects";
+/**
+ * External dependencies
+ */
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-/* WordPress dependencies */
-const { Component, Fragment } = wp.element;
-const { RichText } = wp.blockEditor;
-const { IconButton } = wp.components;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
+import { Component, Fragment } from '@wordpress/element';
+import { RichText } from '@wordpress/block-editor';
+import { Button } from '@wordpress/components';
 
 /**
  * A Ingredient item within a Ingredient block.
  */
 export default class IngredientItem extends Component {
-
     /**
      * Constructs a IngredientItem editor component.
      *
@@ -83,7 +87,7 @@ export default class IngredientItem extends Component {
      * @returns {void}
      */
     setNameRef( ref ) {
-        this.props.editorRef( this.props.index, "name", ref );
+        this.props.editorRef( this.props.index, 'name', ref );
     }
 
     /**
@@ -92,7 +96,7 @@ export default class IngredientItem extends Component {
      * @returns {void}
      */
     onFocusName() {
-        this.props.onFocus( this.props.index, "name" );
+        this.props.onFocus( this.props.index, 'name' );
     }
 
     /**
@@ -107,7 +111,7 @@ export default class IngredientItem extends Component {
             onChange,
             index,
             item: {
-                name
+                name,
             },
         } = this.props;
 
@@ -126,7 +130,7 @@ export default class IngredientItem extends Component {
             onChange,
             index,
             item: {
-                name
+                name,
             },
         } = this.props;
 
@@ -141,16 +145,16 @@ export default class IngredientItem extends Component {
     getButtons() {
         return <div className="ingredient-item-button-container">
             { this.getMover() }
-            <IconButton
+            <Button
                 className="ingredient-item-button ingredient-item-button-delete editor-inserter__toggle"
                 icon="trash"
-                label={ __( "Delete ingredient", "wpzoom-recipe-card" ) }
+                label={ __( 'Delete ingredient', 'wpzoom-recipe-card' ) }
                 onClick={ this.onRemoveIngredient }
             />
-            <IconButton
+            <Button
                 className="ingredient-item-button ingredient-item-button-add editor-inserter__toggle"
                 icon="editor-break"
-                label={ __( "Insert ingredient", "wpzoom-recipe-card" ) }
+                label={ __( 'Insert ingredient', 'wpzoom-recipe-card' ) }
                 onClick={ this.onInsertIngredient }
             />
         </div>;
@@ -163,18 +167,18 @@ export default class IngredientItem extends Component {
      */
     getMover() {
         return <Fragment>
-            <IconButton
+            <Button
                 className="editor-block-mover__control"
                 onClick={ this.onMoveIngredientUp }
                 icon="arrow-up-alt2"
-                label={ __( "Move item up", "wpzoom-recipe-card" ) }
+                label={ __( 'Move item up', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isFirst }
             />
-            <IconButton
+            <Button
                 className="editor-block-mover__control"
                 onClick={ this.onMoveIngredientDown }
                 icon="arrow-down-alt2"
-                label={ __( "Move item down", "wpzoom-recipe-card" ) }
+                label={ __( 'Move item down', 'wpzoom-recipe-card' ) }
                 aria-disabled={ this.props.isLast }
             />
         </Fragment>;
@@ -188,7 +192,7 @@ export default class IngredientItem extends Component {
      * @returns {boolean} Whether or not the component should perform an update.
      */
     shouldComponentUpdate( nextProps ) {
-        return ! isShallowEqual( nextProps, this.props );
+        return ! isShallowEqualObjects( nextProps, this.props );
     }
 
     /**
@@ -200,16 +204,19 @@ export default class IngredientItem extends Component {
         const {
             isSelected,
             subElement,
-            item
+            item,
         } = this.props;
         const { id, name, isGroup } = item;
-        const isSelectedName = isSelected && subElement === "name";
-        const itemClassName = !isGroup ? "ingredient-item" : "ingredient-item ingredient-item-group";
+        const isSelectedName = isSelected && subElement === 'name';
+        const itemClassName = classnames( {
+            'ingredient-item': ! isGroup,
+            'ingredient-item ingredient-item-group': isGroup,
+        } );
 
         return (
             <li className={ itemClassName } key={ id }>
                 {
-                    !isGroup &&
+                    ! isGroup &&
                     <RichText
                         className="ingredient-item-name"
                         tagName="p"
@@ -217,7 +224,7 @@ export default class IngredientItem extends Component {
                         key={ `${ id }-name` }
                         value={ name }
                         onChange={ this.onChangeName }
-                        placeholder={ __( "Enter ingredient name", "wpzoom-recipe-card" ) }
+                        placeholder={ __( 'Enter ingredient name', 'wpzoom-recipe-card' ) }
                         unstableOnFocus={ this.onFocusName }
                         keepPlaceholderOnFocus={ true }
                     />
@@ -231,7 +238,7 @@ export default class IngredientItem extends Component {
                         key={ `${ id }-group-title` }
                         value={ name }
                         onChange={ this.onChangeGroupTitle }
-                        placeholder={ __( "Enter group title", "wpzoom-recipe-card" ) }
+                        placeholder={ __( 'Enter group title', 'wpzoom-recipe-card' ) }
                         unstableOnFocus={ this.onFocusName }
                         keepPlaceholderOnFocus={ true }
                     />
@@ -246,7 +253,6 @@ export default class IngredientItem extends Component {
         );
     }
 }
-
 
 IngredientItem.propTypes = {
     index: PropTypes.number.isRequired,

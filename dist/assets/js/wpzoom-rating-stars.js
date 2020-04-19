@@ -1,9 +1,9 @@
-jQuery(document).ready(function () {
+jQuery( document ).ready( function () {
     var __slice = [].slice;
 
-    (function ($, wpzoomRatingStars) {
+    ( function ( $, wpzoomRatingStars ) {
         class WPZOOM_Rating_Star {
-            constructor($el, options) {
+            constructor( $el, options ) {
                 var i,
                     _,
                     _ref,
@@ -12,51 +12,51 @@ jQuery(document).ready(function () {
                     rating: void 0,
                     rating_total: void 0,
                     numStars: 5,
-                    change: function (e, value) { }
+                    change: function ( e, value ) { }
                 };
-                this.options = $.extend({}, this.defaults, options);
+                this.options = $.extend( {}, this.defaults, options );
                 this.$el = $el;
                 _ref = this.defaults;
-                for (i in _ref) {
+                for ( i in _ref ) {
                     _ = _ref[i];
-                    if (this.$el.data(i) != null) {
-                        this.options[i] = this.$el.data(i);
+                    if ( this.$el.data( i ) != null ) {
+                        this.options[i] = this.$el.data( i );
                     }
                 }
-                if (wpzoomRatingStars.user_rated) {
-                    this.$el.addClass("wpzoom-recipe-user-rated");
+                if ( wpzoomRatingStars.user_rated ) {
+                    this.$el.addClass( "wpzoom-recipe-user-rated" );
                 }
                 this.$el
                     .next()
-                    .find("small.wpzoom-rating-average")
-                    .html(this.options.rating);
+                    .find( "small.wpzoom-rating-average" )
+                    .html( this.options.rating );
                 this.$el
                     .next()
-                    .find("small.wpzoom-rating-total-votes")
-                    .html(this.options.rating_total);
+                    .find( "small.wpzoom-rating-total-votes" )
+                    .html( this.options.rating_total );
                 this.syncRating();
-                this.$el.on("mouseover.starrr", "li", function (e) {
+                this.$el.on( "mouseover.starrr", "li", function ( e ) {
                     return _this.syncRating(
-                        _this.$el.find("li").index(e.currentTarget) + 1
+                        _this.$el.find( "li" ).index( e.currentTarget ) + 1
                     );
-                });
-                this.$el.on("mouseout.starrr", function () {
+                } );
+                this.$el.on( "mouseout.starrr", function () {
                     return _this.syncRating();
-                });
-                this.$el.on("click.starrr", "li", function (e) {
-                    var element = $(this);
+                } );
+                this.$el.on( "click.starrr", "li", function ( e ) {
+                    var element = $( this );
                     return _this.setRating(
-                        _this.$el.find("li").index(e.currentTarget) + 1,
+                        _this.$el.find( "li" ).index( e.currentTarget ) + 1,
                         element
                     );
-                });
-                this.$el.on("starrr:change", this.options.change);
+                } );
+                this.$el.on( "starrr:change", this.options.change );
             }
-            setRating (rating, element) {
+            setRating ( rating, element ) {
                 // prevent user multiple votes with same rating value
                 if (
                     wpzoomRatingStars.user_rated &&
-                    parseInt(this.options.rating) === rating
+                    parseInt( this.options.rating ) === rating
                 ) {
                     return false;
                 }
@@ -70,121 +70,121 @@ jQuery(document).ready(function () {
                     security: wpzoomRatingStars.ajax_nonce
                 };
                 element
-                    .parents(".wpzoom-rating-stars-container")
-                    .addClass("is-loading");
-                $.post(wpzoomRatingStars.ajaxurl, data, function (response) {
+                    .parents( ".wpzoom-rating-stars-container" )
+                    .addClass( "is-loading" );
+                $.post( wpzoomRatingStars.ajaxurl, data, function ( response ) {
                     var data = response.data;
-                    if (response.success) {
+                    if ( response.success ) {
                         rating_avg = data.rating_avg;
                         rating_total = data.rating_total;
                         element
                             .parent()
                             .next()
-                            .find("small.wpzoom-rating-average")
-                            .html(rating_avg);
+                            .find( "small.wpzoom-rating-average" )
+                            .html( rating_avg );
                         element
                             .parent()
                             .next()
-                            .find("small.wpzoom-rating-total-votes")
-                            .html(rating_total);
+                            .find( "small.wpzoom-rating-total-votes" )
+                            .html( rating_total );
                         element
-                            .parents(".wpzoom-rating-stars-container")
-                            .removeClass("is-loading");
+                            .parents( ".wpzoom-rating-stars-container" )
+                            .removeClass( "is-loading" );
                     } else {
                         element
-                            .parents(".wpzoom-rating-stars-container")
-                            .removeClass("is-loading");
+                            .parents( ".wpzoom-rating-stars-container" )
+                            .removeClass( "is-loading" );
                         element
-                            .parents(".wpzoom-rating-stars-container")
-                            .attr("data-user-can-rate", "0");
+                            .parents( ".wpzoom-rating-stars-container" )
+                            .attr( "data-user-can-rate", "0" );
                         element
-                            .parents(".wpzoom-rating-stars-container")
-                            .find(".wpzoom-rating-stars-tooltip")
-                            .html(data.message);
+                            .parents( ".wpzoom-rating-stars-container" )
+                            .find( ".wpzoom-rating-stars-tooltip" )
+                            .html( data.message );
                     }
-                }).done(function (response) {
+                } ).done( function ( response ) {
                     var data = response.data;
-                    if (response.success) {
+                    if ( response.success ) {
                         _this.options.rating = data.rating_avg;
                         _this.options.rating_total = data.rating_total;
                         _this.syncRating();
-                        return _this.$el.trigger("starrr:change", data.rating_avg);
+                        return _this.$el.trigger( "starrr:change", data.rating_avg );
                     }
-                });
+                } );
             }
-            syncRating (rating) {
+            syncRating ( rating ) {
                 var i, _i, _j, _ref;
                 // Make sure we make full stars
-                if (rating) {
-                    rating = parseFloat(rating);
+                if ( rating ) {
+                    rating = parseFloat( rating );
                 } else {
-                    rating = parseFloat(this.options.rating);
+                    rating = parseFloat( this.options.rating );
                 }
                 // add class if user has rated
-                if (wpzoomRatingStars.user_rated) {
-                    this.$el.addClass("wpzoom-recipe-user-rated");
+                if ( wpzoomRatingStars.user_rated ) {
+                    this.$el.addClass( "wpzoom-recipe-user-rated" );
                 }
-                if (rating) {
+                if ( rating ) {
                     for (
                         i = _i = 0, _ref = rating;
                         0 <= _ref ? _i <= _ref : _i >= _ref;
                         i = 0 <= _ref ? ++_i : --_i
                     ) {
                         this.$el
-                            .find("li")
-                            .eq(i)
-                            .removeClass("far")
-                            .addClass("fas");
+                            .find( "li" )
+                            .eq( i )
+                            .removeClass( "far" )
+                            .addClass( "fas" );
                     }
                 }
-                if (rating && rating < 5) {
+                if ( rating && rating < 5 ) {
                     for (
                         i = _j = rating;
                         rating <= 4 ? _j <= 4 : _j >= 4;
                         i = rating <= 4 ? ++_j : --_j
                     ) {
                         this.$el
-                            .find("li")
-                            .eq(i)
-                            .removeClass("fas")
-                            .addClass("far");
+                            .find( "li" )
+                            .eq( i )
+                            .removeClass( "fas" )
+                            .addClass( "far" );
                     }
                 }
-                if (!rating) {
+                if ( !rating ) {
                     return this.$el
-                        .find("li")
-                        .removeClass("fas")
-                        .addClass("far");
+                        .find( "li" )
+                        .removeClass( "fas" )
+                        .addClass( "far" );
                 }
             }
         }
 
-        return $.fn.extend({
+        return $.fn.extend( {
             starrr: function () {
                 var args, option;
 
-                (option = arguments[0]),
-                    (args = 2 <= arguments.length ? __slice.call(arguments, 1) : []);
-                return this.each(function () {
+                ( option = arguments[0] ),
+                ( args = 2 <= arguments.length ? __slice.call( arguments, 1 ) : [] );
+                return this.each( function () {
                     var data;
 
-                    data = $(this).data("star-rating");
-                    if (!data) {
-                        $(this).data(
+                    data = $( this ).data( "star-rating" );
+                    if ( !data ) {
+                        $( this ).data(
                             "star-rating",
-                            (data = new WPZOOM_Rating_Star($(this), option))
+                            ( data = new WPZOOM_Rating_Star( $( this ), option ) )
                         );
                     }
-                    if (typeof option === "string") {
-                        return data[option].apply(data, args);
+                    if ( typeof option === "string" ) {
+                        return data[option].apply( data, args );
                     }
-                });
+                } );
             }
-        });
-    })(jQuery, wpzoomRatingStars);
+        } );
+    } )( jQuery, wpzoomRatingStars );
 
-    jQuery("ul.wpzoom-rating-stars").starrr({
+    jQuery( "ul.wpzoom-rating-stars" ).starrr( {
         rating: wpzoomRatingStars.rating_average,
         rating_total: wpzoomRatingStars.rating_total
-    });
-});
+    } );
+} );

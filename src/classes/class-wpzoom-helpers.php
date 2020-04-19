@@ -90,6 +90,18 @@ class WPZOOM_Helpers {
 		if ( !isset( $settings['custom_author_name'] ) ) {
 			$settings['custom_author_name'] = WPZOOM_Settings::get('wpzoom_rcb_settings_author_custom_name');
 		}
+		if ( !isset( $settings['displayAuthor'] ) ) {
+			$settings['displayAuthor'] = WPZOOM_Settings::get('wpzoom_rcb_settings_display_author');
+		}
+		if ( !isset( $settings['displayCourse'] ) ) {
+			$settings['displayCourse'] = WPZOOM_Settings::get('wpzoom_rcb_settings_display_course');
+		}
+		if ( !isset( $settings['displayCuisine'] ) ) {
+			$settings['displayCuisine'] = WPZOOM_Settings::get('wpzoom_rcb_settings_display_cuisine');
+		}
+		if ( !isset( $settings['displayDifficulty'] ) ) {
+			$settings['displayDifficulty'] = WPZOOM_Settings::get('wpzoom_rcb_settings_display_difficulty');
+		}
 		if ( !isset( $settings['displayServings'] ) ) {
 			$settings['displayServings'] = WPZOOM_Settings::get('wpzoom_rcb_settings_display_servings');
 		}

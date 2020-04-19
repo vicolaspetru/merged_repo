@@ -57,7 +57,10 @@
                     amountElement.text( roundedAmount );
                 }
             }
-        } )
+        } );
+
+        // Update print button attribute
+        $( document ).find( '.btn-print-link, .wp-block-wpzoom-recipe-card-block-print-recipe' ).data( 'servings-size', servings );
     }
 
     function initTextField() {
@@ -169,6 +172,20 @@
                 $spinner.parent().find( ".only-print-visible" ).text( newVal );
             } );
         } );
+    }
+
+    window.setPrintServings = ( servings ) => {
+        if ( servings > 0 ) {
+            var $recipe = $( document ).find( '.wpzoom-rcb-print' );
+
+            $( '.detail-item-adjustable-servings' ).each( function() {
+                $( this ).text( servings );
+                $( this ).data( 'servings', servings );
+                $( this ).parents( '.detail-item' ).find( 'p.detail-item-value.only-print-visible' ).text( servings );
+            } );
+
+            updateServingSize( $recipe );
+        }
     }
 
     $( document ).ready( function () {

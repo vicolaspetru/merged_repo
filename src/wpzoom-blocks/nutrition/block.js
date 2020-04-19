@@ -5,14 +5,16 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-
-/* Internal dependencies */
+/**
+ * Internal dependencies
+ */
 import Nutrition from './components/Nutrition';
 
-/* WordPress dependencies */
-const { registerBlockType } = wp.blocks;
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Register: Nutrition Gutenberg Block.
@@ -29,8 +31,8 @@ const { registerBlockType } = wp.blocks;
  */
 registerBlockType( 'wpzoom-recipe-card/block-nutrition', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( "Nutrition", "wpzoom-recipe-card" ), // Block title.
-    description: __( "Display Nutrition Facts for your recipe.", "wpzoom-recipe-card" ),
+    title: __( 'Nutrition', 'wpzoom-recipe-card' ), // Block title.
+    description: __( 'Display Nutrition Facts for your recipe.', 'wpzoom-recipe-card' ),
     icon: {
         // Specifying a background color to appear with the icon e.g.: in the inserter.
         // background: '#FDA921',
@@ -45,9 +47,9 @@ registerBlockType( 'wpzoom-recipe-card/block-nutrition', {
         multiple: false,
     },
     keywords: [
-        __( "Recipe Card", "wpzoom-recipe-card" ),
-        __( "Nutrition", "wpzoom-recipe-card" ),
-        __( "WPZOOM", "wpzoom-recipe-card" ),
+        __( 'Recipe Card', 'wpzoom-recipe-card' ),
+        __( 'Nutrition', 'wpzoom-recipe-card' ),
+        __( 'WPZOOM', 'wpzoom-recipe-card' ),
     ],
 
     /**
@@ -57,6 +59,7 @@ registerBlockType( 'wpzoom-recipe-card/block-nutrition', {
      * The "edit" property must be a valid function.
      *
      * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+     * @returns {Component} Nutrition Component
      */
     edit: ( { attributes, setAttributes, className, clientId } ) => {
         return <Nutrition { ...{ attributes, setAttributes, className, clientId } } />;
@@ -65,6 +68,6 @@ registerBlockType( 'wpzoom-recipe-card/block-nutrition', {
     save() {
         // Rendering in PHP
         return null;
-    }
+    },
 
 } );

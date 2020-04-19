@@ -1,0 +1,24 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "A set of utils grouped into collections, like array, object or function",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro.git"
+  },
+  "keywords": [
+    "wpzoom",
+    "utils",
+    "recipe card"
+  ],
+  "author": "Vicolas Petru",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro/issues"
+  },
+  "homepage": "https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro#readme"
+}

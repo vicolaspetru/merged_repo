@@ -1,30 +1,44 @@
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
-import get from "lodash/get";
-import ceil from "lodash/ceil";
-import filter from "lodash/filter";
-import findKey from "lodash/findKey";
+/*global wpzoomRecipeCard*/
 
-/* Internal dependencies */
-import { parseClassName } from "../../../helpers/getBlockStyle";
+/**
+ * External dependencies
+ */
+import {
+    get,
+    ceil,
+    filter,
+    findKey,
+} from 'lodash';
 
-/* WordPress dependencies */
-const { Component, Fragment } = wp.element;
-const { withSelect } = wp.data;
-const { compose } = wp.compose;
-const {
+/**
+ * Internal dependencies
+ */
+import { parseClassName } from '@wpzoom/helpers';
+
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { Component, Fragment } from '@wordpress/element';
+import { withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
+import {
     TextControl,
     PanelBody,
     Button,
-    SelectControl
-} = wp.components;
-const { InspectorControls } = wp.blockEditor;
+    SelectControl,
+} from '@wordpress/components';
+import { InspectorControls } from '@wordpress/block-editor';
 
-/* Import CSS. */
+/**
+ * Module constants
+ */
+const { nutritionFactsLabel } = wpzoomRecipeCard;
+const labels = nutritionFactsLabel;
+
+/* Import Styles */
 import '../style.scss';
 import '../editor.scss';
-
-const labels = wpzoomRecipeCard.nutritionFactsLabel;
 
 class Nutrition extends Component {
     constructor( props ) {
@@ -35,19 +49,19 @@ class Nutrition extends Component {
 
         this.state = {
             isDataPreFill: false,
-            reloadValues: false
-        }
+            reloadValues: false,
+        };
     }
 
     preFillData() {
         const {
             setAttributes,
             attributes: {
-                data
+                data,
             },
             blockData: {
-                details
-            }
+                details,
+            },
         } = this.props;
 
         if ( ! details ) {
@@ -61,18 +75,18 @@ class Nutrition extends Component {
         const calories      = get( details, [ 3, 'value' ] );
 
         if ( this.state.reloadValues ) {
-            newData['servings'] = servings ? servings : get( data, 'servings' );
-            newData['calories'] = calories ? calories : get( data, 'calories' );
+            newData.servings = servings ? servings : get( data, 'servings' );
+            newData.calories = calories ? calories : get( data, 'calories' );
         }
 
         if ( ! get( data, 'servings' ) ) {
-            newData['servings'] = servings;
+            newData.servings = servings;
         }
         if ( ! get( data, 'serving-size-unit' ) ) {
-            newData['serving-size-unit'] = servings_unit;
+            newData[ 'serving-size-unit' ] = servings_unit;
         }
         if ( ! get( data, 'calories' ) ) {
-            newData['calories'] = calories;
+            newData.calories = calories;
         }
 
         setAttributes( { data: { ...newData } } );
@@ -84,8 +98,8 @@ class Nutrition extends Component {
         const {
             setAttributes,
             attributes: {
-                data
-            }
+                data,
+            },
         } = this.props;
 
         const newData = data || {};
@@ -99,8 +113,8 @@ class Nutrition extends Component {
         const {
             setAttributes,
             attributes: {
-                settings
-            }
+                settings,
+            },
         } = this.props;
 
         const newData = settings || {};
@@ -116,12 +130,16 @@ class Nutrition extends Component {
     }
 
     getLabelTitle( label_id ) {
-        const key = findKey( labels, function( o ) { return o.id === label_id; } );
+        const key = findKey( labels, function( o ) {
+            return o.id === label_id;
+        } );
         return get( labels, [ key, 'label' ] );
     }
 
     getPDV( label_id ) {
-        const key = findKey( labels, function( o ) { return o.id === label_id; } );
+        const key = findKey( labels, function( o ) {
+            return o.id === label_id;
+        } );
         return get( labels, [ key, 'pdv' ] );
     }
 
@@ -147,7 +165,7 @@ class Nutrition extends Component {
         const { data } = this.props.attributes;
 
         return labels.map( ( label, index ) => {
-            let value = get( data, label.id );
+            const value = get( data, label.id );
 
             if ( index <= 12 ) {
                 return;
@@ -168,12 +186,12 @@ class Nutrition extends Component {
     drawVerticalLayout() {
         return (
             <Fragment>
-                <h2>{ __( "Nutrition Facts", "wpzoom-recipe-card" ) }</h2>
+                <h2>{ __( 'Nutrition Facts', 'wpzoom-recipe-card' ) }</h2>
                 <p>
                     {
                         this.getValue( 'servings' ) &&
                         <Fragment>
-                            <span className="nutrition-facts-serving">{ `${ this.getValue( 'servings' ) } ${ __( "servings per container", "wpzoom-recipe-card" ) }` }</span>
+                            <span className="nutrition-facts-serving">{ `${ this.getValue( 'servings' ) } ${ __( 'servings per container', 'wpzoom-recipe-card' ) }` }</span>
                         </Fragment>
                     }
                 </p>
@@ -186,10 +204,10 @@ class Nutrition extends Component {
                         </Fragment>
                     }
                 </p>
-                <hr className="nutrition-facts-hr"/>
+                <hr className="nutrition-facts-hr" />
                 <ul>
                     <li>
-                        <strong className="nutrition-facts-amount-per-serving">{ __( "Amount Per Serving", "wpzoom-recipe-card" ) }</strong>
+                        <strong className="nutrition-facts-amount-per-serving">{ __( 'Amount Per Serving', 'wpzoom-recipe-card' ) }</strong>
                         {
                             this.getValue( 'calories' ) &&
                             <Fragment>
@@ -199,13 +217,13 @@ class Nutrition extends Component {
                         }
                     </li>
                     <li className="nutrition-facts-spacer"></li>
-                    <li className="nutrition-facts-no-border"><strong className="nutrition-facts-right">% { __( "Daily Value", "wpzoom-recipe-card" ) } *</strong></li>
+                    <li className="nutrition-facts-no-border"><strong className="nutrition-facts-right">% { __( 'Daily Value', 'wpzoom-recipe-card' ) } *</strong></li>
                     <li>
                         {
                             this.getValue( 'total-fat' ) &&
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'total-fat' ) }</strong>
-                                <strong className="nutrition-facts-label"> { this.getValue( 'total-fat' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                <strong className="nutrition-facts-label"> { this.getValue( 'total-fat' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'total-fat' ) / this.getPDV( 'total-fat' ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -215,7 +233,7 @@ class Nutrition extends Component {
                                     this.getValue( 'saturated-fat' ) &&
                                     <Fragment>
                                         <strong className="nutrition-facts-label">{ this.getLabelTitle( 'saturated-fat' ) }</strong>
-                                        <strong className="nutrition-facts-label"> { this.getValue( 'saturated-fat' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                        <strong className="nutrition-facts-label"> { this.getValue( 'saturated-fat' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                         <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'saturated-fat' ) / this.getPDV( 'saturated-fat' ) ) * 100 ) }</span>%</strong>
                                     </Fragment>
                                 }
@@ -225,7 +243,7 @@ class Nutrition extends Component {
                                     this.getValue( 'trans-fat' ) &&
                                     <Fragment>
                                         <strong className="nutrition-facts-label">{ this.getLabelTitle( 'trans-fat' ) }</strong>
-                                        <strong className="nutrition-facts-label"> { this.getValue( 'trans-fat' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                        <strong className="nutrition-facts-label"> { this.getValue( 'trans-fat' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                     </Fragment>
                                 }
                             </li>
@@ -236,7 +254,7 @@ class Nutrition extends Component {
                             this.getValue( 'cholesterol' ) &&
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'cholesterol' ) }</strong>
-                                <strong className="nutrition-facts-label"> { this.getValue( 'cholesterol' ) }</strong><strong className="nutrition-facts-label">{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                <strong className="nutrition-facts-label"> { this.getValue( 'cholesterol' ) }</strong><strong className="nutrition-facts-label">{ __( 'mg', 'wpzoom-recipe-card' ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'cholesterol' ) / this.getPDV( 'cholesterol' ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -246,7 +264,7 @@ class Nutrition extends Component {
                             this.getValue( 'sodium' ) &&
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'sodium' ) }</strong>
-                                <strong className="nutrition-facts-label"> { this.getValue( 'sodium' ) }</strong><strong className="nutrition-facts-label">{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                <strong className="nutrition-facts-label"> { this.getValue( 'sodium' ) }</strong><strong className="nutrition-facts-label">{ __( 'mg', 'wpzoom-recipe-card' ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'sodium' ) / this.getPDV( 'sodium' ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -256,7 +274,7 @@ class Nutrition extends Component {
                             this.getValue( 'potassium' ) &&
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'potassium' ) }</strong>
-                                <strong className="nutrition-facts-label"> { this.getValue( 'potassium' ) }</strong><strong className="nutrition-facts-label">{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                <strong className="nutrition-facts-label"> { this.getValue( 'potassium' ) }</strong><strong className="nutrition-facts-label">{ __( 'mg', 'wpzoom-recipe-card' ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'potassium' ) / this.getPDV( 'potassium' ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -266,7 +284,7 @@ class Nutrition extends Component {
                             this.getValue( 'total-carbohydrate' ) &&
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'total-carbohydrate' ) }</strong>
-                                <strong className="nutrition-facts-label"> { this.getValue( 'total-carbohydrate' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                <strong className="nutrition-facts-label"> { this.getValue( 'total-carbohydrate' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'total-carbohydrate' ) / this.getPDV( 'total-carbohydrate' ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
@@ -276,7 +294,7 @@ class Nutrition extends Component {
                                     this.getValue( 'dietary-fiber' ) &&
                                     <Fragment>
                                         <strong className="nutrition-facts-label">{ this.getLabelTitle( 'dietary-fiber' ) }</strong>
-                                        <strong className="nutrition-facts-label"> { this.getValue( 'dietary-fiber' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                        <strong className="nutrition-facts-label"> { this.getValue( 'dietary-fiber' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                         <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'dietary-fiber' ) / this.getPDV( 'dietary-fiber' ) ) * 100 ) }</span>%</strong>
                                     </Fragment>
                                 }
@@ -286,7 +304,7 @@ class Nutrition extends Component {
                                     this.getValue( 'sugars' ) &&
                                     <Fragment>
                                         <strong className="nutrition-facts-label">{ this.getLabelTitle( 'sugars' ) }</strong>
-                                        <strong className="nutrition-facts-label"> { this.getValue( 'sugars' ) } </strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                        <strong className="nutrition-facts-label"> { this.getValue( 'sugars' ) } </strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                     </Fragment>
                                 }
                             </li>
@@ -297,13 +315,13 @@ class Nutrition extends Component {
                             this.getValue( 'protein' ) &&
                             <Fragment>
                                 <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'protein' ) }</strong>
-                                <strong className="nutrition-facts-label"> { this.getValue( 'protein' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                <strong className="nutrition-facts-label"> { this.getValue( 'protein' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                 <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'protein' ) / this.getPDV( 'protein' ) ) * 100 ) }</span>%</strong>
                             </Fragment>
                         }
                     </li>
                 </ul>
-                <hr className="nutrition-facts-hr"/>
+                <hr className="nutrition-facts-hr" />
                 <ul className="nutrition-facts-bottom">
                     { this.drawNutrientsList() }
                 </ul>
@@ -315,12 +333,12 @@ class Nutrition extends Component {
         return (
             <Fragment>
                 <div className="horizontal-column-1">
-                    <h2>{ __( "Nutrition Facts", "wpzoom-recipe-card" ) }</h2>
+                    <h2>{ __( 'Nutrition Facts', 'wpzoom-recipe-card' ) }</h2>
                     <p>
                         {
                             this.getValue( 'servings' ) &&
                             <Fragment>
-                                <span className="nutrition-facts-serving">{ `${ this.getValue( 'servings' ) } ${ __( "servings per container", "wpzoom-recipe-card" ) }` }</span>
+                                <span className="nutrition-facts-serving">{ `${ this.getValue( 'servings' ) } ${ __( 'servings per container', 'wpzoom-recipe-card' ) }` }</span>
                             </Fragment>
                         }
                     </p>
@@ -333,7 +351,7 @@ class Nutrition extends Component {
                             </Fragment>
                         }
                     </p>
-                    <hr className="nutrition-facts-hr"/>
+                    <hr className="nutrition-facts-hr" />
                     <p>
                         {
                             this.getValue( 'calories' ) &&
@@ -347,8 +365,8 @@ class Nutrition extends Component {
                 <div className="horizontal-column-2">
                     <ul>
                         <li className="nutrition-facts-no-border">
-                            <strong className="nutrition-facts-amount-per-serving">{ __( "Amount Per Serving", "wpzoom-recipe-card" ) }</strong>
-                            <strong className="nutrition-facts-right">% { __( "Daily Value", "wpzoom-recipe-card" ) } *</strong>
+                            <strong className="nutrition-facts-amount-per-serving">{ __( 'Amount Per Serving', 'wpzoom-recipe-card' ) }</strong>
+                            <strong className="nutrition-facts-right">% { __( 'Daily Value', 'wpzoom-recipe-card' ) } *</strong>
                         </li>
                         <li className="nutrition-facts-spacer"></li>
                         <li className="nutrition-facts-no-border">
@@ -356,7 +374,7 @@ class Nutrition extends Component {
                                 this.getValue( 'total-fat' ) &&
                                 <Fragment>
                                     <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'total-fat' ) }</strong>
-                                    <strong className="nutrition-facts-label"> { this.getValue( 'total-fat' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-label"> { this.getValue( 'total-fat' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                     <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'total-fat' ) / this.getPDV( 'total-fat' ) ) * 100 ) }</span>%</strong>
                                 </Fragment>
                             }
@@ -366,7 +384,7 @@ class Nutrition extends Component {
                                         this.getValue( 'saturated-fat' ) &&
                                         <Fragment>
                                             <strong className="nutrition-facts-label">{ this.getLabelTitle( 'saturated-fat' ) }</strong>
-                                            <strong className="nutrition-facts-label"> { this.getValue( 'saturated-fat' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                            <strong className="nutrition-facts-label"> { this.getValue( 'saturated-fat' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                             <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'saturated-fat' ) / this.getPDV( 'saturated-fat' ) ) * 100 ) }</span>%</strong>
                                         </Fragment>
                                     }
@@ -376,7 +394,7 @@ class Nutrition extends Component {
                                         this.getValue( 'trans-fat' ) &&
                                         <Fragment>
                                             <strong className="nutrition-facts-label">{ this.getLabelTitle( 'trans-fat' ) }</strong>
-                                            <strong className="nutrition-facts-label"> { this.getValue( 'trans-fat' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                            <strong className="nutrition-facts-label"> { this.getValue( 'trans-fat' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                         </Fragment>
                                     }
                                 </li>
@@ -387,7 +405,7 @@ class Nutrition extends Component {
                                 this.getValue( 'cholesterol' ) &&
                                 <Fragment>
                                     <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'cholesterol' ) }</strong>
-                                    <strong className="nutrition-facts-label"> { this.getValue( 'cholesterol' ) }</strong><strong className="nutrition-facts-label">{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-label"> { this.getValue( 'cholesterol' ) }</strong><strong className="nutrition-facts-label">{ __( 'mg', 'wpzoom-recipe-card' ) }</strong>
                                     <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'cholesterol' ) / this.getPDV( 'cholesterol' ) ) * 100 ) }</span>%</strong>
                                 </Fragment>
                             }
@@ -397,7 +415,7 @@ class Nutrition extends Component {
                                 this.getValue( 'sodium' ) &&
                                 <Fragment>
                                     <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'sodium' ) }</strong>
-                                    <strong className="nutrition-facts-label"> { this.getValue( 'sodium' ) }</strong><strong className="nutrition-facts-label">{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-label"> { this.getValue( 'sodium' ) }</strong><strong className="nutrition-facts-label">{ __( 'mg', 'wpzoom-recipe-card' ) }</strong>
                                     <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'sodium' ) / this.getPDV( 'sodium' ) ) * 100 ) }</span>%</strong>
                                 </Fragment>
                             }
@@ -408,8 +426,8 @@ class Nutrition extends Component {
                 <div className="horizontal-column-3">
                     <ul>
                         <li className="nutrition-facts-no-border">
-                            <strong className="nutrition-facts-amount-per-serving">{ __( "Amount Per Serving", "wpzoom-recipe-card" ) }</strong>
-                            <strong className="nutrition-facts-right">% { __( "Daily Value", "wpzoom-recipe-card" ) } *</strong>
+                            <strong className="nutrition-facts-amount-per-serving">{ __( 'Amount Per Serving', 'wpzoom-recipe-card' ) }</strong>
+                            <strong className="nutrition-facts-right">% { __( 'Daily Value', 'wpzoom-recipe-card' ) } *</strong>
                         </li>
                         <li className="nutrition-facts-spacer"></li>
                         <li className="nutrition-facts-no-border">
@@ -417,7 +435,7 @@ class Nutrition extends Component {
                                 this.getValue( 'potassium' ) &&
                                 <Fragment>
                                     <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'potassium' ) }</strong>
-                                    <strong className="nutrition-facts-label"> { this.getValue( 'potassium' ) }</strong><strong className="nutrition-facts-label">{ __( "mg", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-label"> { this.getValue( 'potassium' ) }</strong><strong className="nutrition-facts-label">{ __( 'mg', 'wpzoom-recipe-card' ) }</strong>
                                     <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'potassium' ) / this.getPDV( 'potassium' ) ) * 100 ) }</span>%</strong>
                                 </Fragment>
                             }
@@ -427,7 +445,7 @@ class Nutrition extends Component {
                                 this.getValue( 'total-carbohydrate' ) &&
                                 <Fragment>
                                     <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'total-carbohydrate' ) }</strong>
-                                    <strong className="nutrition-facts-label"> { this.getValue( 'total-carbohydrate' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-label"> { this.getValue( 'total-carbohydrate' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                     <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'total-carbohydrate' ) / this.getPDV( 'total-carbohydrate' ) ) * 100 ) }</span>%</strong>
                                 </Fragment>
                             }
@@ -437,7 +455,7 @@ class Nutrition extends Component {
                                         this.getValue( 'dietary-fiber' ) &&
                                         <Fragment>
                                             <strong className="nutrition-facts-label">{ this.getLabelTitle( 'dietary-fiber' ) }</strong>
-                                            <strong className="nutrition-facts-label"> { this.getValue( 'dietary-fiber' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                            <strong className="nutrition-facts-label"> { this.getValue( 'dietary-fiber' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                             <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'dietary-fiber' ) / this.getPDV( 'dietary-fiber' ) ) * 100 ) }</span>%</strong>
                                         </Fragment>
                                     }
@@ -447,7 +465,7 @@ class Nutrition extends Component {
                                         this.getValue( 'sugars' ) &&
                                         <Fragment>
                                             <strong className="nutrition-facts-label">{ this.getLabelTitle( 'sugars' ) }</strong>
-                                            <strong className="nutrition-facts-label"> { this.getValue( 'sugars' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                            <strong className="nutrition-facts-label"> { this.getValue( 'sugars' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                         </Fragment>
                                     }
                                 </li>
@@ -458,7 +476,7 @@ class Nutrition extends Component {
                                 this.getValue( 'protein' ) &&
                                 <Fragment>
                                     <strong className="nutrition-facts-heading">{ this.getLabelTitle( 'protein' ) }</strong>
-                                    <strong className="nutrition-facts-label"> { this.getValue( 'protein' ) }</strong><strong className="nutrition-facts-label">{ __( "g", "wpzoom-recipe-card" ) }</strong>
+                                    <strong className="nutrition-facts-label"> { this.getValue( 'protein' ) }</strong><strong className="nutrition-facts-label">{ __( 'g', 'wpzoom-recipe-card' ) }</strong>
                                     <strong className="nutrition-facts-right"><span className="nutrition-facts-percent">{ ceil( ( this.getValue( 'protein' ) / this.getPDV( 'protein' ) ) * 100 ) }</span>%</strong>
                                 </Fragment>
                             }
@@ -480,9 +498,8 @@ class Nutrition extends Component {
         if ( 'vertical' === layout_orientation ) {
             return ( this.drawVerticalLayout() );
         }
-        else {
-            return ( this.drawHorizontalLayout() );
-        }
+
+        return ( this.drawHorizontalLayout() );
     }
 
     render() {
@@ -490,8 +507,8 @@ class Nutrition extends Component {
             className,
             attributes: {
                 id,
-                settings
-            }
+                settings,
+            },
         } = this.props;
 
         const blockClassName = parseClassName( className );
@@ -504,30 +521,30 @@ class Nutrition extends Component {
         return (
             <div id={ id } className={ `layout-orientation-${ layout_orientation }` }>
                 <div className={ `${ blockClassName }-information` }>
-                    <h3>{ __( "Nutrition Information", "wpzoom-recipe-card" ) }</h3>
+                    <h3>{ __( 'Nutrition Information', 'wpzoom-recipe-card' ) }</h3>
                     { this.drawNutritionLabels() }
                 </div>
                 <div className={ blockClassName }>
                     { this.drawNutritionFacts() }
-                    <p className="nutrition-facts-daily-value-text">* { __( "The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.", "wpzoom-recipe-card" ) }</p>
+                    <p className="nutrition-facts-daily-value-text">* { __( 'The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.', 'wpzoom-recipe-card' ) }</p>
                 </div>
                 <Button
                     className={ `${ blockClassName }-reload-values` }
-                    title={ __( "In case you made some changes to Recipe Card, press button to Reload values.", "wpzoom-recipe-card" ) }
-                    isDefault
+                    title={ __( 'In case you made some changes to Recipe Card, press button to Reload values.', 'wpzoom-recipe-card' ) }
+                    isSecondary
                     isLarge
                     onClick={ () => this.setState( { reloadValues: true, isDataPreFill: false } ) }
                 >
-                    { __( "Reload Values", "wpzoom-recipe-card" ) }
+                    { __( 'Reload Values', 'wpzoom-recipe-card' ) }
                 </Button>
                 <InspectorControls>
-                    <PanelBody className={ `${ blockClassName }-settings` } initialOpen={ true } title={ __( "Nutrition Settings", "wpzoom-recipe-card" ) }>
+                    <PanelBody className={ `${ blockClassName }-settings` } initialOpen={ true } title={ __( 'Nutrition Settings', 'wpzoom-recipe-card' ) }>
                         <SelectControl
-                            label={ __( "Layout Orientation", "wpzoom-recipe-card" ) }
+                            label={ __( 'Layout Orientation', 'wpzoom-recipe-card' ) }
                             value={ layout_orientation }
                             options={ [
-                                { label: __( "Vertical", "wpzoom-recipe-card" ), value: 'vertical' },
-                                { label: __( "Horizontal", "wpzoom-recipe-card" ), value: 'horizontal' },
+                                { label: __( 'Vertical', 'wpzoom-recipe-card' ), value: 'vertical' },
+                                { label: __( 'Horizontal', 'wpzoom-recipe-card' ), value: 'horizontal' },
                             ] }
                             onChange={ newValue => this.onChangeSettings( newValue, 'layout-orientation' ) }
                         />
@@ -535,7 +552,7 @@ class Nutrition extends Component {
                             key={ id }
                             id={ `${ id }-serving-size-unit` }
                             type="text"
-                            label={ __( "Serving Size Unit", "wpzoom-recipe-card" ) }
+                            label={ __( 'Serving Size Unit', 'wpzoom-recipe-card' ) }
                             value={ this.getValue( 'serving-size-unit' ) }
                             onChange={ newValue => this.onChangeData( newValue, 'serving-size-unit' ) }
                         />
@@ -546,16 +563,18 @@ class Nutrition extends Component {
     }
 }
 
-const applyWithSelect = withSelect( ( select, props ) => {
+const applyWithSelect = withSelect( ( select ) => {
     const {
-        getBlocks
+        getBlocks,
     } = select( 'core/block-editor' );
 
     const blocksList        = getBlocks();
-    const recipeCardBlock   = filter( blocksList, function( item ) { return "wpzoom-recipe-card/block-recipe-card" === item.name } );
+    const recipeCardBlock   = filter( blocksList, function( item ) {
+        return 'wpzoom-recipe-card/block-recipe-card' === item.name;
+    } );
 
     return {
-        blockData: get( recipeCardBlock, [ 0, 'attributes' ] ) || {}
+        blockData: get( recipeCardBlock, [ 0, 'attributes' ] ) || {},
     };
 } );
 

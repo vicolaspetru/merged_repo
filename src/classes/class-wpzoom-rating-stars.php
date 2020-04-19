@@ -252,9 +252,10 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * Get rating star HTML.
 		 *
 		 * @param string|number $recipe_ID The recipe id.
+		 * @param string 		$label The custom label text for rating.
 		 * @since 1.1.0
 		 */
-		public function get_rating_star( $recipe_ID ) {
+		public function get_rating_star( $recipe_ID, $label = '' ) {
 			// Check if user voted, use the full icon or outline icon if not
 			$user_rate = $this->check_user_rate( $recipe_ID );
 
@@ -266,9 +267,9 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 
 			$average = $this->get_rating_average( $recipe_ID );
 			$total_votes = $this->get_total_votes( $recipe_ID );
-			$average_content = $average > 0 ? sprintf( __( "%s from %s votes", "wpzoom-recipe-card" ), "<i class=\"wpzoom-rating-average\"{$average}</i>", "<i class=\"wpzoom-rating-total-votes\">{$total_votes}</i>" ) : 'N/A';
+			$average_content = $average > 0 ? sprintf( __( "%s from %s votes", "wpzoom-recipe-card" ), "<i class=\"wpzoom-rating-average\">{$average}</i>", "<i class=\"wpzoom-rating-total-votes\">{$total_votes}</i>" ) : 'N/A';
 
-			return '<span class="wpzoom-rating-stars-average' . $rate_icon . '">' . $average_content . '</span>';
+			return '<span class="wpzoom-rating-stars-average' . $rate_icon . '">' . $label . $average_content . '</span>';
 		}
 
 		/**
@@ -455,11 +456,11 @@ endif;
 /**
  * Function to show the rating form or number
  */
-function wpzoom_rating_stars( $recipe_ID, $type = 'form' ) {
+function wpzoom_rating_stars( $recipe_ID, $type = 'form', $label = '' ) {
 	$wpzoom_rating_stars = new WPZOOM_Rating_Stars();
 
 	if ( $type == 'number' ) {
-		return $wpzoom_rating_stars->get_rating_star( $recipe_ID );
+		return $wpzoom_rating_stars->get_rating_star( $recipe_ID, $label );
 	} else {
 		return $wpzoom_rating_stars->get_rating_form( $recipe_ID );
 	}

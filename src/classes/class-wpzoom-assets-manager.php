@@ -103,6 +103,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
 				$dependencies = array( 'jquery' );
 			}
+            elseif ( $this->_slug . '-masonry-gallery' === $handle ) {
+                $dependencies = array( 'jquery-masonry', 'imagesloaded' );
+            }
 
 			return $dependencies;
 		}
@@ -186,6 +189,14 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         'wpzoomRecipeCard',
                         array(
                             'pluginURL' => WPZOOM_RCB_PLUGIN_URL,
+                            'homeURL' => self::get_home_url(),
+                            'permalinks' => get_option( 'permalink_structure' ),
+                            'ajax_url' => admin_url( 'admin-ajax.php' ),
+                            'nonce' => wp_create_nonce( 'wpzoom_rcb' ),
+                            'api_nonce' => wp_create_nonce( 'wp_rest' ),
+                            'strings' => array(
+                                'loading-gallery-media' => __( 'Loading gallery media', 'wpzoom-recipe-card' )
+                            )
                         )
                     );
 
@@ -200,6 +211,14 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         $this->_slug . '-adjustable-servings',
                         $this->asset_source( 'js', 'adjustable-servings.js' ),
                         $this->get_dependencies( $this->_slug . '-adjustable-servings' ),
+                        WPZOOM_RCB_VERSION,
+                        true
+                    );
+
+                    wp_enqueue_script(
+                        $this->_slug . '-masonry-gallery',
+                        $this->asset_source( 'js', 'masonry-gallery.js' ),
+                        $this->get_dependencies( $this->_slug . '-masonry-gallery' ),
                         WPZOOM_RCB_VERSION,
                         true
                     );
@@ -391,6 +410,27 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             }
 
             return $custom_css;
+        }
+
+        /**
+         * Compatibility with multilingual plugins for home URL.
+         *
+         * @since 2.7.2
+         */
+        public static function get_home_url() {
+            $home_url = home_url();
+
+            // Polylang Compatibility.
+            if ( function_exists( 'pll_home_url' ) ) {
+                $home_url = pll_home_url();
+            }
+
+            // Add trailing slash unless there are query parameters.
+            if ( false === strpos( $home_url, '?' ) ) {
+                $home_url = trailingslashit( $home_url );
+            }
+
+            return $home_url;
         }
 	}
 }

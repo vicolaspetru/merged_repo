@@ -2,7 +2,7 @@
 Tags: gutenberg, food recipe, blocks, recipe, card, food, directions, ingredients, recipe card
 Requires at least: 5.0
 Requires PHP: 5.6
-Tested up to: 5.3
+Tested up to: 5.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -63,6 +63,10 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.8.0 =
+* Added Image Gallery & Image Lightbox features in Directions. Additional options can be found on the Settings page of the plugin.
+* Printing functionality was re-written and works differently now. This ensures printing will work from all devices and browsers without any problems
+* Multiple bug fixes and improvements
 
 = 2.7.1 =
 * Fixed issue with Block Settings

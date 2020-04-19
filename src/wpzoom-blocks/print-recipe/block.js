@@ -5,15 +5,17 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/* External dependencies */
-import { __ } from "@wordpress/i18n";
+/**
+ * Internal dependencies
+ */
+import icon from './icon';
 
-/* Internal dependencies */
-import icon from "./icon";
-
-/* WordPress dependencies */
-const { Fragment } = wp.element;
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Register: Ingredients Gutenberg Block.
@@ -30,8 +32,8 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
  */
 registerBlockType( 'wpzoom-recipe-card/block-print-recipe', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( "Print Recipe", "wpzoom-recipe-card" ), // Block title.
-    description: __( "A button to print WPZOOM Recipe Card.", "wpzoom-recipe-card" ),
+    title: __( 'Print Recipe', 'wpzoom-recipe-card' ), // Block title.
+    description: __( 'A button to print WPZOOM Recipe Card.', 'wpzoom-recipe-card' ),
     icon: {
         // // Specifying a background color to appear with the icon e.g.: in the inserter.
         // background: '#2EA55F',
@@ -44,12 +46,12 @@ registerBlockType( 'wpzoom-recipe-card/block-print-recipe', {
     // Allow only one Recipe Card Block per post.
     supports: {
         multiple: false,
-        html: false
+        html: false,
     },
     keywords: [
-        __( "Recipe Card", "wpzoom-recipe-card" ),
-        __( "Block Recipe Card", "wpzoom-recipe-card" ),
-        __( "WPZOOM", "wpzoom-recipe-card" ),
+        __( 'Recipe Card', 'wpzoom-recipe-card' ),
+        __( 'Block Recipe Card', 'wpzoom-recipe-card' ),
+        __( 'WPZOOM', 'wpzoom-recipe-card' ),
     ],
 
     /**
@@ -59,6 +61,7 @@ registerBlockType( 'wpzoom-recipe-card/block-print-recipe', {
      * The "edit" property must be a valid function.
      *
      * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+     * @returns {Component} Print Recipe Component
      */
     edit: ( { attributes, className } ) => {
         const { id, text } = attributes;
@@ -73,9 +76,7 @@ registerBlockType( 'wpzoom-recipe-card/block-print-recipe', {
     save() {
         // Rendering in PHP
         return null;
-    }
+    },
 
 } );
-
-
 

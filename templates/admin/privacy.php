@@ -4,8 +4,8 @@
  *
  * @since      2.3.2
  *
- * @package    WPZOOM Recipe Card Block
- * @subpackage WPZOOM Recipe Card Block/templates/admin
+ * @package    WPZOOM_Recipe_Card_Blocks
+ * @subpackage WPZOOM_Recipe_Card_Blocks/templates/admin
  */
 
 ?>
