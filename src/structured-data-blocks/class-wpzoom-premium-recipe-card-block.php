@@ -1788,7 +1788,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
         	esc_url( $url ) .'/'. esc_attr( trim( $attr ) ),
         	( 1 == $target ? '_blank' : '_self' ),
         	( 1 == $nofollow ? 'rel="nofollow"' : '' ),
-        	$symbol . $attr
+        	trim( $symbol . $attr )
         );
     }
 
