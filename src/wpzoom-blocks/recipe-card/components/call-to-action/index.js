@@ -3,7 +3,11 @@
 /**
  * External dependencies
  */
-import { replace, isEmpty } from 'lodash';
+import {
+    trim,
+    replace,
+    isEmpty,
+} from 'lodash';
 import ReactHtmlParser from 'react-html-parser';
 
 /**
@@ -56,7 +60,7 @@ export default class CTA extends Component {
             return '';
         }
 
-        return `<a href="${ url }/${ attr }" target="${ 1 === target ? '_blank' : '_self' }" ${ 1 === nofollow ? 'rel="nofollow"' : '' }>${ symbol }${ attr }</a>`;
+        return `<a href="${ url }/${ trim( attr ) }" target="${ 1 === target ? '_blank' : '_self' }" ${ 1 === nofollow ? 'rel="nofollow"' : '' }>${ trim( symbol + attr ) }</a>`;
     }
 
     buildStyles( brand ) {
@@ -110,7 +114,7 @@ export default class CTA extends Component {
     }
 
     parseFacebookText( text ) {
-        text = this.buildLink( facebookURL, '', __( 'Like us', 'wpzoom-recipe-card' ) );
+        text = this.buildLink( facebookURL, ' ', __( 'Like us', 'wpzoom-recipe-card' ) );
         text += ' ' + __( 'on Facebook', 'wpzoom-recipe-card' );
 
         return ReactHtmlParser( text );
