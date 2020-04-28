@@ -14,7 +14,8 @@ const {
     },
 } = wpzoomRecipeCard;
 const TokenList = wp.tokenList;
-const availableStyles = [
+
+export const availableStyles = [
     {
         name: 'default',
         isDefault: 'default' === wpzoom_rcb_settings_template,

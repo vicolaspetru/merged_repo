@@ -3,7 +3,7 @@
  */
 export { generateId } from './generateId';
 export { removeKeys } from './removeKeys';
-export { getBlockStyle } from './getBlockStyle';
+export { getBlockStyle, availableStyles } from './getBlockStyle';
 export {
     getNumberFromString,
     convertMinutesToHours,
