@@ -39,7 +39,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
-    "@wordpress/base-styles": "^1.4.0",
+    "@wordpress/base-styles": "^1.6.0",
     "@wpzoom/helpers": "file:src/packages/helpers",
     "@wpzoom/utils": "file:src/packages/utils",
     "babel-plugin-lodash": "^3.3.4"
