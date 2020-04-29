@@ -9,76 +9,20 @@
  * Internal dependencies
  */
 import Detail from './components/Detail';
-import legacy from './legacy';
-import { Icons } from '@wpzoom/utils';
 import { generateId } from '@wpzoom/helpers';
 import icon from './icon';
+import {
+    blockKeywords as keywords,
+    blockExample as example,
+    deprecatedBlock as deprecated,
+} from './attributes';
+import { blockCategory as category } from '../../block-category';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-
-const deprecatedAttr = {
-    title: {
-        type: 'array',
-        selector: '.details-title',
-        source: 'children',
-        default: __( 'Details', 'wpzoom-recipe-card' ),
-    },
-    id: {
-        type: 'string',
-    },
-    details: {
-        type: 'array',
-        selector: '.details-items',
-        default: [
-            { id: generateId( 'detail-item' ), iconSet: 'oldicon', icon: 'food', label: __( 'Servings', 'wpzoom-recipe-card' ) },
-            { id: generateId( 'detail-item' ), iconSet: 'oldicon', icon: 'room-service', label: __( 'Prep time', 'wpzoom-recipe-card' ) },
-            { id: generateId( 'detail-item' ), iconSet: 'oldicon', icon: 'cook', label: __( 'Cooking time', 'wpzoom-recipe-card' ) },
-            { id: generateId( 'detail-item' ), iconSet: 'oldicon', icon: 'shopping-basket', label: __( 'Calories', 'wpzoom-recipe-card' ) },
-        ],
-    },
-    columns: {
-        type: 'number',
-        default: 4,
-    },
-    toInsert: {
-        type: 'string',
-    },
-    showModal: {
-        type: 'string',
-        default: false,
-    },
-    activeIconSet: {
-        type: 'string',
-        default: 'oldicon',
-    },
-    searchIcon: {
-        type: 'string',
-        default: '',
-    },
-    icons: {
-        type: 'object',
-        default: Icons,
-    },
-    jsonTitle: {
-        type: 'string',
-    },
-    course: {
-        type: 'array',
-    },
-    cuisine: {
-        type: 'array',
-    },
-    keywords: {
-        type: 'array',
-    },
-    blocks_count: {
-        type: 'string',
-    },
-};
 
 /**
  * Register: Details Gutenberg Block.
@@ -94,7 +38,7 @@ const deprecatedAttr = {
  *                             registered; otherwise `undefined`.
  */
 
-registerBlockType( 'wpzoom-recipe-card/block-details', {
+registerBlockType( `${ category }/block-details`, {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __( 'Details', 'wpzoom-recipe-card' ), // Block title.
     icon: {
@@ -105,30 +49,13 @@ registerBlockType( 'wpzoom-recipe-card/block-details', {
         // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
         src: icon,
     },
-    category: 'wpzoom-recipe-card', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+    category, // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
     // Allow multiple Details block per post.
     supports: {
         multiple: false,
     },
-    keywords: [
-        __( 'details', 'wpzoom-recipe-card' ),
-        __( 'wpzoom', 'wpzoom-recipe-card' ),
-        __( 'recipe', 'wpzoom-recipe-card' ),
-    ],
-    example: {
-        attributes: {
-            course: [ __( 'Main', 'wpzoom-recipe-card' ) ],
-            cuisine: [ __( 'Italian', 'wpzoom-recipe-card' ) ],
-            difficulty: [ __( 'Medium', 'wpzoom-recipe-card' ) ],
-            details: [
-                { id: generateId( 'detail-item' ), iconSet: 'oldicon', icon: 'food', label: __( 'Servings', 'wpzoom-recipe-card' ) },
-                { id: generateId( 'detail-item' ), iconSet: 'oldicon', icon: 'room-service', label: __( 'Prep time', 'wpzoom-recipe-card' ) },
-                { id: generateId( 'detail-item' ), iconSet: 'oldicon', icon: 'cook', label: __( 'Cooking time', 'wpzoom-recipe-card' ) },
-                { id: generateId( 'detail-item' ), iconSet: 'oldicon', icon: 'shopping-basket', label: __( 'Calories', 'wpzoom-recipe-card' ) },
-            ],
-        },
-    },
-
+    keywords,
+    example,
     /**
      * The edit function describes the structure of your block in the context of the editor.
      * This represents what the editor will render when the block is used.
@@ -136,8 +63,12 @@ registerBlockType( 'wpzoom-recipe-card/block-details', {
      * The "edit" property must be a valid function.
      *
      * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+     *
+     * @param {Object} attributes        The main attributes of block
+     * @param {method} setAttributes     The function that helps to set attributes for block
+     * @param {string} className         The string of class names
+     * @returns {Component}              Detail Component
      */
-
     edit: ( { attributes, setAttributes, className } ) => {
         // Because setAttributes is quite slow right after a block has been added we fake having a single detail.
         if ( ! attributes.details || attributes.details.length === 0 ) {
@@ -151,17 +82,9 @@ registerBlockType( 'wpzoom-recipe-card/block-details', {
 
         return <Detail { ...{ attributes, setAttributes, className } } />;
     },
-
     save() {
         // Rendering in PHP
         return null;
     },
-
-    deprecated: [
-        {
-            attributes: deprecatedAttr,
-            save: legacy.v1_0,
-        },
-    ],
-
+    deprecated,
 } );

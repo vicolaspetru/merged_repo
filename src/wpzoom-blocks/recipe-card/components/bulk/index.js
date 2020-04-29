@@ -20,6 +20,7 @@ import ReactHtmlParser from 'react-html-parser';
  * Internal dependencies
  */
 import { stripHTML } from '@wpzoom/helpers';
+import { blockCategory as category } from '../../../../block-category';
 
 /**
  * WordPress dependencies
@@ -68,7 +69,7 @@ function ExtraOptionsModal(
         onBulkAdd,
     }
 ) {
-    const blocks                = [ 'wpzoom-recipe-card/block-ingredients', 'wpzoom-recipe-card/block-directions' ];
+    const blocks                = [ `${ category }/block-ingredients`, `${ category }/block-directions` ];
     const blocksList            = select( 'core/block-editor' ).getBlocks();
     const wpzoomBlocksFilter    = filter( blocksList, function( item ) {
         return indexOf( blocks, item.name ) !== -1;

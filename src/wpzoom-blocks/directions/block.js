@@ -1,5 +1,3 @@
-/*global wpzoomRecipeCard */
-
 /**
  * BLOCK: block-directions
  *
@@ -16,42 +14,20 @@ import { isUndefined } from 'lodash';
  * Internal dependencies
  */
 import Direction from './components/Direction';
-import legacy from './legacy';
 import icon from './icon';
 import { generateId } from '@wpzoom/helpers';
+import {
+    blockKeywords as keywords,
+    blockExample as example,
+    deprecatedBlock as deprecated,
+} from './attributes';
+import { blockCategory as category } from '../../block-category';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-
-const deprecatedAttr = {
-    title: {
-        type: 'array',
-        selector: '.directions-title',
-        source: 'children',
-        default: wpzoomRecipeCard.setting_options.wpzoom_rcb_settings_steps_title,
-    },
-    id: {
-        type: 'string',
-    },
-    print_visibility: {
-        type: 'string',
-        default: 'visible',
-    },
-    jsonTitle: {
-        type: 'string',
-    },
-    steps: {
-        type: 'array',
-    },
-    content: {
-        type: 'array',
-        selector: '.directions-list',
-        source: 'children',
-    },
-};
 
 /**
  * Register: Directions Gutenberg Block.
@@ -66,7 +42,7 @@ const deprecatedAttr = {
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'wpzoom-recipe-card/block-directions', {
+registerBlockType( `${ category }/block-directions`, {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __( 'Directions', 'wpzoom-recipe-card' ), // Block title.
     icon: {
@@ -77,48 +53,13 @@ registerBlockType( 'wpzoom-recipe-card/block-directions', {
         // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
         src: icon,
     },
-    category: 'wpzoom-recipe-card', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+    category, // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
     // Allow multiple Directions block per post.
     supports: {
         multiple: true,
     },
-    keywords: [
-        __( 'directions', 'wpzoom-recipe-card' ),
-        __( 'wpzoom', 'wpzoom-recipe-card' ),
-        __( 'recipe', 'wpzoom-recipe-card' ),
-    ],
-    example: {
-        attributes: {
-            steps: [
-                {
-                    id: generateId( 'direction-step' ),
-                    isGroup: false,
-                    text: [ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam fringilla nunc id nibh rutrum, tristique finibus quam interdum.' ],
-                },
-                {
-                    id: generateId( 'direction-step' ),
-                    isGroup: false,
-                    text: [ 'Praesent feugiat dui eu pretium eleifend. In non tempus est. Praesent ullamcorper sapien vitae viverra imperdiet.' ],
-                },
-                {
-                    id: generateId( 'direction-step' ),
-                    isGroup: true,
-                    text: [ 'Group Title here' ],
-                },
-                {
-                    id: generateId( 'direction-step' ),
-                    isGroup: false,
-                    text: [ 'Aenean nec diam a augue efficitur venenatis.' ],
-                },
-                {
-                    id: generateId( 'direction-step' ),
-                    isGroup: false,
-                    text: [ 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.' ],
-                },
-            ],
-        },
-    },
-
+    keywords,
+    example,
     /**
      * The edit function describes the structure of your block in the context of the editor.
      * This represents what the editor will render when the block is used.
@@ -126,7 +67,11 @@ registerBlockType( 'wpzoom-recipe-card/block-directions', {
      * The "edit" property must be a valid function.
      *
      * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-     * @returns {Component} Direction Component
+     *
+     * @param {Object} attributes        The main attributes of block
+     * @param {method} setAttributes     The function that helps to set attributes for block
+     * @param {string} className         The string of class names
+     * @returns {Component}              Direction Component
      */
     edit: ( { attributes, setAttributes, className } ) => {
         const steps = attributes.steps ? attributes.steps.slice() : [];
@@ -170,18 +115,9 @@ registerBlockType( 'wpzoom-recipe-card/block-directions', {
 
         return <Direction { ...{ attributes, setAttributes, className } } />;
     },
-
     save() {
         // Rendering in PHP
         return null;
     },
-
-    deprecated: [
-        {
-            attributes: deprecatedAttr,
-            save: legacy.v1_0,
-        },
-    ],
-
+    deprecated,
 } );
-

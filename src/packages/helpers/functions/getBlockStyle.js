@@ -1,34 +1,17 @@
-/*global wpzoomRecipeCard*/
-
 /**
  * External dependencies.
  */
 import { get, find } from 'lodash';
 
 /**
+ * Internal dependencies
+ */
+import { blockStyles as availableStyles } from '../../../wpzoom-blocks/recipe-card/attributes';
+
+/**
  * Constants
  */
-const {
-    setting_options: {
-        wpzoom_rcb_settings_template,
-    },
-} = wpzoomRecipeCard;
 const TokenList = wp.tokenList;
-
-export const availableStyles = [
-    {
-        name: 'default',
-        isDefault: 'default' === wpzoom_rcb_settings_template,
-    },
-    {
-        name: 'newdesign',
-        isDefault: 'newdesign' === wpzoom_rcb_settings_template,
-    },
-    {
-        name: 'simple',
-        isDefault: 'simple' === wpzoom_rcb_settings_template,
-    },
-];
 
 /**
  * Get block style.

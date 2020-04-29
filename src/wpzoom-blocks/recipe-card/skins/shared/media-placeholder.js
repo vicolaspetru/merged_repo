@@ -17,12 +17,7 @@ import { imageIcon } from './icon';
 import { __ } from '@wordpress/i18n';
 import { Component, Platform } from '@wordpress/element';
 import { MediaPlaceholder } from '@wordpress/block-editor';
-import {
-    Placeholder,
-    Spinner,
-    Disabled,
-    withNotices,
-} from '@wordpress/components';
+import { withNotices } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 
 /**
