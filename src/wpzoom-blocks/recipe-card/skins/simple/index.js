@@ -107,6 +107,7 @@ class SkinSimple extends Component {
                                             { print_btn && (
                                                 <PrintButton
                                                     styles={ printStyles }
+                                                    id={ get( attributes, 'id' ) }
                                                 />
                                             ) }
                                         </Disabled>
