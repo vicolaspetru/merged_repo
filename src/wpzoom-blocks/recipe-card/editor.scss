@@ -246,13 +246,13 @@
 				@include reduce-motion("transition");
 
 				&:hover {
-					box-shadow: $shadow-toolbar;
+					box-shadow: $shadow-popover;
 				}
 
 				.components-button {
 					color: $dark-opacity-300;
 					padding: 2px;
-					height: $icon-button-size-small;
+					height: $button-size-small;
 
 					// Remove hover box shadows, since they clash with the container.
 					&:not(:disabled):not([aria-disabled="true"]):not(.is-secondary):hover {
@@ -268,7 +268,7 @@
 
 		.direction-step-gallery-item__move-menu,
 		.direction-step-gallery-item__inline-menu {
-			margin: $grid-size;
+			margin: $grid-unit;
 			display: inline-flex;
 			visibility: hidden;
 			z-index: z-index(".block-library-gallery-item__inline-menu");
@@ -305,7 +305,7 @@
 		}
 
 		.direction-step-gallery-placeholder:not(.is-appender) {
-			margin: $grid-size-large 0;
+			margin: $grid-unit-20 0;
 		}
 	}
 	.direction-step-button-container {
