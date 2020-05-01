@@ -303,7 +303,7 @@ class RecipeCard extends Component {
         const { activeStyle } = this.props;
         let sizeSlug = 'wpzoom-rcb-block-header';
 
-        if ( 'simple' === activeStyle ) {
+        if ( 'simple' === activeStyle || 'accent-color-header' === activeStyle ) {
             sizeSlug = 'wpzoom-rcb-block-header-square';
         }
 

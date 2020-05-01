@@ -121,7 +121,7 @@ export default class Inspector extends Component {
 
         let sizeSlug = 'wpzoom-rcb-block-header';
 
-        if ( 'simple' === activeStyle ) {
+        if ( 'simple' === activeStyle || 'accent-color-header' === activeStyle ) {
             sizeSlug = 'wpzoom-rcb-block-header-square';
         }
 
@@ -144,7 +144,7 @@ export default class Inspector extends Component {
 
         let sizeSlug = 'wpzoom-rcb-block-header';
 
-        if ( 'simple' === activeStyle ) {
+        if ( 'simple' === activeStyle || 'accent-color-header' === activeStyle ) {
             sizeSlug = 'wpzoom-rcb-block-header-square';
         }
 
