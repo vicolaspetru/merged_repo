@@ -82,7 +82,7 @@ export default class CTA extends Component {
         if ( '' !== backgroundColor ) {
             styles = {
                 ...styles,
-                'background-color': backgroundColor,
+                backgroundColor,
             };
         }
         if ( '' !== textColor ) {

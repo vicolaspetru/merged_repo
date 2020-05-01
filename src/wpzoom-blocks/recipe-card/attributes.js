@@ -47,4 +47,9 @@ export const blockStyles = [
         label: __( 'Simple Design', 'wpzoom-recipe-card' ),
         isDefault: wpzoom_rcb_settings_template === 'simple',
     },
+    {
+        name: 'accent-color-header',
+        label: __( 'Accent Color Header', 'wpzoom-recipe-card' ),
+        isDefault: wpzoom_rcb_settings_template === 'accent-color-header',
+    },
 ];

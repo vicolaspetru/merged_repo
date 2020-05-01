@@ -18,6 +18,7 @@ import classnames from 'classnames';
 import SkinDefault from '../../skins/default';
 import SkinSimple from '../../skins/simple';
 import SkinNewDesign from '../../skins/new-design';
+import SkinAccentColorHeader from '../../skins/accent-color-header';
 import loadingSpinnerPlaceholder from '../../skins/shared/spinner';
 import Inspector from '../block-settings';
 import ExtraOptionsModal from '../bulk';
@@ -299,8 +300,7 @@ class RecipeCard extends Component {
     }
 
     onSelectImage( media ) {
-        const { className } = this.props;
-        const activeStyle = getBlockStyle( className );
+        const { activeStyle } = this.props;
         let sizeSlug = 'wpzoom-rcb-block-header';
 
         if ( 'simple' === activeStyle ) {
@@ -368,6 +368,7 @@ class RecipeCard extends Component {
             },
             isRecipeCardSelected,
             noticeUI,
+            activeStyle,
         } = this.props;
 
         const {
@@ -380,7 +381,6 @@ class RecipeCard extends Component {
             },
         } = attributes;
 
-        const activeStyle = getBlockStyle( className );
         const regex = /is-style-(\S*)/g;
         const m = regex.exec( className );
 
@@ -391,12 +391,15 @@ class RecipeCard extends Component {
         if ( 'simple' === activeStyle ) {
             headerContentAlign = 'left';
         }
+        if ( 'accent-color-header' === activeStyle ) {
+            headerContentAlign = '';
+        }
 
         const RecipeCardClassName = classnames(
             className, {
                 'is-loading-block': this.state.isLoading,
                 'recipe-card-noimage': hide_header_image,
-                [ `header-content-align-${ headerContentAlign }` ]: true,
+                [ `header-content-align-${ headerContentAlign }` ]: ! isEmpty( headerContentAlign ),
                 [ `is-style-${ activeStyle }` ]: m === null,
             }
         );
@@ -453,6 +456,16 @@ class RecipeCard extends Component {
                         />
                     ) }
 
+                    { 'accent-color-header' === activeStyle && (
+                        <SkinAccentColorHeader
+                            setFocus={ this.setFocus }
+                            renderTerms={ this.renderTerms }
+                            onUploadError={ this.onUploadError }
+                            onSelectImage={ this.onSelectImage }
+                            { ...this.props }
+                        />
+                    ) }
+
                 </div>
             </Fragment>
         );
@@ -467,6 +480,7 @@ const applyWithSelect = withSelect( ( select, props ) => {
         },
         clientId,
         isSelected,
+        className,
     } = props;
 
     const {
@@ -569,6 +583,7 @@ const applyWithSelect = withSelect( ( select, props ) => {
         postTitle,
         postType,
         postAuthor,
+        activeStyle: getBlockStyle( className ),
         settingOptions: setting_options,
         licenseStatus: license_status,
         coursesTaxonomy,

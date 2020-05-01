@@ -480,7 +480,8 @@
 }
 
 @import "./skins/snippets";
-@import "./skins/default/styles";
-@import "./skins/new-design/styles";
-@import "./skins/simple/styles";
+@import "./skins/default/style";
+@import "./skins/new-design/style";
+@import "./skins/simple/style";
+@import "./skins/accent-color-header/style";
 @import "./magnific-popup";

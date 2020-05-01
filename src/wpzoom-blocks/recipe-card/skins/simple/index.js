@@ -19,6 +19,8 @@ import FoodLabels from '../../components/food-labels';
 import Video from '../../components/video';
 import Notes from '../../components/notes';
 import { generateId } from '@wpzoom/helpers';
+import { getCSSSelector } from '../shared/css-selectors';
+import { buildInlineStyle } from '../shared/inline-style';
 
 /**
  * WordPress dependencies
@@ -42,6 +44,7 @@ class SkinSimple extends Component {
             isRecipeCardSelected,
             renderTerms,
             setFocus,
+            activeStyle,
         } = this.props;
 
         const {
@@ -77,12 +80,13 @@ class SkinSimple extends Component {
             customAuthorName = postAuthor;
         }
 
-        const printStyles = {
-            'background-color': `${ primary_color }`,
+        const styles = {
+            [ getCSSSelector( activeStyle, '.btn-print-link' ) ]: `background-color: ${ primary_color };`,
         };
 
         return (
             <Fragment>
+                { buildInlineStyle( styles ) }
                 <div className="recipe-card-header-wrap">
                     { ! hasImage && (
                         <UploadMediaPlaceholder
@@ -106,7 +110,6 @@ class SkinSimple extends Component {
                                             ) }
                                             { print_btn && (
                                                 <PrintButton
-                                                    styles={ printStyles }
                                                     id={ get( attributes, 'id' ) }
                                                 />
                                             ) }

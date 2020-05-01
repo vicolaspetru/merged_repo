@@ -26,7 +26,6 @@ import {
     stripHTML,
     getNumberFromString,
     pickRelevantMediaFiles,
-    getBlockStyle,
 } from '@wpzoom/helpers';
 
 /**
@@ -113,14 +112,13 @@ export default class Inspector extends Component {
                 hasImage,
             },
             setAttributes,
-            className,
+            activeStyle,
         } = this.props;
 
         if ( hasImage || ! media ) {
             return;
         }
 
-        const activeStyle = getBlockStyle( className );
         let sizeSlug = 'wpzoom-rcb-block-header';
 
         if ( 'simple' === activeStyle ) {
@@ -142,9 +140,8 @@ export default class Inspector extends Component {
     }
 
     onSelectImage( media ) {
-        const { setAttributes, className } = this.props;
+        const { setAttributes, activeStyle } = this.props;
 
-        const activeStyle = getBlockStyle( className );
         let sizeSlug = 'wpzoom-rcb-block-header';
 
         if ( 'simple' === activeStyle ) {
@@ -503,6 +500,7 @@ export default class Inspector extends Component {
             attributes,
             setAttributes,
             settingOptions,
+            activeStyle,
         } = this.props;
 
         const {
@@ -520,7 +518,7 @@ export default class Inspector extends Component {
                     onSelectPinImage={ this.onSelectPinImage }
                     onRemovePinImage={ this.onRemovePinImage }
                     onChangeSettings={ this.onChangeSettings }
-                    { ...{ attributes, className, settingOptions } }
+                    { ...{ attributes, className, settingOptions, activeStyle } }
                 />
                 <VideoSettings
                     { ...{ attributes, setAttributes, className } }
