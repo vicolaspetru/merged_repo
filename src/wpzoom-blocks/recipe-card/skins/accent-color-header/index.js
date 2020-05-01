@@ -103,7 +103,7 @@ class SkinAccentColorHeader extends Component {
             [ getCSSSelector( activeStyle, '.recipe-card-course' ) ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.recipe-card-cuisine' ) ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.recipe-card-difficulty' ) ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
-            [ `${ getCSSSelector( activeStyle, '.recipe-card-course' ) }::before` ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-cuisine' ) }::before` ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ `${ getCSSSelector( activeStyle, '.recipe-card-difficulty' ) }::before` ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.detail-item-icon' ) ]: `color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.btn-pinit-link' ) ]: `background-color: ${ pinterest_bg_color || get( pinterestBackgroundColors, [ 0, 'color' ] ) }; color: ${ pinterest_text_color || get( pinterestTextColors, [ 0, 'color' ] ) };`,
