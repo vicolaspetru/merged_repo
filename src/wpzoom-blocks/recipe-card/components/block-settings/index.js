@@ -15,6 +15,7 @@ import {
 /**
  * Internal dependencies
  */
+import ColorScheme from './color-scheme';
 import MainSettings from './main';
 import SEOSettings from './seo';
 import CustomDetailsSettings from './custom-details';
@@ -510,6 +511,10 @@ export default class Inspector extends Component {
 
         return (
             <InspectorControls>
+                <ColorScheme
+                    onChangeSettings={ this.onChangeSettings }
+                    { ...{ attributes, className, settingOptions, activeStyle } }
+                />
                 <MainSettings
                     getImageSizeOptions={ this.getImageSizeOptions() }
                     onUpdateURL={ this.onUpdateURL }

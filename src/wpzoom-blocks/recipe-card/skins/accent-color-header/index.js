@@ -27,6 +27,8 @@ import {
     pinterestTextColors,
     printBackgroundColors,
     printTextColors,
+    metaTextColors,
+    titleColors,
 } from '../../components/block-settings/shared/colors-palette';
 import { getCSSSelector } from '../shared/css-selectors';
 import { buildInlineStyle } from '../shared/inline-style';
@@ -74,6 +76,9 @@ class SkinAccentColorHeader extends Component {
                     primary_color,
                     accent_bg_color_header,
                     accent_text_color_header,
+                    recipe_title_color,
+                    image_border_color,
+                    meta_color,
                     pinterest_bg_color,
                     pinterest_text_color,
                     print_bg_color,
@@ -99,10 +104,14 @@ class SkinAccentColorHeader extends Component {
         const printIconFilter = ( print_text_color && hexToCSSFilter( print_text_color ) ) || hexToCSSFilter( get( printTextColors, [ 0, 'color' ] ) );
         const styles = {
             [ getCSSSelector( activeStyle, '.recipe-card-header-container' ) ]: `background-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }; color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
-            [ `${ getCSSSelector( activeStyle, '.recipe-card-image' ) } figure img` ]: `border: 10px solid ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-image' ) } figure img` ]: `border: 10px solid ${ image_border_color || accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
+            [ getCSSSelector( activeStyle, '.recipe-card-title' ) ]: `color: ${ recipe_title_color || accent_text_color_header || get( titleColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.recipe-card-course' ) ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.recipe-card-cuisine' ) ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.recipe-card-difficulty' ) ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-course' ) } mark` ]: `color: ${ meta_color || accent_text_color_header || get( metaTextColors, [ 0, 'color' ] ) };`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-cuisine' ) } mark` ]: `color: ${ meta_color || accent_text_color_header || get( metaTextColors, [ 0, 'color' ] ) };`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-difficulty' ) } mark` ]: `color: ${ meta_color || accent_text_color_header || get( metaTextColors, [ 0, 'color' ] ) };`,
             [ `${ getCSSSelector( activeStyle, '.recipe-card-cuisine' ) }::before` ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ `${ getCSSSelector( activeStyle, '.recipe-card-difficulty' ) }::before` ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.detail-item-icon' ) ]: `color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) };`,

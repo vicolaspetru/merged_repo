@@ -25,4 +25,5 @@ const selectors = {
     '.recipe-card-difficulty': '.recipe-card-header-container .recipe-card-difficulty',
     '.detail-item-icon': '.recipe-card-details .details-items .detail-item .detail-item-icon span',
     '.recipe-card-header-container': '.recipe-card-header-container',
+    '.recipe-card-title': '.recipe-card-header-container .recipe-card-title',
 };

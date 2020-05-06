@@ -8,18 +8,6 @@ import {
 import classnames from 'classnames';
 
 /**
- * Internal dependencies
- */
-import {
-    blockColors,
-    accentColors,
-    pinterestBackgroundColors,
-    pinterestTextColors,
-    printBackgroundColors,
-    printTextColors,
-} from './shared/colors-palette';
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -32,7 +20,6 @@ import {
     TextControl,
     TextareaControl,
     Button,
-    ColorPalette,
     SelectControl,
 } from '@wordpress/components';
 
@@ -63,13 +50,6 @@ const MainSettings = ( props ) => {
         recipeTitle,
         settings: {
             0: {
-                primary_color,
-                accent_bg_color_header,
-                accent_text_color_header,
-                pinterest_bg_color,
-                pinterest_text_color,
-                print_bg_color,
-                print_text_color,
                 hide_header_image,
                 print_btn,
                 pin_btn,
@@ -181,43 +161,6 @@ const MainSettings = ( props ) => {
                     onChange={ ( display ) => onChangeSettings( display, 'hide_header_image' ) }
                 />
             </BaseControl>
-            { 'accent-color-header' !== activeStyle &&
-                <BaseControl
-                    id={ `${ id }-primary-color` }
-                    label={ __( 'Primary Color', 'wpzoom-recipe-card' ) }
-                >
-                    <ColorPalette
-                        colors={ blockColors }
-                        value={ primary_color }
-                        onChange={ ( color ) => onChangeSettings( color, 'primary_color' ) }
-                    />
-                </BaseControl>
-            }
-            { 'accent-color-header' === activeStyle &&
-                <Fragment>
-                    <BaseControl
-                        id={ `${ id }-bg-accent-color-header` }
-                        label={ __( 'Accent Color Background', 'wpzoom-recipe-card' ) }
-                        help={ __( 'Default color is based on selected Primary Color.', 'wpzoom-recipe-card' ) }
-                    >
-                        <ColorPalette
-                            colors={ blockColors }
-                            value={ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }
-                            onChange={ ( color ) => onChangeSettings( color, 'accent_bg_color_header' ) }
-                        />
-                    </BaseControl>
-                    <BaseControl
-                        id={ `${ id }-text-accent-color-header` }
-                        label={ __( 'Accent Color Text', 'wpzoom-recipe-card' ) }
-                    >
-                        <ColorPalette
-                            colors={ accentColors }
-                            value={ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) }
-                            onChange={ ( color ) => onChangeSettings( color, 'accent_text_color_header' ) }
-                        />
-                    </BaseControl>
-                </Fragment>
-            }
             {
                 ! hide_header_image &&
                 <Fragment>
@@ -231,30 +174,6 @@ const MainSettings = ( props ) => {
                             onChange={ ( display ) => onChangeSettings( display, 'print_btn' ) }
                         />
                     </BaseControl>
-                    { 'accent-color-header' === activeStyle && print_btn &&
-                        <Fragment>
-                            <BaseControl
-                                id={ `${ id }-bg-color-print-button` }
-                                label={ __( 'Print Button Background Color', 'wpzoom-recipe-card' ) }
-                            >
-                                <ColorPalette
-                                    colors={ printBackgroundColors }
-                                    value={ print_bg_color || get( printBackgroundColors, [ 0, 'color' ] ) }
-                                    onChange={ ( color ) => onChangeSettings( color, 'print_bg_color' ) }
-                                />
-                            </BaseControl>
-                            <BaseControl
-                                id={ `${ id }-text-color-print-button` }
-                                label={ __( 'Print Button Text Color', 'wpzoom-recipe-card' ) }
-                            >
-                                <ColorPalette
-                                    colors={ printTextColors }
-                                    value={ print_text_color || get( printTextColors, [ 0, 'color' ] ) }
-                                    onChange={ ( color ) => onChangeSettings( color, 'print_text_color' ) }
-                                />
-                            </BaseControl>
-                        </Fragment>
-                    }
                     <BaseControl
                         id={ `${ id }-pinit-btn` }
                         label={ __( 'Pinterest Button', 'wpzoom-recipe-card' ) }
@@ -265,30 +184,6 @@ const MainSettings = ( props ) => {
                             onChange={ ( display ) => onChangeSettings( display, 'pin_btn' ) }
                         />
                     </BaseControl>
-                    { 'accent-color-header' === activeStyle && pin_btn &&
-                        <Fragment>
-                            <BaseControl
-                                id={ `${ id }-bg-pin-button` }
-                                label={ __( 'Pinterest Button Background', 'wpzoom-recipe-card' ) }
-                            >
-                                <ColorPalette
-                                    colors={ pinterestBackgroundColors }
-                                    value={ pinterest_bg_color || get( pinterestBackgroundColors, [ 0, 'color' ] ) }
-                                    onChange={ ( color ) => onChangeSettings( color, 'pinterest_bg_color' ) }
-                                />
-                            </BaseControl>
-                            <BaseControl
-                                id={ `${ id }-text-accent-color-header` }
-                                label={ __( 'Pinterest Button Text Color', 'wpzoom-recipe-card' ) }
-                            >
-                                <ColorPalette
-                                    colors={ pinterestTextColors }
-                                    value={ pinterest_text_color || get( pinterestTextColors, [ 0, 'color' ] ) }
-                                    onChange={ ( color ) => onChangeSettings( color, 'pinterest_text_color' ) }
-                                />
-                            </BaseControl>
-                        </Fragment>
-                    }
                 </Fragment>
             }
             {
