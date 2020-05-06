@@ -98,7 +98,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 				$dependencies = array( 'jquery' );
 			}
 			elseif ( $this->_slug . '-icon-fonts-css' === $handle ) {
-				$dependencies = array( 'wp-edit-blocks' );
+				$dependencies = array();
 			}
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
 				$dependencies = array( 'jquery' );
