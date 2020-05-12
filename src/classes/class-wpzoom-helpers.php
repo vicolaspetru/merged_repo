@@ -214,6 +214,32 @@ class WPZOOM_Helpers {
 		$embed_url = preg_replace("/\s*[a-zA-Z\/\/:\.]*vimeo.com\/([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","https://player.vimeo.com/video/$1", $url );
 		return $embed_url;
 	}
+
+	public static function classNames( $arguments ) {
+		$classes = array();
+
+		for ( $i = 0; $i < count( $arguments ); $i++ ) {
+			$arg = isset( $arguments[ $i ] ) ? $arguments[ $i ] : false;
+
+			if ( !$arg ) continue;
+
+			$argType = gettype( $arg );
+
+			if ( $argType === 'string' || $argType === 'number') {
+				array_push( $classes, $arg );
+			} else if ( is_array( $arg ) ) {
+				if( count( $arg ) ) {
+					foreach ( $arg as $classname => $include ) {
+						if ( $include === true ) {
+							array_push( $classes, $classname );
+						}
+					}
+				}
+			}
+		}
+		
+		return implode( ' ', $classes );
+	}
 }
 
 
