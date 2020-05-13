@@ -61,13 +61,12 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		 *
 		 * @var string $_slug
 		 */
-		public $_slug;
+		public $_slug = 'wpzoom-rcb-block';
 
 		/**
 		 * The Constructor.
 		 */
 		private function __construct() {
-			$this->_slug = 'wpzoom-rcb-block';
 			$this->_url  = untrailingslashit( WPZOOM_RCB_PLUGIN_URL );
 
 			add_action( 'enqueue_block_assets', array( $this, 'block_assets' ) );
