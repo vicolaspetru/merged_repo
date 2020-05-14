@@ -65,7 +65,7 @@
     <?php echo $food_labels_content_top; ?>
 
     <?php
-        if ( ! empty( $summary ) ):
+        if ( ! empty( $stored_data['summary'] ) ):
             $summary_class = WPZOOM_Helpers::classNames( array(
                 'recipe-card-summary',
                 array(
@@ -73,32 +73,36 @@
                 )
             ) );
     ?>
-        <p class="<?php echo esc_attr( $summary_class ) ?>"><?php echo $summary ?></p>
+        <p class="<?php echo esc_attr( $summary_class ) ?>"><?php echo $stored_data['summary'] ?></p>
     <?php endif ?>
+    
     <?php
-        $ingredients_class = WPZOOM_Helpers::classNames( array(
-            'ingredients-list',
-            'layout-'. $settings['ingredientsLayout']
-        ) );
+        if ( ! empty( $ingredient_items ) ):
+            $ingredients_class = WPZOOM_Helpers::classNames( array(
+                'ingredients-list',
+                'layout-'. $settings['ingredientsLayout']
+            ) );
     ?>
-    <?php if ( ! empty( $ingredient_items ) ): ?>
         <div class="recipe-card-ingredients">
             <h3 class="ingredients-title"><?php echo $stored_data['ingredientsTitle'] ?></h3>
             <ul class="<?php echo esc_attr( $ingredients_class ) ?>"><?php echo $ingredient_items ?></ul>
         </div>
     <?php endif ?>
+
     <?php if ( ! empty( $direction_items ) ): ?>
         <div class="recipe-card-directions">
             <h3 class="directions-title"><?php echo $stored_data['directionsTitle'] ?></h3>
             <ul class="directions-list"><?php echo $direction_items ?></ul>
         </div>
     <?php endif ?>
+
     <?php if ( ! empty( $recipe_card_video ) ): ?>
         <div class="recipe-card-video no-print">
             <h3 class="video-title"><?php echo $stored_data['videoTitle'] ?></h3>
             <?php echo $recipe_card_video ?>
         </div>
     <?php endif ?>
+
     <?php if ( ! empty( $notes_items ) ): ?>
         <div class="recipe-card-notes">
             <h3 class="notes-title"><?php echo $stored_data['notesTitle'] ?></h3>

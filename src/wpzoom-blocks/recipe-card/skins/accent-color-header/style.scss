@@ -1,5 +1,8 @@
 .wp-block-wpzoom-recipe-card-block-recipe-card {
     &.is-style-accent-color-header {
+        padding: 0;
+        margin: 40px 0;
+        background: #ffffff;
         .recipe-card-header-container {
             position: relative;
             text-align: center;
@@ -36,10 +39,15 @@
                 font-size: $small-font-size;
             }
             .recipe-card-heading {
+                text-align: center;
                 .recipe-card-author {
                     display: block;
                     font-size: $small-font-size;
                     margin-top: $grid-unit-20;
+                    margin-bottom: $grid-unit-20;
+                }
+                .wpzoom-rating-stars-container {
+                    float: none;
                     margin-bottom: $grid-unit-20;
                 }
 
@@ -62,6 +70,9 @@
                         top: auto;
                         left: auto;
                         transform: none;
+                        width: auto;
+                        height: auto;
+                        border-radius: 0;
                     }
                 }
                 .recipe-card-image-placeholder {
@@ -69,11 +80,14 @@
                     margin: 0;
                 }
                 .recipe-card-image {
+                    width: 200px;
+                    height: 200px;
                     position: absolute;
                     left: 50%;
                     top: calc((200px / 2) * -1);
                     transform: translateX(-50%);
                     margin: 0;
+                    border-radius: $radius-round-rectangle-x2;
                 }
             }
         }
