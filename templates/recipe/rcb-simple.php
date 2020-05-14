@@ -7,23 +7,6 @@
  * @package     WPZOOM_Recipe_Card_Blocks
  * @subpackage  WPZOOM_Recipe_Card_Blocks/templates/recipe
  */
-
-function wpzoom_rcb_block_add_inline_styles() {
-    $custom_css = '';
-
-    if ( '' != $settings['primary_color'] ) {
-        $primary_color = $settings['primary_color'];
-
-        $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .btn-print-link {
-            background-color: {$primary_color};
-            box-shadow: 0 5px 40px {$primary_color};
-        }";
-    }
-
-    wp_add_inline_style( WPZOOM_Assets_Manager()->_slug, $custom_css );
-}
-add_action( 'wp_enqueue_scripts', 'wpzoom_rcb_block_add_inline_styles' );
-
 ?>
 <div id="<?php echo esc_attr( $id ); ?>" class="<?php echo esc_attr( trim( $RecipeCardClassName ) ); ?>">
     <div class="recipe-card-header-wrap">
@@ -67,21 +50,21 @@ add_action( 'wp_enqueue_scripts', 'wpzoom_rcb_block_add_inline_styles' );
                     }
                 ?>
             </div><!-- /.recipe-card-heading -->
+            <?php
+                if ( ! empty( $detail_items ) ):
+                    $details_class = WPZOOM_Helpers::classNames( array(
+                        'recipe-card-details',
+                        array(
+                            'no-print' => '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_details')
+                        )
+                    ) );
+            ?>
+                <div class="<?php echo esc_attr( $details_class ) ?>">
+                    <div class="details-items"><?php echo $detail_items ?></div>
+                </div>
+            <?php endif ?>
         </div><!-- /.recipe-card-along-image -->
     </div><!-- /.recipe-card-header-wrap -->
-    <?php
-        if ( ! empty( $detail_items ) ):
-            $details_class = WPZOOM_Helpers::classNames( array(
-                'recipe-card-details',
-                array(
-                    'no-print' => '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_details')
-                )
-            ) );
-    ?>
-        <div class="<?php echo esc_attr( $details_class ) ?>">
-            <div class="details-items"><?php echo $detail_items ?></div>
-        </div>
-    <?php endif ?>
 
     <?php echo $food_labels_content_top; ?>
 
@@ -137,3 +120,24 @@ add_action( 'wp_enqueue_scripts', 'wpzoom_rcb_block_add_inline_styles' );
         </div>
     <?php endif ?>
 </div><!-- /.wp-block-wpzoom-recipe-card-block-recipe-card -->
+
+<style id="wpzoom-rcb-block-template-<?php echo esc_attr( $style ) ?>-inline-css" type="text/css">
+    <?php
+        $custom_css = '';
+        $primary_color = $settings['primary_color'];
+
+        if ( ! empty( $primary_color ) ) {
+            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link {
+                background-color: {$primary_color};
+            }\n";
+            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .details-items .detail-item .detail-item-icon {
+                color: {$primary_color};
+            }\n";
+            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .ingredients-list>li .tick-circle {
+                border: 2px solid {$primary_color};
+            }\n";
+        }
+
+        echo $custom_css;
+    ?>
+</style>

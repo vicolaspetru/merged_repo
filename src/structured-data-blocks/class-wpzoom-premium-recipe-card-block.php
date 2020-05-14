@@ -778,31 +778,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$iconSet 			= isset( $detail['iconSet'] ) ? $detail['iconSet'] : 'oldicon';
 				$_prefix 			= isset( $detail['_prefix'] ) && ! empty( $detail['_prefix'] ) ? $detail['_prefix'] : $iconSet;
 				$itemIconClasses 	= implode( ' ', array( 'detail-item-icon', $_prefix, $iconSet . '-' . $detail['icon'] ) );
-				$styles 			= array();
-
-				if ( '' != self::$settings['primary_color'] ) {
-					if ( 'default' === self::$style ) {
-						$styles = array(
-							'color' => @self::$settings['primary_color']
-						);
-					} elseif ( 'newdesign' === self::$style ) {
-						$styles = array(
-							'color' => self::$settings['primary_color']
-						);
-					} elseif ( 'simple' === self::$style ) {
-						$styles = array(
-							'color' => self::$settings['primary_color']
-						);
-					}
-				}
-				$iconStyles = self::$helpers->render_styles_attributes( $styles );
 
 				$icon = sprintf(
-					'<span class="%s" icon-name="%s" iconset="%s" style="%s"></span>',
+					'<span class="%s" icon-name="%s" iconset="%s"></span>',
 					$itemIconClasses,
 					$icon,
-					$iconSet,
-					$iconStyles
+					$iconSet
 				);
 			}
 
@@ -904,7 +885,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		foreach ( $ingredients as $index => $ingredient ) {
 			$tick = $name = '';
 			$amount = $unit = '';
-			$styles = array();
 			$isGroup = isset($ingredient['isGroup']) ? $ingredient['isGroup'] : false;
 
 			if ( isset( $ingredient['parse'] ) ) {
@@ -913,23 +893,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			}
 
 			if ( !$isGroup ) {
-				if ( 'newdesign' === self::$style || 'simple' === self::$style ) {
-
-					if ( '' != self::$settings['primary_color'] ) {
-						$styles = array(
-							'border' => '2px solid ' . self::$settings['primary_color']
-						);
-					}
-
-					$tickStyles = self::$helpers->render_styles_attributes( $styles );
-
-					$tick = sprintf(
-						'<span class="tick-circle" style="%s"></span>',
-						$tickStyles
-					);
-				} else {
-					$tick = '<span class="tick-circle"></span>';
-				}
+				$tick = '<span class="tick-circle"></span>';
 
 				if ( ! empty( $ingredient[ 'name' ] ) ) {
 					$amount = !empty( $amount ) ? sprintf( '<span class="wpzoom-rcb-ingredient-amount">%s</span>', $amount ) : '';
