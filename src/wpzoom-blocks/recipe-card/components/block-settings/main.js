@@ -267,7 +267,7 @@ const MainSettings = ( props ) => {
                 }
             </BaseControl>
             {
-                'newdesign' === activeStyle &&
+                ( 'newdesign' === activeStyle || 'accent-color-header' === activeStyle ) &&
                     <BaseControl
                         id={ `${ id }-ingredients-layout` }
                         label={ __( 'Ingredients Layout', 'wpzoom-recipe-card' ) }

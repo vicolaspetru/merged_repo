@@ -119,6 +119,7 @@ class SkinAccentColorHeader extends Component {
             [ getCSSSelector( activeStyle, '.btn-print-link' ) ]: `background-color: ${ print_bg_color || get( printBackgroundColors, [ 0, 'color' ] ) }; color: ${ print_text_color || get( printTextColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.icon-pinit-link' ) ]: `filter: ${ get( pinterestIconFilter, 'filter' ) }`,
             [ getCSSSelector( activeStyle, '.icon-print-link' ) ]: `filter: ${ get( printIconFilter, 'filter' ) }`,
+            [ getCSSSelector( activeStyle, '.tick-circle' ) ]: `border-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }`,
         };
 
         return (
@@ -212,37 +213,41 @@ class SkinAccentColorHeader extends Component {
                         <p className="description">{ __( 'You can add or edit these details in the Block Options on the right →', 'wpzoom-recipe-card' ) }</p>
                     </div>
                 </div>
-                <Detail
-                    generateId={ generateId }
-                    { ...{ attributes, setAttributes, className } }
-                />
-                <FoodLabels
-                    location="top"
-                    { ...{ attributes, setAttributes } }
-                />
-                <Ingredient
-                    generateId={ generateId }
-                    isRecipeCardSelected={ isRecipeCardSelected }
-                    { ...{ attributes, setAttributes, className, activeStyle } }
-                />
-                <Direction
-                    generateId={ generateId }
-                    isRecipeCardSelected={ isRecipeCardSelected }
-                    { ...{ attributes, setAttributes, className } }
-                />
-                <Video
-                    onFocus={ setFocus }
-                    { ...{ attributes, setAttributes } }
-                />
-                <Notes
-                    onFocus={ setFocus }
-                    { ...{ attributes, setAttributes } }
-                />
-                <FoodLabels
-                    location="bottom"
-                    { ...{ attributes, setAttributes } }
-                />
-                <CallToAction />
+                <div className="recipe-card-content-container">
+                    <Detail
+                        generateId={ generateId }
+                        { ...{ attributes, setAttributes, className } }
+                    />
+                    <FoodLabels
+                        location="top"
+                        { ...{ attributes, setAttributes } }
+                    />
+                    <Ingredient
+                        generateId={ generateId }
+                        isRecipeCardSelected={ isRecipeCardSelected }
+                        { ...{ attributes, setAttributes, className, activeStyle } }
+                    />
+                    <Direction
+                        generateId={ generateId }
+                        isRecipeCardSelected={ isRecipeCardSelected }
+                        { ...{ attributes, setAttributes, className } }
+                    />
+                    <Video
+                        onFocus={ setFocus }
+                        { ...{ attributes, setAttributes } }
+                    />
+                    <Notes
+                        onFocus={ setFocus }
+                        { ...{ attributes, setAttributes } }
+                    />
+                    <FoodLabels
+                        location="bottom"
+                        { ...{ attributes, setAttributes } }
+                    />
+                </div>
+                <div className="recipe-card-footer-container">
+                    <CallToAction />
+                </div>
             </Fragment>
         );
     }

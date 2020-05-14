@@ -124,17 +124,18 @@
 <style id="wpzoom-rcb-block-template-<?php echo esc_attr( $style ) ?>-inline-css" type="text/css">
     <?php
         $custom_css = '';
+        $block_class_name = ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style}";
         $primary_color = $settings['primary_color'];
 
         if ( ! empty( $primary_color ) ) {
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link {
+            $custom_css .= "{$block_class_name} .recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link {
                 background-color: {$primary_color};
                 box-shadow: 0 5px 40px {$primary_color};
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .details-items .detail-item .detail-item-icon {
+            $custom_css .= "{$block_class_name} .details-items .detail-item .detail-item-icon {
                 color: {$primary_color};
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .ingredients-list>li .tick-circle {
+            $custom_css .= "{$block_class_name} .ingredients-list>li .tick-circle {
                 border: 2px solid {$primary_color};
             }\n";
         }

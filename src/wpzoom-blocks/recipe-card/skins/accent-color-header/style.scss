@@ -7,7 +7,8 @@
             position: relative;
             text-align: center;
             padding: $grid-unit-40;
-            margin-bottom: $grid-unit-20;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
             .recipe-card-image-placeholder,
             .recipe-card-image-preview {
                 width: 200px;
@@ -53,6 +54,19 @@
 
                 @include recipe-heading-metadata( $default-meta-color, $default-heading-color );
             }
+        }
+        .recipe-card-content-container {
+            border-left: 1px solid rgba(0,0,0,.1);
+            border-right: 1px solid rgba(0,0,0,.1);
+            padding: $grid-unit-15;
+        }
+        .recipe-card-footer-container {
+            padding: $grid-unit-15;
+            border-left: 1px solid rgba(0,0,0,.1);
+            border-right: 1px solid rgba(0,0,0,.1);
+            border-bottom: 1px solid rgba(0,0,0,.1);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
         }
 
         &:not(.recipe-card-noimage) {
@@ -234,9 +248,7 @@
             @include reset-list;
             > li {
                 list-style: none;
-                padding: 0 0 $grid-unit-15;
                 margin: 0 0 $grid-unit-15;
-                border-bottom: 1px solid #e9e5c9;
                 position: relative;
                 cursor: pointer;
                 line-height: 1.7;
@@ -251,6 +263,13 @@
 
                 @include clear-after;
                 @include ingredient-tick( $default-tick-color, $default-ticked-color );
+            }
+            &.layout-2-columns {
+                columns: 2;
+                
+                .ingredient-item-group {
+                    column-span: all;
+                }
             }
         }
 
@@ -301,6 +320,27 @@
 
             .recipe-card-notes-list {
                 @include recipe-notes-list( $coconut-cream, $coffee, $default-primary-color, $default-primary-text-color );
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .wp-block-wpzoom-recipe-card-block-recipe-card {
+        &.is-style-accent-color-header {
+            .recipe-card-image {
+                margin-bottom: 15px;
+            }
+            .recipe-card-heading .recipe-card-title {
+                font-size: 24px;
+            }
+            .details-items .detail-item {
+                min-width: 50%;
+                padding: 7px 1.5%;
+                border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+            }
+            .ingredients-list.layout-2-columns {
+                columns: 1;
             }
         }
     }

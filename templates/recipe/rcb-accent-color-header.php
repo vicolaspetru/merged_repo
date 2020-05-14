@@ -132,6 +132,7 @@
 <style id="wpzoom-rcb-block-template-<?php echo esc_attr( $style ) ?>-inline-css" type="text/css">
     <?php
         $custom_css = '';
+        $block_class_name = ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style}";
         $primary_color = $settings['primary_color'];
         $accent_bg_color_header = $settings['accent_bg_color_header'];
         $accent_text_color_header = $settings['accent_text_color_header'];
@@ -143,76 +144,86 @@
         $recipe_title_color = $settings['recipe_title_color'];
         $meta_color = $settings['meta_color'];
 
-        $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container {
+        $custom_css .= "{$block_class_name} .recipe-card-header-container {
             background-color: {$accent_bg_color_header} !important;
             color: {$accent_text_color_header} !important;
         }\n";
-        $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-title {
+        $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-title {
             color: {$recipe_title_color} !important;
         }\n";
 
         if ( ! empty( $attachment ) ) {
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-image figure img {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-image figure img {
                 border: 10px solid {$image_border_color} !important;
             }\n";
         }
 
         if ( $settings['displayCourse'] ) {
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-course {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-course {
                 color: {$accent_text_color_header} !important;
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-course mark {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-course mark {
                 color: {$meta_color} !important;
             }\n";
         }
 
         if ( $settings['displayCuisine'] ) {
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-cuisine {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-cuisine {
                 color: {$accent_text_color_header} !important;
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-cuisine mark {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-cuisine mark {
                 color: {$meta_color} !important;
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-cuisine::before {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-cuisine::before {
                 color: {$accent_text_color_header} !important;
             }\n";
         }
 
         if ( $settings['displayDifficulty'] ) {
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-difficulty {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-difficulty {
                 color: {$accent_text_color_header} !important;
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-difficulty mark {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-difficulty mark {
                 color: {$meta_color} !important;
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-header-container .recipe-card-difficulty::before {
+            $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-difficulty::before {
                 color: {$accent_text_color_header} !important;
             }\n";
         }
 
         if ( ! empty( $detail_items ) ) {
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .recipe-card-details .details-items .detail-item .detail-item-icon {
+            $custom_css .= "{$block_class_name} .recipe-card-details .details-items .detail-item .detail-item-icon {
                 color: {$accent_bg_color_header} !important;
             }\n";
         }
 
         if ( $settings['pin_btn'] ) {
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .wpzoom-recipe-card-pinit .btn-pinit-link {
+            $custom_css .= "{$block_class_name} .wpzoom-recipe-card-pinit .btn-pinit-link {
                 background-color: {$pinterest_bg_color} !important;
                 color: {$pinterest_text_color} !important;
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .wpzoom-recipe-card-pinit .btn-pinit-link .icon-pinit-link {
+            $custom_css .= "{$block_class_name} .wpzoom-recipe-card-pinit .btn-pinit-link .icon-pinit-link {
                 filter: brightness(0) invert(0%) sepia(100%) saturate(0%) hue-rotate(52deg) brightness(102%) contrast(105%) !important;
             }\n";
         }
 
         if ( $settings['print_btn'] ) {
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .wpzoom-recipe-card-print-link .btn-print-link {
+            $custom_css .= "{$block_class_name} .wpzoom-recipe-card-print-link .btn-print-link {
                 background-color: {$print_bg_color} !important;
                 color: {$print_text_color} !important;
             }\n";
-            $custom_css .= ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style} .wpzoom-recipe-card-print-link .btn-print-link .icon-print-link {
+            $custom_css .= "{$block_class_name} .wpzoom-recipe-card-print-link .btn-print-link .icon-print-link {
                 filter: brightness(0) invert(0%) sepia(100%) saturate(0%) hue-rotate(52deg) brightness(102%) contrast(105%) !important;
+            }\n";
+        }
+
+        if ( ! empty( $ingredient_items ) ) {
+            $custom_css .= "{$block_class_name} .ingredients-list > li .tick-circle {
+                border-color: {$accent_bg_color_header};
+            }\n";
+            $custom_css .= "{$block_class_name} .ingredients-list > li.ticked .tick-circle {
+                border-color: {$accent_bg_color_header} !important;
+                background-color: {$accent_bg_color_header};
             }\n";
         }
 
