@@ -61,7 +61,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		 *
 		 * @var string $_slug
 		 */
-		public $_slug = 'wpzoom-rcb-block';
+		public static $_slug = 'wpzoom-rcb-block';
 
 		/**
 		 * The Constructor.
@@ -87,22 +87,22 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 		public function get_dependencies( $handle ) {
 			$dependencies = array();
 
-			if ( $this->_slug . '-js' === $handle ) {
+			if ( self::$_slug . '-js' === $handle ) {
 				$dependencies = array( 'wp-editor', 'wp-components', 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-compose' );
 			}
-			elseif ( $this->_slug . '-editor-css' === $handle ) {
+			elseif ( self::$_slug . '-editor-css' === $handle ) {
 				$dependencies = array( 'wp-edit-blocks' );
 			}
-			elseif ( $this->_slug . '-script' === $handle ) {
+			elseif ( self::$_slug . '-script' === $handle ) {
 				$dependencies = array( 'jquery' );
 			}
-			elseif ( $this->_slug . '-icon-fonts-css' === $handle ) {
+			elseif ( self::$_slug . '-icon-fonts-css' === $handle ) {
 				$dependencies = array();
 			}
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
 				$dependencies = array( 'jquery' );
 			}
-            elseif ( $this->_slug . '-masonry-gallery' === $handle ) {
+            elseif ( self::$_slug . '-masonry-gallery' === $handle ) {
                 $dependencies = array( 'jquery-masonry', 'imagesloaded' );
             }
 
@@ -120,16 +120,16 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             if ( is_admin() ) {
                 
                 wp_enqueue_style(
-                    $this->_slug . '-style-css', // Handle.
+                    self::$_slug . '-style-css', // Handle.
                     $this->asset_source( '', 'blocks.style.build.css' ), // Block style CSS.
-                    $this->get_dependencies( $this->_slug . '-style-css' ), // Dependency to include the CSS after it.
+                    $this->get_dependencies( self::$_slug . '-style-css' ), // Dependency to include the CSS after it.
                     WPZOOM_RCB_VERSION
                 );
 
                 // Enable Google Fonts
                 if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_enable_google_fonts') ) {
                     wp_enqueue_style(
-                        $this->_slug . '-google-font',
+                        self::$_slug . '-google-font',
                         'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i',
                         false
                     );
@@ -148,15 +148,15 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 
                     // Scripts.
                     wp_enqueue_script(
-                        $this->_slug . '-script',
+                        self::$_slug . '-script',
                         $this->asset_source( 'js', 'script.js' ),
-                        $this->get_dependencies( $this->_slug . '-script' ),
+                        $this->get_dependencies( self::$_slug . '-script' ),
                         WPZOOM_RCB_VERSION,
                         true
                     );
 
                     wp_enqueue_script(
-                        $this->_slug . '-pinit',
+                        self::$_slug . '-pinit',
                         'https://assets.pinterest.com/js/pinit.js',
                         array(),
                         false,
@@ -165,16 +165,16 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 
                     // Styles.
                     wp_enqueue_style(
-                        $this->_slug . '-style-css', // Handle.
+                        self::$_slug . '-style-css', // Handle.
                         $this->asset_source( '', 'blocks.style.build.css' ), // Block style CSS.
-                        $this->get_dependencies( $this->_slug . '-style-css' ), // Dependency to include the CSS after it.
+                        $this->get_dependencies( self::$_slug . '-style-css' ), // Dependency to include the CSS after it.
                         WPZOOM_RCB_VERSION
                     );
 
                     // Enable Google Fonts
                     if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_enable_google_fonts') ) {
                         wp_enqueue_style(
-                            $this->_slug . '-google-font',
+                            self::$_slug . '-google-font',
                             'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i',
                             false
                         );
@@ -184,7 +184,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                      * Localize script data.
                      */
                     $this->localize_script(
-                        $this->_slug . '-script',
+                        self::$_slug . '-script',
                         'wpzoomRecipeCard',
                         array(
                             'pluginURL' => WPZOOM_RCB_PLUGIN_URL,
@@ -200,24 +200,24 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     );
 
                     if ( ! empty( self::get_custom_css() ) ) {
-                        wp_add_inline_style( $this->_slug . '-style-css', self::get_custom_css() );
+                        wp_add_inline_style( self::$_slug . '-style-css', self::get_custom_css() );
                     }
                     
                 }
 
                 if ( has_block( 'wpzoom-recipe-card/block-recipe-card' ) ) {
                     wp_enqueue_script(
-                        $this->_slug . '-adjustable-servings',
+                        self::$_slug . '-adjustable-servings',
                         $this->asset_source( 'js', 'adjustable-servings.js' ),
-                        $this->get_dependencies( $this->_slug . '-adjustable-servings' ),
+                        $this->get_dependencies( self::$_slug . '-adjustable-servings' ),
                         WPZOOM_RCB_VERSION,
                         true
                     );
 
                     wp_enqueue_script(
-                        $this->_slug . '-masonry-gallery',
+                        self::$_slug . '-masonry-gallery',
                         $this->asset_source( 'js', 'masonry-gallery.js' ),
-                        $this->get_dependencies( $this->_slug . '-masonry-gallery' ),
+                        $this->get_dependencies( self::$_slug . '-masonry-gallery' ),
                         WPZOOM_RCB_VERSION,
                         true
                     );
@@ -243,9 +243,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 
             // Scripts.
             wp_enqueue_script(
-                $this->_slug . '-js', // Handle.
+                self::$_slug . '-js', // Handle.
                 $this->asset_source( '', 'blocks.build.js' ), // Block.build.js: We register the block here. Built with Webpack.
-                $this->get_dependencies( $this->_slug . '-js' ), // Dependencies, defined above.
+                $this->get_dependencies( self::$_slug . '-js' ), // Dependencies, defined above.
                 WPZOOM_RCB_VERSION,
                 true // Enqueue the script in the footer.
             );
@@ -253,14 +253,14 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             // Tell to WordPress that our script contains translations
             // this function was added in 5.0 version
             if ( function_exists( 'wp_set_script_translations' ) ) {
-	            wp_set_script_translations( $this->_slug .'-js', WPZOOM_RCB_TEXT_DOMAIN, WPZOOM_RCB_PLUGIN_DIR . 'languages' );
+	            wp_set_script_translations( self::$_slug .'-js', WPZOOM_RCB_TEXT_DOMAIN, WPZOOM_RCB_PLUGIN_DIR . 'languages' );
             }
 
             // Styles.
             wp_enqueue_style(
-                $this->_slug . '-editor-css', // Handle.
+                self::$_slug . '-editor-css', // Handle.
                 $this->asset_source( '', 'blocks.editor.build.css' ), // Block editor CSS.
-                $this->get_dependencies( $this->_slug . '-editor-css' ), // Dependency to include the CSS after it.
+                $this->get_dependencies( self::$_slug . '-editor-css' ), // Dependency to include the CSS after it.
                 WPZOOM_RCB_VERSION
             );
 
@@ -268,7 +268,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
              * Localize script data.
              */
             $this->localize_script(
-                $this->_slug . '-js',
+                self::$_slug . '-js',
                 'wpzoomRecipeCard',
                 array(
                     'version' => WPZOOM_RCB_VERSION,
@@ -316,9 +316,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             if ( is_admin() ) {
 
                 wp_enqueue_style(
-                    $this->_slug . '-icon-fonts-css', // Handle.
+                    self::$_slug . '-icon-fonts-css', // Handle.
                     $this->asset_source( 'css', 'icon-fonts.build.css' ), // Block editor CSS.
-                    $this->get_dependencies( $this->_slug . '-icon-fonts-css' ), // Dependency to include the CSS after it.
+                    $this->get_dependencies( self::$_slug . '-icon-fonts-css' ), // Dependency to include the CSS after it.
                     WPZOOM_RCB_VERSION
                 );
 
@@ -327,9 +327,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             if ( ! is_admin() && ( has_block( 'wpzoom-recipe-card/block-details' ) || has_block( 'wpzoom-recipe-card/block-recipe-card' ) ) ) {
 
                 wp_enqueue_style(
-                    $this->_slug . '-icon-fonts-css', // Handle.
+                    self::$_slug . '-icon-fonts-css', // Handle.
                     $this->asset_source( 'css', 'icon-fonts.build.css' ), // Block editor CSS.
-                    $this->get_dependencies( $this->_slug . '-icon-fonts-css' ), // Dependency to include the CSS after it.
+                    $this->get_dependencies( self::$_slug . '-icon-fonts-css' ), // Dependency to include the CSS after it.
                     WPZOOM_RCB_VERSION
                 );
 
