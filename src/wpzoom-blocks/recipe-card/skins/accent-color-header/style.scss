@@ -106,12 +106,6 @@
             }
         }
 
-        .wpzoom-recipe-card-print-link .btn-print-link i {
-            background-image: url(assets/images/iconfinder_print_paper.svg);
-        }
-        .wpzoom-recipe-card-pinit .btn-pinit-link i {
-            background-image: url(assets/images/iconfinder_pinterest.svg);
-        }
         .wpzoom-recipe-card-pinit,
         .wpzoom-recipe-card-print-link {
             display: inline-block;
@@ -131,26 +125,24 @@
                 border: none;
                 box-shadow: none;
                 cursor: pointer;
-                i {
+                background-color: #C62122;
+                .wpzoom-rcb-icon-pinit-link {
                     display: inline-block;
-                    text-indent: -9999px;
-                    width: calc(#{$icon-size} - #{$icon-size / 2});
-                    height: calc(#{$icon-size} - #{$icon-size / 2});
-                    background-size: calc(#{$icon-size} - #{$icon-size / 2}) calc(#{$icon-size} - #{$icon-size / 2});
+                    margin-right: $grid-unit;
+                    width: 16px;
+                    height: 16px;
                     vertical-align: middle;
+                    fill: #fff;
                 }
-                .icon-pinit-link {
+                .wpzoom-rcb-pinit-icon {
                     font-size: $ultra-font-size;
                     margin-right: calc(#{ $grid-unit-15 / 2 });
                     vertical-align: middle;
                 }
-                .icon-pinit-link + span {
+                .wpzoom-rcb-pinit-icon + span {
                     font-size: $small-font-size;
                     vertical-align: middle;
                 }
-            }
-            .btn-pinit-link {
-                background-color: #C62122;
             }
         }
         .wpzoom-recipe-card-print-link {
@@ -166,26 +158,25 @@
                 border: none;
                 box-shadow: none;
                 cursor: pointer;
-                i {
+                color: $simple-primary-text-color;
+                background-color: $simple-primary-color;
+                .wpzoom-rcb-icon-print-link {
                     display: inline-block;
-                    text-indent: -9999px;
-                    width: calc(#{$icon-size} - #{$icon-size / 2});
-                    height: calc(#{$icon-size} - #{$icon-size / 2});
-                    background-size: calc(#{$icon-size} - #{$icon-size / 2}) calc(#{$icon-size} - #{$icon-size / 2});
+                    margin-right: $grid-unit;
+                    width: 16px;
+                    height: 16px;
                     vertical-align: middle;
+                    fill: $simple-primary-text-color;
                 }
-                .icon-print-link {
+                .wpzoom-rcb-print-icon {
                     font-size: $ultra-font-size;
                     margin-right: calc(#{ $grid-unit-15 / 2 });
                     vertical-align: middle;
                 }
-                .icon-print-link + span {
+                .wpzoom-rcb-print-icon + span {
                     font-size: $small-font-size;
                     vertical-align: middle;
                 }
-            }
-            .btn-print-link {
-                background-color: $simple-primary-color;
             }
         }
         .recipe-card-details {
@@ -243,6 +234,10 @@
         $selectors: 'ingredients-title', 'directions-title', 'video-title', 'notes-title';
 
         @include recipe-sections-title( $default-heading-color, none, $selectors... );
+
+        .directions-title {
+            margin-top: $grid-unit-15;
+        }
 
         .ingredients-list {
             @include reset-list;
@@ -322,6 +317,19 @@
                 @include recipe-notes-list( $coconut-cream, $coffee, $default-primary-color, $default-primary-text-color );
             }
         }
+        .recipe-card-directions + .recipe-card-cta-instagram,
+        .recipe-card-directions + .recipe-card-cta-pinterest,
+        .recipe-card-directions + .recipe-card-cta-facebook {
+            margin-top: $grid-unit-15;
+        }
+        .recipe-card-cta-instagram + .recipe-card-cta-pinterest,
+        .recipe-card-cta-instagram + .recipe-card-cta-facebook,
+        .recipe-card-cta-pinterest + .recipe-card-cta-facebook {
+            margin-top: $grid-unit-15;
+        }
+        [class*="recipe-card-cta-"]+.footer-copyright {
+            margin-top: $grid-unit-20;
+        }
     }
 }
 
@@ -331,13 +339,12 @@
             .recipe-card-image {
                 margin-bottom: 15px;
             }
-            .recipe-card-heading .recipe-card-title {
+            .recipe-card-header-container .recipe-card-title {
                 font-size: 24px;
             }
             .details-items .detail-item {
                 min-width: 50%;
                 padding: 7px 1.5%;
-                border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
             }
             .ingredients-list.layout-2-columns {
                 columns: 1;

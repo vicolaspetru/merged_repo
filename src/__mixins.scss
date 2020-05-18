@@ -78,6 +78,8 @@
             font-family: $google-font-family;
             text-transform: $text-transform;
             @include margin( 0 0 15px );
+            padding: 0;
+            background-color: transparent;
         }
     }
 }

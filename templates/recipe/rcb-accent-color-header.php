@@ -202,8 +202,8 @@
                 background-color: {$pinterest_bg_color} !important;
                 color: {$pinterest_text_color} !important;
             }\n";
-            $custom_css .= "{$block_class_name} .wpzoom-recipe-card-pinit .btn-pinit-link .icon-pinit-link {
-                filter: brightness(0) invert(0%) sepia(100%) saturate(0%) hue-rotate(52deg) brightness(102%) contrast(105%) !important;
+            $custom_css .= "{$block_class_name} .wpzoom-recipe-card-pinit .btn-pinit-link .wpzoom-rcb-pinit-icon {
+                fill: {$pinterest_text_color};
             }\n";
         }
 
@@ -212,8 +212,8 @@
                 background-color: {$print_bg_color} !important;
                 color: {$print_text_color} !important;
             }\n";
-            $custom_css .= "{$block_class_name} .wpzoom-recipe-card-print-link .btn-print-link .icon-print-link {
-                filter: brightness(0) invert(0%) sepia(100%) saturate(0%) hue-rotate(52deg) brightness(102%) contrast(105%) !important;
+            $custom_css .= "{$block_class_name} .wpzoom-recipe-card-print-link .btn-print-link .wpzoom-rcb-print-icon {
+                fill: {$print_text_color};
             }\n";
         }
 

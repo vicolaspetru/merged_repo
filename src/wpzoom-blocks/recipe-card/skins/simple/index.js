@@ -21,6 +21,7 @@ import Notes from '../../components/notes';
 import { generateId } from '@wpzoom/helpers';
 import { getCSSSelector } from '../shared/css-selectors';
 import { buildInlineStyle } from '../shared/inline-style';
+import { printIcon, pinterestIcon } from '../shared/icon';
 
 /**
  * WordPress dependencies
@@ -106,11 +107,14 @@ class SkinSimple extends Component {
                                     <figcaption>
                                         <Disabled>
                                             { pin_btn && (
-                                                <PinterestButton />
+                                                <PinterestButton
+                                                    icon={ pinterestIcon }
+                                                />
                                             ) }
                                             { print_btn && (
                                                 <PrintButton
                                                     id={ get( attributes, 'id' ) }
+                                                    icon={ printIcon }
                                                 />
                                             ) }
                                         </Disabled>

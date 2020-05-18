@@ -12,11 +12,13 @@ const pinterestClasses = classnames(
     'wpzoom-recipe-card-pinit'
 );
 
-const PinterestButton = () => {
+const PinterestButton = ( props ) => {
+    const { icon } = props;
+
     return (
         <div className={ pinterestClasses }>
             <a className="btn-pinit-link no-print" data-pin-do="buttonPin" href="#" data-pin-custom="true">
-                <i className="icon-pinit-link"></i>
+                { icon }
                 <span>{ __( 'Pin', 'wpzoom-recipe-card' ) }</span>
             </a>
         </div>

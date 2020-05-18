@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { get } from 'lodash';
-import { hexToCSSFilter } from 'hex-to-css-filter';
 
 /**
  * Internal dependencies
@@ -32,6 +31,7 @@ import {
 } from '../../components/block-settings/shared/colors-palette';
 import { getCSSSelector } from '../shared/css-selectors';
 import { buildInlineStyle } from '../shared/inline-style';
+import { printIcon, pinterestIcon } from '../shared/icon';
 
 /**
  * WordPress dependencies
@@ -100,8 +100,6 @@ class SkinAccentColorHeader extends Component {
             customAuthorName = postAuthor;
         }
 
-        const pinterestIconFilter = ( pinterest_text_color && hexToCSSFilter( pinterest_text_color ) ) || hexToCSSFilter( get( pinterestTextColors, [ 0, 'color' ] ) );
-        const printIconFilter = ( print_text_color && hexToCSSFilter( print_text_color ) ) || hexToCSSFilter( get( printTextColors, [ 0, 'color' ] ) );
         const styles = {
             [ getCSSSelector( activeStyle, '.recipe-card-header-container' ) ]: `background-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }; color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ `${ getCSSSelector( activeStyle, '.recipe-card-image' ) } figure img` ]: `border: 10px solid ${ image_border_color || accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
@@ -117,8 +115,8 @@ class SkinAccentColorHeader extends Component {
             [ getCSSSelector( activeStyle, '.detail-item-icon' ) ]: `color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.btn-pinit-link' ) ]: `background-color: ${ pinterest_bg_color || get( pinterestBackgroundColors, [ 0, 'color' ] ) }; color: ${ pinterest_text_color || get( pinterestTextColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.btn-print-link' ) ]: `background-color: ${ print_bg_color || get( printBackgroundColors, [ 0, 'color' ] ) }; color: ${ print_text_color || get( printTextColors, [ 0, 'color' ] ) };`,
-            [ getCSSSelector( activeStyle, '.icon-pinit-link' ) ]: `filter: ${ get( pinterestIconFilter, 'filter' ) }`,
-            [ getCSSSelector( activeStyle, '.icon-print-link' ) ]: `filter: ${ get( printIconFilter, 'filter' ) }`,
+            [ getCSSSelector( activeStyle, '.wpzoom-rcb-pinit-icon' ) ]: `fill: ${ pinterest_text_color || get( pinterestTextColors, [ 0, 'color' ] ) }`,
+            [ getCSSSelector( activeStyle, '.wpzoom-rcb-print-icon' ) ]: `fill: ${ print_text_color || get( printTextColors, [ 0, 'color' ] ) }`,
             [ getCSSSelector( activeStyle, '.tick-circle' ) ]: `border-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }`,
         };
 
@@ -161,11 +159,14 @@ class SkinAccentColorHeader extends Component {
                     />
                     <Disabled>
                         { pin_btn && (
-                            <PinterestButton />
+                            <PinterestButton
+                                icon={ pinterestIcon }
+                            />
                         ) }
                         { print_btn && (
                             <PrintButton
                                 id={ get( attributes, 'id' ) }
+                                icon={ printIcon }
                             />
                         ) }
                     </Disabled>

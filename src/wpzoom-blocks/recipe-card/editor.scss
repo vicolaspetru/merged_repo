@@ -159,7 +159,8 @@
 	}
 
 	// this is used to prevent floating elements on editing
-	&.is-style-newdesign {
+	&.is-style-newdesign,
+	&.is-style-accent-color-header {
 		.ingredients-list.layout-2-columns {
 			columns: 1 !important;
 		    -webkit-columns: 1 !important;

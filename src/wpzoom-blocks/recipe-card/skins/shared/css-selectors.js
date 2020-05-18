@@ -16,9 +16,9 @@ export const getCSSSelector = ( activeStyle, target ) => {
 
 const selectors = {
     '.btn-pinit-link': '.wpzoom-recipe-card-pinit .btn-pinit-link',
-    '.icon-pinit-link': '.wpzoom-recipe-card-pinit .btn-pinit-link .icon-pinit-link',
+    '.wpzoom-rcb-pinit-icon': '.wpzoom-recipe-card-pinit .btn-pinit-link .wpzoom-rcb-pinit-icon',
     '.btn-print-link': '.wpzoom-recipe-card-print-link .btn-print-link',
-    '.icon-print-link': '.wpzoom-recipe-card-print-link .btn-print-link .icon-print-link',
+    '.wpzoom-rcb-print-icon': '.wpzoom-recipe-card-print-link .btn-print-link .wpzoom-rcb-print-icon',
     '.recipe-card-image': '.recipe-card-header-container .recipe-card-image',
     '.recipe-card-course': '.recipe-card-header-container .recipe-card-course',
     '.recipe-card-cuisine': '.recipe-card-header-container .recipe-card-cuisine',
