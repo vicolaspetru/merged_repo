@@ -35,6 +35,7 @@ if ( ! class_exists( 'WPZOOM_Template_Manager' ) ) {
 		public static function instance() {
 			if ( null === self::$instance ) {
 				self::$instance = new WPZOOM_Template_Manager();
+                self::action_hooks();
 			}
 
 			return self::$instance;
@@ -55,6 +56,33 @@ if ( ! class_exists( 'WPZOOM_Template_Manager' ) ) {
          * @type string
          */
         protected static $plugin_directory = WPZOOM_RCB_PLUGIN_DIR;
+
+        /**
+         * Load actions
+         *
+         * @access private
+         * @return void
+         */
+        private static function action_hooks() {
+            add_filter( 'wpzoom_rcb_templates', __CLASS__ . '::register_templates', 10 );
+        }
+
+        /**
+         * Register Recipe Card Templates
+         * 
+         * @since 2.8.2
+         * @return array The templates array
+         */
+        public static function register_templates() {
+            $templates = array(
+                'default'   => __( 'Default', 'wpzoom-recipe-card' ),
+                'newdesign' => __( 'New Design', 'wpzoom-recipe-card' ),
+                'simple'    => __( 'Simple Design', 'wpzoom-recipe-card' ),
+                'accent-color-header' => __( 'Accent Color Header', 'wpzoom-recipe-card' ),
+            );
+
+            return $templates;
+        }
 
         /**
          * Get recipe card template

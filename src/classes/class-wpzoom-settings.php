@@ -639,11 +639,7 @@ class WPZOOM_Settings {
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Default template to use for all Recipe Cards.', 'wpzoom-recipe-card' ),
 									'default'		=> 'default',
-									'options' 		=> array(
-										'default' 	=> __( 'Default', 'wpzoom-recipe-card' ),
-										'newdesign' => __( 'New Design', 'wpzoom-recipe-card' ),
-										'simple' 	=> __( 'Simple Design', 'wpzoom-recipe-card' ),
-									)
+									'options' 		=> apply_filters( 'wpzoom_rcb_templates', array() ),
 								)
 							),
 							array(
