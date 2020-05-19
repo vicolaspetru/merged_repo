@@ -55,7 +55,9 @@ export const DirectionGallery = ( props ) => {
     } );
 
     const focusOnKeyDown = ( imgId ) => {
-        document.getElementById( `${ galleryId }-${ imgId }` ).focus();
+        if ( document.getElementById( `${ galleryId }-${ imgId }` ) !== null ) {
+            document.getElementById( `${ galleryId }-${ imgId }` ).focus();
+        }
     };
 
     return (
