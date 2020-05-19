@@ -97,7 +97,7 @@ class WPZOOM_Steps_Block {
 	public function render( $attributes, $content ) {
 		global $post;
 		
-		if ( ! is_array( $attributes ) || ! is_singular() ) {
+		if ( ! is_array( $attributes ) ) {
 			return $content;
 		}
 
