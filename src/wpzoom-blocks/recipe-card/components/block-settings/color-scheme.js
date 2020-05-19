@@ -1,3 +1,5 @@
+/*global wpzoomRecipeCard*/
+
 /**
  * External dependencies
  */
@@ -33,6 +35,8 @@ import {
  */
 const PANEL_TITLE = __( 'Recipe Card Color Scheme', 'wpzoom-recipe-card' );
 
+const { setting_options } = wpzoomRecipeCard;
+
 const ColorScheme = ( props ) => {
     const {
         attributes,
@@ -54,6 +58,7 @@ const ColorScheme = ( props ) => {
                 pinterest_text_color,
                 print_bg_color,
                 print_text_color,
+                rating_stars_color,
                 hide_header_image,
                 print_btn,
                 pin_btn,
@@ -126,6 +131,16 @@ const ColorScheme = ( props ) => {
                             colors={ metaTextColors }
                             value={ meta_color || accent_text_color_header || get( metaTextColors, [ 0, 'color' ] ) }
                         onChange={ ( color ) => onChangeSettings( color, 'meta_color' ) }
+                        />
+                    </BaseControl>
+                    <BaseControl
+                        id={ `${ id }-rating-stars-accent-color-header` }
+                        label={ __( 'Rating Stars Color', 'wpzoom-recipe-card' ) }
+                    >
+                        <ColorPalette
+                        colors={ [ { color: rating_stars_color || get( setting_options, 'wpzoom_rcb_settings_rating_stars_color' ) } ] }
+                            value={ rating_stars_color || get( setting_options, 'wpzoom_rcb_settings_rating_stars_color' ) }
+                            onChange={ ( color ) => onChangeSettings( color, 'rating_stars_color' ) }
                         />
                     </BaseControl>
                 </Fragment>

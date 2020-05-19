@@ -143,6 +143,7 @@
         $print_text_color = $settings['print_text_color'];
         $recipe_title_color = $settings['recipe_title_color'];
         $meta_color = $settings['meta_color'];
+        $rating_stars_color = $settings['rating_stars_color'];
 
         $custom_css .= "{$block_class_name} .recipe-card-header-container {
             background-color: {$accent_bg_color_header} !important;
@@ -151,6 +152,15 @@
         $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-title {
             color: {$recipe_title_color} !important;
         }\n";
+        $custom_css .= "{$block_class_name} .wpzoom-rating-stars-average {
+            color: {$meta_color} !important;
+        }\n";
+
+        if ( ! empty( $rating_stars_color ) ) {
+            $custom_css .= "{$block_class_name} ul.wpzoom-rating-stars>li.fa-star {
+                color: {$rating_stars_color} !important;
+            }\n";
+        }
 
         if ( ! empty( $attachment ) ) {
             $custom_css .= "{$block_class_name} .recipe-card-header-container .recipe-card-image figure img {
