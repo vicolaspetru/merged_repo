@@ -2040,7 +2040,11 @@ class WPZOOM_Premium_Recipe_Card_Block {
      */
     public static function get_image_size_url( $image_id, $size = 'full', $image_sizes = array() ) {
     	if ( isset( $image_sizes[ $size ] ) ) {
-    		$image_url = $image_sizes[ $size ]['url'];
+    		if ( isset( $image_sizes[ $size ]['url'] ) ) {
+	    		$image_url = $image_sizes[ $size ]['url'];
+    		} elseif ( isset( $image_sizes[ $size ]['source_url'] ) ) {
+	    		$image_url = $image_sizes[ $size ]['source_url'];
+    		}
     	}
 
     	if ( function_exists( 'fly_get_attachment_image_src' ) ) {
