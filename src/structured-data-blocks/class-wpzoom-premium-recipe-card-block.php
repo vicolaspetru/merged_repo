@@ -627,6 +627,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$attributes = self::$attributes;
 		$tag_list  	= wp_get_post_terms( self::$recipe->ID, 'post_tag', array( 'fields' => 'names' ) );
 		$cat_list 	= wp_get_post_terms( self::$recipe->ID, 'category', array( 'fields' => 'names' ) );
+		$rating_average = self::$wpzoom_rating->get_rating_average( self::$recipe->ID );
+		$rating_count = self::$wpzoom_rating->get_total_votes( self::$recipe->ID );
 
 		$json_ld = array(
 			'@context' 		=> 'https://schema.org',
@@ -653,11 +655,11 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			'recipeInstructions' => array(),
 			'aggregateRating' => array(
 			    '@type'		  => 'AggregateRating',
-			    'ratingValue' => self::$wpzoom_rating->get_rating_average( self::$recipe->ID ),
-			    'reviewCount' => self::$wpzoom_rating->get_total_votes( self::$recipe->ID )
+			    'ratingValue' => $rating_average,
+			    'reviewCount' => $rating_count,
 			),
 			'video'			=> array(
-				'@type'			=> 'CreativeWork',
+				'@type'			=> 'VideoObject',
 				'name'  		=> isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : self::$recipe->post_title,
 				'description' 	=> isset( $attributes['summary'] ) ? $attributes['summary'] : self::$recipe->post_excerpt,
 				'thumbnailUrl' 	=> '',
@@ -676,13 +678,51 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$json_ld['description'] = strip_tags( $attributes['summary'] );
 		}
 
+		// Remove aggregateRating from json_ld if number of ratings is zero
+		if ( $rating_count <= 0 ) {
+			unset( $json_ld['aggregateRating'] );
+		}
+
 		if ( ! empty( $attributes['image'] ) && isset( $attributes['hasImage'] ) && $attributes['hasImage'] ) {
-			$json_ld['image'] = $attributes['image']['url'];
+			$image_id = isset( $attributes['image']['id'] ) ? $attributes['image']['id'] : 0;
+			$image_sizes = isset( $attributes['image']['sizes'] ) ? $attributes['image']['sizes'] : array();
+			$image_sizes_url = array(
+				self::get_image_size_url( $image_id, 'full', $image_sizes ),
+				self::get_image_size_url( $image_id, 'wpzoom-rcb-structured-data-1_1', $image_sizes ),
+				self::get_image_size_url( $image_id, 'wpzoom-rcb-structured-data-4_3', $image_sizes ),
+				self::get_image_size_url( $image_id, 'wpzoom-rcb-structured-data-16_9', $image_sizes ),
+			);
+			$json_ld['image'] = array_values( array_unique( $image_sizes_url ) );
 		}
 
 		if ( isset( $attributes['video'] ) && ! empty( $attributes['video'] ) && isset( $attributes['hasVideo'] ) && $attributes['hasVideo'] ) {
 			$video = $attributes['video'];
+			$video_id = isset( $video['id'] ) ? $video['id'] : 0;
 			$video_type = isset( $video['type'] ) ? $video['type'] : '';
+
+			if ( 'self-hosted' === $video_type ) {
+				$video_attachment = get_post( $video_id );
+
+				if ( $video_attachment ) {
+					$video_data = wp_get_attachment_metadata( $video_id );
+					$video_url = wp_get_attachment_url( $video_id );
+
+					$image_id = get_post_thumbnail_id( $video_id );
+					$thumb = wp_get_attachment_image_src( $image_id, 'full' );
+					$thumbnail_url = $thumb && isset( $thumb[0] ) ? $thumb[0] : '';
+
+					$json_ld['video'] = array_merge(
+						$json_ld['video'], array(
+							'name' => $video_attachment->post_title,
+							'description' => $video_attachment->post_content,
+							'thumbnailUrl' => $thumbnail_url,
+							'contentUrl' => $video_url,
+							'uploadDate' => date( 'c', strtotime( $video_attachment->post_date ) ),
+							'duration' => 'PT' . $video_data['length'] . 'S',
+						)
+					);
+				}
+			}
 
 			if ( isset( $video['title'] ) && ! empty( $video['title'] ) ) {
 				$json_ld['video']['name'] = esc_html( $video['title'] );
@@ -695,19 +735,34 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			}
 			if ( isset( $video['poster']['url'] ) ) {
 				$json_ld['video']['thumbnailUrl'] = esc_url( $video['poster']['url'] );
+
+				if ( isset( $video['poster']['id'] ) ) {
+					$poster_id = $video['poster']['id'];
+					$poster_sizes_url = array(
+						self::get_image_size_url( $poster_id, 'full' ),
+						self::get_image_size_url( $poster_id, 'wpzoom-rcb-structured-data-1_1' ),
+						self::get_image_size_url( $poster_id, 'wpzoom-rcb-structured-data-4_3' ),
+						self::get_image_size_url( $poster_id, 'wpzoom-rcb-structured-data-16_9' ),
+					);
+					$json_ld['video']['thumbnailUrl'] = array_values( array_unique( $poster_sizes_url ) );
+				}
 			}
 			if ( isset( $video['url'] ) ) {
-				if ( 'self-hosted' === $video_type ) {
-					$json_ld['video']['contentUrl'] = esc_url( $video['url'] );
-					unset( $json_ld['video']['embedUrl'] );
-				}
-				elseif ( 'embed' === $video_type ) {
+				$json_ld['video']['contentUrl'] = esc_url( $video['url'] );
+				
+				if ( 'embed' === $video_type ) {
 					$video_embed_url = $video['url'];
 
-					$json_ld['video']['@type'] = 'VideoObject';
-
 					if ( ! empty( $attributes['image'] ) && isset( $attributes['hasImage'] ) && $attributes['hasImage'] ) {
-						$json_ld['video']['thumbnailUrl'] = $attributes['image']['url'];
+						$image_id = isset( $attributes['image']['id'] ) ? $attributes['image']['id'] : 0;
+						$image_sizes = isset( $attributes['image']['sizes'] ) ? $attributes['image']['sizes'] : array();
+						$image_sizes_url = array(
+							self::get_image_size_url( $image_id, 'full', $image_sizes ),
+							self::get_image_size_url( $image_id, 'wpzoom-rcb-structured-data-1_1', $image_sizes ),
+							self::get_image_size_url( $image_id, 'wpzoom-rcb-structured-data-4_3', $image_sizes ),
+							self::get_image_size_url( $image_id, 'wpzoom-rcb-structured-data-16_9', $image_sizes ),
+						);
+						$json_ld['video']['thumbnailUrl'] = array_values( array_unique( $image_sizes_url ) );
 					}
 
 					if ( strpos( $video['url'], 'youtu' ) ) {
@@ -718,10 +773,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					}
 
 					$json_ld['video']['embedUrl'] = esc_url( $video_embed_url );
-					unset($json_ld['video']['contentUrl']);
 				}
 			}
-			if ( isset( $video['date'] ) ) {
+			if ( isset( $video['date'] ) && 'embed' === $video_type ) {
 				$json_ld['video']['uploadDate'] = $video['date'];
 			}
 		}
@@ -752,18 +806,26 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				if ( $key === 0 ) {
 					if ( ! empty( $detail[ 'value' ] ) && self::$settings['displayServings'] ) {
 						if ( !is_array( $detail['value'] ) ) {
-							$json_ld['recipeYield'] = $detail['value'];
+							$yield = array(
+								$detail['value']
+							);
 
 							if ( isset( $detail['unit'] ) && ! empty( $detail['unit'] ) ) {
-								$json_ld['recipeYield'] .= ' '.$detail['unit'];
+								$yield[] = $detail['value'] .' '. $detail['unit'];
 							}
 						}
 						elseif ( isset( $detail['jsonValue'] ) ) {
-							$json_ld['recipeYield'] = $detail['jsonValue'];
+							$yield = array(
+								$detail['jsonValue']
+							);
 
 							if ( isset( $detail['unit'] ) && ! empty( $detail['unit'] ) ) {
-								$json_ld['recipeYield'] .= ' '.$detail['unit'];
+								$yield[] = $detail['value'] .' '. $detail['unit'];
 							}
+						}
+
+						if ( isset( $yield ) ) {
+							$json_ld['recipeYield'] = $yield;
 						}
 					}
 				}
@@ -834,14 +896,40 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		if ( ! empty( $attributes['steps'] ) && is_array( $attributes['steps'] ) ) {
 			$steps = array_filter( $attributes['steps'], 'is_array' );
-			foreach ( $steps as $step ) {
-				$isGroup = isset( $step['isGroup'] ) ? $step['isGroup'] : false;
+			$groups_section = array();
+			$instructions = array();
 
-				if ( ! $isGroup ) {
-					$json_ld['recipeInstructions'][] = self::$structured_data_helpers->get_step_json_ld( $step );
+			foreach ( $steps as $key => $step ) {
+				$isGroup = isset( $step['isGroup'] ) ? $step['isGroup'] : false;
+				$parent_permalink = get_the_permalink( self::$recipe );
+				
+				if ( $isGroup ) {
+					$groups_section[ $key ] = array(
+						'@type' => 'HowToSection',
+						'name' => '',
+						'itemListElement' => array(),
+					);
+					if ( ! empty( $step['jsonText'] ) ) {
+						$groups_section[ $key ]['name'] = $step['jsonText'];
+					} else {
+						$groups_section[ $key ]['name'] = self::$structured_data_helpers->step_text_to_JSON( $step['text'] );
+					}
 				}
 
+				if ( count( $groups_section ) > 0 ) {
+					end( $groups_section );
+					$last_key = key( $groups_section );
+
+					if ( ! $isGroup && $key > $last_key ) {
+						$groups_section[ $last_key ]['itemListElement'][] = self::$structured_data_helpers->get_step_json_ld( $step, $parent_permalink );
+					}
+				} else {
+					$instructions[] = self::$structured_data_helpers->get_step_json_ld( $step, $parent_permalink );
+				}
 			}
+
+			$groups_section = array_merge( $instructions, $groups_section );
+			$json_ld['recipeInstructions'] = $groups_section;
 		}
 
 		return $json_ld;
@@ -1126,7 +1214,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$tick = $name = '';
 			$amount = $unit = '';
 			$styles = array();
-			$isGroup = isset($ingredient['isGroup']) ? $ingredient['isGroup'] : false;
+			$isGroup = isset( $ingredient['isGroup'] ) ? $ingredient['isGroup'] : false;
+			$ingredient_id = isset( $ingredient['id'] ) ? 'wpzoom-rcb-' . $ingredient['id'] : '';
 
 			if ( isset( $ingredient['parse'] ) ) {
 				$amount = isset( $ingredient['parse']['amount'] ) ? $ingredient['parse']['amount'] : '';
@@ -1165,7 +1254,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 						$name
 					);
 					$output .= sprintf(
-						'<li class="ingredient-item">%s</li>',
+						'<li id="%s" class="ingredient-item">%s</li>',
+						esc_attr( $ingredient_id ),
 						$tick . $name
 					);
 				}
@@ -1176,7 +1266,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 						self::wrap_ingredient_name( $ingredient['name'] )
 					);
 					$output .= sprintf(
-						'<li class="ingredient-item ingredient-item-group">%s</li>',
+						'<li id="%s" class="ingredient-item ingredient-item-group">%s</li>',
+						esc_attr( $ingredient_id ),
 						$tick . $name
 					);
 				}
@@ -1204,7 +1295,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		foreach ( $steps as $index => $step ) {
 			$text = '';
-			$isGroup = isset($step['isGroup']) ? $step['isGroup'] : false;
+			$isGroup = isset( $step['isGroup'] ) ? $step['isGroup'] : false;
+			$step_id = isset( $step['id'] ) ? 'wpzoom-rcb-' . $step['id'] : '';
 
 			if ( !$isGroup ) {
 				if ( ! empty( $step['text'] ) ) {
@@ -1212,14 +1304,16 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					$gallery = self::direction_gallery( $step );
 
 					$output .= sprintf(
-						'<li class="direction-step">%s</li>',
+						'<li id="%s" class="direction-step">%s</li>',
+						esc_attr( $step_id ),
 						$text . $gallery
 					);
 				}
 				elseif ( empty( $step['text'] ) && isset( $step['gallery'] ) ) {
 					$gallery = self::direction_gallery( $step );
 					$output .= sprintf(
-						'<li class="direction-step">%s</li>',
+						'<li id="%s" class="direction-step">%s</li>',
+						esc_attr( $step_id ),
 						$gallery
 					);
 				}
@@ -1230,7 +1324,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 						self::wrap_direction_text( $step['text'] )
 					);
 					$output .= sprintf(
-						'<li class="direction-step direction-step-group">%s</li>',
+						'<li id="%s" class="direction-step direction-step-group">%s</li>',
+						esc_attr( $step_id ),
 						$text
 					);
 				}
@@ -1931,6 +2026,37 @@ class WPZOOM_Premium_Recipe_Card_Block {
     	}
 
     	return $size;
+    }
+
+    /**
+     * Get image url by specified $size
+     * 
+     * @since 2.8.2
+     * 
+     * @param  string|number $image_id    	The image id to get url
+     * @param  string $size        			The specific image size
+     * @param  array  $image_sizes 			Available image sizes for specified image id
+     * @return string              			The image url
+     */
+    public static function get_image_size_url( $image_id, $size = 'full', $image_sizes = array() ) {
+    	if ( isset( $image_sizes[ $size ] ) ) {
+    		$image_url = $image_sizes[ $size ]['url'];
+    	}
+
+    	if ( function_exists( 'fly_get_attachment_image_src' ) ) {
+    		$thumb = fly_get_attachment_image_src( $image_id, $size );
+
+    		if ( $thumb ) {
+    			$image_url = isset( $thumb[0] ) ? $thumb[0] : $thumb['src'];
+    		}
+    	}
+
+    	if ( !isset( $image_url ) ) {
+    		$thumb = wp_get_attachment_image_src( $image_id, $size );
+    		$image_url = $thumb && isset( $thumb[0] ) ? $thumb[0] : '';
+    	}
+
+    	return $image_url;
     }
 
     /**
