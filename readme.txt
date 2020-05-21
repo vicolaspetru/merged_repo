@@ -63,6 +63,10 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.8.2 =
+* Added support for the new "Guided Recipes" in Structured Data
+* Fixed issue with blocks not showing in archive pages and RSS feeds
+
 = 2.8.1 =
 * Fixed issue with redirect to 404 page when Print button is clicked
 * Fixed issue with link on Facebook Call to Action
