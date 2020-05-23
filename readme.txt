@@ -63,6 +63,9 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.8.3
+* Fixed issue with Jump to Recipe and Print Recipe that are showing up on homepage as part of the excerpt
+
 = 2.8.2 =
 * Added support for the new "Guided Recipes" in Structured Data
 * Fixed issue with blocks not showing in archive pages and RSS feeds
