@@ -148,6 +148,36 @@ class WPZOOM_Helpers {
  		if ( !isset( $settings['locationToShowFoodLabels'] ) ) {
  			$settings['locationToShowFoodLabels'] = WPZOOM_Settings::get('wpzoom_rcb_settings_location_to_show_food_labels');
  		}
+ 		if ( ! isset( $settings['accent_bg_color_header'] ) ) {
+ 			$settings['accent_bg_color_header'] = '#222222';
+ 		}
+ 		if ( ! isset( $settings['accent_text_color_header'] ) ) {
+ 			$settings['accent_text_color_header'] = '#FFFFFF';
+ 		}
+ 		if ( ! isset( $settings['image_border_color'] ) ) {
+ 			$settings['image_border_color'] = $settings['accent_text_color_header'];
+ 		}
+ 		if ( ! isset( $settings['pinterest_bg_color'] ) ) {
+ 			$settings['pinterest_bg_color'] = '#C62122';
+ 		}
+ 		if ( ! isset( $settings['pinterest_text_color'] ) ) {
+ 			$settings['pinterest_text_color'] = '#FFFFFF';
+ 		}
+ 		if ( ! isset( $settings['print_bg_color'] ) ) {
+ 			$settings['print_bg_color'] = '#222222';
+ 		}
+ 		if ( ! isset( $settings['print_text_color'] ) ) {
+ 			$settings['print_text_color'] = '#FFFFFF';
+ 		}
+ 		if ( ! isset( $settings['recipe_title_color'] ) ) {
+ 			$settings['recipe_title_color'] = $settings['accent_text_color_header'];
+ 		}
+ 		if ( ! isset( $settings['meta_color'] ) ) {
+ 			$settings['meta_color'] = $settings['accent_text_color_header'];
+ 		}
+ 		if ( ! isset( $settings['rating_stars_color'] ) ) {
+ 			$settings['rating_stars_color'] = $settings['accent_text_color_header'];
+ 		}
 
 		return $settings;
 	}

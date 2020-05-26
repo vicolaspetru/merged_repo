@@ -1697,8 +1697,16 @@ class WPZOOM_Premium_Recipe_Card_Block {
     			}
     		}
     	}
-    	else {
-    		$size = 'wpzoom-rcb-block-header';
+
+    	if ( ! isset( $size ) ) {
+    		$size = 'full';
+    		
+    		if ( 'accent-color-header' === self::$style || 'simple' === self::$style ) {
+    			$size = 'wpzoom-rcb-block-header-square';
+    		}
+    		if ( 'default' === self::$style || 'newdesign' === self::$style ) {
+				$size = 'wpzoom-rcb-block-header';
+    		}
     	}
 
     	return $size;
