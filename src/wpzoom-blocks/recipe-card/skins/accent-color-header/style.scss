@@ -41,10 +41,10 @@
             }
             .recipe-card-heading {
                 text-align: center;
+                margin-top: $grid-unit-20;
                 .recipe-card-author {
                     display: block;
                     font-size: $small-font-size;
-                    margin-top: $grid-unit-20;
                     margin-bottom: $grid-unit-20;
                 }
                 .wpzoom-rating-stars-container {
@@ -91,6 +91,7 @@
                 }
                 .recipe-card-image-placeholder {
                     background-color: rgba(0,0,0,0.8);
+                    color: #fff;
                     margin: 0;
                 }
                 .recipe-card-image {

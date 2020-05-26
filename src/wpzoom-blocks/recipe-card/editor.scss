@@ -332,6 +332,12 @@
 		margin-top: 0;
 		margin-bottom: 10px;
 	}
+	&.is-style-accent-color-header {
+		 p.description {
+		 	color: #efefef;
+		 	opacity: 1;
+		 }
+	}
 	.components-icon-button .dashicon + .components-icon-button-text {
 		margin-left: 5px;
 	}
