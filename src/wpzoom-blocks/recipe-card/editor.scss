@@ -177,6 +177,11 @@
 			margin-top: 0;
 		}
 	}
+	&.is-style-accent-color-header {
+		.ingredients-list > li {
+			cursor: text !important;
+		}
+	}
 	.ingredient-item-button-container {
 		text-align: right;
 		button {
