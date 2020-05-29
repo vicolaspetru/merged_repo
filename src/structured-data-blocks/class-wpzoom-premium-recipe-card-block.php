@@ -267,6 +267,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			    'type' => 'string',
 			    'selector' => '.recipe-card-notes-list',
 			    'default' => ''
+			),
+ 			'blockAlignment' => array(
+ 				'type' => 'string',
+ 				'default' => is_rtl() ? 'right' : 'left',
 			)
 		);
 
@@ -1786,6 +1790,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     		$className,
     		'wp-block-wpzoom-recipe-card-block-recipe-card',
     		'header-content-align-' . self::$settings['headerAlign'],
+    		'block-alignment-' . self::$attributes['blockAlignment'],
     		array(
 	    		'is-style-' . self::$style => strpos( $className, 'is-style' ) === false,
 	    		'recipe-card-noimage' => ( ! self::$attributes['hasImage'] || ! isset( self::$attributes['image']['url'] ) ) || self::$settings['hide_header_image'],

@@ -34,6 +34,16 @@
 	    	width: 100%;
 	    	float: none;
 	    }
+		&.header-content-align-right {
+	    	.recipe-card-image-preview .recipe-card-image {
+	    		width: 100%;
+		    	float: none;
+	    	}
+	    	.recipe-card-image-placeholder,
+	    	.recipe-card-image-preview {
+	    		float: right;
+	    	}
+	    }
 	}
 
 	.recipe-card-course,
@@ -157,6 +167,16 @@
 			}
 		}
 	}
+
+	&.block-alignment-right {
+ 		.ingredients-list {
+ 			> li {
+ 				.ingredient-item-name {
+ 					padding-right: 0 !important;
+ 				}
+ 			}
+ 		}
+ 	}
 
 	// this is used to prevent floating elements on editing
 	&.is-style-newdesign,
@@ -628,6 +648,10 @@
 			box-shadow: inset 0 -1px 0 #00435d;
 		}
 	}
+}
+.components-button svg[size="24"] {
+	width: 24px;
+	height: 24px;
 }
 
 .wpzoom-recipe-card-settings {

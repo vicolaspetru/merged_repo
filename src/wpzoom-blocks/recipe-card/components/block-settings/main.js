@@ -20,8 +20,10 @@ import {
     TextControl,
     TextareaControl,
     Button,
+    ButtonGroup,
     SelectControl,
 } from '@wordpress/components';
+import { alignLeft, alignRight, alignCenter } from '@wordpress/icons';
 
 /**
  * Module Constants
@@ -226,22 +228,59 @@ const MainSettings = ( props ) => {
                 />
             }
             {
+                'simple' === activeStyle &&
+                <BaseControl
+                    id={ `${ id }-heading-align` }
+                    label={ __( 'Header Content Align', 'wpzoom-recipe-card' ) }
+                >
+                    <ButtonGroup>
+                        <Button
+                            isPrimary={ 'left' === headerAlign }
+                            isDefault={ 'left' !== headerAlign }
+                            icon={ alignLeft }
+                            title={ __( 'Left', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'left', 'headerAlign' ) }
+                        />
+                        <Button
+                            isPrimary={ 'right' === headerAlign }
+                            isDefault={ 'right' !== headerAlign }
+                            icon={ alignRight }
+                            title={ __( 'Right', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'right', 'headerAlign' ) }
+                        />
+                    </ButtonGroup>
+                </BaseControl>
+             }
+            {
                 'simple' !== activeStyle &&
                 'accent-color-header' !== activeStyle &&
                 <BaseControl
                     id={ `${ id }-heading-align` }
                     label={ __( 'Header Content Align', 'wpzoom-recipe-card' ) }
                 >
-                    <SelectControl
-                        label={ __( 'Select Alignment', 'wpzoom-recipe-card' ) }
-                        value={ headerAlign }
-                        options={ [
-                            { label: __( 'Left' ), value: 'left' },
-                            { label: __( 'Center' ), value: 'center' },
-                            { label: __( 'Right' ), value: 'right' },
-                        ] }
-                        onChange={ ( alignment ) => onChangeSettings( alignment, 'headerAlign' ) }
-                    />
+                    <ButtonGroup>
+                        <Button
+                            isPrimary={ 'left' === headerAlign }
+                            isDefault={ 'left' !== headerAlign }
+                            icon={ alignLeft }
+                            title={ __( 'Left', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'left', 'headerAlign' ) }
+                        />
+                        <Button
+                            isPrimary={ 'center' === headerAlign }
+                            isDefault={ 'center' !== headerAlign }
+                            icon={ alignCenter }
+                            title={ __( 'Center', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'center', 'headerAlign' ) }
+                        />
+                        <Button
+                            isPrimary={ 'right' === headerAlign }
+                            isDefault={ 'right' !== headerAlign }
+                            icon={ alignRight }
+                            title={ __( 'Right', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'right', 'headerAlign' ) }
+                        />
+                    </ButtonGroup>
                 </BaseControl>
             }
             <BaseControl

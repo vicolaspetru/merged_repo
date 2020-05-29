@@ -38,12 +38,14 @@ import {
 import {
     RichText,
     BlockControls,
+    AlignmentToolbar,
 } from '@wordpress/block-editor';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 import { withSelect } from '@wordpress/data';
 import { withNotices } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
+import { positionLeft, positionRight, positionCenter } from '@wordpress/icons';
 
 /**
  * Module Constants
@@ -54,6 +56,23 @@ const DEFAULT_QUERY = {
     order: 'asc',
     _fields: 'id,name,parent',
 };
+const BLOCK_ALIGNMENT_CONTROLS = [
+    {
+        icon: positionLeft,
+        title: __( 'Align block left', 'wpzoom-recipe-card' ),
+        align: 'left',
+    },
+    {
+        icon: positionCenter,
+        title: __( 'Align block center', 'wpzoom-recipe-card' ),
+        align: 'center',
+    },
+    {
+        icon: positionRight,
+        title: __( 'Align block right', 'wpzoom-recipe-card' ),
+        align: 'right',
+    },
+];
 
 /**
  * Import Styles
@@ -80,6 +99,7 @@ class RecipeCard extends Component {
         this.onSelectImage = this.onSelectImage.bind( this );
         this.onUploadError = this.onUploadError.bind( this );
         this.renderTerms = this.renderTerms.bind( this );
+        this.onChangeAlignment = this.onChangeAlignment.bind( this );
 
         this.editorRefs = {};
         this.state = {
@@ -359,6 +379,44 @@ class RecipeCard extends Component {
         this.setState( { isBulkAdd: true } );
     }
 
+    /**
+     * Change block alignment
+     *
+     * @since 2.8.4
+     * @param  {string} newAlignment     The new alignment value
+     * @return {void}                    Update attributes to set newAlignment
+     */
+    onChangeAlignment( newAlignment ) {
+        const {
+            className,
+            attributes: {
+                settings,
+                blockAlignment,
+            },
+        } = this.props;
+        const { 0: { headerAlign } } = settings;
+        const style = getBlockStyle( className );
+
+        const newSettings = settings ? settings.slice() : [];
+
+        newSettings[ 0 ] = {
+            ...newSettings[ 0 ],
+            headerAlign: newAlignment === undefined ? headerAlign : newAlignment,
+        };
+
+        if ( 'simple' === style && 'center' === newAlignment ) {
+            newSettings[ 0 ] = {
+                ...newSettings[ 0 ],
+                headerAlign: 'left',
+            };
+        }
+
+        this.props.setAttributes( {
+            blockAlignment: newAlignment === undefined ? blockAlignment : newAlignment,
+            settings: newSettings,
+        } );
+    }
+
     render() {
         const {
             attributes,
@@ -373,6 +431,7 @@ class RecipeCard extends Component {
 
         const {
             id,
+            blockAlignment,
             settings: {
                 0: {
                     hide_header_image,
@@ -388,15 +447,13 @@ class RecipeCard extends Component {
         if ( isUndefined( headerAlign ) ) {
             headerContentAlign = wpzoom_rcb_settings_heading_content_align;
         }
-        if ( 'simple' === activeStyle ) {
+        if ( 'simple' === activeStyle && 'center' === blockAlignment ) {
             headerContentAlign = 'left';
-        }
-        if ( 'accent-color-header' === activeStyle ) {
-            headerContentAlign = '';
         }
 
         const RecipeCardClassName = classnames(
-            className, {
+            className,
+            `block-alignment-${ blockAlignment }`, {
                 'is-loading-block': this.state.isLoading,
                 'recipe-card-noimage': hide_header_image,
                 [ `header-content-align-${ headerContentAlign }` ]: ! isEmpty( headerContentAlign ),
@@ -413,6 +470,13 @@ class RecipeCard extends Component {
                 ) }
                 { isRecipeCardSelected && (
                     <BlockControls>
+                        <AlignmentToolbar
+                            isRTL={ this.props.isRTL }
+                            alignmentControls={ BLOCK_ALIGNMENT_CONTROLS }
+                            label={ __( 'Change Block Alignment', 'wpzoom-recipe-card' ) }
+                            value={ blockAlignment }
+                            onChange={ this.onChangeAlignment }
+                        />
                         <ExtraOptionsModal
                             ingredients={ this.props.attributes.ingredients }
                             steps={ this.props.attributes.steps }
