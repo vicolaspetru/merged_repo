@@ -547,6 +547,13 @@
             }
         }
     }
+    &.block-alignment-right {
+        .recipe-card-food-labels {
+            .food-labels-list {
+                justify-content: flex-end;
+            }
+        }
+    }
     .recipe-card-notes + .recipe-card-food-labels {
         margin-top: -10px;
     }
