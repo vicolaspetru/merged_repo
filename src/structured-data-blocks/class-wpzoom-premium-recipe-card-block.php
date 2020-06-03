@@ -1238,8 +1238,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	}
 
 	public static function get_notes_items() {
-		$strip_tags_notes = isset( self::$attributes['notes'] ) ? strip_tags( self::$attributes['notes'] ) : '';
-		$notes = '';
+		$notes = isset( self::$attributes['notes'] ) ? self::$attributes['notes'] : '';
+		$strip_tags_notes = strip_tags( $notes );
 
 		if ( ! empty( $strip_tags_notes ) ) {
 			$notes = str_replace('<li></li>', '', $notes); // remove empty list item
