@@ -83,6 +83,8 @@ class SkinNewDesign extends Component {
 
         const styles = {
             [ getCSSSelector( activeStyle, '.btn-print-link' ) ]: `background-color: ${ primary_color }; box-shadow: 0 5px 40px ${ primary_color };`,
+            [ getCSSSelector( activeStyle, '.tick-circle' ) ]: `border-color: ${ primary_color }`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-notes-list' ) } > li::before` ]: `background-color: ${ primary_color }`,
         };
 
         return (

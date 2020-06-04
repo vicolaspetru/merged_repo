@@ -83,6 +83,7 @@ class SkinDefault extends Component {
 
         const styles = {
             [ getCSSSelector( activeStyle, '.btn-print-link' ) ]: `background-color: ${ primary_color };`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-notes-list' ) } > li::before` ]: `background-color: ${ primary_color }`,
         };
 
         return (

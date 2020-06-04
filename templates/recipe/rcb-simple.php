@@ -142,6 +142,11 @@
                 border: 2px solid {$primary_color};
             }\n";
         }
+        if ( ! empty( $notes_items ) ) {
+            $custom_css .= "{$block_class_name} .recipe-card-notes .recipe-card-notes-list>li::before {
+                background-color: {$primary_color};
+            }";
+        }
 
         echo $custom_css;
     ?>

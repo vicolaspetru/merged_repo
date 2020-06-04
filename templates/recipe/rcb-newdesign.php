@@ -139,6 +139,20 @@
                 border: 2px solid {$primary_color};
             }\n";
         }
+        if ( ! empty( $ingredient_items ) ) {
+            $custom_css .= "{$block_class_name} .ingredients-list > li .tick-circle {
+                border-color: {$primary_color};
+            }\n";
+            $custom_css .= "{$block_class_name} .ingredients-list > li.ticked .tick-circle {
+                border-color: {$primary_color} !important;
+                background-color: {$primary_color};
+            }\n";
+        }
+        if ( ! empty( $notes_items ) ) {
+            $custom_css .= "{$block_class_name} .recipe-card-notes .recipe-card-notes-list>li::before {
+                background-color: {$primary_color};
+            }";
+        }
 
         echo $custom_css;
     ?>

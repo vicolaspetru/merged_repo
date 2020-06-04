@@ -27,4 +27,5 @@ const selectors = {
     '.recipe-card-header-container': '.recipe-card-header-container',
     '.recipe-card-title': '.recipe-card-header-container .recipe-card-title',
     '.tick-circle': '.ingredients-list>li .tick-circle',
+    '.recipe-card-notes-list': '.recipe-card-notes .recipe-card-notes-list',
 };

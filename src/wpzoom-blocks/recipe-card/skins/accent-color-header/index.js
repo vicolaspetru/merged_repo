@@ -118,6 +118,7 @@ class SkinAccentColorHeader extends Component {
             [ getCSSSelector( activeStyle, '.wpzoom-rcb-pinit-icon' ) ]: `fill: ${ pinterest_text_color || get( pinterestTextColors, [ 0, 'color' ] ) }`,
             [ getCSSSelector( activeStyle, '.wpzoom-rcb-print-icon' ) ]: `fill: ${ print_text_color || get( printTextColors, [ 0, 'color' ] ) }`,
             [ getCSSSelector( activeStyle, '.tick-circle' ) ]: `border-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-notes-list' ) } > li::before` ]: `background-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }; color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) }`,
         };
 
         return (

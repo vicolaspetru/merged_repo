@@ -237,6 +237,13 @@
             }\n";
         }
 
+        if ( ! empty( $notes_items ) ) {
+            $custom_css .= "{$block_class_name} .recipe-card-notes .recipe-card-notes-list>li::before {
+                background-color: {$accent_bg_color_header};
+                color: {$accent_text_color_header};
+            }";
+        }
+
         echo $custom_css;
     ?>
 </style>
