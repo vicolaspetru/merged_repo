@@ -236,14 +236,14 @@ const MainSettings = ( props ) => {
                     <ButtonGroup>
                         <Button
                             isPrimary={ 'left' === headerAlign }
-                            isDefault={ 'left' !== headerAlign }
+                            isSecondary={ 'left' !== headerAlign }
                             icon={ alignLeft }
                             title={ __( 'Left', 'wpzoom-recipe-card' ) }
                             onClick={ () => onChangeSettings( 'left', 'headerAlign' ) }
                         />
                         <Button
                             isPrimary={ 'right' === headerAlign }
-                            isDefault={ 'right' !== headerAlign }
+                            isSecondary={ 'right' !== headerAlign }
                             icon={ alignRight }
                             title={ __( 'Right', 'wpzoom-recipe-card' ) }
                             onClick={ () => onChangeSettings( 'right', 'headerAlign' ) }
@@ -261,21 +261,21 @@ const MainSettings = ( props ) => {
                     <ButtonGroup>
                         <Button
                             isPrimary={ 'left' === headerAlign }
-                            isDefault={ 'left' !== headerAlign }
+                            isSecondary={ 'left' !== headerAlign }
                             icon={ alignLeft }
                             title={ __( 'Left', 'wpzoom-recipe-card' ) }
                             onClick={ () => onChangeSettings( 'left', 'headerAlign' ) }
                         />
                         <Button
                             isPrimary={ 'center' === headerAlign }
-                            isDefault={ 'center' !== headerAlign }
+                            isSecondary={ 'center' !== headerAlign }
                             icon={ alignCenter }
                             title={ __( 'Center', 'wpzoom-recipe-card' ) }
                             onClick={ () => onChangeSettings( 'center', 'headerAlign' ) }
                         />
                         <Button
                             isPrimary={ 'right' === headerAlign }
-                            isDefault={ 'right' !== headerAlign }
+                            isSecondary={ 'right' !== headerAlign }
                             icon={ alignRight }
                             title={ __( 'Right', 'wpzoom-recipe-card' ) }
                             onClick={ () => onChangeSettings( 'right', 'headerAlign' ) }
