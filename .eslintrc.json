@@ -32,7 +32,7 @@
     "settings": {
         "react": {
             "pragma": "wp",
-            "version": "detect"
+            "version": "latest"
         }
     },
     "rules": {
