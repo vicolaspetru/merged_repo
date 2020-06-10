@@ -63,6 +63,19 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.9.0
+* 🆕 Added new design: Accent Color Header
+* Added Block Alignment options to Toolbar
+* Added Color Scheme panel in Block Settings
+* Added option called "NoPin" in Settings which prevent any images on the page that aren’t related to the content or aren’t good for Pinterest
+* Added improvements to Print and Pinterest icons, Use SVG instead of image
+* Added support for Additional CSS on print page
+* Added hook filter 'wpzoom_rcb_block_json_ld' to allow users to disable JSON-LD markup
+* Some improvements to Food Labels in Block Settings, now you can select labels from checkbox list
+* Fixed issue when ingredient amount number is converted to float number with ".00" at the end when adjust servings
+* Fixed issue when gallery image isSelected and action to move step up/down is triggered
+* Fixed issue "The behavior of unparenthesized expressions containing both '.' and '+'/'-'"
+
 = 2.8.3
 * Fixed issue with Jump to Recipe and Print Recipe that are showing up on homepage as part of the excerpt
 
