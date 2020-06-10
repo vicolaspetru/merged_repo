@@ -342,14 +342,14 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		self::$stored_data['videoTitle'] = isset( $videoTitle ) ? $videoTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_video_title');
 		self::$stored_data['notesTitle'] = isset( $notesTitle ) ? $notesTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_notes_title');
 
-		$RecipeCardClassName = self::build_recipe_card_classes( $className );
+		$RecipeCardClassName = self::build_recipe_card_classes( self::$stored_data['className'] );
 		$attachment = self::get_recipe_card_attachment();
 		$pin_description = self::get_pinterest_description();
 		$pin_image = self::get_pinterest_image();
 		$custom_author_name = self::get_custom_author_name();
-		$detail_items = self::get_detail_items( $details );
-		$ingredient_items = self::get_ingredient_items( $ingredients );
-		$direction_items = self::get_direction_items( $steps );
+		$detail_items = self::get_detail_items( self::$stored_data['details'] );
+		$ingredient_items = self::get_ingredient_items( self::$stored_data['ingredients'] );
+		$direction_items = self::get_direction_items( self::$stored_data['steps'] );
 		$recipe_card_video = self::get_video();
 		$food_labels_content_top = self::get_food_labels_content( 'top' );
 		$food_labels_content_bottom = self::get_food_labels_content( 'bottom' );
@@ -1230,11 +1230,30 @@ class WPZOOM_Premium_Recipe_Card_Block {
 							$attachment_id = attachment_url_to_postid( $new_src );
 
 							if ( $attachment_id ) {
-								$attachment = wp_get_attachment_image( $attachment_id, 'wpzoom_rcb_block_step_image', false, array( 'title' => $title, 'alt' => $alt, 'class' => trim( $class ), 'style' => self::parseTagStyle( $img_style ) ) );
+								$attachment = wp_get_attachment_image(
+									$attachment_id,
+									'wpzoom_rcb_block_step_image',
+									false,
+									array(
+										'title' => $title,
+										'alt' => $alt,
+										'class' => trim( $class ),
+										'style' => self::parseTagStyle( $img_style )
+									)
+								);
 							}
 						}
 						else {
-							$attachment = wp_get_attachment_image( $attachment_id, 'wpzoom_rcb_block_step_image', false, array( 'title' => $title, 'alt' => $alt, 'class' => trim( $class ), 'style' => self::parseTagStyle( $img_style ) ) );
+							$attachment = wp_get_attachment_image(
+								$attachment_id,
+								'wpzoom_rcb_block_step_image',
+								false, array(
+									'title' => $title,
+									'alt' => $alt,
+									'class' => trim( $class ),
+									'style' => self::parseTagStyle( $img_style )
+								)
+							);
 						}
 
 						if ( $clickableDirectionImages === '1' ) {
@@ -1977,11 +1996,17 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$findpos = strpos( $src, $upl_dir['baseurl'] );
 
 			if ( $findpos === false ) {
+				$img_attr = array(
+					'class' => trim( $img_class ),
+					'data-pin-media' => esc_url( self::get_pinterest_image() ),
+	                'data-pin-description' => esc_html( self::get_pinterest_description() )
+				);
+				$atts = self::$helpers->render_attributes( $img_attr );
 				$attachment = sprintf(
-					'<img src="%s" alt="%s" class="%s"/>',
+					'<img src="%s" alt="%s" %s/>',
 					$src,
 					$alt,
-					trim( $img_class )
+					$atts
 				);
 			}
 			else {
@@ -1992,7 +2017,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					array(
 						'alt' => $alt,
                         'id' => $img_id,
-                        'class' => trim( $img_class )
+                        'class' => trim( $img_class ),
+                        'data-pin-media' => esc_url( self::get_pinterest_image() ),
+	                    'data-pin-description' => esc_html( self::get_pinterest_description() )
 					)
 				);
 			}
@@ -2033,11 +2060,17 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$findpos = strpos( $src, $upl_dir['baseurl'] );
 
 			if ( $findpos === false ) {
+				$img_attr = array(
+					'class' => trim( $img_class ),
+					'data-pin-media' => esc_url( self::get_pinterest_image() ),
+	                'data-pin-description' => esc_html( self::get_pinterest_description() )
+				);
+				$atts = self::$helpers->render_attributes( $img_attr );
 				$attachment = sprintf(
-					'<img src="%s" alt="%s" class="%s"/>',
+					'<img src="%s" alt="%s" %s/>',
 					$src,
 					$alt,
-					trim( $img_class )
+					$atts
 				);
 			}
 			else {
@@ -2048,7 +2081,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					array(
 						'alt' => $alt,
 	                    'id' => $img_id,
-	                    'class' => trim( $img_class )
+	                    'class' => trim( $img_class ),
+	                    'data-pin-media' => esc_url( self::get_pinterest_image() ),
+	                    'data-pin-description' => esc_html( self::get_pinterest_description() )
 					)
 				);
 			}

@@ -1120,6 +1120,17 @@ class WPZOOM_Settings {
 									)
 								)
 							),
+							array(
+								'id'		=> 'wpzoom_rcb_settings_nopin_images',
+								'title' 	=> __( 'NoPin', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args'		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_nopin_images',
+									'class'			=> 'wpzoom-rcb-field',
+									'description'	=> __( 'NoPin any images on the page that aren’t related to the content or aren’t good for Pinterest', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+								),
+							),
 						)
 					),
 					array(
