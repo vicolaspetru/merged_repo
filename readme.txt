@@ -71,6 +71,7 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 * Added improvements to Print and Pinterest icons, Use SVG instead of image
 * Added support for Additional CSS on print page
 * Added hook filter 'wpzoom_rcb_block_json_ld' to allow users to disable JSON-LD markup
+* Plugin compatibility with AMPforWP
 * Some improvements to Food Labels in Block Settings, now you can select labels from checkbox list
 * Fixed issue when ingredient amount number is converted to float number with ".00" at the end when adjust servings
 * Fixed issue when gallery image isSelected and action to move step up/down is triggered
