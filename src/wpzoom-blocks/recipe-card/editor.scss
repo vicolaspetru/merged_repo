@@ -358,10 +358,15 @@
 		margin-bottom: 10px;
 	}
 	&.is-style-accent-color-header {
-		 p.description {
+		p.description {
 		 	color: #efefef;
 		 	opacity: 1;
-		 }
+		}
+		.recipe-card-notes-list + p.description {
+			color: #acacac;
+			margin-bottom: 0;
+			margin-top: 10px;
+		}
 	}
 	.components-icon-button .dashicon + .components-icon-button-text {
 		margin-left: 5px;

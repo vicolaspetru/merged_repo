@@ -10,6 +10,7 @@ import { get } from 'lodash';
  */
 import {
     blockColors,
+    accentBgColors,
     accentColors,
     pinterestBackgroundColors,
     pinterestTextColors,
@@ -88,8 +89,8 @@ const ColorScheme = ( props ) => {
                         help={ __( 'Default color is based on selected Primary Color.', 'wpzoom-recipe-card' ) }
                     >
                         <ColorPalette
-                            colors={ blockColors }
-                            value={ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }
+                            colors={ accentBgColors }
+                            value={ accent_bg_color_header || primary_color || get( accentBgColors, [ 0, 'color' ] ) }
                             onChange={ ( color ) => onChangeSettings( color, 'accent_bg_color_header' ) }
                         />
                     </BaseControl>

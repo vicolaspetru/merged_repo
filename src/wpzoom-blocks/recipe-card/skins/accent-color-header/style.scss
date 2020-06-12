@@ -58,15 +58,13 @@
         .recipe-card-content-container {
             border-left: 1px solid rgba(0,0,0,.1);
             border-right: 1px solid rgba(0,0,0,.1);
-            padding: $grid-unit-15;
+            padding: 10px 20px 0 20px;
         }
         .recipe-card-footer-container {
-            padding: $grid-unit-15;
+            padding: 20px $grid-unit-15 $grid-unit-15;
             border-left: 1px solid rgba(0,0,0,.1);
             border-right: 1px solid rgba(0,0,0,.1);
             border-bottom: 1px solid rgba(0,0,0,.1);
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
             &:empty {
                 padding: 0;
             }
@@ -315,11 +313,15 @@
         .recipe-card-notes {
             padding-top: $grid-unit-20;
             margin-top: $grid-unit-20;
-            margin-bottom: $grid-unit-20;
+            margin-bottom: 0;
             border-top: 1px dashed rgba(0, 0, 0, 0.1);
 
             .recipe-card-notes-list {
                 @include recipe-notes-list( $coconut-cream, $coffee, $default-primary-color, $default-primary-text-color );
+
+                > li:last-child {
+                    margin-bottom: 0;
+                }
             }
         }
         .recipe-card-directions + .recipe-card-cta-instagram,

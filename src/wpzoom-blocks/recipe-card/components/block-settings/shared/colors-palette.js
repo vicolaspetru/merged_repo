@@ -9,6 +9,12 @@ const blockColors = [
     { name: __( 'Red', 'wpzoom-recipe-card' ), color: '#FF4E6A' },
     { name: __( 'Green', 'wpzoom-recipe-card' ), color: '#B7C662' },
 ];
+const accentBgColors = [
+    { name: __( 'Turquoise', 'wpzoom-recipe-card' ), color: '#86C7A7' },
+    { name: __( 'Orange', 'wpzoom-recipe-card' ), color: '#FFA921' },
+    { name: __( 'Red', 'wpzoom-recipe-card' ), color: '#FF4E6A' },
+    { name: __( 'Green', 'wpzoom-recipe-card' ), color: '#B7C662' },
+];
 const accentColors = [
     { name: __( 'White', 'wpzoom-recipe-card' ), color: '#FFFFFF' },
     { name: __( 'Dark', 'wpzoom-recipe-card' ), color: '#333333' },
@@ -42,6 +48,7 @@ const titleColors = [
 
 export {
     blockColors,
+    accentBgColors,
     accentColors,
     pinterestBackgroundColors,
     pinterestTextColors,

@@ -114,7 +114,7 @@
 
     <?php echo $cta_content; ?>
 
-    <?php if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_footer_copyright') ): ?>
+    <?php if ( '1' !== WPZOOM_Settings::get('wpzoom_rcb_settings_footer_copyright') ): ?>
         <div class="footer-copyright">
             <p><?php _e( 'Recipe Card plugin by ', 'wpzoom-recipe-card' ) ?><a href="https://www.wpzoom.com/plugins/recipe-card-blocks/" target="_blank" rel="nofollow noopener noreferrer">WPZOOM</a></p>
         </div>

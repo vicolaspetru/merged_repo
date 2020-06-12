@@ -20,7 +20,7 @@ import Video from '../../components/video';
 import Notes from '../../components/notes';
 import { generateId } from '@wpzoom/helpers';
 import {
-    blockColors,
+    accentBgColors,
     accentColors,
     pinterestBackgroundColors,
     pinterestTextColors,
@@ -101,7 +101,7 @@ class SkinAccentColorHeader extends Component {
         }
 
         const styles = {
-            [ getCSSSelector( activeStyle, '.recipe-card-header-container' ) ]: `background-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }; color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
+            [ getCSSSelector( activeStyle, '.recipe-card-header-container' ) ]: `background-color: ${ accent_bg_color_header || primary_color || get( accentBgColors, [ 0, 'color' ] ) }; color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ `${ getCSSSelector( activeStyle, '.recipe-card-image' ) } figure img` ]: `border: 10px solid ${ image_border_color || accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.recipe-card-title' ) ]: `color: ${ recipe_title_color || accent_text_color_header || get( titleColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.recipe-card-course' ) ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
@@ -112,13 +112,13 @@ class SkinAccentColorHeader extends Component {
             [ `${ getCSSSelector( activeStyle, '.recipe-card-difficulty' ) } mark` ]: `color: ${ meta_color || accent_text_color_header || get( metaTextColors, [ 0, 'color' ] ) };`,
             [ `${ getCSSSelector( activeStyle, '.recipe-card-cuisine' ) }::before` ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
             [ `${ getCSSSelector( activeStyle, '.recipe-card-difficulty' ) }::before` ]: `color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) };`,
-            [ getCSSSelector( activeStyle, '.detail-item-icon' ) ]: `color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) };`,
+            [ getCSSSelector( activeStyle, '.detail-item-icon' ) ]: `color: ${ accent_bg_color_header || primary_color || get( accentBgColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.btn-pinit-link' ) ]: `background-color: ${ pinterest_bg_color || get( pinterestBackgroundColors, [ 0, 'color' ] ) }; color: ${ pinterest_text_color || get( pinterestTextColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.btn-print-link' ) ]: `background-color: ${ print_bg_color || get( printBackgroundColors, [ 0, 'color' ] ) }; color: ${ print_text_color || get( printTextColors, [ 0, 'color' ] ) };`,
             [ getCSSSelector( activeStyle, '.wpzoom-rcb-pinit-icon' ) ]: `fill: ${ pinterest_text_color || get( pinterestTextColors, [ 0, 'color' ] ) }`,
             [ getCSSSelector( activeStyle, '.wpzoom-rcb-print-icon' ) ]: `fill: ${ print_text_color || get( printTextColors, [ 0, 'color' ] ) }`,
-            [ getCSSSelector( activeStyle, '.tick-circle' ) ]: `border-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }`,
-            [ `${ getCSSSelector( activeStyle, '.recipe-card-notes-list' ) } > li::before` ]: `background-color: ${ accent_bg_color_header || primary_color || get( blockColors, [ 0, 'color' ] ) }; color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) }`,
+            [ getCSSSelector( activeStyle, '.tick-circle' ) ]: `border-color: ${ accent_bg_color_header || primary_color || get( accentBgColors, [ 0, 'color' ] ) }`,
+            [ `${ getCSSSelector( activeStyle, '.recipe-card-notes-list' ) } > li::before` ]: `background-color: ${ accent_bg_color_header || primary_color || get( accentBgColors, [ 0, 'color' ] ) }; color: ${ accent_text_color_header || get( accentColors, [ 0, 'color' ] ) }`,
         };
 
         return (
