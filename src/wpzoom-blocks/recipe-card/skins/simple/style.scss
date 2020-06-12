@@ -281,9 +281,8 @@
                 position: relative;
                 line-height: 1.8;
                 list-style: none;
-                min-height: 44px;
                 padding-left: 40px;
-                margin: 0 0 15px;
+                margin: 0 0 $grid-unit-20;
 
                 &.direction-step-group {
                     min-height: 0;

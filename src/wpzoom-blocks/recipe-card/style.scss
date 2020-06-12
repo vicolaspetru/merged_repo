@@ -35,11 +35,6 @@
     &.is-style-simple {
         &.block-alignment-left {
             margin-right: auto;
-            .recipe-card-image {
-                figure figcaption {
-                    text-align: left;
-                }
-            }
             .recipe-card-summary,
             .recipe-card-ingredients,
             .recipe-card-directions,
@@ -120,6 +115,13 @@
                 }
             }
         }
+        &.block-alignment-left {
+            .recipe-card-image {
+                figure figcaption {
+                    text-align: left;
+                }
+            }
+        }
     }
     &.is-style-accent-color-header {
         &.block-alignment-left {
@@ -144,11 +146,31 @@
 
 		@include clear-after;
 	}
-	.recipe-card-image figure img {
-		width: 100%;
-	}
-    .recipe-card-image .recipe-card-image-popup-link {
-        display: block;
+    .recipe-card-image {
+        figure {
+            img {
+                width: 100%;
+            }
+            figcaption {
+                padding: 0;
+                margin: 0;
+            }
+        }
+        .recipe-card-image-popup-link {
+            display: block;
+        }
+        .wpzoom-recipe-card-pinit {
+            .btn-pinit-link {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
+        .wpzoom-recipe-card-print-link {
+            .btn-print-link {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
     }
 	.recipe-card-video {
         margin-top: 20px;
@@ -269,15 +291,6 @@
             }
 		}
 	}
-	.recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link i,
-	.recipe-card-image .wpzoom-recipe-card-pinit .btn-pinit-link i {
-        display: inline-block;
-        text-indent: -9999px;
-        width: 18px;
-        height: 18px;
-        background-size: 18px 18px;
-        vertical-align: middle;
-    }
     
     .hidden {
         display: none !important;

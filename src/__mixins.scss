@@ -4,6 +4,12 @@
  * Mixins allow you to define styles that can be re-used throughout your stylesheet.
 */
 
+@mixin box-sizing {
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+}
+
 @mixin clear-after {
     &::after {
         content: '';
