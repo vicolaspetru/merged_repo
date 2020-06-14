@@ -649,7 +649,7 @@ class WPZOOM_Settings {
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_primary_color',
 									'class' 		=> 'wpzoom-rcb-field',
-									'default'		=> '#222222',
+									'default'		=> '#86C7A7',
 								)
 							),
 						)
