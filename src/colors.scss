@@ -44,3 +44,19 @@ $simple-ticked-color: $de-york;
 $simple-detail-icon-color: $pale-sky;
 $simple-meta-color: $mid-gray;
 $simple-heading-color: $dark-gray;
+
+/**
+ * @style: Accent Color Header
+*/
+$accent-color-header-bg-color: #86C7A7;
+$accent-color-header-text-color: $white;
+$accent-color-header-tick-color: $accent-color-header-bg-color;
+$accent-color-header-ticked-color: $accent-color-header-bg-color;
+$accent-color-header-detail-icon-color: $accent-color-header-bg-color;
+$accent-color-header-meta-color: $white;
+$accent-color-header-title-color: $white;
+$accent-color-header-image-border-color: $white;
+$accent-color-header-print-btn-bg-color: $dark-gray;
+$accent-color-header-print-btn-text-color: $white;
+$accent-color-header-pinit-btn-bg-color: #c62122;
+$accent-color-header-pinit-btn-text-color: $white;

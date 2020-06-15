@@ -1,5 +1,3 @@
-/*global wpzoomRecipeCard*/
-
 /**
  * External dependencies
  */
@@ -35,8 +33,6 @@ import {
  * Module Constants
  */
 const PANEL_TITLE = __( 'Recipe Card Color Scheme', 'wpzoom-recipe-card' );
-
-const { setting_options } = wpzoomRecipeCard;
 
 const ColorScheme = ( props ) => {
     const {
@@ -90,7 +86,7 @@ const ColorScheme = ( props ) => {
                     >
                         <ColorPalette
                             colors={ accentBgColors }
-                            value={ accent_bg_color_header || primary_color || get( accentBgColors, [ 0, 'color' ] ) }
+                            value={ accent_bg_color_header || get( accentBgColors, [ 0, 'color' ] ) }
                             onChange={ ( color ) => onChangeSettings( color, 'accent_bg_color_header' ) }
                         />
                     </BaseControl>
@@ -121,7 +117,7 @@ const ColorScheme = ( props ) => {
                         <ColorPalette
                             colors={ accentColors }
                             value={ image_border_color || accent_text_color_header || get( accentColors, [ 0, 'color' ] ) }
-                        onChange={ ( color ) => onChangeSettings( color, 'image_border_color' ) }
+                            onChange={ ( color ) => onChangeSettings( color, 'image_border_color' ) }
                         />
                     </BaseControl>
                     <BaseControl
@@ -131,7 +127,7 @@ const ColorScheme = ( props ) => {
                         <ColorPalette
                             colors={ metaTextColors }
                             value={ meta_color || accent_text_color_header || get( metaTextColors, [ 0, 'color' ] ) }
-                        onChange={ ( color ) => onChangeSettings( color, 'meta_color' ) }
+                            onChange={ ( color ) => onChangeSettings( color, 'meta_color' ) }
                         />
                     </BaseControl>
                     <BaseControl
@@ -139,8 +135,8 @@ const ColorScheme = ( props ) => {
                         label={ __( 'Rating Stars Color', 'wpzoom-recipe-card' ) }
                     >
                         <ColorPalette
-                        colors={ [ { color: rating_stars_color || get( setting_options, 'wpzoom_rcb_settings_rating_stars_color' ) } ] }
-                            value={ rating_stars_color || get( setting_options, 'wpzoom_rcb_settings_rating_stars_color' ) }
+                            colors={ [ { color: rating_stars_color || accent_text_color_header || get( accentColors, [ 0, 'color' ] ) } ] }
+                            value={ rating_stars_color || accent_text_color_header || get( accentColors, [ 0, 'color' ] ) }
                             onChange={ ( color ) => onChangeSettings( color, 'rating_stars_color' ) }
                         />
                     </BaseControl>

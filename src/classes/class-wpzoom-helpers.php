@@ -146,11 +146,12 @@ class WPZOOM_Helpers {
  			$settings['locationToShowFoodLabels'] = WPZOOM_Settings::get('wpzoom_rcb_settings_location_to_show_food_labels');
  		}
  		if ( ! isset( $settings['accent_bg_color_header'] ) ) {
- 			if ( isset( $settings['primary_color'] ) ) {
-	 			$settings['accent_bg_color_header'] = $settings['primary_color'];
- 			} else {
-	 			$settings['accent_bg_color_header'] = '#222222';
- 			}
+ 			// if ( isset( $settings['primary_color'] ) ) {
+	 		// 	$settings['accent_bg_color_header'] = $settings['primary_color'];
+ 			// } else {
+	 		// 	$settings['accent_bg_color_header'] = '#222222';
+ 			// }
+ 			$settings['accent_bg_color_header'] = '#86C7A7';
  		}
  		if ( ! isset( $settings['accent_text_color_header'] ) ) {
  			$settings['accent_text_color_header'] = '#FFFFFF';

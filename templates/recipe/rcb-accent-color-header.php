@@ -133,7 +133,6 @@
     <?php
         $custom_css = '';
         $block_class_name = ".wp-block-wpzoom-recipe-card-block-recipe-card.is-style-{$style}";
-        $primary_color = $settings['primary_color'];
         $accent_bg_color_header = $settings['accent_bg_color_header'];
         $accent_text_color_header = $settings['accent_text_color_header'];
         $image_border_color = $settings['image_border_color'];
