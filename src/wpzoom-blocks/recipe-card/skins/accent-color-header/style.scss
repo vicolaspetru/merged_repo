@@ -2,13 +2,48 @@
     &.is-style-accent-color-header {
         padding: 0;
         margin: 40px 0;
-        background: #ffffff;
+        position: relative;
+        &::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            z-index: -1;
+            box-shadow: 0 0px 15px rgba(0,0,0,0.1);
+            border-radius: $radius-round-rectangle-x2;
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            top: 100px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 100px);
+            box-shadow: 0 0px 15px rgba(0,0,0,0.1);
+            border-top-right-radius: $radius-round-rectangle-x15;
+            border-top-left-radius: $radius-round-rectangle-x15;
+        }
+
+        &.recipe-card-noimage {
+            &::before {
+                display: none;
+            }
+            &::after {
+                top: 0;
+                height: 100%;
+            }
+        }
+
         .recipe-card-header-container {
             position: relative;
             text-align: center;
             padding: $grid-unit-40;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
+            border-top-left-radius: $radius-round-rectangle-x15;
+            border-top-right-radius: $radius-round-rectangle-x15;
             background-color: $accent-color-header-bg-color;
             color: $accent-color-header-text-color;
             .recipe-card-image-placeholder,
@@ -70,12 +105,14 @@
             border-left: 1px solid rgba(0,0,0,.1);
             border-right: 1px solid rgba(0,0,0,.1);
             padding: 10px 20px 0 20px;
+            background-color: #fff;
         }
         .recipe-card-footer-container {
-            padding: 20px $grid-unit-15 $grid-unit-15;
+            padding: 20px 20px;
             border-left: 1px solid rgba(0,0,0,.1);
             border-right: 1px solid rgba(0,0,0,.1);
             border-bottom: 1px solid rgba(0,0,0,.1);
+            background-color: #fff;
             &:empty {
                 padding: 0;
             }
