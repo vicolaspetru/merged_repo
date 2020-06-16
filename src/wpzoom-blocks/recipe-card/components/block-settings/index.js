@@ -15,6 +15,7 @@ import {
 /**
  * Internal dependencies
  */
+import ColorScheme from './color-scheme';
 import MainSettings from './main';
 import SEOSettings from './seo';
 import CustomDetailsSettings from './custom-details';
@@ -26,7 +27,6 @@ import {
     stripHTML,
     getNumberFromString,
     pickRelevantMediaFiles,
-    getBlockStyle,
 } from '@wpzoom/helpers';
 
 /**
@@ -113,17 +113,16 @@ export default class Inspector extends Component {
                 hasImage,
             },
             setAttributes,
-            className,
+            activeStyle,
         } = this.props;
 
         if ( hasImage || ! media ) {
             return;
         }
 
-        const activeStyle = getBlockStyle( className );
         let sizeSlug = 'wpzoom-rcb-block-header';
 
-        if ( 'simple' === activeStyle ) {
+        if ( 'simple' === activeStyle || 'accent-color-header' === activeStyle ) {
             sizeSlug = 'wpzoom-rcb-block-header-square';
         }
 
@@ -142,12 +141,11 @@ export default class Inspector extends Component {
     }
 
     onSelectImage( media ) {
-        const { setAttributes, className } = this.props;
+        const { setAttributes, activeStyle } = this.props;
 
-        const activeStyle = getBlockStyle( className );
         let sizeSlug = 'wpzoom-rcb-block-header';
 
-        if ( 'simple' === activeStyle ) {
+        if ( 'simple' === activeStyle || 'accent-color-header' === activeStyle ) {
             sizeSlug = 'wpzoom-rcb-block-header-square';
         }
 
@@ -503,6 +501,7 @@ export default class Inspector extends Component {
             attributes,
             setAttributes,
             settingOptions,
+            activeStyle,
         } = this.props;
 
         const {
@@ -512,6 +511,10 @@ export default class Inspector extends Component {
 
         return (
             <InspectorControls>
+                <ColorScheme
+                    onChangeSettings={ this.onChangeSettings }
+                    { ...{ attributes, className, settingOptions, activeStyle } }
+                />
                 <MainSettings
                     getImageSizeOptions={ this.getImageSizeOptions() }
                     onUpdateURL={ this.onUpdateURL }
@@ -520,7 +523,7 @@ export default class Inspector extends Component {
                     onSelectPinImage={ this.onSelectPinImage }
                     onRemovePinImage={ this.onRemovePinImage }
                     onChangeSettings={ this.onChangeSettings }
-                    { ...{ attributes, className, settingOptions } }
+                    { ...{ attributes, className, settingOptions, activeStyle } }
                 />
                 <VideoSettings
                     { ...{ attributes, setAttributes, className } }

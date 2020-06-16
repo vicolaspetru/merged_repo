@@ -10,11 +10,6 @@ import classnames from 'classnames';
 import ingredientParser from 'ingredients-parser';
 
 /**
- * Internal dependencies
- */
-import { getBlockStyle } from '@wpzoom/helpers';
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -240,7 +235,7 @@ export default class IngredientItem extends Component {
      */
     render() {
         const {
-            className,
+            activeStyle,
             attributes: {
                 settings: {
                     0: {
@@ -269,7 +264,6 @@ export default class IngredientItem extends Component {
         onParseItem( parseIngredient( jsonName ), index );
 
         let tickStyles = [];
-        const activeStyle = getBlockStyle( className );
 
         if ( '' !== primary_color ) {
             if ( 'newdesign' === activeStyle || 'simple' === activeStyle ) {

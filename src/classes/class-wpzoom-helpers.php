@@ -73,9 +73,6 @@ class WPZOOM_Helpers {
 		if ( !isset( $settings['headerAlign'] ) ) {
 			$settings['headerAlign'] = WPZOOM_Settings::get('wpzoom_rcb_settings_heading_content_align');
 		}
-		if ( $blockStyle === 'simple' ) {
-			$settings['headerAlign'] = 'left';
-		}
 
 		if ( !isset( $settings['primary_color'] ) ) {
 			if ( 'default' === $blockStyle ) {
@@ -148,6 +145,41 @@ class WPZOOM_Helpers {
  		if ( !isset( $settings['locationToShowFoodLabels'] ) ) {
  			$settings['locationToShowFoodLabels'] = WPZOOM_Settings::get('wpzoom_rcb_settings_location_to_show_food_labels');
  		}
+ 		if ( ! isset( $settings['accent_bg_color_header'] ) ) {
+ 			// if ( isset( $settings['primary_color'] ) ) {
+	 		// 	$settings['accent_bg_color_header'] = $settings['primary_color'];
+ 			// } else {
+	 		// 	$settings['accent_bg_color_header'] = '#222222';
+ 			// }
+ 			$settings['accent_bg_color_header'] = '#86C7A7';
+ 		}
+ 		if ( ! isset( $settings['accent_text_color_header'] ) ) {
+ 			$settings['accent_text_color_header'] = '#FFFFFF';
+ 		}
+ 		if ( ! isset( $settings['image_border_color'] ) ) {
+ 			$settings['image_border_color'] = $settings['accent_text_color_header'];
+ 		}
+ 		if ( ! isset( $settings['pinterest_bg_color'] ) ) {
+ 			$settings['pinterest_bg_color'] = '#C62122';
+ 		}
+ 		if ( ! isset( $settings['pinterest_text_color'] ) ) {
+ 			$settings['pinterest_text_color'] = '#FFFFFF';
+ 		}
+ 		if ( ! isset( $settings['print_bg_color'] ) ) {
+ 			$settings['print_bg_color'] = '#222222';
+ 		}
+ 		if ( ! isset( $settings['print_text_color'] ) ) {
+ 			$settings['print_text_color'] = '#FFFFFF';
+ 		}
+ 		if ( ! isset( $settings['recipe_title_color'] ) ) {
+ 			$settings['recipe_title_color'] = $settings['accent_text_color_header'];
+ 		}
+ 		if ( ! isset( $settings['meta_color'] ) ) {
+ 			$settings['meta_color'] = $settings['accent_text_color_header'];
+ 		}
+ 		if ( ! isset( $settings['rating_stars_color'] ) ) {
+ 			$settings['rating_stars_color'] = $settings['accent_text_color_header'];
+ 		}
 
 		return $settings;
 	}
@@ -195,11 +227,11 @@ class WPZOOM_Helpers {
 		}
 
 		if ( $hours ) {
-			$output = $hours + ' ' + _n( "hour", "hours", (int)$hours, "wpzoom-recipe-card" );
+			$output = $hours .' '. _n( "hour", "hours", (int)$hours, "wpzoom-recipe-card" );
 		}
 
 		if ( $mins ) {
-			$output .= ' ' + $mins . ' ' + _n( "minute", "minutes", (int)$mins, "wpzoom-recipe-card" );
+			$output .= ' ' . $mins .' '. _n( "minute", "minutes", (int)$mins, "wpzoom-recipe-card" );
 		}
 
 		return $output;
@@ -213,6 +245,32 @@ class WPZOOM_Helpers {
 	public function convert_vimeo_url_to_embed( $url ) {
 		$embed_url = preg_replace("/\s*[a-zA-Z\/\/:\.]*vimeo.com\/([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","https://player.vimeo.com/video/$1", $url );
 		return $embed_url;
+	}
+
+	public static function classNames( $arguments ) {
+		$classes = array();
+
+		for ( $i = 0; $i < count( $arguments ); $i++ ) {
+			$arg = isset( $arguments[ $i ] ) ? $arguments[ $i ] : false;
+
+			if ( !$arg ) continue;
+
+			$argType = gettype( $arg );
+
+			if ( $argType === 'string' || $argType === 'number') {
+				array_push( $classes, $arg );
+			} else if ( is_array( $arg ) ) {
+				if( count( $arg ) ) {
+					foreach ( $arg as $classname => $include ) {
+						if ( $include === true ) {
+							array_push( $classes, $classname );
+						}
+					}
+				}
+			}
+		}
+		
+		return implode( ' ', $classes );
 	}
 }
 

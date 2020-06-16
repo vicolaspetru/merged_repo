@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2020-02-18 12:01+0200\n"
-"PO-Revision-Date: 2020-02-18 12:02+0200\n"
+"Project-Id-Version: WPZOOM Recipe Card Block v2.9.0\n"
+"POT-Creation-Date: 2020-06-10 15:26+0300\n"
+"PO-Revision-Date: 2020-06-10 15:28+0300\n"
 "Last-Translator: \n"
 "Language-Team: WPZOOM\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.3.1\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e\n"
@@ -43,10 +43,10 @@ msgid "WPZOOM Recipe Card Settings"
 msgstr ""
 
 #: src/classes/class-wpzoom-admin-menu.php:34
-#: src/wpzoom-blocks/jump-to-recipe/block.js:50
-#: src/wpzoom-blocks/nutrition/block.js:48
-#: src/wpzoom-blocks/print-recipe/block.js:50
-#: src/wpzoom-blocks/recipe-card/block.js:53
+#: src/wpzoom-blocks/jump-to-recipe/attributes.js:7
+#: src/wpzoom-blocks/nutrition/attributes.js:7
+#: src/wpzoom-blocks/print-recipe/attributes.js:7
+#: src/wpzoom-blocks/recipe-card/attributes.js:15
 msgid "Recipe Card"
 msgstr ""
 
@@ -54,16 +54,43 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/classes/class-wpzoom-plugin-loader.php:126
+#: src/classes/class-wpzoom-assets-manager.php:199
+msgid "Loading gallery media"
+msgstr ""
+
+#: src/classes/class-wpzoom-plugin-loader.php:129
 #, php-format
 msgid ""
 "You currently have two versions of Recipe Card Block active on this site. "
 "Please <a href=\"%s\">deactivate one</a> before continuing."
 msgstr ""
 
+#: src/classes/class-wpzoom-print-template-manager.php:211
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:178
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:140
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:141
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:142
+#: templates/recipe/rcb-accent-color-header.php:48
+#: templates/recipe/rcb-default.php:37 templates/recipe/rcb-newdesign.php:37
+#: templates/recipe/rcb-simple.php:39
+msgid "Recipe by"
+msgstr ""
+
+#: src/classes/class-wpzoom-print-template-manager.php:213
+#: src/classes/class-wpzoom-rating-stars.php:250
+msgid "Recipe rating: "
+msgstr ""
+
+#: src/classes/class-wpzoom-print-template-manager.php:256
+#: templates/recipe/rcb-accent-color-header.php:126
+#: templates/recipe/rcb-default.php:119 templates/recipe/rcb-newdesign.php:119
+#: templates/recipe/rcb-simple.php:123
+msgid "Recipe Card plugin by "
+msgstr ""
+
 #: src/classes/class-wpzoom-rating-stars.php:166
 #: src/classes/class-wpzoom-rating-stars.php:236
-#: src/classes/class-wpzoom-settings.php:635
+#: src/classes/class-wpzoom-settings.php:1166
 msgid "Only logged in users can rate recipes"
 msgstr ""
 
@@ -71,32 +98,32 @@ msgstr ""
 msgid "from"
 msgstr ""
 
-#: src/classes/class-wpzoom-rating-stars.php:269
+#: src/classes/class-wpzoom-rating-stars.php:276
 #, php-format
 msgid "%s from %s votes"
 msgstr ""
 
-#: src/classes/class-wpzoom-rating-stars.php:444
+#: src/classes/class-wpzoom-rating-stars.php:464
 msgid "Recipe rating"
 msgstr ""
 
-#: src/classes/class-wpzoom-rating-stars.php:445
+#: src/classes/class-wpzoom-rating-stars.php:465
 msgid "Top rated"
 msgstr ""
 
-#: src/classes/class-wpzoom-recipe-card-block-gutenberg.php:91
+#: src/classes/class-wpzoom-recipe-card-block-gutenberg.php:109
 msgid "Recipe Card Block"
 msgstr ""
 
-#: src/classes/class-wpzoom-recipe-card-block-gutenberg.php:92
+#: src/classes/class-wpzoom-recipe-card-block-gutenberg.php:110
 msgid "Recipe Card Block Square"
 msgstr ""
 
-#: src/classes/class-wpzoom-recipe-card-block-gutenberg.php:93
+#: src/classes/class-wpzoom-recipe-card-block-gutenberg.php:111
 msgid "Recipe Card Step Image"
 msgstr ""
 
-#: src/classes/class-wpzoom-recipe-card-block-gutenberg.php:109
+#: src/classes/class-wpzoom-recipe-card-block-gutenberg.php:127
 msgid "WPZOOM - Recipe Card"
 msgstr ""
 
@@ -197,7 +224,8 @@ msgid "Add your custom Details title."
 msgstr ""
 
 #: src/classes/class-wpzoom-settings.php:400
-#: src/wpzoom-blocks/details/block.js:26 src/wpzoom-blocks/details/block.js:97
+#: src/wpzoom-blocks/details/attributes.js:40
+#: src/wpzoom-blocks/details/block.js:43
 msgid "Details"
 msgstr ""
 
@@ -210,7 +238,7 @@ msgid "Add your custom Ingredients title for all new Recipe Cards."
 msgstr ""
 
 #: src/classes/class-wpzoom-settings.php:412
-#: src/wpzoom-blocks/ingredients/block.js:63
+#: src/wpzoom-blocks/ingredients/block.js:47
 msgid "Ingredients"
 msgstr ""
 
@@ -223,7 +251,7 @@ msgid "Add your custom title for Directions section in new Recipe Cards."
 msgstr ""
 
 #: src/classes/class-wpzoom-settings.php:424
-#: src/wpzoom-blocks/directions/block.js:63
+#: src/wpzoom-blocks/directions/block.js:47
 msgid "Directions"
 msgstr ""
 
@@ -268,563 +296,657 @@ msgid "Right"
 msgstr ""
 
 #: src/classes/class-wpzoom-settings.php:469
-msgid "Footer Copyright"
+msgid "Ingredients Strikethrough"
 msgstr ""
 
 #: src/classes/class-wpzoom-settings.php:474
+msgid "Enable strikethrough for ingredients on hover or when selected."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:483
+msgid "Footer Copyright"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:488
 msgid "Hide footer copyright text."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:485
-#: src/classes/class-wpzoom-settings.php:1005
+#: src/classes/class-wpzoom-settings.php:499
+#: src/classes/class-wpzoom-settings.php:1040
 msgid "Recipe Details"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:491
+#: src/classes/class-wpzoom-settings.php:505
+#: src/wpzoom-blocks/recipe-card/components/detail/inspector.js:63
 msgid "Display Servings"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:496
+#: src/classes/class-wpzoom-settings.php:510
 msgid "Show servings by default"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:504
+#: src/classes/class-wpzoom-settings.php:518
+#: src/wpzoom-blocks/recipe-card/components/detail/inspector.js:68
 msgid "Enable Adjustable Servings"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:509
+#: src/classes/class-wpzoom-settings.php:523
 msgid "Enable adjustable servings by default"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:517
+#: src/classes/class-wpzoom-settings.php:531
 msgid "Display Preparation Time"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:522
+#: src/classes/class-wpzoom-settings.php:536
 msgid "Show preparation time by default"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:530
+#: src/classes/class-wpzoom-settings.php:544
 msgid "Display Cooking Time"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:535
+#: src/classes/class-wpzoom-settings.php:549
 msgid "Show cooking time by default"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:543
+#: src/classes/class-wpzoom-settings.php:557
 msgid "Display Total Time"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:548
+#: src/classes/class-wpzoom-settings.php:562
 msgid "Show total time by default"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:556
+#: src/classes/class-wpzoom-settings.php:570
 msgid "Display Calories"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:561
+#: src/classes/class-wpzoom-settings.php:575
 msgid "Show calories by default"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:571
+#: src/classes/class-wpzoom-settings.php:585
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:22
 msgid "Food Labels"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:577
+#: src/classes/class-wpzoom-settings.php:591
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:83
 msgid "Display Food Labels"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:582
+#: src/classes/class-wpzoom-settings.php:596
 msgid "Show food labels by default"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:590
+#: src/classes/class-wpzoom-settings.php:604
 msgid "Where to show the food labels?"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:595
+#: src/classes/class-wpzoom-settings.php:609
 msgid "Select where you want to show the food labels in recipe card."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:598
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:106
+#: src/classes/class-wpzoom-settings.php:612
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:39
 msgid "Top (Before Summary text)"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:599
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:107
+#: src/classes/class-wpzoom-settings.php:613
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:40
 msgid "Bottom (Below Notes)"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:607
-msgid "Rating Feature"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:613
-msgid "User Rating"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:618
-msgid "Allow visitors to vote your recipes."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:627
-msgid "Who can rate?"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:632
-msgid "Select who can rate your recipes."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:636
-msgid "Everyone can rate recipes"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:642
-msgid "Rating Stars Color"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:647
-msgid "Change rating stars color of Recipe Card."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:653
-#: src/classes/class-wpzoom-settings.php:659
-msgid "Reset Ratings"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:660
-msgid ""
-"Be careful, this action will reset all ratings to zero! NOTE: This action "
-"can't be reversed."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:669
+#: src/classes/class-wpzoom-settings.php:623
 msgid "Appearance"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:675
+#: src/classes/class-wpzoom-settings.php:629
 msgid "Recipe Template"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:681
+#: src/classes/class-wpzoom-settings.php:635
 msgid "Default Template"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:686
+#: src/classes/class-wpzoom-settings.php:640
 msgid "Default template to use for all Recipe Cards."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:689
-#: src/wpzoom-blocks/details/components/Inspector.js:109
-#: src/wpzoom-blocks/recipe-card/block.js:74
-msgid "Default"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:690
-#: src/wpzoom-blocks/recipe-card/block.js:79
-msgid "New Design"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:691
-#: src/wpzoom-blocks/recipe-card/block.js:84
-msgid "Simple Design"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:697
+#: src/classes/class-wpzoom-settings.php:647
 msgid "Default Primary Color"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:709
+#: src/classes/class-wpzoom-settings.php:659
 msgid "Footer Call To Action"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:715
+#: src/classes/class-wpzoom-settings.php:665
 msgid "Open link in a new tab"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:725
+#: src/classes/class-wpzoom-settings.php:675
 msgid "Add \"nofollow\" attribute to links"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:744
+#: src/classes/class-wpzoom-settings.php:694
 msgid "Instagram Username"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:749
+#: src/classes/class-wpzoom-settings.php:699
 msgid "Do not include &#64; in your Instagram username."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:756
+#: src/classes/class-wpzoom-settings.php:706
 msgid "Your Instagram Hashtag (optional)"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:761
+#: src/classes/class-wpzoom-settings.php:711
 msgid "Do not include &#35; to your Instagram hashtag."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:768
+#: src/classes/class-wpzoom-settings.php:718
 msgid "Instagram Title"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:773
+#: src/classes/class-wpzoom-settings.php:723
 msgid "Add Instagram title for CTA."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:774
-#: src/classes/class-wpzoom-settings.php:902
+#: src/classes/class-wpzoom-settings.php:724
+#: src/classes/class-wpzoom-settings.php:852
 msgid "Did you make this recipe?"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:780
+#: src/classes/class-wpzoom-settings.php:730
 msgid "Instagram Subtitle"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:785
+#: src/classes/class-wpzoom-settings.php:735
 msgid ""
 "Add Instagram subtitle for CTA. To add profile link into your subtitle text, "
 "please enter %profile% and for hashtag enter %hashtag%."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:786
+#: src/classes/class-wpzoom-settings.php:736
 msgid "Tag %profile% on Instagram and hashtag it %hashtag%"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:791
+#: src/classes/class-wpzoom-settings.php:741
 msgid "Instagram CTA Background Color"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:801
+#: src/classes/class-wpzoom-settings.php:751
 msgid "Instagram CTA Text Color"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:820
+#: src/classes/class-wpzoom-settings.php:770
 msgid "Pinterest Username"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:825
+#: src/classes/class-wpzoom-settings.php:775
 msgid "Do not include &#64; to your Pinterest username."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:832
+#: src/classes/class-wpzoom-settings.php:782
 msgid "Pinterest Title"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:837
+#: src/classes/class-wpzoom-settings.php:787
 msgid "Add Pinterest title for CTA."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:838
+#: src/classes/class-wpzoom-settings.php:788
 msgid "Like this recipe?"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:844
+#: src/classes/class-wpzoom-settings.php:794
 msgid "Pinterest Subtitle"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:849
+#: src/classes/class-wpzoom-settings.php:799
 msgid ""
 "Add Pinterest subtitle for CTA. To add profile link into your subtitle text, "
 "please enter %profile%."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:850
+#: src/classes/class-wpzoom-settings.php:800
 msgid "Follow us %profile% on Pinterest"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:855
+#: src/classes/class-wpzoom-settings.php:805
 msgid "Pinterest CTA Background Color"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:865
+#: src/classes/class-wpzoom-settings.php:815
 msgid "Pinterest CTA Text Color"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:884
+#: src/classes/class-wpzoom-settings.php:834
 msgid "Facebook URL"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:889
+#: src/classes/class-wpzoom-settings.php:839
 msgid "Add your Facebook url."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:896
+#: src/classes/class-wpzoom-settings.php:846
 msgid "Facebook Title"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:901
+#: src/classes/class-wpzoom-settings.php:851
 msgid "Add Facebook title for CTA."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:908
+#: src/classes/class-wpzoom-settings.php:858
 msgid "Facebook CTA Background Color"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:918
+#: src/classes/class-wpzoom-settings.php:868
 msgid "Facebook CTA Text Color"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:930
-msgid "Recipe Buttons"
+#: src/classes/class-wpzoom-settings.php:880
+msgid "Directions Gallery"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:936
-msgid "Automatically add Buttons"
+#: src/classes/class-wpzoom-settings.php:886
+msgid "Columns"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:941
-msgid "Automatically display buttons above the post content."
+#: src/classes/class-wpzoom-settings.php:891
+msgid "Select columns layout for galleries in directions."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:949
-msgid "Jump to Recipe Text"
+#: src/classes/class-wpzoom-settings.php:894
+msgid "2 columns"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:954
-msgid "Add custom text for Jump to Recipe button."
+#: src/classes/class-wpzoom-settings.php:895
+msgid "3 columns"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:955
-msgid "Jump to Recipe"
+#: src/classes/class-wpzoom-settings.php:896
+msgid "4 columns"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:961
-msgid "Print Recipe Text"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:966
-msgid "Add custom text for Print Recipe button."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:967
-#: src/wpzoom-blocks/print-recipe/block.js:33
-msgid "Print Recipe"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:975
-#: src/structured-data-blocks/class-wpzoom-ingredients.php:130
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1463
-#: src/structured-data-blocks/class-wpzoom-steps.php:130
-#: src/wpzoom-blocks/directions/legacy/1.0.js:35
-#: src/wpzoom-blocks/ingredients/legacy/1.0.js:35
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:504
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:633
-msgid "Print"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:981
-msgid "Display Print Button"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:986
-msgid "Show Print button in recipe card"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:994
-#: src/classes/class-wpzoom-settings.php:1067
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:462
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:591
-msgid "Recipe Image"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:999
-msgid "Show Recipe Image on print sheet."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1010
-msgid ""
-"Show Recipe Details (servings, preparation time, cooking time, calories) on "
-"print sheet."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1016
-msgid "Summary Text"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1021
-msgid "Show Recipe Summary text on print sheet."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1027
-msgid "Steps Image"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1032
-msgid "Show Steps Image on print sheet."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1040
-msgid "Pinterest"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1046
-msgid "Display Pin Button"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1051
-msgid "Show Pinterest button in recipe card"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1059
-msgid "Pin Image"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1064
-msgid "Image to use for Pin Recipe."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1068
-msgid "Custom Image per Recipe (Premium Only)"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1074
-msgid "Pin Description"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1079
-msgid "Text description to use for Pin Recipe."
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1082
-msgid "Recipe Name"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1083
-msgid "Recipe Summary"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1084
-msgid "Custom Text (Premium Only)"
-msgstr ""
-
-#: src/classes/class-wpzoom-settings.php:1092
-#: src/wpzoom-blocks/nutrition/block.js:32
-#: src/wpzoom-blocks/nutrition/block.js:49
+#: src/classes/class-wpzoom-settings.php:904
+#: src/wpzoom-blocks/nutrition/attributes.js:8
+#: src/wpzoom-blocks/nutrition/block.js:36
 msgid "Nutrition"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1098
+#: src/classes/class-wpzoom-settings.php:910
 msgid "Layout Orientation"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1103
+#: src/classes/class-wpzoom-settings.php:915
 msgid "Default layout to use for all Nutrition block."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1106
+#: src/classes/class-wpzoom-settings.php:918
 msgid "Vertical"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1107
+#: src/classes/class-wpzoom-settings.php:919
 msgid "Horizontal"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1115
+#: src/classes/class-wpzoom-settings.php:927
 msgid "Google Fonts"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1121
+#: src/classes/class-wpzoom-settings.php:933
 msgid "Enable Google Fonts"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1126
+#: src/classes/class-wpzoom-settings.php:938
 msgid ""
 "If you check this field, then it means that plugin will load Google Fonts to "
 "use them into blocks."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1136
-msgid "Metadata"
+#: src/classes/class-wpzoom-settings.php:948
+msgid "Miscellaneous"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1142
-msgid "Taxonomies"
+#: src/classes/class-wpzoom-settings.php:954
+msgid "Recipe Buttons"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1148
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:539
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:558
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:671
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:690
-msgid "Course"
+#: src/classes/class-wpzoom-settings.php:960
+msgid "Automatically add Buttons"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1153
-msgid "Make Course as taxonomy."
+#: src/classes/class-wpzoom-settings.php:965
+msgid "Automatically display buttons above the post content."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1161
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:544
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:563
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:676
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:695
-msgid "Cuisine"
+#: src/classes/class-wpzoom-settings.php:973
+msgid "Jump to Recipe Text"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1166
-msgid "Make Cuisine as taxonomy."
+#: src/classes/class-wpzoom-settings.php:978
+msgid "Add custom text for Jump to Recipe button."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1174
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:549
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:568
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:681
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:700
-msgid "Difficulty"
+#: src/classes/class-wpzoom-settings.php:979
+msgid "Jump to Recipe"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1179
-msgid "Make Difficulty as taxonomy."
+#: src/classes/class-wpzoom-settings.php:985
+msgid "Print Recipe Text"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:990
+msgid "Add custom text for Print Recipe button."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:991
+#: src/wpzoom-blocks/print-recipe/block.js:37
+msgid "Print Recipe"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:999
+#: src/structured-data-blocks/class-wpzoom-ingredients.php:133
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1617
+#: src/structured-data-blocks/class-wpzoom-steps.php:133
+#: src/wpzoom-blocks/directions/legacy/1.0.js:38
+#: src/wpzoom-blocks/ingredients/legacy/1.0.js:38
+msgid "Print"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1005
+msgid "Display Print Button"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1010
+msgid "Show Print button in recipe card"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1018
+msgid "Print only Published Posts"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1023
+msgid ""
+"Redirect visitors to the homepage when trying to print a recipe that has not "
+"been published yet."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1029
+#: src/classes/class-wpzoom-settings.php:1102
+msgid "Recipe Image"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1034
+msgid "Show Recipe Image on print sheet."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1045
+msgid ""
+"Show Recipe Details (servings, preparation time, cooking time, calories) on "
+"print sheet."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1051
+msgid "Summary Text"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1056
+msgid "Show Recipe Summary text on print sheet."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1062
+msgid "Steps Image"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1067
+msgid "Show Steps Image on print sheet."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1075
+msgid "Pinterest"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1081
+msgid "Display Pin Button"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1086
+msgid "Show Pinterest button in recipe card"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1094
+msgid "Pin Image"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1099
+msgid "Image to use for Pin Recipe."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1103
+msgid "Custom Image per Recipe"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1109
+msgid "Pin Description"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1114
+msgid "Text description to use for Pin Recipe."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1117
+msgid "Recipe Name"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1118
+msgid "Recipe Summary"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1119
+msgid "Custom Text"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1125
+msgid "NoPin"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1130
+msgid ""
+"NoPin any images on the page that aren’t related to the content or aren’t "
+"good for Pinterest"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1138
+msgid "Rating Feature"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1144
+msgid "User Rating"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1149
+msgid "Allow visitors to vote your recipes."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1158
+msgid "Who can rate?"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1163
+msgid "Select who can rate your recipes."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1167
+msgid "Everyone can rate recipes"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1173
+msgid "Rating Stars Color"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1178
+msgid "Change rating stars color of Recipe Card."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1184
+#: src/classes/class-wpzoom-settings.php:1190
+msgid "Reset Ratings"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1191
+msgid ""
+"Be careful, this action will reset all ratings to zero! NOTE: This action "
+"can't be reversed."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1198
+msgid "Lightbox"
 msgstr ""
 
 #: src/classes/class-wpzoom-settings.php:1204
-msgid "The license key is not inserted."
+msgid "Recipe Image Lightbox"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1209
+msgid "Open the recipe image in a lightbox when clicking it."
 msgstr ""
 
 #: src/classes/class-wpzoom-settings.php:1215
-#: src/classes/class-wpzoom-settings.php:1222
-msgid "License"
+msgid "Directions Images Lightbox"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1228
-msgid "License Key"
+#: src/classes/class-wpzoom-settings.php:1220
+msgid "Open the directions images in a lightbox when clicking them."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1233
-msgid "Enter your license key"
+#: src/classes/class-wpzoom-settings.php:1226
+msgid "Image Size"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1240
-msgid "License Status"
+#: src/classes/class-wpzoom-settings.php:1231
+msgid ""
+"Image size to link to for the clickable images. You can select from defined "
+"image sizes."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1247
-msgid "inactive"
+#: src/classes/class-wpzoom-settings.php:1234
+msgid "Original image resolution (unmodified)"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1247
-msgid "active"
+#: src/classes/class-wpzoom-settings.php:1235
+msgid "Large resolution (default 1024px x 1024px max)"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1256
-msgid "Save License"
+#: src/classes/class-wpzoom-settings.php:1236
+msgid "Medium Large resolution (default 768px x 0px max)"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1246
+msgid "Metadata"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1252
+msgid "Taxonomies"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1258
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:185
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:202
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:147
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:164
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:148
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:165
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:149
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:166
+msgid "Course"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1263
+msgid "Make Course as taxonomy."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1271
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:190
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:207
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:152
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:169
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:153
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:170
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:154
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:171
+msgid "Cuisine"
 msgstr ""
 
 #: src/classes/class-wpzoom-settings.php:1276
+msgid "Make Cuisine as taxonomy."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1284
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:195
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:212
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:157
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:174
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:158
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:175
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:159
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:176
+msgid "Difficulty"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1289
+msgid "Make Difficulty as taxonomy."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1314
+msgid "The license key is not inserted."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1325
+#: src/classes/class-wpzoom-settings.php:1332
+msgid "License"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1338
+msgid "License Key"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1343
+msgid "Enter your license key"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1350
+msgid "License Status"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1357
+msgid "inactive"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1357
+msgid "active"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1366
+msgid "Save License"
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:1386
 msgid "Deactivate License"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1286
+#: src/classes/class-wpzoom-settings.php:1396
 msgid "Activate License"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1435
+#: src/classes/class-wpzoom-settings.php:1545
 msgid "Activate Your License Key"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1438
+#: src/classes/class-wpzoom-settings.php:1548
 msgid ""
 "Your license key provides access to <strong>Automatic Updates and Premium "
 "addons</strong>. You can find your license in <a href=\"https://www.wpzoom."
@@ -832,116 +954,122 @@ msgid ""
 "Licenses</a>."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1451
+#: src/classes/class-wpzoom-settings.php:1561
 msgid "Follow @WPZOOM"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1585
-#: src/classes/class-wpzoom-settings.php:1634
+#: src/classes/class-wpzoom-settings.php:1695
+#: src/classes/class-wpzoom-settings.php:1744
 msgid "Incorrect license key."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1593
+#: src/classes/class-wpzoom-settings.php:1703
 msgid "Renew?"
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1600
+#: src/classes/class-wpzoom-settings.php:1710
 msgid "License key is active."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1605
+#: src/classes/class-wpzoom-settings.php:1715
 #, php-format
 msgid "Expires %s."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1608
+#: src/classes/class-wpzoom-settings.php:1718
 msgid "Lifetime License."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1613
+#: src/classes/class-wpzoom-settings.php:1723
 #, php-format
 msgid "License key expired %s."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1615
+#: src/classes/class-wpzoom-settings.php:1725
 msgid "License key has expired."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1622
+#: src/classes/class-wpzoom-settings.php:1732
 msgid "License key do not match."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1625
+#: src/classes/class-wpzoom-settings.php:1735
 msgid ""
 "License is <strong>inactive</strong>. Click on the <strong>Activate License</"
 "strong> button to activate it."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1628
+#: src/classes/class-wpzoom-settings.php:1738
 msgid "License key is disabled."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1631
+#: src/classes/class-wpzoom-settings.php:1741
 msgid ""
 "This license is inactive on this website. Click on the <strong>Activate "
 "License</strong> button to activate it."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1666
-#: src/classes/class-wpzoom-settings.php:1695
-#: src/classes/class-wpzoom-settings.php:1759
+#: src/classes/class-wpzoom-settings.php:1776
+#: src/classes/class-wpzoom-settings.php:1805
+#: src/classes/class-wpzoom-settings.php:1869
 msgid "An error occurred, please try again."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1674
+#: src/classes/class-wpzoom-settings.php:1784
 #, php-format
 msgid "Your license key expired on %s."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1679
+#: src/classes/class-wpzoom-settings.php:1789
 msgid "Your license key has been disabled."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1682
+#: src/classes/class-wpzoom-settings.php:1792
 msgid "Invalid license."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1686
+#: src/classes/class-wpzoom-settings.php:1796
 msgid "Your license is not active for this URL."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1689
+#: src/classes/class-wpzoom-settings.php:1799
 #, php-format
 msgid "This appears to be an invalid license key for %s."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1692
+#: src/classes/class-wpzoom-settings.php:1802
 msgid "Your license key has reached its activation limit."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1860
+#: src/classes/class-wpzoom-settings.php:1970
 msgid "All ratings have been reset."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1951
+#: src/classes/class-wpzoom-settings.php:2061
 msgid "Default configurations for new Recipe Card blocks."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1957
+#: src/classes/class-wpzoom-settings.php:2067
 msgid "Recipe Rating shown in the Recipe Card and Recipe Metadata."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1963
+#: src/classes/class-wpzoom-settings.php:2073
+msgid ""
+"With Lightbox, when a user clicks on the recipe and/or directions images, "
+"the image opens in a lightbox popup."
+msgstr ""
+
+#: src/classes/class-wpzoom-settings.php:2079
 msgid "You will get access to more Recipe Templates with the Premium version."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1969
+#: src/classes/class-wpzoom-settings.php:2085
 msgid ""
 "Add Instagram and/or Pinterest and/or Facebook CTA (call to action) in "
 "Recipe Card footer."
 msgstr ""
 
-#: src/classes/class-wpzoom-settings.php:1975
+#: src/classes/class-wpzoom-settings.php:2091
 msgid "Display Jump to Recipe and Print Recipe buttons."
 msgstr ""
 
@@ -1102,217 +1230,242 @@ msgid "Difficulties"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:191
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:47
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:28
 msgid "Appetizers"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:192
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:48
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:29
 msgid "Snacks"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:193
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:49
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:30
 msgid "Breakfast"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:194
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:50
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:31
 msgid "Brunch"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:195
-#: src/wpzoom-blocks/details/components/Inspector.js:70
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:51
+#: src/wpzoom-blocks/details/components/Inspector.js:34
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:32
 msgid "Dessert"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:196
-#: src/wpzoom-blocks/details/components/Inspector.js:71
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:52
+#: src/wpzoom-blocks/details/components/Inspector.js:35
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:33
 msgid "Drinks"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:197
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:53
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:34
 msgid "Dinner"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:198
-#: src/wpzoom-blocks/details/block.js:118
-#: src/wpzoom-blocks/recipe-card/block.js:65
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:54
+#: src/wpzoom-blocks/details/attributes.js:21
+#: src/wpzoom-blocks/recipe-card/attributes.js:28
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:35
 msgid "Main"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:199
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:55
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:36
 msgid "Lunch"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:200
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:56
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:37
 msgid "Salads"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:201
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:57
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:38
 msgid "Sides"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:202
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:58
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:39
 msgid "Soups"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:206
-#: src/wpzoom-blocks/details/components/Inspector.js:78
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:62
+#: src/wpzoom-blocks/details/components/Inspector.js:42
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:43
 msgid "American"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:207
-#: src/wpzoom-blocks/details/components/Inspector.js:79
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:63
+#: src/wpzoom-blocks/details/components/Inspector.js:43
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:44
 msgid "Chinese"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:208
-#: src/wpzoom-blocks/details/components/Inspector.js:80
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:64
+#: src/wpzoom-blocks/details/components/Inspector.js:44
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:45
 msgid "French"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:209
-#: src/wpzoom-blocks/details/components/Inspector.js:81
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:65
+#: src/wpzoom-blocks/details/components/Inspector.js:45
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:46
 msgid "Indian"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:210
-#: src/wpzoom-blocks/details/block.js:119
-#: src/wpzoom-blocks/details/components/Inspector.js:82
-#: src/wpzoom-blocks/recipe-card/block.js:66
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:66
+#: src/wpzoom-blocks/details/attributes.js:22
+#: src/wpzoom-blocks/details/components/Inspector.js:46
+#: src/wpzoom-blocks/recipe-card/attributes.js:29
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:47
 msgid "Italian"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:211
-#: src/wpzoom-blocks/details/components/Inspector.js:83
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:67
+#: src/wpzoom-blocks/details/components/Inspector.js:47
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:48
 msgid "Japanese"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:212
-#: src/wpzoom-blocks/details/components/Inspector.js:84
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:68
+#: src/wpzoom-blocks/details/components/Inspector.js:48
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:49
 msgid "Mediterranean"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:213
-#: src/wpzoom-blocks/details/components/Inspector.js:85
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:69
+#: src/wpzoom-blocks/details/components/Inspector.js:49
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:50
 msgid "Mexican"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:214
-#: src/wpzoom-blocks/details/components/Inspector.js:86
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:70
+#: src/wpzoom-blocks/details/components/Inspector.js:50
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:51
 msgid "Southern"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:215
-#: src/wpzoom-blocks/details/components/Inspector.js:87
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:71
+#: src/wpzoom-blocks/details/components/Inspector.js:51
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:52
 msgid "Thai"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:216
-#: src/wpzoom-blocks/details/components/Inspector.js:88
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:72
+#: src/wpzoom-blocks/details/components/Inspector.js:52
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:53
 msgid "Other world cuisine"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:220
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:76
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:57
 msgid "Easy"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:221
-#: src/wpzoom-blocks/details/block.js:120
-#: src/wpzoom-blocks/recipe-card/block.js:67
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:77
+#: src/wpzoom-blocks/details/attributes.js:23
+#: src/wpzoom-blocks/recipe-card/attributes.js:30
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:58
 msgid "Medium"
 msgstr ""
 
 #: src/classes/class-wpzoom-taxonomies.php:222
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:78
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:59
 msgid "Difficult"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-details.php:178
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:441
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:760
-#: src/wpzoom-blocks/details/block.js:35 src/wpzoom-blocks/details/block.js:122
-#: src/wpzoom-blocks/details/block.js:143
-#: src/wpzoom-blocks/details/components/DetailItem.js:197
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:148
+#: src/classes/class-wpzoom-template-manager.php:78
+#: src/wpzoom-blocks/details/components/Inspector.js:107
+#: src/wpzoom-blocks/recipe-card/attributes.js:37
+msgid "Default"
+msgstr ""
+
+#: src/classes/class-wpzoom-template-manager.php:79
+#: src/wpzoom-blocks/recipe-card/attributes.js:42
+msgid "New Design"
+msgstr ""
+
+#: src/classes/class-wpzoom-template-manager.php:80
+#: src/wpzoom-blocks/recipe-card/attributes.js:47
+msgid "Simple Design"
+msgstr ""
+
+#: src/classes/class-wpzoom-template-manager.php:81
+#: src/wpzoom-blocks/recipe-card/attributes.js:52
+msgid "Accent Color Header"
+msgstr ""
+
+#: src/structured-data-blocks/class-wpzoom-details.php:169
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:442
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:717
+#: src/wpzoom-blocks/details/attributes.js:25
+#: src/wpzoom-blocks/details/attributes.js:49
+#: src/wpzoom-blocks/details/block.js:76
+#: src/wpzoom-blocks/details/components/DetailItem.js:202
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:154
 msgid "Servings"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-details.php:179
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:761
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:148
+#: src/structured-data-blocks/class-wpzoom-details.php:170
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:718
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:154
 msgid "servings"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-details.php:185
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:768
-#: src/wpzoom-blocks/details/block.js:36 src/wpzoom-blocks/details/block.js:123
-#: src/wpzoom-blocks/details/block.js:144
-#: src/wpzoom-blocks/details/components/DetailItem.js:198
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:149
+#: src/structured-data-blocks/class-wpzoom-details.php:176
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:725
+#: src/wpzoom-blocks/details/attributes.js:26
+#: src/wpzoom-blocks/details/attributes.js:50
+#: src/wpzoom-blocks/details/block.js:77
+#: src/wpzoom-blocks/details/components/DetailItem.js:203
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:155
 msgid "Prep time"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-details.php:186
-#: src/structured-data-blocks/class-wpzoom-details.php:193
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:769
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:777
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:816
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:149
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:150
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:152
+#: src/structured-data-blocks/class-wpzoom-details.php:177
+#: src/structured-data-blocks/class-wpzoom-details.php:184
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:726
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:734
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:773
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:155
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:156
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:158
 msgid "minutes"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-details.php:192
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:776
-#: src/wpzoom-blocks/details/block.js:37 src/wpzoom-blocks/details/block.js:124
-#: src/wpzoom-blocks/details/block.js:145
-#: src/wpzoom-blocks/details/components/DetailItem.js:199
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:150
+#: src/structured-data-blocks/class-wpzoom-details.php:183
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:733
+#: src/wpzoom-blocks/details/attributes.js:27
+#: src/wpzoom-blocks/details/attributes.js:51
+#: src/wpzoom-blocks/details/block.js:78
+#: src/wpzoom-blocks/details/components/DetailItem.js:204
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:156
 msgid "Cooking time"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-details.php:199
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:445
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:784
-#: src/wpzoom-blocks/details/block.js:38 src/wpzoom-blocks/details/block.js:125
-#: src/wpzoom-blocks/details/block.js:146
-#: src/wpzoom-blocks/details/components/DetailItem.js:200
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:151
+#: src/structured-data-blocks/class-wpzoom-details.php:190
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:446
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:741
+#: src/wpzoom-blocks/details/attributes.js:28
+#: src/wpzoom-blocks/details/attributes.js:52
+#: src/wpzoom-blocks/details/block.js:79
+#: src/wpzoom-blocks/details/components/DetailItem.js:205
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:157
 msgid "Calories"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-details.php:200
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:785
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:151
+#: src/structured-data-blocks/class-wpzoom-details.php:191
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:742
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:157
 msgid "kcal"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-ingredients.php:128
-#: src/wpzoom-blocks/ingredients/legacy/1.0.js:34
+#: src/structured-data-blocks/class-wpzoom-ingredients.php:109
+#: src/wpzoom-blocks/ingredients/legacy/1.0.js:37
 msgid "Print ingredients..."
 msgstr ""
 
@@ -1324,7 +1477,9 @@ msgid ""
 msgstr ""
 
 #: src/structured-data-blocks/class-wpzoom-nutrition.php:185
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:187
 #: src/structured-data-blocks/class-wpzoom-nutrition.php:304
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:306
 msgid "g"
 msgstr ""
 
@@ -1334,657 +1489,732 @@ msgid "mg"
 msgstr ""
 
 #: src/structured-data-blocks/class-wpzoom-nutrition.php:190
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:310
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:311
 msgid "Nutrition Facts"
 msgstr ""
 
 #: src/structured-data-blocks/class-wpzoom-nutrition.php:193
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:313
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:314
 #, php-format
 msgid "%s servings per container"
 msgstr ""
 
 #: src/structured-data-blocks/class-wpzoom-nutrition.php:204
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:330
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:380
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:331
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:381
 msgid "Amount Per Serving"
 msgstr ""
 
 #: src/structured-data-blocks/class-wpzoom-nutrition.php:210
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:330
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:380
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:331
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:381
 msgid "Daily Value"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:437
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:438
 msgid "Serving Size"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:449
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:450
 msgid "Total Fat"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:454
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:455
 msgid "Saturated Fat"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:459
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:460
 msgid "Trans Fat"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:463
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:464
 msgid "Cholesterol"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:468
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:469
 msgid "Sodium"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:473
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:474
 msgid "Potassium"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:478
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:479
 msgid "Total Carbohydrate"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:483
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:484
 msgid "Dietary Fiber"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:488
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:489
 msgid "Sugars"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:492
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:493
 msgid "Protein"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:497
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:498
 msgid "Vitamin A"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:501
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:502
 msgid "Vitamin C"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:505
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:506
 msgid "Calcium"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:509
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:510
 msgid "Iron"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:513
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:514
 msgid "Vitamin D"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:517
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:518
 msgid "Vitamin E"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:521
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:522
 msgid "Vitamin K"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:525
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:526
 msgid "Thiamin"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:529
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:530
 msgid "Riboflavin"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:533
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:534
 msgid "Niacin"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:537
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:538
 msgid "Vitamin B6"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:541
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:542
 msgid "Vitamin B12"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:545
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:546
 msgid "Folate"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:549
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:550
 msgid "Biotin"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:553
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:554
 msgid "Pantothenic Acid"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:557
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:558
 msgid "Phosphorus"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:561
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:562
 msgid "Iodine"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:565
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:566
 msgid "Magnesium"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:569
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:570
 msgid "Zinc"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:573
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:574
 msgid "Selenium"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:577
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:578
 msgid "Copper"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:581
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:582
 msgid "Manganese"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:585
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:586
 msgid "Chromium"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:589
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:590
 msgid "Molybdenum"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-nutrition.php:593
+#: src/structured-data-blocks/class-wpzoom-nutrition.php:594
 msgid "Chloride"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:417
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:436
-#: src/structured-data-blocks/class-wpzoom-steps.php:128
-#: src/wpzoom-blocks/directions/legacy/1.0.js:34
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:502
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:631
-msgid "Print directions..."
-msgstr ""
-
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:449
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:531
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:663
-msgid "Recipe by"
-msgstr ""
-
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:489
-msgid "Recipe Card plugin by "
-msgstr ""
-
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:815
-#: src/wpzoom-blocks/recipe-card/components/DetailItem.js:152
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:772
+#: src/wpzoom-blocks/recipe-card/components/detail/detail-item.js:158
 msgid "Total time"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1156
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1105
 msgid "Course:"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1165
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1114
 msgid "Cuisine:"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1174
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1123
 msgid "Difficulty:"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1500
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:495
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:624
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1656
+#: src/wpzoom-blocks/recipe-card/skins/shared/pinterest-button.js:22
 msgid "Pin"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1577
-#: src/wpzoom-blocks/recipe-card/components/CTA.js:89
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1737
+#: src/wpzoom-blocks/recipe-card/components/call-to-action/index.js:117
 msgid "Like us"
 msgstr ""
 
-#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1577
-#: src/wpzoom-blocks/recipe-card/components/CTA.js:90
+#: src/structured-data-blocks/class-wpzoom-premium-recipe-card-block.php:1737
+#: src/wpzoom-blocks/recipe-card/components/call-to-action/index.js:118
 msgid "on Facebook"
 msgstr ""
 
-#: src/wpzoom-blocks/details/block.js:112
+#: src/structured-data-blocks/class-wpzoom-steps.php:109
+#: src/wpzoom-blocks/directions/legacy/1.0.js:37
+msgid "Print directions..."
+msgstr ""
+
+#: src/wpzoom-blocks/details/attributes.js:14
 msgid "details"
 msgstr ""
 
-#: src/wpzoom-blocks/details/block.js:113
-#: src/wpzoom-blocks/directions/block.js:79
-#: src/wpzoom-blocks/ingredients/block.js:79
+#: src/wpzoom-blocks/details/attributes.js:15
+#: src/wpzoom-blocks/directions/attributes.js:22
+#: src/wpzoom-blocks/ingredients/attributes.js:22
 msgid "wpzoom"
 msgstr ""
 
-#: src/wpzoom-blocks/details/block.js:114
-#: src/wpzoom-blocks/directions/block.js:80
-#: src/wpzoom-blocks/ingredients/block.js:80
+#: src/wpzoom-blocks/details/attributes.js:16
+#: src/wpzoom-blocks/directions/attributes.js:23
+#: src/wpzoom-blocks/ingredients/attributes.js:23
 msgid "recipe"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/DetailItem.js:160
+#: src/wpzoom-blocks/details/components/DetailItem.js:165
 msgid "Delete item"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/DetailItem.js:197
+#: src/wpzoom-blocks/details/components/DetailItem.js:202
 msgid "4 servings"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/DetailItem.js:198
+#: src/wpzoom-blocks/details/components/DetailItem.js:203
 msgid "30 minutes"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/DetailItem.js:199
+#: src/wpzoom-blocks/details/components/DetailItem.js:204
 msgid "40 minutes"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/DetailItem.js:200
+#: src/wpzoom-blocks/details/components/DetailItem.js:205
 msgid "420 kcal"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/IconsModal.js:55
-#: src/wpzoom-blocks/recipe-card/components/IconsModal.js:63
+#: src/wpzoom-blocks/details/components/IconsModal.js:33
+#: src/wpzoom-blocks/recipe-card/components/icons-modal/index.js:33
 msgid "Foodicons"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/IconsModal.js:56
-#: src/wpzoom-blocks/recipe-card/components/IconsModal.js:64
+#: src/wpzoom-blocks/details/components/IconsModal.js:34
+#: src/wpzoom-blocks/recipe-card/components/icons-modal/index.js:34
 msgid "Dashicons"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/IconsModal.js:57
-#: src/wpzoom-blocks/recipe-card/components/IconsModal.js:67
+#: src/wpzoom-blocks/details/components/IconsModal.js:35
+#: src/wpzoom-blocks/recipe-card/components/icons-modal/index.js:37
 msgid "Old Food icons"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/Inspector.js:68
+#: src/wpzoom-blocks/details/components/Inspector.js:32
 msgid "Appetizer & Snaks"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/Inspector.js:69
+#: src/wpzoom-blocks/details/components/Inspector.js:33
 msgid "Breakfast & Brunch"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/Inspector.js:72
+#: src/wpzoom-blocks/details/components/Inspector.js:36
 msgid "Main Course"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/Inspector.js:73
+#: src/wpzoom-blocks/details/components/Inspector.js:37
 msgid "Salad"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/Inspector.js:74
+#: src/wpzoom-blocks/details/components/Inspector.js:38
 msgid "Soup"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/Inspector.js:106
+#: src/wpzoom-blocks/details/components/Inspector.js:104
 msgid "Details Settings"
 msgstr ""
 
-#: src/wpzoom-blocks/details/components/Inspector.js:108
+#: src/wpzoom-blocks/details/components/Inspector.js:106
 msgid "Number of Columns"
 msgstr ""
 
-#: src/wpzoom-blocks/directions/block.js:78
+#: src/wpzoom-blocks/directions/attributes.js:21
 msgid "directions"
 msgstr ""
 
-#: src/wpzoom-blocks/directions/components/Direction.js:145
-#: src/wpzoom-blocks/recipe-card/components/Direction.js:130
+#: src/wpzoom-blocks/directions/components/Direction.js:153
+#: src/wpzoom-blocks/recipe-card/components/direction/index.js:137
 msgid "New step added"
 msgstr ""
 
-#: src/wpzoom-blocks/directions/components/Direction.js:210
+#: src/wpzoom-blocks/directions/components/Direction.js:218
 msgid "Step removed"
 msgstr ""
 
-#: src/wpzoom-blocks/directions/components/DirectionStep.js:175
-#: src/wpzoom-blocks/recipe-card/components/DirectionStep.js:181
-msgid "Delete step"
-msgstr ""
-
-#: src/wpzoom-blocks/directions/components/DirectionStep.js:181
-#: src/wpzoom-blocks/recipe-card/components/DirectionStep.js:187
+#: src/wpzoom-blocks/directions/components/DirectionStep.js:189
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-step.js:218
 msgid "Insert step"
 msgstr ""
 
-#: src/wpzoom-blocks/directions/components/DirectionStep.js:198
-#: src/wpzoom-blocks/recipe-card/components/DirectionStep.js:204
+#: src/wpzoom-blocks/directions/components/DirectionStep.js:206
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-step.js:235
 msgid "Move step up"
 msgstr ""
 
-#: src/wpzoom-blocks/directions/components/DirectionStep.js:205
-#: src/wpzoom-blocks/recipe-card/components/DirectionStep.js:211
-msgid "Move step down"
-msgstr ""
-
-#: src/wpzoom-blocks/directions/components/Inspector.js:49
+#: src/wpzoom-blocks/directions/components/Inspector.js:36
 msgid "Directions Settings"
 msgstr ""
 
-#: src/wpzoom-blocks/directions/components/Inspector.js:51
-#: src/wpzoom-blocks/ingredients/components/Inspector.js:51
+#: src/wpzoom-blocks/directions/components/Inspector.js:38
+#: src/wpzoom-blocks/ingredients/components/Inspector.js:38
 msgid "Print Button Visibility"
 msgstr ""
 
-#: src/wpzoom-blocks/ingredients/block.js:78
+#: src/wpzoom-blocks/ingredients/attributes.js:21
 msgid "ingredients"
 msgstr ""
 
-#: src/wpzoom-blocks/ingredients/components/Ingredient.js:139
-#: src/wpzoom-blocks/recipe-card/components/Ingredient.js:140
+#: src/wpzoom-blocks/ingredients/components/Ingredient.js:147
+#: src/wpzoom-blocks/recipe-card/components/ingredient/index.js:149
 msgid "New ingredient added"
 msgstr ""
 
-#: src/wpzoom-blocks/ingredients/components/Ingredient.js:204
-#: src/wpzoom-blocks/recipe-card/components/Ingredient.js:205
+#: src/wpzoom-blocks/ingredients/components/Ingredient.js:212
+#: src/wpzoom-blocks/recipe-card/components/ingredient/index.js:214
 msgid "Ingredient removed"
 msgstr ""
 
-#: src/wpzoom-blocks/ingredients/components/IngredientItem.js:147
-#: src/wpzoom-blocks/recipe-card/components/IngredientItem.js:181
+#: src/wpzoom-blocks/ingredients/components/IngredientItem.js:151
+#: src/wpzoom-blocks/recipe-card/components/ingredient/ingredient-item.js:184
 msgid "Delete ingredient"
 msgstr ""
 
-#: src/wpzoom-blocks/ingredients/components/IngredientItem.js:177
-#: src/wpzoom-blocks/recipe-card/components/IngredientItem.js:211
+#: src/wpzoom-blocks/ingredients/components/IngredientItem.js:181
+#: src/wpzoom-blocks/recipe-card/components/ingredient/ingredient-item.js:214
 msgid "Move item down"
 msgstr ""
 
-#: src/wpzoom-blocks/ingredients/components/Inspector.js:49
+#: src/wpzoom-blocks/ingredients/components/Inspector.js:36
 msgid "Ingredients Settings"
 msgstr ""
 
-#: src/wpzoom-blocks/jump-to-recipe/block.js:33
-msgid "Jump To Recipe"
-msgstr ""
-
-#: src/wpzoom-blocks/jump-to-recipe/block.js:34
-msgid "A button to jump to a WPZOOM Recipe Card on the same page."
-msgstr ""
-
-#: src/wpzoom-blocks/jump-to-recipe/block.js:51
-#: src/wpzoom-blocks/print-recipe/block.js:51
+#: src/wpzoom-blocks/jump-to-recipe/attributes.js:8
+#: src/wpzoom-blocks/print-recipe/attributes.js:8
 msgid "Block Recipe Card"
 msgstr ""
 
-#: src/wpzoom-blocks/jump-to-recipe/block.js:52
-#: src/wpzoom-blocks/nutrition/block.js:50
-#: src/wpzoom-blocks/print-recipe/block.js:52
-#: src/wpzoom-blocks/recipe-card/block.js:55
+#: src/wpzoom-blocks/jump-to-recipe/attributes.js:9
+#: src/wpzoom-blocks/nutrition/attributes.js:9
+#: src/wpzoom-blocks/print-recipe/attributes.js:9
+#: src/wpzoom-blocks/recipe-card/attributes.js:17
 msgid "WPZOOM"
 msgstr ""
 
-#: src/wpzoom-blocks/nutrition/block.js:33
+#: src/wpzoom-blocks/jump-to-recipe/block.js:37
+msgid "Jump To Recipe"
+msgstr ""
+
+#: src/wpzoom-blocks/jump-to-recipe/block.js:38
+msgid "A button to jump to a WPZOOM Recipe Card on the same page."
+msgstr ""
+
+#: src/wpzoom-blocks/nutrition/block.js:37
 msgid "Display Nutrition Facts for your recipe."
 msgstr ""
 
-#: src/wpzoom-blocks/nutrition/components/Nutrition.js:176
-#: src/wpzoom-blocks/nutrition/components/Nutrition.js:323
+#: src/wpzoom-blocks/nutrition/components/Nutrition.js:195
+#: src/wpzoom-blocks/nutrition/components/Nutrition.js:342
 msgid "servings per container"
 msgstr ""
 
-#: src/wpzoom-blocks/print-recipe/block.js:34
+#: src/wpzoom-blocks/print-recipe/block.js:38
 msgid "A button to print WPZOOM Recipe Card."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/block.js:37
-#: src/wpzoom-blocks/recipe-card/block.js:54
+#: src/wpzoom-blocks/recipe-card/attributes.js:16
+#: src/wpzoom-blocks/recipe-card/block.js:50
 msgid "Premium Recipe Card"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/block.js:38
-msgid "Display a Premium Recipe Card box with recipe metadata."
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/block.js:59
+#: src/wpzoom-blocks/recipe-card/attributes.js:22
 msgid "Your recipe title goes here"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:248
+#: src/wpzoom-blocks/recipe-card/block.js:51
+msgid "Display a Premium Recipe Card box with recipe metadata."
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/color-scheme.js:36
+msgid "Recipe Card Color Scheme"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/custom-details.js:20
+msgid "Add Custom Details"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/main.js:31
+msgid "Recipe Card Settings"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/seo.js:25
+msgid "Recipe Card SEO Settings"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:7
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:14
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:18
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:23
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:26
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:32
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:36
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:40
+msgid "Dark"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:8
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:28
+msgid "Orange"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:9
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:17
+msgid "Red"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:10
+msgid "Green"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:13
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:19
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:22
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:27
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:31
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:35
+#: src/wpzoom-blocks/recipe-card/components/block-settings/shared/colors-palette.js:39
+msgid "White"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/structured-data-testing-tool.js:34
+msgid "Structured Data Testing"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/structured-data-testing-tool.js:35
+#: src/wpzoom-blocks/recipe-card/components/recipe-card/index.js:360
+#: src/wpzoom-blocks/recipe-card/skins/shared/render-meta-data.js:8
+msgid "Not added"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/block-settings/structured-data-testing-tool.js:36
+msgid "Not displayed"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:263
 msgid "Recipe Card extra options"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:256
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:300
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:271
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:319
 msgid "Bulk Add"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:263
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:278
 msgid "Recipe Card Bulk Add"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:267
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:282
 msgid "Known Problem"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:267
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:282
 msgid ""
 "There is a conflict with specific keyboard keys and this feature. To fix the "
 "conflict, simply enable the"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:267
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:282
 msgid "Top Toolbar"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:267
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:282
 msgid ""
 "option in the editor options (click on the ⋮ three dots from right-top "
 "corner)."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:267
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:282
 msgid "View how to do this"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:271
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:286
 msgid "Insert Ingredients"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:272
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:287
 msgid ""
 "Each line break is a new ingredient. Note: To add Ingredient Group Title "
 "just type **Group Title** on new line."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:280
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:295
 msgid "Insert Directions"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:281
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:296
 msgid ""
 "Each line break is a new direction. Note: To add Direction Group Title just "
 "type **Group Title** on new line."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/ExtraOptionsModal.js:292
+#: src/wpzoom-blocks/recipe-card/components/bulk/index.js:309
 msgid "Cancel"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/IconsModal.js:65
-msgid "Font Awesome 5"
+#: src/wpzoom-blocks/recipe-card/components/detail/inspector.js:23
+msgid "Recipe Card Details"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/IconsModal.js:66
-msgid "Genericons"
+#: src/wpzoom-blocks/recipe-card/components/detail/inspector.js:58
+msgid ""
+"The following details are used for Schema Markup (Rich Snippets). If you "
+"want to hide some details in the post, just turn them off below."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:43
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:320
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:539
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:544
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:549
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:671
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:676
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:681
-msgid "Not added"
+#: src/wpzoom-blocks/recipe-card/components/detail/inspector.js:59
+msgid "NEW: you can also add custom details (see next panel below)."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:44
-msgid "Not displayed"
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-gallery-edit.js:40
+msgid "Drag images, upload new ones or select files from your library."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:84
-msgid "Dark"
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-gallery-edit.js:41
+#: src/wpzoom-blocks/recipe-card/skins/shared/media-placeholder.js:29
+msgid "ADD MEDIA"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:85
-msgid "Orange"
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-gallery-edit.js:255
+msgid "Edit Gallery"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:86
-msgid "Red"
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-gallery-edit.js:255
+msgid "Add Gallery"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:87
-msgid "Green"
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-gallery.js:82
+#, javascript-format
+msgid "image %1$d of %2$d in gallery"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:91
-msgid "Select a Food Label"
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-step.js:212
+msgid "Delete step"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:92
+#: src/wpzoom-blocks/recipe-card/components/direction/direction-step.js:242
+msgid "Move step down"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:25
 msgid "Vegan"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:93
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:26
 msgid "Gluten Free"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:94
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:27
 msgid "Dairy Free"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:95
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:28
 msgid "Palm Oil Free"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:96
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:29
 msgid "Sugar Free"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/Inspector.js:97
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:30
 msgid "Phosphate Free"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:447
-msgid "Loading..."
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:91
+msgid "Select Food Labels"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:463
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:592
-msgid "Select an image file from your library."
+#: src/wpzoom-blocks/recipe-card/components/food-labels/inspector.js:97
+msgid "Where to show labels?"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:476
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:605
-msgid "Media Library"
+#: src/wpzoom-blocks/recipe-card/components/icons-modal/index.js:35
+msgid "Font Awesome 5"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:525
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:657
-msgid "Enter the title of your recipe"
+#: src/wpzoom-blocks/recipe-card/components/icons-modal/index.js:36
+msgid "Genericons"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:572
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:704
-msgid "You can add or edit these details in the Block Options on the right →"
+#: src/wpzoom-blocks/recipe-card/components/notes/index.js:47
+msgid "Write Notes title"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:728
+#: src/wpzoom-blocks/recipe-card/components/notes/index.js:57
+msgid "Enter Note text for your recipe."
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/notes/index.js:60
+msgid "Press Enter to add new note."
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/flat-term-selector.js:216
+msgid "Add New Tag"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/flat-term-selector.js:216
+msgid "Add New Term"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/flat-term-selector.js:221
+msgid "Tag"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/flat-term-selector.js:221
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:158
+msgid "Term"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:158
+msgid "Category"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:363
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:368
+msgid "Add new category"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:364
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:369
+msgid "Add new term"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:373
+msgid "Parent Category"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:374
+msgid "Parent Term"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:385
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:393
+msgid "Categories"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:385
+#: src/wpzoom-blocks/recipe-card/components/post-taxonomies/hierarchical-term-selector.js:393
+msgid "Terms"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/recipe-card/index.js:62
+msgid "Align block left"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/recipe-card/index.js:67
+msgid "Align block center"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/recipe-card/index.js:72
+msgid "Align block right"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/recipe-card/index.js:476
+msgid "Change Block Alignment"
+msgstr ""
+
+#: src/wpzoom-blocks/recipe-card/components/summary-text/index.js:51
 msgid "Enter a short recipe description."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:750
+#: src/wpzoom-blocks/recipe-card/components/video/index.js:38
 msgid "Write Recipe Video title"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:758
+#: src/wpzoom-blocks/recipe-card/components/video/index.js:46
 msgid ""
 "You can add a video here from Recipe Card Video Settings in the right sidebar"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:759
+#: src/wpzoom-blocks/recipe-card/components/video/index.js:47
 msgid "Recipe Card Video"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:796
-msgid "Write Notes title"
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:809
-msgid "Enter Note text for your recipe."
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/RecipeCard.js:812
-msgid "Press Enter to add new note."
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/VideoUpload.js:178
+#: src/wpzoom-blocks/recipe-card/components/video/inspector.js:188
 msgid ""
 "Note: Many browsers can only autoplay the videos with sound off, so you'll "
 "need to enable muted attribute to the video too."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/VideoUpload.js:262
+#: src/wpzoom-blocks/recipe-card/components/video/inspector.js:272
 msgid "Recipe Card Video Settings"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/flat-term-selector.js:214
-msgid "Add New Tag"
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:154
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:134
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:135
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:136
+msgid "Enter the title of your recipe"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/flat-term-selector.js:214
-msgid "Add New Term"
+#: src/wpzoom-blocks/recipe-card/skins/accent-color-header/index.js:215
+#: src/wpzoom-blocks/recipe-card/skins/default/index.js:177
+#: src/wpzoom-blocks/recipe-card/skins/new-design/index.js:178
+#: src/wpzoom-blocks/recipe-card/skins/simple/index.js:179
+msgid "You can add or edit these details in the Block Options on the right →"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/flat-term-selector.js:219
-msgid "Tag"
+#: src/wpzoom-blocks/recipe-card/skins/shared/media-placeholder.js:28
+msgid "Drag image, upload new one or select file from your library."
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/flat-term-selector.js:219
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:156
-msgid "Term"
+#: src/wpzoom-blocks/recipe-card/skins/shared/media-placeholder.js:52
+msgid "Recipe Card Image"
 msgstr ""
 
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:156
-msgid "Category"
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:361
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:366
-msgid "Add new category"
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:362
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:367
-msgid "Add new term"
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:371
-msgid "Parent Category"
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:372
-msgid "Parent Term"
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:383
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:391
-msgid "Categories"
-msgstr ""
-
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:383
-#: src/wpzoom-blocks/recipe-card/components/hierarchical-term-selector.js:391
-msgid "Terms"
+#: src/wpzoom-blocks/recipe-card/skins/shared/spinner.js:10
+msgid "Loading..."
 msgstr ""
 
 #: templates/admin/privacy.php:12
@@ -2045,4 +2275,10 @@ msgstr ""
 
 #: templates/admin/privacy.php:21
 msgid "User submitted data is stored indefinitely in the local database."
+msgstr ""
+
+#: templates/recipe/rcb-accent-color-header.php:42
+#: templates/recipe/rcb-default.php:22 templates/recipe/rcb-newdesign.php:22
+#: templates/recipe/rcb-simple.php:23
+msgid "Print directions"
 msgstr ""

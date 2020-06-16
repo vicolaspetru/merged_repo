@@ -8,11 +8,6 @@ import {
 import classnames from 'classnames';
 
 /**
- * Internal dependencies
- */
-import { getBlockStyle } from '@wpzoom/helpers';
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -25,9 +20,10 @@ import {
     TextControl,
     TextareaControl,
     Button,
-    ColorPalette,
+    ButtonGroup,
     SelectControl,
 } from '@wordpress/components';
+import { alignLeft, alignRight, alignCenter } from '@wordpress/icons';
 
 /**
  * Module Constants
@@ -35,16 +31,8 @@ import {
 const PANEL_TITLE = __( 'Recipe Card Settings', 'wpzoom-recipe-card' );
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
-const colors = [
-    { name: __( 'Dark', 'wpzoom-recipe-card' ), color: '#222222' },
-    { name: __( 'Orange', 'wpzoom-recipe-card' ), color: '#FFA921' },
-    { name: __( 'Red', 'wpzoom-recipe-card' ), color: '#FF4E6A' },
-    { name: __( 'Green', 'wpzoom-recipe-card' ), color: '#B7C662' },
-];
-
 const MainSettings = ( props ) => {
     const {
-        className,
         attributes,
         settingOptions,
         getImageSizeOptions,
@@ -54,6 +42,7 @@ const MainSettings = ( props ) => {
         onSelectPinImage,
         onRemovePinImage,
         onChangeSettings,
+        activeStyle,
     } = props;
 
     const {
@@ -63,7 +52,6 @@ const MainSettings = ( props ) => {
         recipeTitle,
         settings: {
             0: {
-                primary_color,
                 hide_header_image,
                 print_btn,
                 pin_btn,
@@ -78,7 +66,6 @@ const MainSettings = ( props ) => {
         },
     } = attributes;
 
-    const activeStyle = getBlockStyle( className );
     const imageSizeOptions = getImageSizeOptions;
 
     const pinCustomImage = (
@@ -241,21 +228,59 @@ const MainSettings = ( props ) => {
                 />
             }
             {
-                'simple' !== activeStyle &&
+                'simple' === activeStyle &&
                 <BaseControl
                     id={ `${ id }-heading-align` }
                     label={ __( 'Header Content Align', 'wpzoom-recipe-card' ) }
                 >
-                    <SelectControl
-                        label={ __( 'Select Alignment', 'wpzoom-recipe-card' ) }
-                        value={ headerAlign }
-                        options={ [
-                            { label: __( 'Left' ), value: 'left' },
-                            { label: __( 'Center' ), value: 'center' },
-                            { label: __( 'Right' ), value: 'right' },
-                        ] }
-                        onChange={ ( alignment ) => onChangeSettings( alignment, 'headerAlign' ) }
-                    />
+                    <ButtonGroup>
+                        <Button
+                            isPrimary={ 'left' === headerAlign }
+                            isSecondary={ 'left' !== headerAlign }
+                            icon={ alignLeft }
+                            title={ __( 'Left', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'left', 'headerAlign' ) }
+                        />
+                        <Button
+                            isPrimary={ 'right' === headerAlign }
+                            isSecondary={ 'right' !== headerAlign }
+                            icon={ alignRight }
+                            title={ __( 'Right', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'right', 'headerAlign' ) }
+                        />
+                    </ButtonGroup>
+                </BaseControl>
+             }
+            {
+                'simple' !== activeStyle &&
+                'accent-color-header' !== activeStyle &&
+                <BaseControl
+                    id={ `${ id }-heading-align` }
+                    label={ __( 'Header Content Align', 'wpzoom-recipe-card' ) }
+                >
+                    <ButtonGroup>
+                        <Button
+                            isPrimary={ 'left' === headerAlign }
+                            isSecondary={ 'left' !== headerAlign }
+                            icon={ alignLeft }
+                            title={ __( 'Left', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'left', 'headerAlign' ) }
+                        />
+                        <Button
+                            isPrimary={ 'center' === headerAlign }
+                            isSecondary={ 'center' !== headerAlign }
+                            icon={ alignCenter }
+                            title={ __( 'Center', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'center', 'headerAlign' ) }
+                        />
+                        <Button
+                            isPrimary={ 'right' === headerAlign }
+                            isSecondary={ 'right' !== headerAlign }
+                            icon={ alignRight }
+                            title={ __( 'Right', 'wpzoom-recipe-card' ) }
+                            onClick={ () => onChangeSettings( 'right', 'headerAlign' ) }
+                        />
+                    </ButtonGroup>
                 </BaseControl>
             }
             <BaseControl
@@ -280,18 +305,8 @@ const MainSettings = ( props ) => {
                     />
                 }
             </BaseControl>
-            <BaseControl
-                id={ `${ id }-primary-color` }
-                label={ __( 'Primary Color', 'wpzoom-recipe-card' ) }
-            >
-                <ColorPalette
-                    colors={ colors }
-                    value={ primary_color }
-                    onChange={ ( color ) => onChangeSettings( color, 'primary_color' ) }
-                />
-            </BaseControl>
             {
-                'newdesign' === activeStyle &&
+                ( 'newdesign' === activeStyle || 'accent-color-header' === activeStyle ) &&
                     <BaseControl
                         id={ `${ id }-ingredients-layout` }
                         label={ __( 'Ingredients Layout', 'wpzoom-recipe-card' ) }

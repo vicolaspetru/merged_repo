@@ -112,6 +112,7 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-structured-data-render.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-plugin-activator.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-privacy-policy.php';
+			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-template-manager.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-print-template-manager.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-print.php';
 		}

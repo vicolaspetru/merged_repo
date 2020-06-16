@@ -14,6 +14,7 @@ import {
  * Internal dependencies
  */
 import { parseClassName } from '@wpzoom/helpers';
+import { blockCategory as category } from '../../../block-category';
 
 /**
  * WordPress dependencies
@@ -570,7 +571,7 @@ const applyWithSelect = withSelect( ( select ) => {
 
     const blocksList        = getBlocks();
     const recipeCardBlock   = filter( blocksList, function( item ) {
-        return 'wpzoom-recipe-card/block-recipe-card' === item.name;
+        return `${ category }/block-recipe-card` === item.name;
     } );
 
     return {

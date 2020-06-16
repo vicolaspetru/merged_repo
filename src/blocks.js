@@ -21,6 +21,7 @@ import './wpzoom-blocks/nutrition/block.js';
  * Internal dependencies
  */
 import icon from './icon';
+import { blockCategory as category } from './block-category';
 
 /**
  * WordPress dependencies
@@ -28,5 +29,5 @@ import icon from './icon';
 import { updateCategory } from '@wordpress/blocks';
 
 ( function() {
-    updateCategory( 'wpzoom-recipe-card', { icon } );
+    updateCategory( category, { icon } );
 }() );

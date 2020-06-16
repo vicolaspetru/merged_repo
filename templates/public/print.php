@@ -17,6 +17,19 @@
         <meta name="robots" content="noindex">
         <?php wp_site_icon(); ?>
         <link rel="stylesheet" type="text/css" href="<?php echo WPZOOM_RCB_PLUGIN_URL . 'dist/assets/css/recipe-print.css?ver=' . WPZOOM_RCB_VERSION; ?>"/>
+        <?php
+            $custom_css_post_id = get_theme_mod( 'custom_css_post_id' );
+            $wp_additional_css_post = get_post( $custom_css_post_id );
+            $wp_additional_css = $wp_additional_css_post->post_content;
+
+            if ( ! empty( $wp_additional_css ) ) {
+                printf(
+                    "<style id='%s-inline-css' type='text/css'>\n%s\n</style>\n",
+                    'wpzoom-rcb-print',
+                    esc_attr( $wp_additional_css )
+                );
+            }
+        ?>
         <script type="text/javascript" src="<?php echo includes_url( '/js/jquery/jquery.js' ); ?>"></script>
         <script type="text/javascript" src="<?php echo includes_url( '/js/imagesloaded.min.js' ); ?>"></script>
         <script type="text/javascript" src="<?php echo includes_url( '/js/masonry.min.js' ); ?>"></script>

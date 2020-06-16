@@ -34,6 +34,16 @@
 	    	width: 100%;
 	    	float: none;
 	    }
+		&.header-content-align-right {
+	    	.recipe-card-image-preview .recipe-card-image {
+	    		width: 100%;
+		    	float: none;
+	    	}
+	    	.recipe-card-image-placeholder,
+	    	.recipe-card-image-preview {
+	    		float: right;
+	    	}
+	    }
 	}
 
 	.recipe-card-course,
@@ -159,7 +169,8 @@
 	}
 
 	// this is used to prevent floating elements on editing
-	&.is-style-newdesign {
+	&.is-style-newdesign,
+	&.is-style-accent-color-header {
 		.ingredients-list.layout-2-columns {
 			columns: 1 !important;
 		    -webkit-columns: 1 !important;
@@ -174,6 +185,21 @@
 		}
 		.recipe-card-summary {
 			margin-top: 0;
+		}
+		&.block-alignment-right {
+	 		.ingredients-list {
+	 			> li {
+	 				.ingredient-item-name {
+	 					padding-left: 0 !important;
+	 					padding-right: 30px;
+	 				}
+	 			}
+	 		}
+	 	}
+	}
+	&.is-style-accent-color-header {
+		.ingredients-list > li {
+			cursor: text !important;
 		}
 	}
 	.ingredient-item-button-container {
@@ -246,13 +272,13 @@
 				@include reduce-motion("transition");
 
 				&:hover {
-					box-shadow: $shadow-toolbar;
+					box-shadow: $shadow-popover;
 				}
 
 				.components-button {
 					color: $dark-opacity-300;
 					padding: 2px;
-					height: $icon-button-size-small;
+					height: $button-size-small;
 
 					// Remove hover box shadows, since they clash with the container.
 					&:not(:disabled):not([aria-disabled="true"]):not(.is-secondary):hover {
@@ -268,7 +294,7 @@
 
 		.direction-step-gallery-item__move-menu,
 		.direction-step-gallery-item__inline-menu {
-			margin: $grid-size;
+			margin: $grid-unit;
 			display: inline-flex;
 			visibility: hidden;
 			z-index: z-index(".block-library-gallery-item__inline-menu");
@@ -305,7 +331,7 @@
 		}
 
 		.direction-step-gallery-placeholder:not(.is-appender) {
-			margin: $grid-size-large 0;
+			margin: $grid-unit-20 0;
 		}
 	}
 	.direction-step-button-container {
@@ -330,6 +356,17 @@
 		opacity: 0.7;
 		margin-top: 0;
 		margin-bottom: 10px;
+	}
+	&.is-style-accent-color-header {
+		p.description {
+		 	color: #efefef;
+		 	opacity: 1;
+		}
+		.recipe-card-notes-list + p.description {
+			color: #acacac;
+			margin-bottom: 0;
+			margin-top: 10px;
+		}
 	}
 	.components-icon-button .dashicon + .components-icon-button-text {
 		margin-left: 5px;
@@ -617,6 +654,10 @@
 		}
 	}
 }
+.components-button svg[size="24"] {
+	width: 24px;
+	height: 24px;
+}
 
 .wpzoom-recipe-card-settings {
 	.components-button {
@@ -628,5 +669,8 @@
 			height: 100%;
 			line-height: 0;
 		}
+	}
+	.components-button-group {
+		display: block;
 	}
 }

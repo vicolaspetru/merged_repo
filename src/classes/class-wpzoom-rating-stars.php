@@ -244,6 +244,11 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				$data_user_can_rate,
 				$tooltip_message
 			);
+
+			// Display only average content for AMP template
+			if ( WPZOOM_Recipe_Card_Block_Gutenberg::is_AMP() ) {
+				$output = $this->get_rating_star( $recipe_ID, __( 'Recipe rating: ', 'wpzoom-recipe-card' ), true );
+			}
 			
 			return $output;
 		}
@@ -253,9 +258,10 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 *
 		 * @param string|number $recipe_ID The recipe id.
 		 * @param string 		$label The custom label text for rating.
+		 * @param boolean 		$container Wrap rating to div container?
 		 * @since 1.1.0
 		 */
-		public function get_rating_star( $recipe_ID, $label = '' ) {
+		public function get_rating_star( $recipe_ID, $label = '', $container = false ) {
 			// Check if user voted, use the full icon or outline icon if not
 			$user_rate = $this->check_user_rate( $recipe_ID );
 
@@ -269,7 +275,20 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			$total_votes = $this->get_total_votes( $recipe_ID );
 			$average_content = $average > 0 ? sprintf( __( "%s from %s votes", "wpzoom-recipe-card" ), "<i class=\"wpzoom-rating-average\">{$average}</i>", "<i class=\"wpzoom-rating-total-votes\">{$total_votes}</i>" ) : 'N/A';
 
-			return '<span class="wpzoom-rating-stars-average' . $rate_icon . '">' . $label . $average_content . '</span>';
+			$output = sprintf( '<span class="%s-average %s">%s</span>',
+				'wpzoom-rating-stars',
+				$rate_icon,
+				$label . $average_content
+			);
+
+			if ( $container ) {
+				$output = sprintf( '<div class="%s-container">%s</div>',
+					'wpzoom-rating-stars',
+					$output
+				);
+			}
+
+			return $output;
 		}
 
 		/**

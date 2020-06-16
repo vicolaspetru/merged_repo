@@ -27,6 +27,115 @@
 			text-align: right;
 		}
 	}
+
+    // Block Alignment
+    // @since 2.8.4
+    &.is-style-default,
+    &.is-style-newdesign,
+    &.is-style-simple {
+        &.block-alignment-left {
+            margin-right: auto;
+            .recipe-card-summary,
+            .recipe-card-ingredients,
+            .recipe-card-directions,
+            .recipe-card-video,
+            .recipe-card-notes {
+                text-align: left;
+            }
+            .recipe-card-directions {
+                .directions-list > li {
+                    img {
+                        margin-right: auto;
+                    }
+                }
+            }
+        }
+        &.block-alignment-center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        &.block-alignment-right {
+            margin-left: auto;
+            .recipe-card-image {
+                figure figcaption {
+                    text-align: right;
+                }
+            }
+            .recipe-card-summary,
+            .recipe-card-ingredients,
+            .recipe-card-directions,
+            .recipe-card-video,
+            .recipe-card-notes {
+                text-align: right;
+            }
+            .recipe-card-ingredients {
+                .ingredients-list {
+                    > li .tick-circle {
+                        float: right;
+                        margin: 6px 0 0 10px;
+                    }
+                    .ingredient-item-name {
+                        padding-left: 0;
+                        padding-right: 30px;
+                    }
+                }
+            }
+            .recipe-card-directions {
+                .directions-list > li {
+                    padding-left: 0;
+                    padding-right: 40px;
+                    &::before {
+                        left: auto;
+                        right: 0;
+                        margin-right: 0;
+                        margin-left: 20px;
+                    }
+                    img {
+                        margin-left: auto;
+                    }
+                }
+            }
+            .recipe-card-notes {
+                .recipe-card-notes-list {
+                    >li {
+                        &::before {
+                            left: auto;
+                            right: -6px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.is-style-simple {
+        &.block-alignment-center {
+            .recipe-card-image {
+                figure figcaption {
+                    text-align: left;
+                }
+            }
+        }
+        &.block-alignment-left {
+            .recipe-card-image {
+                figure figcaption {
+                    text-align: left;
+                }
+            }
+        }
+    }
+    &.is-style-accent-color-header {
+        &.block-alignment-left {
+            margin-right: auto;
+        }
+        &.block-alignment-center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        &.block-alignment-right {
+            margin-left: auto;
+        }
+    }
+
 	.recipe-card-heading {
 		.recipe-card-author {
 			margin-bottom: 10px;
@@ -37,11 +146,31 @@
 
 		@include clear-after;
 	}
-	.recipe-card-image figure img {
-		width: 100%;
-	}
-    .recipe-card-image .recipe-card-image-popup-link {
-        display: block;
+    .recipe-card-image {
+        figure {
+            img {
+                width: 100%;
+            }
+            figcaption {
+                padding: 0;
+                margin: 0;
+            }
+        }
+        .recipe-card-image-popup-link {
+            display: block;
+        }
+        .wpzoom-recipe-card-pinit {
+            .btn-pinit-link {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
+        .wpzoom-recipe-card-print-link {
+            .btn-print-link {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
     }
 	.recipe-card-video {
         margin-top: 20px;
@@ -56,97 +185,101 @@
 	.recipe-card-details {
 		margin-bottom: 15px;
 		clear: both;
-		.detail-item {
-			> p:not(.detail-item-label):not(.detail-item-value):not(.detail-item-unit) {
-				display: none;
-			}
-			.detail-item-label {
-				margin-bottom: 5px;
-			}
-			.detail-item-unit {
-				margin-bottom: 0;
-			}
-            .detail-item-adjustable-servings {
-                width: 55px;
-                height: 30px;
-                line-height: 1.65;
-                font-size: 12px;
-                float: left;
-                display: block;
-                padding: 0 20px 0 8px;
-                margin: 0;
-                border: 1px solid #eee;
-                border-radius: 0;
-                background-color: #fff;
-            }
-            > p.detail-item-value {
-                &.only-print-visible {
-                    display: none;
-                }
-            }
-            .adjustable-quantity {
-                position: relative;
-                vertical-align: middle;
-
-                + .detail-item-unit {
-                    vertical-align: middle;
-                }
-                + .only-print-visible + .detail-item-unit {
-                    vertical-align: middle;
-                }
-                input[type=number]::-webkit-inner-spin-button,
-                input[type=number]::-webkit-outer-spin-button {
-                    -webkit-appearance: none;
-                    margin: 0;
-                }
-                input[type=number] {
-                    -moz-appearance: textfield;
-                }
-                input:focus {
-                    outline: 0;
-                }
-                .adjustable-quantity-nav {
-                    float: left;
-                    position: relative;
+        .details-items {
+    		.detail-item {
+    			> p:not(.detail-item-label):not(.detail-item-value):not(.detail-item-unit) {
+    				display: none;
+    			}
+    			.detail-item-label {
+    				margin-bottom: 5px;
+    			}
+    			.detail-item-unit {
+    				margin-bottom: 0;
+    			}
+                .detail-item-adjustable-servings {
+                    width: 55px;
                     height: 30px;
+                    line-height: 1.65;
+                    font-size: 12px;
+                    float: left;
+                    display: block;
+                    padding: 0 20px 0 8px;
+                    margin: 0;
+                    border: 1px solid #eee;
+                    border-radius: 0;
+                    background-color: #fff;
                 }
-                .adjustable-quantity-button {
+                > p.detail-item-value {
+                    &.only-print-visible {
+                        display: none;
+                    }
+                }
+                .adjustable-quantity {
                     position: relative;
-                    cursor: pointer;
-                    border-left: 1px solid #eee;
-                    width: 20px;
-                    text-align: center;
-                    color: #333;
-                    font-size: 14px;
-                    font-weight: bold;
-                    font-family: "Trebuchet MS", Helvetica, sans-serif !important;
-                    line-height: 1;
-                    transform: translateX(-100%);
-                    user-select: none;
+                    vertical-align: middle;
 
-                    &:hover {
-                        background-color: #eee;
+                    + .detail-item-unit {
+                        vertical-align: middle;
                     }
-                    &.adjustable-quantity-up {
-                        position: absolute;
-                        height: 50%;
-                        top: 0;
-                        border-bottom: 1px solid #eee;
+                    + .only-print-visible + .detail-item-unit {
+                        vertical-align: middle;
                     }
-                    &.adjustable-quantity-down {
-                        position: absolute;
-                        bottom: 0;
-                        height: 50%;
+                    input[type=number]::-webkit-inner-spin-button,
+                    input[type=number]::-webkit-outer-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
+                    input[type=number] {
+                        -moz-appearance: textfield;
+                    }
+                    input:focus {
+                        outline: 0;
+                    }
+                    .adjustable-quantity-nav {
+                        float: left;
+                        position: relative;
+                        height: 30px;
+                    }
+                    .adjustable-quantity-button {
+                        position: relative;
+                        cursor: pointer;
+                        border-left: 1px solid #eee;
+                        width: 20px;
+                        text-align: center;
+                        color: #333;
+                        font-size: 14px;
+                        font-weight: bold;
+                        font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+                        line-height: 1;
+                        transform: translateX(-100%);
+                        user-select: none;
+
+                        &:hover {
+                            background-color: #eee;
+                        }
+                        &.adjustable-quantity-up {
+                            position: absolute;
+                            height: 50%;
+                            top: 0;
+                            border-bottom: 1px solid #eee;
+                        }
+                        &.adjustable-quantity-down {
+                            position: absolute;
+                            bottom: 0;
+                            height: 50%;
+                        }
                     }
                 }
-            }
-		}
+    		}
+        }
 	}
 	.recipe-card-ingredients {
 		.ingredients-list {
 			margin: 0;
 			padding: 0;
-
+            > li {
+                padding-left: 0;
+            }
             .ingredient-item-name {
                 padding-left: 30px;
                 margin: 0;
@@ -158,26 +291,15 @@
             }
 		}
 	}
-	.recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link i,
-	.recipe-card-image .wpzoom-recipe-card-pinit .btn-pinit-link i {
-        display: inline-block;
-        text-indent: -9999px;
-        width: 18px;
-        height: 18px;
-        background-size: 18px 18px;
-        vertical-align: middle;
-    }
-    .recipe-card-image .wpzoom-recipe-card-print-link .btn-print-link i {
-        background-image: url(assets/images/iconfinder_print_paper.svg);
-    }
-    .recipe-card-image .wpzoom-recipe-card-pinit .btn-pinit-link i {
-        background-image: url(assets/images/iconfinder_pinterest.svg);
-    }
+    
     .hidden {
         display: none !important;
     }
 
 	.recipe-card-directions + .footer-copyright {
+        margin-top: 30px;
+    }
+    [class*="recipe-card-cta-"] + .footer-copyright {
         margin-top: 30px;
     }
 
@@ -197,7 +319,7 @@
         }
 
         .direction-step-gallery {
-            margin: $grid-size 0;
+            margin: $grid-unit 0;
             position: relative;
 
             .direction-step-gallery-grid {
@@ -210,7 +332,7 @@
 
                 .direction-step-gallery-item {
                     margin: 0;
-                    margin-bottom: $grid-size;
+                    margin-bottom: $grid-unit;
                     list-style-type: none;
                     position: relative;
                     box-sizing: border-box;
@@ -267,7 +389,7 @@
             }
 
             .direction-step-gallery-item {
-                width: calc((100% - #{ $grid-size }) / 2);
+                width: calc(50% - #{ $grid-unit-20 });
             }
 
             &.columns-1 .direction-step-gallery-item {
@@ -277,14 +399,7 @@
 
             @for $i from 2 through 4 {
                 &.columns-#{ $i } .direction-step-gallery-item {
-                    width: calc((100% - #{ $grid-size } * #{ $i - 1 }) / #{ $i });
-
-                    // Rules inside this query are only run by Microsoft Edge.
-                    // Edge miscalculates `calc`, so we have to add some buffer.
-                    // See also https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/15637241/
-                    @supports (-ms-ime-align:auto) {
-                        width: calc((100% - #{ $grid-size } * #{ $i - 1 }) / #{ $i } - 1px);
-                    }
+                    width: calc(#{ 100% / $i } - #{ $grid-unit * ( $i - 1 ) / $i });
                 }
             }
 
@@ -405,6 +520,7 @@
         padding: 15px;
         position: relative;
         padding-left: 6.2em;
+        overflow: hidden;
         .cta-brand-icon {
             position: absolute;
             left: -10px;
@@ -460,9 +576,17 @@
             flex-wrap: wrap;
 
             > li {
+                padding-left: 0;
                 flex: 0 0 12.5%;
                 line-height: 0;
                 list-style-type: none;
+            }
+        }
+    }
+    &.block-alignment-right {
+        .recipe-card-food-labels {
+            .food-labels-list {
+                justify-content: flex-end;
             }
         }
     }
@@ -487,7 +611,8 @@
 }
 
 @import "./skins/snippets";
-@import "./skins/default";
-@import "./skins/newdesign";
-@import "./skins/simple";
+@import "./skins/default/style";
+@import "./skins/new-design/style";
+@import "./skins/simple/style";
+@import "./skins/accent-color-header/style";
 @import "./magnific-popup";

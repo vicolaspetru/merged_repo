@@ -5,8 +5,6 @@
  * Simple block, renders and saves the same content without any interactivity.
  */
 
-/*global wpzoomRecipeCard*/
-
 /**
  * External dependencies
  */
@@ -21,18 +19,18 @@ import {
 import RecipeCard from './components/recipe-card';
 import { generateId } from '@wpzoom/helpers';
 import icon from './icon';
+import {
+    blockKeywords as keywords,
+    blockExample as example,
+    blockStyles as styles,
+} from './attributes';
+import { blockCategory as category } from '../../block-category';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-
-/**
- * Module constants
- */
-const { setting_options, pluginURL } = wpzoomRecipeCard;
-const { wpzoom_rcb_settings_template } = setting_options;
 
 /**
  * Register: Ingredients Gutenberg Block.
@@ -47,7 +45,7 @@ const { wpzoom_rcb_settings_template } = setting_options;
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
+registerBlockType( `${ category }/block-recipe-card`, {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
     title: __( 'Premium Recipe Card', 'wpzoom-recipe-card' ), // Block title.
     description: __( 'Display a Premium Recipe Card box with recipe metadata.', 'wpzoom-recipe-card' ),
@@ -59,48 +57,14 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
         // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
         src: icon,
     },
-    category: 'wpzoom-recipe-card', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+    category, // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
     // Allow only one Premium Recipe Card block per post.
     supports: {
         multiple: false,
     },
-    keywords: [
-        __( 'Recipe Card', 'wpzoom-recipe-card' ),
-        __( 'Premium Recipe Card', 'wpzoom-recipe-card' ),
-        __( 'WPZOOM', 'wpzoom-recipe-card' ),
-    ],
-    example: {
-        attributes: {
-            recipeTitle: __( 'Your recipe title goes here', 'wpzoom-recipe-card' ),
-            hasImage: true,
-            image: {
-                id: 0,
-                url: pluginURL + 'dist/assets/images/examples/recipe-card-image-example-1.jpg',
-            },
-            course: [ __( 'Main', 'wpzoom-recipe-card' ) ],
-            cuisine: [ __( 'Italian', 'wpzoom-recipe-card' ) ],
-            difficulty: [ __( 'Medium', 'wpzoom-recipe-card' ) ],
-        },
-    },
-    styles: [
-        // Mark style as default.
-        {
-            name: 'default',
-            label: __( 'Default', 'wpzoom-recipe-card' ),
-            isDefault: wpzoom_rcb_settings_template === 'default',
-        },
-        {
-            name: 'newdesign',
-            label: __( 'New Design', 'wpzoom-recipe-card' ),
-            isDefault: wpzoom_rcb_settings_template === 'newdesign',
-        },
-        {
-            name: 'simple',
-            label: __( 'Simple Design', 'wpzoom-recipe-card' ),
-            isDefault: wpzoom_rcb_settings_template === 'simple',
-        },
-    ],
-
+    keywords,
+    example,
+    styles,
     /**
      * The edit function describes the structure of your block in the context of the editor.
      * This represents what the editor will render when the block is used.
@@ -109,7 +73,10 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
      *
      * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
      *
-     * @returns {Component} RecipeCard Component
+     * @param {Object} attributes        The main attributes of block
+     * @param {method} setAttributes     The function that helps to set attributes for block
+     * @param {string} className         The string of class names
+     * @returns {Component}              Recipe Card Component
      */
     edit: ( { attributes, setAttributes, className, clientId, isSelected } ) => {
         // Fix issue with null value for custom details items
@@ -157,11 +124,8 @@ registerBlockType( 'wpzoom-recipe-card/block-recipe-card', {
 
         return <RecipeCard { ...{ attributes, setAttributes, className, clientId, isSelected } } />;
     },
-
     save() {
         // Rendering in PHP
         return null;
     },
-
 } );
-

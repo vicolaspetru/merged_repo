@@ -21,11 +21,15 @@
                     var amount = parseAmount( $( this ).text() );
                     amount /= servings;
 
-                    var roundedAmount = amount.toFixed( 2 );
+                    var _amount = amount;
+
+                    if ( ! Number.isSafeInteger( amount ) ) {
+                        _amount = amount.toFixed(2);
+                    }
 
                     $( this )
                         .data( 'original-amount', $( this ).text() )
-                        .data( 'per-one-serving', roundedAmount );
+                        .data( 'per-one-serving', _amount );
                 }
             } )
         }
@@ -51,10 +55,14 @@
             }
             else {
                 var amount = parseFloat( amountElement.data( 'per-one-serving' ) ) * servings;
-                var roundedAmount = amount.toFixed( 2 );
+                var _amount = amount;
 
-                if ( !isNaN( roundedAmount ) ) {
-                    amountElement.text( roundedAmount );
+                if ( ! Number.isSafeInteger( amount ) ) {
+                    _amount = amount.toFixed(2);
+                }
+
+                if ( !isNaN( _amount ) ) {
+                    amountElement.text( _amount );
                 }
             }
         } );

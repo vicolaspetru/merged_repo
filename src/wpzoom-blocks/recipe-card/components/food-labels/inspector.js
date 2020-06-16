@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { get } from 'lodash';
+import { get, unescape as unescapeString } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -11,7 +11,10 @@ import {
     PanelBody,
     ToggleControl,
     SelectControl,
+    CheckboxControl,
+    BaseControl,
 } from '@wordpress/components';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Module Constants
@@ -19,18 +22,17 @@ import {
 const PANEL_TITLE = __( 'Food Labels', 'wpzoom-recipe-card' );
 
 const foodLabelsOptions = [
-    { label: __( 'Select a Food Label', 'wpzoom-recipe-card' ), value: null, disabled: true },
-    { label: __( 'Vegan', 'wpzoom-recipe-card' ), value: 'vegan' },
-    { label: __( 'Gluten Free', 'wpzoom-recipe-card' ), value: 'gluten-free' },
-    { label: __( 'Dairy Free' ), value: 'dairy-free' },
-    { label: __( 'Palm Oil Free' ), value: 'palm-oil-free' },
-    { label: __( 'Sugar Free' ), value: 'sugar-free' },
-    { label: __( 'Phosphate Free' ), value: 'phosphate-free' },
-    // { label: __( "Low Fat" ), value: 'low-fat' },
-    // { label: __( "High Protein" ), value: 'high-protein' },
-    // { label: __( "Keto Option" ), value: 'keto-option' },
-    // { label: __( "Nut Free" ), value: 'nut-free' },
-    // { label: __( "Whole Grain" ), value: 'whole-grain' }
+    { label: __( 'Vegan', 'wpzoom-recipe-card' ), id: 'vegan' },
+    { label: __( 'Gluten Free', 'wpzoom-recipe-card' ), id: 'gluten-free' },
+    { label: __( 'Dairy Free' ), id: 'dairy-free' },
+    { label: __( 'Palm Oil Free' ), id: 'palm-oil-free' },
+    { label: __( 'Sugar Free' ), id: 'sugar-free' },
+    { label: __( 'Phosphate Free' ), id: 'phosphate-free' },
+    // { label: __( "Low Fat" ), id: 'low-fat' },
+    // { label: __( "High Protein" ), id: 'high-protein' },
+    // { label: __( "Keto Option" ), id: 'keto-option' },
+    // { label: __( "Nut Free" ), id: 'nut-free' },
+    // { label: __( "Whole Grain" ), id: 'whole-grain' }
 ];
 
 const foodLabelsLocationOptions = [
@@ -50,6 +52,31 @@ const FoodLabelsSettings = ( props ) => {
     const displayFoodLabels = get( settings, [ 1, 'displayFoodLabels' ] );
     const locationToShowFoodLabels = get( settings, [ 1, 'locationToShowFoodLabels' ] );
 
+    const renderFoodLabelsCheckbox = ( labels ) => {
+        return labels.map( ( foodLabel ) => {
+            let newValue = foodLabels ? foodLabels.slice() : [];
+            return (
+                <div key={ foodLabel.id } className="editor-block__hierarchical-food-labels-choice">
+                    <CheckboxControl
+                        label={ unescapeString( foodLabel.label ) }
+                        checked={ foodLabels && foodLabels.indexOf( foodLabel.id ) !== -1 }
+                        onChange={ ( isChecked ) => {
+                            const label = foodLabel.id;
+
+                            if ( isChecked ) {
+                                newValue = [ ...newValue, label ];
+                            } else {
+                                delete newValue[ newValue.indexOf( label ) ];
+                            }
+
+                            onChangeSettings( newValue, 'foodLabels', 1 );
+                        } }
+                    />
+                </div>
+            );
+        } );
+    };
+
     return (
         <PanelBody className="wpzoom-recipe-card-food-labels" initialOpen={ true } title={ PANEL_TITLE }>
             <ToggleControl
@@ -57,20 +84,23 @@ const FoodLabelsSettings = ( props ) => {
                 checked={ displayFoodLabels }
                 onChange={ ( display ) => onChangeSettings( display, 'displayFoodLabels', 1 ) }
             />
-            <SelectControl
-                multiple
-                label={ __( 'Select Food Labels', 'wpzoom-recipe-card' ) }
-                help={ __( 'CMD + Click / Ctrl + Click to select multiple labels', 'wpzoom-recipe-card' ) }
-                value={ foodLabels }
-                options={ foodLabelsOptions }
-                onChange={ ( label ) => onChangeSettings( label, 'foodLabels', 1 ) }
-            />
-            <SelectControl
-                label={ __( 'Where to show labels?', 'wpzoom-recipe-card' ) }
-                value={ locationToShowFoodLabels }
-                options={ foodLabelsLocationOptions }
-                onChange={ ( location ) => onChangeSettings( location, 'locationToShowFoodLabels', 1 ) }
-            />
+            { displayFoodLabels && (
+                <Fragment>
+                    <BaseControl
+                        id="food-labels-list"
+                        label={ __( 'Select Food Labels', 'wpzoom-recipe-card' ) }
+                        role="group"
+                    >
+                        { renderFoodLabelsCheckbox( foodLabelsOptions ) }
+                    </BaseControl>
+                    <SelectControl
+                        label={ __( 'Where to show labels?', 'wpzoom-recipe-card' ) }
+                        value={ locationToShowFoodLabels }
+                        options={ foodLabelsLocationOptions }
+                        onChange={ ( location ) => onChangeSettings( location, 'locationToShowFoodLabels', 1 ) }
+                    />
+                </Fragment>
+            ) }
         </PanelBody>
     );
 };

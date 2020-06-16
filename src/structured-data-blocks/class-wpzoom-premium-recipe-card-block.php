@@ -75,6 +75,13 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	public static $style;
 
 	/**
+	 * Stores additional data to use wherever we want in class.
+	 *
+	 * @since 2.8.2
+	 */
+	public static $stored_data = array();
+
+	/**
 	 * The Constructor.
 	 */
 	public function __construct() {
@@ -260,6 +267,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			    'type' => 'string',
 			    'selector' => '.recipe-card-notes-list',
 			    'default' => ''
+			),
+ 			'blockAlignment' => array(
+ 				'type' => 'string',
+ 				'default' => is_rtl() ? 'right' : 'left',
 			)
 		);
 
@@ -292,332 +303,88 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		// Import variables into the current symbol table from an array
 		extract( $attributes );
 
-		$class = 'wp-block-wpzoom-recipe-card-block-recipe-card';
-
 		// Recipe post variables
-		self::$recipe 			= get_post();
-		$recipe_ID 				= get_the_ID( self::$recipe );
-		$recipe_title 			= get_the_title( self::$recipe );
-		$recipe_thumbnail_url 	= get_the_post_thumbnail_url( self::$recipe );
-		$recipe_thumbnail_id 	= get_post_thumbnail_id( self::$recipe );
-		$recipe_permalink 		= get_the_permalink( self::$recipe );
-		$recipe_author_name 	= get_the_author_meta( 'display_name', self::$recipe->post_author );
-		$attachment_id 			= isset( $image['id'] ) ? $image['id'] : $recipe_thumbnail_id;
-		$tasty_pins_pinterest_text = get_post_meta( $attachment_id, 'tp_pinterest_text', true );
+		self::$recipe 									= get_post();
+		self::$stored_data['recipe_ID'] 				= get_the_ID( self::$recipe );
+		self::$stored_data['recipe_title'] 				= get_the_title( self::$recipe );
+		self::$stored_data['recipe_thumbnail_url'] 		= get_the_post_thumbnail_url( self::$recipe );
+		self::$stored_data['recipe_thumbnail_id'] 		= get_post_thumbnail_id( self::$recipe );
+		self::$stored_data['recipe_permalink'] 			= get_the_permalink( self::$recipe );
+		self::$stored_data['recipe_author_name'] 		= get_the_author_meta( 'display_name', self::$recipe->post_author );
+		self::$stored_data['attachment_id'] 			= isset( $image['id'] ) ? $image['id'] : self::$stored_data['recipe_thumbnail_id'];
+		self::$stored_data['tasty_pins_pinterest_text'] = get_post_meta( self::$stored_data['attachment_id'], 'tp_pinterest_text', true );
 
 		// Variables from attributes
 		// add default value if not exists
-		$recipeTitle 	= isset( $recipeTitle ) ? $recipeTitle : '';
-		$summary 		= isset( $summary ) ? $summary : '';
-		$className 		= isset( $className ) ? $className : '';
-		$hasImage 		= isset( $hasImage ) ? $hasImage : false;
-		$course 		= isset( $course ) ? $course : array();
-		$cuisine 		= isset( $cuisine ) ? $cuisine : array();
-		$difficulty 	= isset( $difficulty ) ? $difficulty : array();
-		$keywords 		= isset( $keywords ) ? $keywords : array();
-		$details 		= isset( $details ) ? $details : array();
-		$ingredients 	= isset( $ingredients ) ? $ingredients : array();
-		$steps 			= isset( $steps ) ? $steps : array();
+		self::$stored_data['recipeTitle'] 	= isset( $recipeTitle ) ? $recipeTitle : '';
+		self::$stored_data['summary'] 		= isset( $summary ) ? $summary : '';
+		self::$stored_data['className'] 	= isset( $className ) ? $className : '';
+		self::$stored_data['hasImage'] 		= isset( $hasImage ) ? $hasImage : false;
+		self::$stored_data['image'] 		= isset( $image ) ? $image : array();
+		self::$stored_data['hasVideo'] 		= isset( $hasVideo ) ? $hasVideo : false;
+		self::$stored_data['video'] 		= isset( $video ) ? $video : array();
+		self::$stored_data['course'] 		= isset( $course ) ? $course : array();
+		self::$stored_data['cuisine']		= isset( $cuisine ) ? $cuisine : array();
+		self::$stored_data['difficulty'] 	= isset( $difficulty ) ? $difficulty : array();
+		self::$stored_data['keywords'] 		= isset( $keywords ) ? $keywords : array();
+		self::$stored_data['details'] 		= isset( $details ) ? $details : array();
+		self::$stored_data['ingredients'] 	= isset( $ingredients ) ? $ingredients : array();
+		self::$stored_data['steps'] 		= isset( $steps ) ? $steps : array();
 
 		// Store variables
-		self::$recipeBlockID = esc_attr( $id );
-		self::$attributes 	= $attributes;
-		self::$style 		= self::$helpers->get_block_style( $className );
-		self::$settings 	= self::$helpers->parse_block_settings( $attributes );
+		self::$recipeBlockID 	= esc_attr( $id );
+		self::$attributes 		= $attributes;
+		self::$style 			= self::$helpers->get_block_style( self::$stored_data['className'] );
+		self::$settings 		= self::$helpers->parse_block_settings( $attributes );
 
-		self::$attributes['ingredientsTitle'] = isset( $ingredientsTitle ) ? $ingredientsTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_ingredients_title');
-		self::$attributes['directionsTitle'] = isset( $directionsTitle ) ? $directionsTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_steps_title');
-		self::$attributes['videoTitle'] = isset( $videoTitle ) ? $videoTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_video_title');
+		self::$stored_data['ingredientsTitle'] = isset( $ingredientsTitle ) ? $ingredientsTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_ingredients_title');
+		self::$stored_data['directionsTitle'] = isset( $directionsTitle ) ? $directionsTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_steps_title');
+		self::$stored_data['videoTitle'] = isset( $videoTitle ) ? $videoTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_video_title');
+		self::$stored_data['notesTitle'] = isset( $notesTitle ) ? $notesTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_notes_title');
 
-		$class .= strpos( $className, 'is-style' ) === false ? ' is-style-' . self::$style : '';
-		$class .= ' header-content-align-' . self::$settings['headerAlign'];
-		$class .= $hasImage && isset($image['url']) ? '' : ' recipe-card-noimage';
-		$class .= self::$settings['hide_header_image'] ? ' recipe-card-noimage' : '';
-		$class .= '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? ' recipe-card-noimage-print' : '';
-
-		if ( self::$settings['adjustableServings'] ) {
-			$class .= ' wpzoom-recipe-card-block-adjustable-servings';
-		}
-
-		$pin_description = strip_tags($recipeTitle);
-		if ( 'recipe_summary' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_description') ) {
-			$pin_description = strip_tags( $summary );
-		}
-		elseif ( 'custom_text' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_description') ) {
-			if ( ! empty( self::$settings['pin_custom_text'] ) ) {
-				$pin_description = strip_tags( self::$settings['pin_custom_text'] );
-			}
-		}
-
-		// compatibility with Tasty Pins plugin
-		if ( ! empty( $tasty_pins_pinterest_text ) ) {
-			$pin_description = strip_tags( $tasty_pins_pinterest_text );
- 		}
-
-		$pin_image = $hasImage ? $image['url'] : $recipe_thumbnail_url;
-		if ( 'custom_image' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_image') ) {
-			if ( self::$settings['pin_has_custom_image'] ) {
-
-				$pin_custom_image 	= self::$settings['pin_custom_image'];
-				$pin_image 			= $pin_custom_image['url'];
-
-				if ( isset( $pin_custom_image['sizes']['large'] ) ) {
-					$pin_image = $pin_custom_image['sizes']['large']['url'];
-				}
-				elseif ( isset( $pin_custom_image['sizes']['wpzoom-rcb-block-step-image'] ) ) {
-					$pin_image = $pin_custom_image['sizes']['wpzoom-rcb-block-step-image']['url'];
-				}
-				elseif ( isset( $pin_custom_image['sizes']['full'] ) ) {
-					$pin_image = $pin_custom_image['sizes']['full']['url'];
-				}
-			}
-		}
-
-
-		$custom_author_name = $recipe_author_name;
-		if ( ! empty( self::$settings['custom_author_name'] ) ) {
-			$custom_author_name = self::$settings['custom_author_name'];
-		}
-
-		$RecipeCardClassName 	= implode( ' ', array( $class, $className ) );
-
-		$styles = '';
-
-		if ( '' != self::$settings['primary_color'] ) {
-			if ( 'default' === self::$style ) {
-				$styles = array(
-					'background-color' => self::$settings['primary_color'],
-				);
-			} else if ( 'newdesign' === self::$style ) {
-				$styles = array(
-					'background-color' => self::$settings['primary_color'],
-					'box-shadow' => '0 5px 40px '. self::$settings['primary_color'] . ''
-				);
-			} else if ( 'simple' === self::$style ) {
-				$styles = array(
-					'background-color' => self::$settings['primary_color'],
-				);
-			}
-		}
-		$printStyles = self::$helpers->render_styles_attributes( $styles );
-
-		$recipe_card_image = '';
-
-		/**
-		 * Open image in Lighbox
-		 * 
-		 * @since 2.6.4
-		 */
-		$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
-		$clickableRecipeImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_recipe_image_lightbox' );
-
-		if ( $hasImage && isset( $image['url'] ) ) {
-			$img_id = $image['id'];
-			$src 	= $image['url'];
-			$alt 	= ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
-			$sizes 	= isset( $image['sizes'] ) ? $image['sizes'] : array();
-			$size 	= self::get_recipe_image_size( $sizes, $src );
-			$img_class  = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? 'no-print' : '';
-			$img_class .= ' wpzoom-recipe-card-image';
-
-			// Check if attachment image is from imported content
-			// in this case we don't have attachment in our upload directory
-			$upl_dir = wp_upload_dir();
-			$findpos = strpos( $src, $upl_dir['baseurl'] );
-
-			if ( $findpos === false ) {
-				$attachment = sprintf(
-					'<img src="%s" alt="%s" class="%s"/>',
-					$src,
-					$alt,
-					trim( $img_class )
-				);
-			}
-			else {
-				$attachment = wp_get_attachment_image(
-					$img_id,
-					$size,
-					false,
-					array(
-						'alt' => $alt,
-                        'id' => $img_id,
-                        'class' => trim( $img_class )
-					)
-				);
-			}
-
-			if ( $clickableRecipeImages === '1' ) {
-				$clickableImageSrc = wp_get_attachment_image_src( $img_id, $clickableImageSize );
-
-				if ( $findpos === false ) {
-					$clickableImageSrc[0] = $src;
-				}
-
-				if ( $clickableImageSrc && isset( $clickableImageSrc[0] ) ) {
-					$attachment = sprintf(
-						'<a class="recipe-card-image-popup-link" href="%s">%s</a>',
-						esc_url( $clickableImageSrc[0] ),
-						$attachment
-					);
-				}
-			}
-
-			$recipe_card_image = '<div class="recipe-card-image">
-				<figure>
-					'. $attachment .'
-					<figcaption>
-						'.
-							( self::$settings['pin_btn'] ? self::get_pinterest_button( array( 'url' => $pin_image ), $recipe_permalink, $pin_description ) : '' ).
-							( self::$settings['print_btn'] ? self::get_print_button( $id, array( 'title' => __( "Print directions...", "wpzoom-recipe-card" ), 'style' => $printStyles ) ) : '' )
-						.'
-		            </figcaption>
-				</figure>
-			</div>';
-		}
-		elseif ( ! $hasImage && ! empty( $recipe_thumbnail_url ) ) {
-			$img_id = $recipe_thumbnail_id;
-			$src 	= $recipe_thumbnail_url;
-			$alt 	= ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) );
-			$sizes 	= isset( $image['sizes'] ) ? $image['sizes'] : array();
-			$size 	= self::get_recipe_image_size( $sizes, $src );
-			$img_class  = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image') ? 'no-print' : '';
-			$img_class .= ' wpzoom-recipe-card-image';
-
-			// Check if attachment image is from imported content
-			// in this case we don't have attachment in our upload directory
-			$upl_dir = wp_upload_dir();
-			$findpos = strpos( $src, $upl_dir['baseurl'] );
-
-			if ( $findpos === false ) {
-				$attachment = sprintf(
-					'<img src="%s" alt="%s" class="%s"/>',
-					$src,
-					$alt,
-					trim( $img_class )
-				);
-			}
-			else {
-				$attachment = wp_get_attachment_image(
-					$img_id,
-					$size,
-					false,
-					array(
-						'alt' => $alt,
-	                    'id' => $img_id,
-	                    'class' => trim( $img_class )
-					)
-				);
-			}
-
-			if ( $clickableRecipeImages === '1' ) {
-				$clickableImageSrc = wp_get_attachment_image_src( $img_id, $clickableImageSize );
-
-				if ( $findpos === false ) {
-					$clickableImageSrc[0] = $src;
-				}
-
-				if ( $clickableImageSrc && isset( $clickableImageSrc[0] ) ) {
-					$attachment = sprintf(
-						'<a class="recipe-card-image-popup-link" href="%s">%s</a>',
-						esc_url( $clickableImageSrc[0] ),
-						$attachment
-					);
-				}
-			}
-
-			$recipe_card_image = '<div class="recipe-card-image">
-				<figure>
-					'. $attachment .'
-					<figcaption>
-						'.
-							( self::$settings['pin_btn'] ? self::get_pinterest_button( array( 'url' => $pin_image ), $recipe_permalink, $pin_description ) : '' ).
-							( self::$settings['print_btn'] ? self::get_print_button( $id, array( 'title' => __( "Print directions...", "wpzoom-recipe-card" ), 'style' => $printStyles ) ) : '' )
-						.'
-		            </figcaption>
-				</figure>
-			</div>';
-		}
-
-		$recipe_card_heading = '
-			<div class="recipe-card-heading">
-				'. sprintf( '<h2 class="%s">%s</h2>', "recipe-card-title", ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) ) ) .
-				( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_user_ratings') ?
-					wpzoom_rating_stars( $recipe_ID ) : ''
-				) .
-				( self::$settings['displayAuthor'] ? '<span class="recipe-card-author">'. __( "Recipe by", "wpzoom-recipe-card" ) . " " . $custom_author_name .'</span>' : '' ) .
-				( self::$settings['displayCourse'] ? self::get_recipe_terms( 'wpzoom_rcb_courses' ) : '' ) .
-				( self::$settings['displayCuisine'] ? self::get_recipe_terms( 'wpzoom_rcb_cuisines' ) : '' ) .
-				( self::$settings['displayDifficulty'] ? self::get_recipe_terms( 'wpzoom_rcb_difficulties' ) : '' ) .
-			'</div>';
-
-		$summary_text = '';
-		if ( ! empty( $summary ) ) {
-			$summary_class = 'recipe-card-summary';
-			$summary_class .= '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_summary_text') ? ' no-print' : '';
-			$summary_text = sprintf(
-				'<p class="%s">%s</p>',
-				esc_attr( $summary_class ),
-				$summary
-			);
-		}
-
-		$details_content = self::get_details_content( $details );
-		$ingredients_content = self::get_ingredients_content( $ingredients );
-		$steps_content = self::get_steps_content( $steps );
-		$recipe_card_video = self::get_video_content();
+		$RecipeCardClassName = self::build_recipe_card_classes( self::$stored_data['className'] );
+		$attachment = self::get_recipe_card_attachment();
+		$pin_description = self::get_pinterest_description();
+		$pin_image = self::get_pinterest_image();
+		$custom_author_name = self::get_custom_author_name();
+		$detail_items = self::get_detail_items( self::$stored_data['details'] );
+		$ingredient_items = self::get_ingredient_items( self::$stored_data['ingredients'] );
+		$direction_items = self::get_direction_items( self::$stored_data['steps'] );
+		$recipe_card_video = self::get_video();
 		$food_labels_content_top = self::get_food_labels_content( 'top' );
 		$food_labels_content_bottom = self::get_food_labels_content( 'bottom' );
-
-		$strip_tags_notes = isset( $notes ) ? strip_tags($notes) : '';
-		$notes = str_replace('<li></li>', '', $notes); // remove empty list item
-		$notes_content = ! empty($strip_tags_notes) ?
-			sprintf(
-				'<div class="recipe-card-notes">
-					<h3 class="notes-title">%s</h3>
-					<ul class="recipe-card-notes-list">%s</ul>
-				</div>',
-				@$notesTitle,
-				@$notes
-			) : '';
-
+		$notes_items = self::get_notes_items();
 		$cta_content = self::get_cta_content();
 
-		$footer_copyright = ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_footer_copyright') ? '' :
-			'<div class="footer-copyright">
-	        	<p>'. __( "Recipe Card plugin by ", "wpzoom-recipe-card" ) .'
-	        		<a href="https://www.wpzoom.com/plugins/recipe-card-blocks/" target="_blank" rel="nofollow noopener noreferrer">WPZOOM</a>
-	        	</p>
-	        </div>'
+		$json_ld = self::get_json_ld();
+		$variables = array(
+			'id' => self::$recipeBlockID,
+			'attributes' => self::$attributes,
+			'settings' => self::$settings,
+			'stored_data' => self::$stored_data,
+			'style' => self::$style,
+			'recipe_permalink' => self::$stored_data['recipe_permalink'],
+			'RecipeCardClassName' => $RecipeCardClassName,
+			'attachment' => $attachment,
+			'pin_description' => $pin_description,
+			'pin_image' => $pin_image,
+			'custom_author_name' => $custom_author_name,
+			'detail_items' => $detail_items,
+			'ingredient_items' => $ingredient_items,
+			'direction_items' => $direction_items,
+			'recipe_card_video' => $recipe_card_video,
+			'cta_content' => $cta_content,
+			'notes_items' => $notes_items,
+			'food_labels_content_top' => $food_labels_content_top,
+			'food_labels_content_bottom' => $food_labels_content_bottom,
 		);
+		$block_template = WPZOOM_Template_Manager::get_template( self::$style, $variables );
 
-		if ( 'simple' === self::$style ) {
-			// Wrap recipe card heading and details content into one div
-			$recipe_card_image 		= '<div class="recipe-card-header-wrap">'. $recipe_card_image;
-			$recipe_card_heading 	= '<div class="recipe-card-along-image">'. $recipe_card_heading;
-			$details_content 		= $details_content .'</div></div><!-- /.recipe-card-header-wrap -->';
+		if ( ! empty( $json_ld ) ) {
+			return '<script type="application/ld+json">' . wp_json_encode( $json_ld ) . '</script>' . $block_template;
+		} else {
+			return $block_template;
 		}
-
-		$block_content = sprintf(
-			'<div class="%1$s" id="%2$s">%3$s</div>',
-			esc_attr( trim($RecipeCardClassName) ),
-			esc_attr( $id ),
-			$recipe_card_image .
-			$recipe_card_heading .
-			$details_content .
-			$food_labels_content_top .
-			$summary_text .
-			$ingredients_content .
-			$steps_content .
-			$recipe_card_video .
-			$notes_content .
-			$food_labels_content_bottom .
-			$cta_content .
-			$footer_copyright
-		);
-
-		$json_ld = self::get_json_ld( $attributes );
-
-		return '<script type="application/ld+json">' . wp_json_encode( $json_ld ) . '</script>' . $block_content;
 	}
 
 	/**
@@ -934,9 +701,13 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$json_ld['recipeInstructions'] = $groups_section;
 		}
 
-		return $json_ld;
+		return apply_filters( 'wpzoom_rcb_block_json_ld', $json_ld );
 	}
 
+	/**
+	 * Get defaults for details
+	 * @return array The array with default details item value
+	 */
 	public static function get_details_default() {
 		return array(
 			array(
@@ -1005,6 +776,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		);
 	}
 
+	/**
+	 * Get defaults for ingredients
+	 * @return array The array with default ingredients item value
+	 */
 	public static function get_ingredients_default() {
 		return array(
 			array(
@@ -1026,6 +801,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		);
 	}
 
+	/**
+	 * Get defaults for steps
+	 * @return array The array with default steps item value
+	 */
 	public static function get_steps_default() {
 		return array(
 			array(
@@ -1049,8 +828,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 	public static function get_details_content( array $details ) {
 		$detail_items = self::get_detail_items( $details );
-		$details_class = 'recipe-card-details';
-		$details_class .= '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_details') ? ' no-print' : '';
+		$details_class = WPZOOM_Helpers::classNames( array(
+			'recipe-card-details',
+			array(
+				'no-print' => '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_details')
+			)
+		) );
 
 		if ( !empty($detail_items) ) {
 			return sprintf(
@@ -1089,31 +872,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$iconSet 			= isset( $detail['iconSet'] ) ? $detail['iconSet'] : 'oldicon';
 				$_prefix 			= isset( $detail['_prefix'] ) && ! empty( $detail['_prefix'] ) ? $detail['_prefix'] : $iconSet;
 				$itemIconClasses 	= implode( ' ', array( 'detail-item-icon', $_prefix, $iconSet . '-' . $detail['icon'] ) );
-				$styles 			= array();
-
-				if ( '' != self::$settings['primary_color'] ) {
-					if ( 'default' === self::$style ) {
-						$styles = array(
-							'color' => @self::$settings['primary_color']
-						);
-					} elseif ( 'newdesign' === self::$style ) {
-						$styles = array(
-							'color' => self::$settings['primary_color']
-						);
-					} elseif ( 'simple' === self::$style ) {
-						$styles = array(
-							'color' => self::$settings['primary_color']
-						);
-					}
-				}
-				$iconStyles = self::$helpers->render_styles_attributes( $styles );
 
 				$icon = sprintf(
-					'<span class="%s" icon-name="%s" iconset="%s" style="%s"></span>',
+					'<span class="%s" icon-name="%s" iconset="%s"></span>',
 					$itemIconClasses,
 					$icon,
-					$iconSet,
-					$iconStyles
+					$iconSet
 				);
 			}
 
@@ -1146,12 +910,15 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 			// User has enabled Adjustable Servings?
 			if ( 0 === $index && self::$settings['adjustableServings'] ) {
-				$value = sprintf(
-					'<div class="detail-item-value adjustable-quantity no-print">
-						<input class="detail-item-adjustable-servings" type="number" data-servings="%1$s" data-original-servings="%1$s" value="%1$s" min="1" step="1">
-					</div><p class="detail-item-value only-print-visible">%1$s</p>',
-					$detail['value']
-				);
+				// Ignore adjustable servings for AMP template
+				if ( ! WPZOOM_Recipe_Card_Block_Gutenberg::is_AMP() ) {
+					$value = sprintf(
+						'<div class="detail-item-value adjustable-quantity no-print">
+							<input class="detail-item-adjustable-servings" type="number" data-servings="%1$s" data-original-servings="%1$s" value="%1$s" min="1" step="1">
+						</div><p class="detail-item-value only-print-visible">%1$s</p>',
+						$detail['value']
+					);
+				}
 			}
 
 			// convert minutes to hours for 'prep time', 'cook time' and 'total time'
@@ -1202,7 +969,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		return sprintf(
 			'<div class="recipe-card-ingredients"><h3 class="ingredients-title">%s</h3><ul class="%s">%s</ul></div>',
-			self::$attributes['ingredientsTitle'],
+			self::$stored_data['ingredientsTitle'],
 			$listClassNames,
 			$ingredient_items
 		);
@@ -1215,7 +982,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		foreach ( $ingredients as $index => $ingredient ) {
 			$tick = $name = '';
 			$amount = $unit = '';
-			$styles = array();
 			$isGroup = isset( $ingredient['isGroup'] ) ? $ingredient['isGroup'] : false;
 			$ingredient_id = isset( $ingredient['id'] ) ? 'wpzoom-rcb-' . $ingredient['id'] : '';
 
@@ -1225,23 +991,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			}
 
 			if ( !$isGroup ) {
-				if ( 'newdesign' === self::$style || 'simple' === self::$style ) {
-
-					if ( '' != self::$settings['primary_color'] ) {
-						$styles = array(
-							'border' => '2px solid ' . self::$settings['primary_color']
-						);
-					}
-
-					$tickStyles = self::$helpers->render_styles_attributes( $styles );
-
-					$tick = sprintf(
-						'<span class="tick-circle" style="%s"></span>',
-						$tickStyles
-					);
-				} else {
-					$tick = '<span class="tick-circle"></span>';
-				}
+				$tick = '<span class="tick-circle"></span>';
 
 				if ( ! empty( $ingredient[ 'name' ] ) ) {
 					$amount = !empty( $amount ) ? sprintf( '<span class="wpzoom-rcb-ingredient-amount">%s</span>', $amount ) : '';
@@ -1286,7 +1036,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 		return sprintf(
 			'<div class="recipe-card-directions"><h3 class="directions-title">%s</h3><ul class="%s">%s</ul></div>',
-			self::$attributes['directionsTitle'],
+			self::$stored_data['directionsTitle'],
 			$listClassNames,
 			$direction_items
 		);
@@ -1339,16 +1089,11 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 	public static function get_recipe_terms( $taxonomy ) {
 		$option_value 	= '0';
-		$attributes 	= self::$attributes;
 		$render 		= true;
-
-		$className = $label = $terms_output = '';
-
-		extract( $attributes );
-
-		$course 		= isset( $course ) ? $course : array();
-		$cuisine 		= isset( $cuisine ) ? $cuisine : array();
-		$difficulty 	= isset( $difficulty ) ? $difficulty : array();
+		$className 		= $label = $terms_output = '';
+		$course 		= self::$stored_data['course'];
+		$cuisine 		= self::$stored_data['cuisine'];
+		$difficulty 	= self::$stored_data['difficulty'];
 
 		if ( 'wpzoom_rcb_courses' === $taxonomy ) {
 			if ( empty( $course ) ) {
@@ -1426,8 +1171,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	}
 
 	public static function wrap_direction_text( $nodes, $type = '' ) {
-		$attributes = self::$attributes;
-
 		if ( ! is_array( $nodes ) ) {
 			return $nodes;
 		}
@@ -1458,9 +1201,15 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					if ( $src ) {
 						$attachment_id = isset( $node['key'] ) ? $node['key'] : 0;
 						$alt = isset( $node['props']['alt'] ) ? $node['props']['alt'] : '';
-						$title = isset( $node['props']['title'] ) ? $node['props']['title'] : ( isset( $attributes['recipeTitle'] ) ? $attributes['recipeTitle'] : self::$recipe->post_title );
-						$class = '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_steps_image') ? 'no-print' : '';
-						$class .= ' direction-step-image';
+						$title = isset( $node['props']['title'] ) ? $node['props']['title'] : ( isset( self::$stored_data['recipeTitle'] ) ? self::$stored_data['recipeTitle'] : self::$recipe->post_title );
+
+						$class = WPZOOM_Helpers::classNames( array(
+							'direction-step-image',
+							array(
+								'no-print' => '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_steps_image')
+							)
+						) );
+
 						$img_style = isset($node['props']['style']) ? $node['props']['style'] : '';
 
 						// Try to get attachment ID by image url if attribute `key` is not found in $node array
@@ -1481,11 +1230,30 @@ class WPZOOM_Premium_Recipe_Card_Block {
 							$attachment_id = attachment_url_to_postid( $new_src );
 
 							if ( $attachment_id ) {
-								$attachment = wp_get_attachment_image( $attachment_id, 'wpzoom_rcb_block_step_image', false, array( 'title' => $title, 'alt' => $alt, 'class' => trim( $class ), 'style' => self::parseTagStyle( $img_style ) ) );
+								$attachment = wp_get_attachment_image(
+									$attachment_id,
+									'wpzoom_rcb_block_step_image',
+									false,
+									array(
+										'title' => $title,
+										'alt' => $alt,
+										'class' => trim( $class ),
+										'style' => self::parseTagStyle( $img_style )
+									)
+								);
 							}
 						}
 						else {
-							$attachment = wp_get_attachment_image( $attachment_id, 'wpzoom_rcb_block_step_image', false, array( 'title' => $title, 'alt' => $alt, 'class' => trim( $class ), 'style' => self::parseTagStyle( $img_style ) ) );
+							$attachment = wp_get_attachment_image(
+								$attachment_id,
+								'wpzoom_rcb_block_step_image',
+								false, array(
+									'title' => $title,
+									'alt' => $alt,
+									'class' => trim( $class ),
+									'style' => self::parseTagStyle( $img_style )
+								)
+							);
 						}
 
 						if ( $clickableDirectionImages === '1' ) {
@@ -1558,8 +1326,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	}
 
 	public static function wrap_ingredient_name( $nodes, $type = '' ) {
-		$attributes = self::$attributes;
-
 		if ( ! is_array( $nodes ) ) {
 			return $nodes;
 		}
@@ -1592,6 +1358,17 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		}
 
 		return $output;
+	}
+
+	public static function get_notes_items() {
+		$notes = isset( self::$attributes['notes'] ) ? self::$attributes['notes'] : '';
+		$strip_tags_notes = strip_tags( $notes );
+
+		if ( ! empty( $strip_tags_notes ) ) {
+			$notes = str_replace('<li></li>', '', $notes); // remove empty list item
+		}
+
+		return $notes;
 	}
 
 	public static function direction_gallery( $step ) {
@@ -1655,21 +1432,20 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	}
 
 	/**
-	 * Get HTML content for recipe video
+	 * Get recipe video
 	 * 
-	 * @since 2.2.0
+	 * @since 2.8.2
 	 * @return void
 	 */
-	public static function get_video_content() {
-		$attributes = self::$attributes;
-		$hasVideo = isset( $attributes['hasVideo'] ) && $attributes['hasVideo'];
+	public static function get_video() {
+		$hasVideo = self::$stored_data['hasVideo'];
 		$output = '';
 
 		if ( ! $hasVideo ) {
 			return '';
 		}
 
-		$video = isset( $attributes['video'] ) && ! empty( $attributes['video'] ) ? $attributes['video'] : array();
+		$video = self::$stored_data['video'];
 		$video_type = isset( $video['type'] ) ? $video['type'] : '';
 		$video_url = isset( $video['url'] ) ? esc_url( $video['url'] ) : '';
 		$video_poster = isset( $video['poster']['url'] ) ? esc_url( $video['poster']['url'] ) : '';
@@ -1695,7 +1471,18 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			);
 		}
 
-		return sprintf( '<div class="recipe-card-video no-print"><h3 class="video-title">%s</h3>%s</div>', $attributes['videoTitle'], $output );
+		return $output;
+	}
+
+	/**
+	 * Get HTML content for recipe video
+	 * 
+	 * @since 2.2.0
+	 * @return void
+	 */
+	public static function get_video_content() {
+		$output = self::get_video();
+		return sprintf( '<div class="recipe-card-video no-print"><h3 class="video-title">%s</h3>%s</div>', self::$stored_data['videoTitle'], $output );
 	}
 
 	/**
@@ -1812,7 +1599,15 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$output = sprintf(
 			'<div class="%s">
 	            <a class="btn-print-link no-print" href="#%s" %s>
-	            	<i class="icon-print-link"></i>
+	            	<SVG class="wpzoom-rcb-icon-print-link" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+	            	    <g data-name="Layer 55" id="Layer_55">
+	            	        <Path class="wpzoom-rcb-print-icon" d="M28,25H25a1,1,0,0,1,0-2h3a1,1,0,0,0,1-1V10a1,1,0,0,0-1-1H4a1,1,0,0,0-1,1V22a1,1,0,0,0,1,1H7a1,1,0,0,1,0,2H4a3,3,0,0,1-3-3V10A3,3,0,0,1,4,7H28a3,3,0,0,1,3,3V22A3,3,0,0,1,28,25Z" />
+	            	        <Path class="wpzoom-rcb-print-icon" d="M25,31H7a1,1,0,0,1-1-1V20a1,1,0,0,1,1-1H25a1,1,0,0,1,1,1V30A1,1,0,0,1,25,31ZM8,29H24V21H8Z" />
+	            	        <Path class="wpzoom-rcb-print-icon" d="M25,9a1,1,0,0,1-1-1V3H8V8A1,1,0,0,1,6,8V2A1,1,0,0,1,7,1H25a1,1,0,0,1,1,1V8A1,1,0,0,1,25,9Z" />
+	            	        <rect className="wpzoom-rcb-print-icon" height="2" width="2" x="24" y="11" />
+	            	        <rect className="wpzoom-rcb-print-icon" height="2" width="4" x="18" y="11" />
+	            	    </g>
+	            	</SVG>
 	                <span>%s</span>
 	            </a>
 	        </div>',
@@ -1849,7 +1644,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$output = sprintf(
 			'<div class="%s">
 	            <a class="btn-pinit-link no-print" data-pin-do="buttonPin" href="%s" data-pin-custom="true" %s>
-	            	<i class="icon-pinit-link"></i>
+	            	<SVG class="wpzoom-rcb-icon-pinit-link" enable-background="new 0 0 30 30" height="30px" id="Pinterest" version="1.1" viewBox="0 0 30 30" width="30px" xmlns="http://www.w3.org/2000/svg">
+	            	    <Path class="wpzoom-rcb-pinit-icon" d="M16,0C7.813,0,3,6.105,3,11c0,2.964,2,6,3,6s2,0,2-1s-2-2-2-5c0-4.354,4.773-8,10-8c4.627,0,7,3.224,7,7  c0,4.968-2.735,9-6,9c-1.803,0-3.433-1.172-3-3c0.519-2.184,1-2,2-6c0.342-1.368-0.433-3-2-3c-1.843,0-4,1.446-4,4c0,1.627,1,3,1,3  s-2.245,7.863-2.576,9.263C7.766,26.049,6.938,30,7.938,30S10,28,12,23c0.295-0.738,1-3,1-3c0.599,1.142,3.14,2,5,2  c5.539,0,9-5.24,9-12C27,4.888,22.58,0,16,0z" />
+	            	</SVG>
 	            	<span>%s</span>
 	            </a>
 	        </div>',
@@ -2023,8 +1820,16 @@ class WPZOOM_Premium_Recipe_Card_Block {
     			}
     		}
     	}
-    	else {
-    		$size = 'wpzoom-rcb-block-header';
+
+    	if ( ! isset( $size ) ) {
+    		$size = 'full';
+    		
+    		if ( 'accent-color-header' === self::$style || 'simple' === self::$style ) {
+    			$size = 'wpzoom-rcb-block-header-square';
+    		}
+    		if ( 'default' === self::$style || 'newdesign' === self::$style ) {
+				$size = 'wpzoom-rcb-block-header';
+    		}
     	}
 
     	return $size;
@@ -2125,5 +1930,258 @@ class WPZOOM_Premium_Recipe_Card_Block {
     		return false;
     	}
 		return strpos( $url, 'blob:' ) === 0;
+    }
+
+    /**
+     * Build recipe card class names
+     * 
+     * @since 2.8.2
+     * @param  string $className The class names provided by Gutenberg block
+     * @return string            The string with class names generated by WPZOOM_Helpers::classNames()
+     */
+    public static function build_recipe_card_classes( $className ) {
+    	$recipe_card_classnames = WPZOOM_Helpers::classNames( array(
+    		$className,
+    		'wp-block-wpzoom-recipe-card-block-recipe-card',
+    		'header-content-align-' . self::$settings['headerAlign'],
+    		'block-alignment-' . self::$attributes['blockAlignment'],
+    		array(
+	    		'is-style-' . self::$style => strpos( $className, 'is-style' ) === false,
+	    		'recipe-card-noimage' => ( ! self::$attributes['hasImage'] || ! isset( self::$attributes['image']['url'] ) ) || self::$settings['hide_header_image'],
+	    		'recipe-card-noimage-print' => '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image'),
+	    		'wpzoom-recipe-card-block-adjustable-servings' => self::$settings['adjustableServings'],
+    		)
+    	) );
+
+    	return $recipe_card_classnames;
+    }
+
+    /**
+     * Get recipe attachment
+     * 
+     * @since 2.8.2
+     * @return HTML The attachment HTML
+     */
+    public static function get_recipe_card_attachment() {
+    	$hasImage = self::$stored_data['hasImage'];
+    	$image = self::$stored_data['image'];
+    	$recipe_title = self::$stored_data['recipeTitle'];
+
+		/**
+		 * Open image in Lighbox
+		 * 
+		 * @since 2.6.4
+		 */
+		$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
+		$clickableRecipeImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_recipe_image_lightbox' );
+		$attachment = '';
+
+		if ( $hasImage && isset( $image['url'] ) ) {
+			$img_id = $image['id'];
+			$src 	= $image['url'];
+			$alt 	= $recipe_title ? strip_tags( $recipe_title ) : self::$recipe->post_title;
+			$sizes 	= isset( $image['sizes'] ) ? $image['sizes'] : array();
+			$size 	= self::get_recipe_image_size( $sizes, $src );
+
+			$img_class = WPZOOM_Helpers::classNames( array(
+				'wpzoom-recipe-card-image',
+				array(
+					'no-print' => '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image')
+				)
+			) );
+
+			// Check if attachment image is from imported content
+			// in this case we don't have attachment in our upload directory
+			$upl_dir = wp_upload_dir();
+			$findpos = strpos( $src, $upl_dir['baseurl'] );
+
+			if ( $findpos === false ) {
+				$img_attr = array(
+					'class' => trim( $img_class ),
+					'data-pin-media' => esc_url( self::get_pinterest_image() ),
+	                'data-pin-description' => esc_html( self::get_pinterest_description() )
+				);
+				$atts = self::$helpers->render_attributes( $img_attr );
+				$attachment = sprintf(
+					'<img src="%s" alt="%s" %s/>',
+					$src,
+					$alt,
+					$atts
+				);
+			}
+			else {
+				$attachment = wp_get_attachment_image(
+					$img_id,
+					$size,
+					false,
+					array(
+						'alt' => $alt,
+                        'id' => $img_id,
+                        'class' => trim( $img_class ),
+                        'data-pin-media' => esc_url( self::get_pinterest_image() ),
+	                    'data-pin-description' => esc_html( self::get_pinterest_description() )
+					)
+				);
+			}
+
+			if ( $clickableRecipeImages === '1' ) {
+				$clickableImageSrc = wp_get_attachment_image_src( $img_id, $clickableImageSize );
+
+				if ( $findpos === false ) {
+					$clickableImageSrc[0] = $src;
+				}
+
+				if ( $clickableImageSrc && isset( $clickableImageSrc[0] ) ) {
+					$attachment = sprintf(
+						'<a class="recipe-card-image-popup-link" href="%s">%s</a>',
+						esc_url( $clickableImageSrc[0] ),
+						$attachment
+					);
+				}
+			}
+		}
+		elseif ( ! $hasImage && ! empty( $recipe_thumbnail_url ) ) {
+			$img_id = $recipe_thumbnail_id;
+			$src 	= $recipe_thumbnail_url;
+			$alt 	= ( $recipe_title ? strip_tags( $recipe_title ) : self::$recipe->post_title );
+			$sizes 	= isset( $image['sizes'] ) ? $image['sizes'] : array();
+			$size 	= self::get_recipe_image_size( $sizes, $src );
+			
+			$img_class = WPZOOM_Helpers::classNames( array(
+				'wpzoom-recipe-card-image',
+				array(
+					'no-print' => '0' == WPZOOM_Settings::get('wpzoom_rcb_settings_print_show_image')
+				)
+			) );
+
+			// Check if attachment image is from imported content
+			// in this case we don't have attachment in our upload directory
+			$upl_dir = wp_upload_dir();
+			$findpos = strpos( $src, $upl_dir['baseurl'] );
+
+			if ( $findpos === false ) {
+				$img_attr = array(
+					'class' => trim( $img_class ),
+					'data-pin-media' => esc_url( self::get_pinterest_image() ),
+	                'data-pin-description' => esc_html( self::get_pinterest_description() )
+				);
+				$atts = self::$helpers->render_attributes( $img_attr );
+				$attachment = sprintf(
+					'<img src="%s" alt="%s" %s/>',
+					$src,
+					$alt,
+					$atts
+				);
+			}
+			else {
+				$attachment = wp_get_attachment_image(
+					$img_id,
+					$size,
+					false,
+					array(
+						'alt' => $alt,
+	                    'id' => $img_id,
+	                    'class' => trim( $img_class ),
+	                    'data-pin-media' => esc_url( self::get_pinterest_image() ),
+	                    'data-pin-description' => esc_html( self::get_pinterest_description() )
+					)
+				);
+			}
+
+			if ( $clickableRecipeImages === '1' ) {
+				$clickableImageSrc = wp_get_attachment_image_src( $img_id, $clickableImageSize );
+
+				if ( $findpos === false ) {
+					$clickableImageSrc[0] = $src;
+				}
+
+				if ( $clickableImageSrc && isset( $clickableImageSrc[0] ) ) {
+					$attachment = sprintf(
+						'<a class="recipe-card-image-popup-link" href="%s">%s</a>',
+						esc_url( $clickableImageSrc[0] ),
+						$attachment
+					);
+				}
+			}
+		}
+
+		return $attachment;
+    }
+
+    /**
+     * Get author name
+     * 
+     * @since 2.8.2
+     * @return string The author name
+     */
+    public static function get_custom_author_name() {
+    	$recipe_author_name = get_the_author_meta( 'display_name', self::$recipe->post_author );
+    	$custom_author_name = $recipe_author_name;
+
+    	if ( ! empty( self::$settings['custom_author_name'] ) ) {
+    		$custom_author_name = self::$settings['custom_author_name'];
+    	}
+
+    	return $custom_author_name;
+    }
+
+    /**
+     * Get pinterest description
+     * 
+     * @since 2.8.2
+     * @return string The Pinterest description
+     */
+    public static function get_pinterest_description() {
+    	$recipe_title = self::$stored_data['recipeTitle'];
+    	$summary = self::$stored_data['summary'];
+    	$tasty_pins_pinterest_text = self::$stored_data['tasty_pins_pinterest_text'];
+		$pin_description = strip_tags( $recipe_title );
+
+		if ( 'recipe_summary' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_description') ) {
+			$pin_description = strip_tags( $summary );
+		}
+		elseif ( 'custom_text' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_description') ) {
+			if ( ! empty( self::$settings['pin_custom_text'] ) ) {
+				$pin_description = strip_tags( self::$settings['pin_custom_text'] );
+			}
+		}
+
+		// compatibility with Tasty Pins plugin
+		if ( ! empty( $tasty_pins_pinterest_text ) ) {
+			$pin_description = strip_tags( $tasty_pins_pinterest_text );
+ 		}
+
+ 		return $pin_description;
+    }
+
+    /**
+     * Get pinterest image
+     * 
+     * @since 2.8.2
+     * @return string The pinterest image
+     */
+    public static function get_pinterest_image() {
+    	$recipe_thumbnail_url = self::$stored_data['recipe_thumbnail_url'];
+    	$pin_image = self::$stored_data['hasImage'] ? self::$stored_data['image']['url'] : $recipe_thumbnail_url;
+
+    	if ( 'custom_image' === WPZOOM_Settings::get('wpzoom_rcb_settings_pin_image') ) {
+    		if ( self::$settings['pin_has_custom_image'] ) {
+
+    			$pin_custom_image 	= self::$settings['pin_custom_image'];
+    			$pin_image 			= $pin_custom_image['url'];
+
+    			if ( isset( $pin_custom_image['sizes']['large'] ) ) {
+    				$pin_image = $pin_custom_image['sizes']['large']['url'];
+    			}
+    			elseif ( isset( $pin_custom_image['sizes']['wpzoom-rcb-block-step-image'] ) ) {
+    				$pin_image = $pin_custom_image['sizes']['wpzoom-rcb-block-step-image']['url'];
+    			}
+    			elseif ( isset( $pin_custom_image['sizes']['full'] ) ) {
+    				$pin_image = $pin_custom_image['sizes']['full']['url'];
+    			}
+    		}
+    	}
+
+    	return $pin_image;
     }
 }

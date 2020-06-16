@@ -46,6 +46,8 @@ final class WPZOOM_Recipe_Card_Block_Gutenberg {
 	private static function action_hooks() {
 		add_filter( 'block_categories', 				__CLASS__ . '::add_custom_category', 10, 2 );
 		add_filter( 'image_size_names_choose', 			__CLASS__ . '::custom_image_sizes_choose' );
+		add_filter( 'wp_get_attachment_image_attributes', __CLASS__.'::pinterest_nopin_images', 10, 3 );
+		add_filter( 'get_avatar', 						__CLASS__ . '::pinterest_nopin_author_avatar', 10, 6 );
 
 		add_action( 'after_setup_theme', 				__CLASS__ . '::register_custom_image_sizes' );
 		add_action( 'init', 							__CLASS__ . '::register_block_types' );
@@ -129,6 +131,72 @@ final class WPZOOM_Recipe_Card_Block_Gutenberg {
 	}
 
 	/**
+	 * Set attribute `data-pin-nopin` to images if option is enabled in the settings page
+	 * 
+	 * @since 2.9.0
+	 * @param  array $atts          Array of attribute values for the image markup, keyed by attribute name
+	 * @param  object $attachment   Image attachment post
+	 * @param  string|array $size   Image size or array of width and height values
+	 * @return array                The array with custom passed attributes
+	 */
+	public static function pinterest_nopin_images( $args, $attachment, $size ) {
+		$nopin = WPZOOM_Settings::get('wpzoom_rcb_settings_nopin_images');
+		$pin_custom_image = WPZOOM_Settings::get('wpzoom_rcb_settings_pin_image');
+		$block_has_pin_custom_image = WPZOOM_Premium_Recipe_Card_Block::$settings['pin_has_custom_image'];
+
+		if ( '1' === $nopin ) {
+			// We don't need to add `data-pin-nopin` attribute to recipe card image
+			if ( isset( $args['class'] ) && 'wpzoom-recipe-card-image' !== $args['class'] ) {
+		        $args['data-pin-nopin'] = 'true';
+			}
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Telling Pinterest to Not Save an author avatar image
+	 * 
+	 * @since 2.9.0
+	 * 
+     * @param string $avatar      `<img>` tag for the user's avatar.
+     * @param mixed  $id_or_email The Gravatar to retrieve. Accepts a user_id, gravatar md5 hash,
+     *                            user email, WP_User object, WP_Post object, or WP_Comment object.
+     * @param int    $size        Square avatar width and height in pixels to retrieve.
+     * @param string $default     URL for the default image or a default type. Accepts '404', 'retro', 'monsterid',
+     *                            'wavatar', 'indenticon','mystery' (or 'mm', or 'mysteryman'), 'blank', or 'gravatar_default'.
+     *                            Default is the value of the 'avatar_default' option, with a fallback of 'mystery'.
+     * @param string $alt         Alternative text to use in the avatar image tag. Default empty.
+     * @param array  $args        Arguments passed to get_avatar_data(), after processing.
+     *
+	 * @return string|false 	  `<img>` tag for the user's avatar with attribute `data-pin-nopin` if option is enabled. False on failure.
+	 */
+	public static function pinterest_nopin_author_avatar( $avatar, $id_or_email, $size, $default, $alt, $args ) {
+		$nopin = WPZOOM_Settings::get('wpzoom_rcb_settings_nopin_images');
+
+		if ( '1' === $nopin ) {
+			$args['extra_attr'] .= ' data-pin-nopin="true"';
+
+			$url2x = get_avatar_url( $id_or_email, array_merge( $args, array( 'size' => $args['size'] * 2 ) ) );
+			$url = $args['url'];
+			$class = $args['class'];
+
+			$avatar = sprintf(
+		        "<img alt='%s' src='%s' srcset='%s' class='%s' height='%d' width='%d' %s/>",
+		        esc_attr( $args['alt'] ),
+		        esc_url( $url ),
+		        esc_url( $url2x ) . ' 2x',
+		        esc_attr( $class ),
+		        (int) $args['height'],
+		        (int) $args['width'],
+		        trim( $args['extra_attr'] )
+		    );
+		}
+
+		return $avatar;
+	}
+
+	/**
 	 * Check if pro exists.
 	 *
 	 * @since 1.1.0
@@ -154,6 +222,19 @@ final class WPZOOM_Recipe_Card_Block_Gutenberg {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Check if is AMP endpoint
+	 * 
+	 * @since 2.9.0
+	 * @return boolean
+	 */
+	public static function is_AMP() {
+		$ampforwp_is_amp_endpoint = function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint();
+		$is_amp_endpoint = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint();
+
+		return $ampforwp_is_amp_endpoint || $is_amp_endpoint;
 	}
 
 	/**

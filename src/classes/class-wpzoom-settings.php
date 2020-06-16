@@ -639,11 +639,7 @@ class WPZOOM_Settings {
 									'class' 		=> 'wpzoom-rcb-field',
 									'description' 	=> esc_html__( 'Default template to use for all Recipe Cards.', 'wpzoom-recipe-card' ),
 									'default'		=> 'default',
-									'options' 		=> array(
-										'default' 	=> __( 'Default', 'wpzoom-recipe-card' ),
-										'newdesign' => __( 'New Design', 'wpzoom-recipe-card' ),
-										'simple' 	=> __( 'Simple Design', 'wpzoom-recipe-card' ),
-									)
+									'options' 		=> apply_filters( 'wpzoom_rcb_templates', array() ),
 								)
 							),
 							array(
@@ -1123,6 +1119,17 @@ class WPZOOM_Settings {
 										'custom_text' => __( 'Custom Text', 'wpzoom-recipe-card' ),
 									)
 								)
+							),
+							array(
+								'id'		=> 'wpzoom_rcb_settings_nopin_images',
+								'title' 	=> __( 'NoPin', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args'		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_nopin_images',
+									'class'			=> 'wpzoom-rcb-field',
+									'description'	=> __( 'NoPin any images on the page that aren’t related to the content or aren’t good for Pinterest', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+								),
 							),
 						)
 					),
