@@ -63,6 +63,10 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 2.9.1
+* Fixed issue with undefined index on print page
+* Ingredients display in one column on print page
+
 = 2.9.0
 * 🆕 Added new design: Accent Color Header
 * Added AMP support
