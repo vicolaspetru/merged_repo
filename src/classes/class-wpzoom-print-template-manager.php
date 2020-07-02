@@ -94,6 +94,9 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
             $summary        = isset( $summary ) ? $summary : '';
             $className      = isset( $className ) ? $className : '';
             $hasImage       = isset( $hasImage ) ? $hasImage : false;
+            $image          = isset( $image ) ? $image : array();
+            $hasVideo       = isset( $hasVideo ) ? $hasVideo : false;
+            $video          = isset( $video ) ? $video : array();
             $course         = isset( $course ) ? $course : array();
             $cuisine        = isset( $cuisine ) ? $cuisine : array();
             $difficulty     = isset( $difficulty ) ? $difficulty : array();
@@ -102,6 +105,32 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
             $ingredients    = isset( $ingredients ) ? $ingredients : array();
             $steps          = isset( $steps ) ? $steps : array();
 
+            // Recipe post variables
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['recipe_ID'] = $recipe_id;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['recipe_title'] = $recipe_title;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['recipe_thumbnail_url'] = $recipe_thumbnail_url;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['recipe_thumbnail_id'] = $recipe_thumbnail_id;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['recipe_permalink'] = $recipe_permalink;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['recipe_author_name'] = $recipe_author_name;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['attachment_id'] = $attachment_id;
+
+            // Variables from attributes
+            // add default value if not exists
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['recipeTitle']   = $recipeTitle;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['summary']       = $summary;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['className']     = $className;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['hasImage']      = $hasImage;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['image']         = $image;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['hasVideo']      = $hasVideo;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['video']         = $video;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['course']        = $course;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['cuisine']       = $cuisine;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['difficulty']    = $difficulty;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['keywords']      = $keywords;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['details']       = $details;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['ingredients']   = $ingredients;
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['steps']         = $steps;
+
             // Store variables
             $settings       = self::$helpers->parse_block_settings( $attributes );
 
@@ -109,9 +138,10 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
             WPZOOM_Premium_Recipe_Card_Block::$attributes = $attributes;
             WPZOOM_Premium_Recipe_Card_Block::$settings = $settings;
 
-            WPZOOM_Premium_Recipe_Card_Block::$attributes['ingredientsTitle'] = isset( $ingredientsTitle ) ? $ingredientsTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_ingredients_title');
-            WPZOOM_Premium_Recipe_Card_Block::$attributes['directionsTitle'] = isset( $directionsTitle ) ? $directionsTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_steps_title');
-            WPZOOM_Premium_Recipe_Card_Block::$attributes['videoTitle'] = isset( $videoTitle ) ? $videoTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_video_title');
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['ingredientsTitle'] = isset( $ingredientsTitle ) ? $ingredientsTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_ingredients_title');
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['directionsTitle'] = isset( $directionsTitle ) ? $directionsTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_steps_title');
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['videoTitle'] = isset( $videoTitle ) ? $videoTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_video_title');
+            WPZOOM_Premium_Recipe_Card_Block::$stored_data['notesTitle'] = isset( $notesTitle ) ? $notesTitle : WPZOOM_Settings::get('wpzoom_rcb_settings_notes_title');
 
             $class .= $hasImage && isset($image['url']) ? '' : ' recipe-card-noimage';
             $class .= $settings['hide_header_image'] ? ' recipe-card-noimage' : '';

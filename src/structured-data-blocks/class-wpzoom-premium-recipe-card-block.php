@@ -20,7 +20,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	 *
 	 * @since 1.1.0
 	 */
-	private static $recipe;
+	public static $recipe;
 
 	/**
 	 * Class instance Structured Data Helpers.
