@@ -1,9 +1,25 @@
 /**
+ * External dependencies
+ */
+import { replace, includes } from 'lodash';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
 import { RichText } from '@wordpress/block-editor';
+
+const fixTastyLinksConflict = ( notes ) => {
+    if ( ! includes( notes, '\\u003c' ) && includes( notes, 'u003c' ) ) {
+        notes = replace( notes, /u003c/g, '<' );
+    }
+    if ( ! includes( notes, '\\u003e' ) && includes( notes, 'u003e' ) ) {
+        notes = replace( notes, /u003e/g, '>' );
+    }
+
+    return notes;
+};
 
 class RecipeCardNotes extends Component {
     /**
@@ -34,6 +50,8 @@ class RecipeCardNotes extends Component {
             onFocus,
         } = this.props;
 
+        const newNotesValue = fixTastyLinksConflict( notes );
+
         // TODO: Add reference to notes-title and notes list
         return (
             <div className="recipe-card-notes">
@@ -51,7 +69,7 @@ class RecipeCardNotes extends Component {
                     className="recipe-card-notes-list"
                     tagName="ul"
                     multiline="li"
-                    value={ notes }
+                    value={ newNotesValue }
                     unstableOnFocus={ () => onFocus( 'notes' ) }
                     onChange={ ( newNote ) => setAttributes( { notes: newNote } ) }
                     placeholder={ __( 'Enter Note text for your recipe.', 'wpzoom-recipe-card' ) }

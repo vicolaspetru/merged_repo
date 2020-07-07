@@ -1494,6 +1494,8 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	 * @return string HTML of post content
 	 */
 	public function filter_the_content( $content ) {
+		$content = self::$helpers->fix_content_tasty_links_conflict( $content );
+		
 		if ( ! in_the_loop() ) {
 			return $content;
 		}
