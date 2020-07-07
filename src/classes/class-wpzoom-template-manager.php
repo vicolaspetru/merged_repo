@@ -64,7 +64,7 @@ if ( ! class_exists( 'WPZOOM_Template_Manager' ) ) {
          * @return void
          */
         private static function action_hooks() {
-            add_filter( 'wpzoom_rcb_templates', __CLASS__ . '::register_templates', 10 );
+            add_filter( 'wpzoom_rcb_templates', array( __CLASS__, 'register_templates' ), 10 );
         }
 
         /**

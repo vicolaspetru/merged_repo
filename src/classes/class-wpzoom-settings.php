@@ -1154,6 +1154,20 @@ class WPZOOM_Settings {
 								)
 							),
 							array(
+								'id' 		=> 'wpzoom_rcb_settings_comment_ratings',
+								'title' 	=> __( 'Comment Ratings', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_comment_ratings',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Allow visitors to vote your recipes when add a comment.', 'wpzoom-recipe-card' ),
+									'default'		=> false,
+									'disabled'		=> false,
+									'preview'       => true,
+									'preview_pos'	=> 'top',
+								)
+							),
+							array(
 								'id' 		=> 'wpzoom_rcb_settings_who_can_rate',
 								'title' 	=> __( 'Who can rate?', 'wpzoom-recipe-card' ),
 								'type'		=> 'select',
