@@ -14,11 +14,11 @@ if ( ! has_block( 'wpzoom-recipe-card/block-recipe-card' ) ) {
 
 $rating_titles = array(
     esc_html__( 'Don\'t rate this recipe', 'wpzoom-recipe-card' ),
-    esc_html__( 'Rate this recipe 1 out of 5 stars', 'wpzoom-recipe-card' ),
-    esc_html__( 'Rate this recipe 2 out of 5 stars', 'wpzoom-recipe-card' ),
-    esc_html__( 'Rate this recipe 3 out of 5 stars', 'wpzoom-recipe-card' ),
-    esc_html__( 'Rate this recipe 4 out of 5 stars', 'wpzoom-recipe-card' ),
-    esc_html__( 'Rate this recipe 5 out of 5 stars', 'wpzoom-recipe-card' )
+    esc_html__( 'Not at all useful', 'wpzoom-recipe-card' ),
+    esc_html__( 'Poor quality', 'wpzoom-recipe-card' ),
+    esc_html__( 'Average', 'wpzoom-recipe-card' ),
+    esc_html__( 'Good', 'wpzoom-recipe-card' ),
+    esc_html__( 'Excellent!', 'wpzoom-recipe-card' )
 );
 
 ?>
