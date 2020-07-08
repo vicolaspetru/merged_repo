@@ -104,6 +104,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
 				$dependencies = array( 'jquery' );
 			}
+            elseif ( 'wpzoom-comment-rating-script' === $handle ) {
+                $dependencies = array( 'jquery' );
+            }
             elseif ( self::$_slug . '-masonry-gallery' === $handle ) {
                 $dependencies = array( 'jquery-masonry', 'imagesloaded' );
             }

@@ -13,13 +13,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WPZOOM_Comment_Rating {
     /**
+     * Loads scripts and styles.
+     *
+     * @var WPZOOM_Assets_Manager
+     */
+    public static $assets_manager;
+
+    /**
      * Register actions and filters.
      */
     public static function init() {
+        self::$assets_manager = WPZOOM_Assets_Manager::instance();
+
         add_filter( 'comment_text', array( __CLASS__, 'add_rating_stars_to_comment' ), 10, 3 );
         add_filter( 'comment_form_field_comment', array( __CLASS__, 'add_rating_stars_to_comment_form' ), 10, 1 );
 
         add_action( 'comment_post', array( __CLASS__, 'save_comment_rating' ) );
+        add_action( 'enqueue_block_assets', array( __CLASS__, 'block_assets' ) );
     }
 
     /**
@@ -38,19 +48,19 @@ class WPZOOM_Comment_Rating {
             if ( $comment ) {
                 if ( $comment_rating ) {
                     $rating = array(
-                        'date' => $comment->comment_date,
+                        'rating' => $comment_rating,
+                        'rate_date' => $comment->comment_date,
                         'comment_id' => $comment->comment_ID,
                         'user_id' => $comment->user_id,
                         'ip' => $comment->comment_author_IP,
-                        'rating' => $comment_rating,
                     );
 
-                    WPZOOM_Rating_Stars::add_or_update_rating( $rating );
+                    WPZOOM_Rating_DB::add_or_update_rating( $rating );
                 } else {
-                    WPZOOM_Rating_Stars::delete_ratings_for_comment( $comment_id );
+                    WPZOOM_Rating_DB::delete_ratings_for_comment( $comment_id );
                 }
             } else {
-                WPZOOM_Rating_Stars::delete_ratings_for_comment( $comment_id );
+                WPZOOM_Rating_DB::delete_ratings_for_comment( $comment_id );
             }
         }
     }
@@ -104,11 +114,37 @@ class WPZOOM_Comment_Rating {
     /**
      * Get rating for a comment by specified comment ID.
      * 
-     * @param  int $comment_ID The comment ID.
+     * @param  int $comment_id The comment ID.
      * @return int             The rating average.
      */
-    public static function get_rating_by_comment_id( $comment_ID ) {
-        return 4;
+    public static function get_rating_by_comment_id( $comment_id ) {
+        $rating = 0;
+        $comment_id = intval( $comment_id );
+
+        if ( $comment_id ) {
+            $rating_found = get_comment_meta( $comment_id, 'wpzoom-rcb-comment-rating', true );
+
+            // Cache rating for this comment if none can be found.
+            if ( '' === $rating_found ) {
+                $rating_found = WPZOOM_Rating_DB::get_rating(
+                    array(
+                        'where' => 'comment_id = ' . $comment_id,
+                    )
+                );
+        
+                if ( $rating_found ) {
+                    $rating = intval( $rating_found->rating );
+                } else {
+                    $rating = 0;
+                }
+
+                // self::update_cached_rating( $comment_id, $rating );
+            } else {
+                $rating = intval( $rating_found );
+            }
+        }
+
+        return $rating;
     }
 
     /**
@@ -119,6 +155,23 @@ class WPZOOM_Comment_Rating {
     public static function save_comment_rating( $comment_id ) {
         $rating = isset( $_POST['wpzoom-rcb-comment-rating'] ) ? intval( $_POST['wpzoom-rcb-comment-rating'] ) : 0;
         self::update_comment_rating( $comment_id, $rating );
+    }
+
+    /**
+     * Enqueue comment rating scripts.
+     */
+    public static function block_assets() {
+        if ( is_admin() ) {
+            return false;
+        }
+
+        wp_enqueue_script(
+            'wpzoom-comment-rating-script',
+            self::$assets_manager->asset_source( 'js', 'wpzoom-comment-rating.js' ),
+            self::$assets_manager->get_dependencies( 'wpzoom-comment-rating-script' ),
+            WPZOOM_RCB_VERSION,
+            true
+        );
     }
 }
 

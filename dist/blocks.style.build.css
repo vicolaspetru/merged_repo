@@ -109,6 +109,14 @@
     .wpzoom-rcb-comment-rating-form .wpzoom-rcb-comment-rating-stars label[for="wpzoom-rcb-comment-rating-0"] {
       display: none; }
 
+.wpzoom-rcb-comment-rating {
+  margin-bottom: 10px !important; }
+  .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars {
+    padding: 0;
+    margin: 0; }
+    .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars > span {
+      font-size: 14px; }
+
 html[amp] *, html[amp] *:before, html[amp] *:after {
   -webkit-box-sizing: border-box;
           box-sizing: border-box; }
@@ -358,6 +366,14 @@ html[amp] .wp-block-wpzoom-recipe-card-block-recipe-card .wpzoom-recipe-card-pin
     .wpzoom-rcb-comment-rating-form .wpzoom-rcb-comment-rating-stars label[for="wpzoom-rcb-comment-rating-0"] {
       display: none; }
 
+.wpzoom-rcb-comment-rating {
+  margin-bottom: 10px !important; }
+  .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars {
+    padding: 0;
+    margin: 0; }
+    .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars > span {
+      font-size: 14px; }
+
 html[amp] *, html[amp] *:before, html[amp] *:after {
   -webkit-box-sizing: border-box;
           box-sizing: border-box; }
@@ -561,6 +577,14 @@ html[amp] .wp-block-wpzoom-recipe-card-block-recipe-card .wpzoom-recipe-card-pin
       color: inherit; }
     .wpzoom-rcb-comment-rating-form .wpzoom-rcb-comment-rating-stars label[for="wpzoom-rcb-comment-rating-0"] {
       display: none; }
+
+.wpzoom-rcb-comment-rating {
+  margin-bottom: 10px !important; }
+  .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars {
+    padding: 0;
+    margin: 0; }
+    .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars > span {
+      font-size: 14px; }
 
 html[amp] *, html[amp] *:before, html[amp] *:after {
   -webkit-box-sizing: border-box;
@@ -768,6 +792,14 @@ html[amp] .wp-block-wpzoom-recipe-card-block-recipe-card .wpzoom-recipe-card-pin
       color: inherit; }
     .wpzoom-rcb-comment-rating-form .wpzoom-rcb-comment-rating-stars label[for="wpzoom-rcb-comment-rating-0"] {
       display: none; }
+
+.wpzoom-rcb-comment-rating {
+  margin-bottom: 10px !important; }
+  .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars {
+    padding: 0;
+    margin: 0; }
+    .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars > span {
+      font-size: 14px; }
 
 html[amp] *, html[amp] *:before, html[amp] *:after {
   -webkit-box-sizing: border-box;
@@ -3264,6 +3296,14 @@ img.mfp-img {
       color: inherit; }
     .wpzoom-rcb-comment-rating-form .wpzoom-rcb-comment-rating-stars label[for="wpzoom-rcb-comment-rating-0"] {
       display: none; }
+
+.wpzoom-rcb-comment-rating {
+  margin-bottom: 10px !important; }
+  .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars {
+    padding: 0;
+    margin: 0; }
+    .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars > span {
+      font-size: 14px; }
 
 html[amp] *, html[amp] *:before, html[amp] *:after {
   -webkit-box-sizing: border-box;
