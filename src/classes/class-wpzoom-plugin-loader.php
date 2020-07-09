@@ -113,13 +113,14 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-privacy-policy.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-template-manager.php';
 			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-print-template-manager.php';
-			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-print.php';
-			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-rating-db.php';
-			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-rating-stars.php';
 
 			if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_comment_ratings') ) {
 				require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-comment-rating.php';
 			}
+
+			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-rating-stars.php';
+			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-rating-db.php';
+			require_once WPZOOM_RCB_PLUGIN_DIR . 'src/classes/class-wpzoom-print.php';
 		}
 
 		/**

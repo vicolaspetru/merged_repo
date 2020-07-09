@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 
-	final class WPZOOM_Rating_Stars {
+	class WPZOOM_Rating_Stars {
 		/**
 		 * We need to create a table where to store all ratings for each single post.
 		 *
@@ -71,6 +71,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * Create table to store all rating for each single post.
 		 *
 		 * @since 1.1.0
+		 * @deprecated 3.0.0 Use instead WPZOOM_Rating_DB::create_or_update_database()
 		 */
 		public static function create_table() {
 			global $wpdb;
@@ -300,6 +301,8 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 */
 		public function get_rating_average( $recipe_ID ) {
 			global $wpdb;
+
+			// $test = WPZOOM_Rating_DB::get_rating( array( 'where' => 'recipe_id = ' . $recipe_ID ) );
 
 			$tablename = self::$tablename;
 			$sql_select = $wpdb->prepare( "SELECT AVG(rating) as rating FROM `$tablename` WHERE recipe_id = %s;", $recipe_ID );

@@ -138,7 +138,7 @@ class WPZOOM_Comment_Rating {
                     $rating = 0;
                 }
 
-                // self::update_cached_rating( $comment_id, $rating );
+                self::update_comment_meta_rating( $comment_id, $rating );
             } else {
                 $rating = intval( $rating_found );
             }
@@ -155,6 +155,25 @@ class WPZOOM_Comment_Rating {
     public static function save_comment_rating( $comment_id ) {
         $rating = isset( $_POST['wpzoom-rcb-comment-rating'] ) ? intval( $_POST['wpzoom-rcb-comment-rating'] ) : 0;
         self::update_comment_rating( $comment_id, $rating );
+    }
+
+    /**
+     * Update the comment rating meta that is used as a cache.
+     *
+     * @param   int $comment_id ID of the comment.
+     * @param   int $rating     Rating to set for this comment.
+     */
+    public static function update_comment_meta_rating( $comment_id, $rating ) {
+        $comment_id = intval( $comment_id );
+        $rating = intval( $rating );
+
+        if ( $comment_id ) {
+            $comment = get_comment( $comment_id );
+
+            if ( $comment ) {
+                update_comment_meta( $comment_id, 'wpzoom-rcb-comment-rating', $rating );
+            }
+        }
     }
 
     /**

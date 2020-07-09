@@ -19,7 +19,7 @@ class WPZOOM_Rating_DB {
      * @access private
      * @var string $version
      */
-    private static $version = '1.0';
+    private static $version = '1.1';
 
     /**
      * The fields in the rating database.
@@ -28,14 +28,6 @@ class WPZOOM_Rating_DB {
      * @var array $fields
      */
     private static $fields = array( 'id', 'recipe_id', 'user_id', 'comment_id', 'rating', 'rate_date', 'update_date', 'ip', 'approved' );
-
-    /**
-     * Cache for queries.
-     *
-     * @access private
-     * @var mixed $cache Cached queries.
-     */
-    private static $cache = array();
 
     /**
      * Register actions and filters.
@@ -52,7 +44,7 @@ class WPZOOM_Rating_DB {
         $current_version = get_option( 'wpzoom_rcb_rating_db_version', '0.0' );
 
         if ( version_compare( $current_version, self::$version ) < 0 ) {
-            self::update_database( $current_version );
+            self::create_or_update_database( $current_version );
         }
     }
 
@@ -69,7 +61,7 @@ class WPZOOM_Rating_DB {
      * 
      * @param mixed $from Database version to update from.
      */
-    public static function update_database( $from ) {
+    public static function create_or_update_database( $from ) {
         global $wpdb;
 
         $table_name = self::get_table_name();
@@ -90,8 +82,8 @@ class WPZOOM_Rating_DB {
             KEY recipe_id (recipe_id),
             KEY post_id (post_id),
             KEY comment_id (comment_id)
-            KEY rate_date (date),
-            KEY update_date (date),
+            KEY rate_date (rate_date),
+            KEY update_date (update_date),
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -134,7 +126,6 @@ class WPZOOM_Rating_DB {
 
         // Check if rating is between 1 and 5
         if ( 0 < $rating['rating'] && 5 >= $rating['rating'] ) {
-            global $wpdb;
             $table_name = self::get_table_name();
 
             $where = false;
@@ -152,6 +143,8 @@ class WPZOOM_Rating_DB {
 
             // Only continue if it was a valid rating
             if ( $where ) {
+                global $wpdb;
+
                 // Delete existing ratings
                 $existing_ratings = self::get_ratings(array(
                     'where' => $where,
@@ -165,13 +158,9 @@ class WPZOOM_Rating_DB {
                 // Insert new rating
                 $wpdb->insert( $table_name, $rating );
 
-                // Update cached rating
-                // if ( $rating['recipe_id'] ) {
-                //     WPRM_Rating::update_recipe_rating( $rating['recipe_id'] );
-                // } else {
-                //     WPRM_Rating::update_recipe_rating_for_comment( $rating['comment_id'] );
-                //     WPRM_Comment_Rating::update_cached_rating( $rating['comment_id'], $rating['rating'] );
-                // }
+                if ( ! $rating['recipe_id'] ) {
+                    WPRM_Comment_Rating::update_comment_meta_rating( $rating['comment_id'], $rating['rating'] );
+                }
 
                 return true;
             }
@@ -186,9 +175,8 @@ class WPZOOM_Rating_DB {
 
         $wpdb->delete( $table_name, array( 'comment_id' => $comment_id ), array( '%d' ) );
 
-        // Update cached rating.
-        // WPRM_Rating::update_recipe_rating_for_comment( $comment_id );
-        // WPRM_Comment_Rating::update_cached_rating( $comment_id, 0 );
+        // Update cached rating
+        WPZOOM_Comment_Rating::update_comment_meta_rating( $comment_id, 0 );
     }
 
     /**
@@ -197,44 +185,39 @@ class WPZOOM_Rating_DB {
      * @param mixed $args Arguments for the query.
      */
     public static function get_ratings( $args ) {
-        $cached_args = serialize( $args );
+        global $wpdb;
 
-        if ( isset( $args['nocache'] ) || ! array_key_exists( $cached_args, self::$cache ) ) {
-            global $wpdb;
-            $table_name = self::get_table_name();
+        $table_name = self::get_table_name();
 
-            // Sanitize arguments.
-            $order = isset( $args['order'] ) ? strtoupper( $args['order'] ) : '';
-            $order = in_array( $order, array( 'ASC', 'DESC' ), true ) ? $order : 'DESC';
+        // Sanitize arguments.
+        $order = isset( $args['order'] ) ? strtoupper( $args['order'] ) : '';
+        $order = in_array( $order, array( 'ASC', 'DESC' ), true ) ? $order : 'DESC';
 
-            $orderby = isset( $args['orderby'] ) ? strtolower( $args['orderby'] ) : '';
-            $orderby = in_array( $orderby, self::$fields, true ) ? $orderby : 'rate_date';
+        $orderby = isset( $args['orderby'] ) ? strtolower( $args['orderby'] ) : '';
+        $orderby = in_array( $orderby, self::$fields, true ) ? $orderby : 'rate_date';
 
-            $offset = isset( $args['offset'] ) ? intval( $args['offset'] ) : 0;
-            $limit = isset( $args['limit'] ) ? intval( $args['limit'] ) : 0;
+        $offset = isset( $args['offset'] ) ? intval( $args['offset'] ) : 0;
+        $limit = isset( $args['limit'] ) ? intval( $args['limit'] ) : 0;
 
-            $where = isset( $args['where'] ) ? trim( $args['where'] ) : '';
+        $where = isset( $args['where'] ) ? trim( $args['where'] ) : '';
 
-            // Query ratings.
-            $query_where = $where ? ' WHERE ' . $where : '';
-            $query_order = ' ORDER BY ' . $orderby . ' ' . $order;
-            $query_limit = $limit ? ' LIMIT ' . $offset . ',' . $limit : '';
+        // Query ratings.
+        $query_where = $where ? ' WHERE ' . $where : '';
+        $query_order = ' ORDER BY ' . $orderby . ' ' . $order;
+        $query_limit = $limit ? ' LIMIT ' . $offset . ',' . $limit : '';
 
-            // Count without limit.
-            $query_count = 'SELECT count(*) FROM ' . $table_name . $query_where;
-            $count = $wpdb->get_var( $query_count );
+        // Count without limit.
+        $query_count = 'SELECT count(*) FROM ' . $table_name . $query_where;
+        $count = $wpdb->get_var( $query_count );
 
-            // Query ratings.
-            $query_ratings = 'SELECT * FROM ' . $table_name . $query_where . $query_order . $query_limit;
-            $ratings = $wpdb->get_results( $query_ratings );
+        // Query ratings.
+        $query_ratings = 'SELECT * FROM ' . $table_name . $query_where . $query_order . $query_limit;
+        $ratings = $wpdb->get_results( $query_ratings );
 
-            self::$cache[ $cached_args ] = array(
-                'total' => intval( $count ),
-                'ratings' => $ratings,
-            );
-        }
-        
-        return self::$cache[ $cached_args ];
+        return array(
+            'total' => intval( $count ),
+            'ratings' => $ratings
+        );
     }
 
     /**
