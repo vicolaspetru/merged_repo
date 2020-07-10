@@ -30,6 +30,12 @@ class WPZOOM_Comment_Rating {
 
         add_action( 'comment_post', array( __CLASS__, 'save_comment_rating' ) );
         add_action( 'enqueue_block_assets', array( __CLASS__, 'block_assets' ) );
+
+        add_action( 'trashed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
+        add_action( 'spammed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
+        add_action( 'unspammed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
+        add_action( 'comment_unapproved_', array( __CLASS__, 'update_comment_rating_on_change' ) );
+        add_action( 'comment_approved_', array( __CLASS__, 'update_comment_rating_on_change' ) );
     }
 
     /**
@@ -174,6 +180,17 @@ class WPZOOM_Comment_Rating {
                 update_comment_meta( $comment_id, 'wpzoom-rcb-comment-rating', $rating );
             }
         }
+    }
+
+    /**
+     * Update recipe rating when comment changes.
+     *
+     * @param int $comment_id ID of the comment being changed.
+     */
+    public static function update_comment_rating_on_change( $comment_id ) {
+        // Force update in case approval state changed
+        $rating = self::get_rating_by_comment_id( $comment_id );
+        self::update_comment_rating( $comment_id, $rating );
     }
 
     /**

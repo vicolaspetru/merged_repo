@@ -591,7 +591,8 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             if ( ! empty( $rating_stars_color ) ) {
                 $custom_css .= "
                     .wp-block-wpzoom-recipe-card-block-recipe-card ul.wpzoom-rating-stars>li.fa-star,
-                    .wpzoom-rcb-comment-rating-stars label span.fa-star {
+                    .wpzoom-rcb-comment-rating-form .wpzoom-rcb-comment-rating-stars label span.fa-star,
+                    .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars span.fa-star {
                         color: {$rating_stars_color};
                     }";
             }

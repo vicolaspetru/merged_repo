@@ -19,7 +19,7 @@ class WPZOOM_Rating_DB {
      * @access private
      * @var string $version
      */
-    private static $version = '1.1';
+    private static $version = '1.0';
 
     /**
      * The fields in the rating database.
@@ -66,6 +66,11 @@ class WPZOOM_Rating_DB {
 
         $table_name = self::get_table_name();
         $charset_collate = $wpdb->get_charset_collate();
+        $drop_deprecated_indexes = get_option( 'wpzoom_rcb_rating_db_drop_deprecated_indexes', false );
+
+        if ( ! $drop_deprecated_indexes ) {
+            self::drop_deprecated_indexes( $table_name, array( 'post_user' ) );
+        }
 
         $sql = "CREATE TABLE `$table_name` (
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -83,13 +88,33 @@ class WPZOOM_Rating_DB {
             KEY post_id (post_id),
             KEY comment_id (comment_id)
             KEY rate_date (rate_date),
-            KEY update_date (update_date),
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
 
         update_option( 'wpzoom_rcb_rating_db_version', self::$version );
+    }
+
+    public static function drop_deprecated_indexes( $table_name, $indexes ) {
+        global $wpdb;
+
+        $drop_index = '';
+        $loop = 1;
+
+        foreach ( $indexes as $index ) {
+            if ( $loop < count( $indexes ) ) {
+                $drop_index .= "DROP INDEX `$index`, ";
+            } else {
+                $drop_index .= "DROP INDEX `$index`";
+            }
+            $loop++;
+        }
+
+        $sql = $wpdb->prepare( "ALTER TABLE `$table_name` $drop_index" );
+        $result = $wpdb->query( $sql );
+
+        update_option( 'wpzoom_rcb_rating_db_drop_deprecated_indexes', $result );
     }
 
     /**
@@ -116,7 +141,6 @@ class WPZOOM_Rating_DB {
             $comment = get_comment( $rating['comment_id'] );
 
             if ( $comment ) {
-                $rating['recipe_id'] = $comment->comment_post_ID;
                 $rating['post_id'] = $comment->comment_post_ID;
                 $rating['approved'] = '1' === $comment->comment_approved || 'approve' === $comment->comment_approved ? 1 : 0;
             } else {
@@ -159,7 +183,7 @@ class WPZOOM_Rating_DB {
                 $wpdb->insert( $table_name, $rating );
 
                 if ( ! $rating['recipe_id'] ) {
-                    WPRM_Comment_Rating::update_comment_meta_rating( $rating['comment_id'], $rating['rating'] );
+                    WPZOOM_Comment_Rating::update_comment_meta_rating( $rating['comment_id'], $rating['rating'] );
                 }
 
                 return true;
@@ -169,6 +193,11 @@ class WPZOOM_Rating_DB {
         return false;
     }
 
+    /**
+     * Delete ratings for a specific comment
+     * 
+     * @param int $comment_id   The comment id for which to delete ratings.
+     */
     public static function delete_ratings_for_comment( $comment_id ) {
         global $wpdb;
         $table_name = self::get_table_name();
@@ -233,6 +262,23 @@ class WPZOOM_Rating_DB {
         } else {
             return false;
         }
+    }
+
+    public static function get_rating_average( $args ) {
+        $average = 0;
+        $ratings = self::get_ratings( $args );
+
+        if ( 0 < $ratings['total'] ) {
+            foreach ( $ratings['ratings'] as $key => $rating ) {
+                if ( $rating->approved && 0 < $rating->rating ) {
+                    $average += intval( $rating->rating );
+                }
+            }
+
+            $average = $average / $ratings['total'];
+        }
+
+        return number_format( $average, 1 );
     }
 
     /**

@@ -68,35 +68,6 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		}
 
 		/**
-		 * Create table to store all rating for each single post.
-		 *
-		 * @since 1.1.0
-		 * @deprecated 3.0.0 Use instead WPZOOM_Rating_DB::create_or_update_database()
-		 */
-		public static function create_table() {
-			global $wpdb;
-
-			$tablename = self::$tablename;
-			$charset_collate = $wpdb->get_charset_collate();
-
-			$sql = "CREATE TABLE `$tablename` (
-				id mediumint(9) NOT NULL AUTO_INCREMENT,
-				recipe_id int(10) NOT NULL,
-				user_id varchar(20) NOT NULL,
-				rating tinyint(1) NOT NULL,
-				rate_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-				update_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-				UNIQUE KEY id (id),
-				UNIQUE KEY post_user (recipe_id, user_id),
-				KEY recipe_id (recipe_id),
-				KEY user_id (user_id)
-			) $charset_collate;";
-
-			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-			dbDelta( $sql );
-		}
-
-		/**
 		 * Generate random number.
 		 *
 		 * @param number $length The length of returned value.
@@ -145,14 +116,13 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		public function set_rating() {
 			check_ajax_referer( 'wpzoom-rating-stars-nonce', 'security' );
 
-			global $wpdb;
+			$rating = array();
 
-			$recipe_ID   = isset($_POST['recipe_id']) ? (int)$_POST['recipe_id'] : 0;
-			$rating      = isset($_POST['rating']) ? (int)$_POST['rating'] : 0;
-			$user_ID 	 = self::get_user_ID();
-			$tablename 	 = self::$tablename;
+			$rating['recipe_id'] = isset( $_POST['recipe_id'] ) ? intval( $_POST['recipe_id'] ) : 0;
+			$rating['rating'] = isset( $_POST['rating'] ) ? intval( $_POST['rating'] ) : 0;
+			$rating['user_id'] = self::get_user_ID();
 
-			if ( $rating == 0 ) {
+			if ( 0 >= $rating['rating'] && 5 < $rating['rating'] ) {
 				$response = array(
 				    'status' => '204',
 				    'message' => 'No response',
@@ -170,34 +140,18 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				wp_send_json_error( $response );
 			}
 
-			$rate_date   = current_time( 'mysql' );
-			$update_date = current_time( 'mysql' );
-
-			$sql = $wpdb->prepare(
-				"INSERT INTO `$tablename`
-				(recipe_id, user_id, rating, rate_date, update_date) VALUES (%d, %d, %d, %s, %s)
-				ON DUPLICATE KEY 
-					UPDATE rating = $rating, update_date = '$update_date';
-				",
-				$recipe_ID,
-				$user_ID,
-				$rating,
-				$rate_date,
-				$update_date
-			);
-
-			$result = $wpdb->query( $sql );
+			$result = WPZOOM_Rating_DB::add_or_update_rating( $rating );
 
 			if ( $result ) {
 				$response = array(
 					'status' => '200',
 					'message' => 'OK',
-					'rating_avg' => $this->get_rating_average( $recipe_ID ),
-					'rating_total' => $this->get_total_votes( $recipe_ID ),
+					'rating_avg' => $this->get_rating_average( $rating['recipe_id'] ),
+					'rating_total' => $this->get_total_votes( $rating['recipe_id'] ),
 				);
 
 				// set cookie
-				$this->set_user_rate( $recipe_ID, $rating );
+				$this->set_user_rate( $rating['recipe_id'], $rating['rating'] );
 
 				wp_send_json_success( $response );
 			}
@@ -215,14 +169,18 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			$tooltip_message 	= '';
 			$data_user_can_rate = 'data-user-can-rate="1"';
 
-			for ( $i = 1; $i <= 5; $i++ ) {
-				$rating_stars_items .= '<li class="fas fa-star"></li>';
-			}
-
 			// Get the average vote number and check if user has voted for this post
 			$average = $this->get_rating_average( $recipe_ID );
 			$total_votes = $this->get_total_votes( $recipe_ID );
 			$user_rate = $this->check_user_rate( $recipe_ID );
+
+			for ( $i = 1; $i <= 5; $i++ ) {
+				if ( $i <= $average ) {
+					$rating_stars_items .= '<li class="fas fa-star"></li>';
+				} else {
+					$rating_stars_items .= '<li class="far fa-star"></li>';
+				}
+			}
 
 			$average_content = sprintf(
 				'<small class="wpzoom-rating-average">%d</small> <small>%s</small> <small class="wpzoom-rating-total-votes">%d</small> <small>%s</small>',
@@ -300,15 +258,11 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @return number The average number of sql results.
 		 */
 		public function get_rating_average( $recipe_ID ) {
-			global $wpdb;
+			$rating_average = WPZOOM_Rating_DB::get_rating_average( array(
+				'where' => 'recipe_id = '. $recipe_ID .' OR post_id = '. $recipe_ID .' AND approved = 1'
+			) );
 
-			// $test = WPZOOM_Rating_DB::get_rating( array( 'where' => 'recipe_id = ' . $recipe_ID ) );
-
-			$tablename = self::$tablename;
-			$sql_select = $wpdb->prepare( "SELECT AVG(rating) as rating FROM `$tablename` WHERE recipe_id = %s;", $recipe_ID );
-			$sql_results = $wpdb->get_row( $sql_select, ARRAY_N );
-
-			return number_format( $sql_results[0], 1 );
+			return $rating_average;
 		}
 
 		/**
@@ -319,14 +273,11 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @return number The total number of sql results.
 		 */
 		public function get_total_votes( $recipe_ID ) {
-			global $wpdb;
-
-			$tablename = self::$tablename;
-			$sql_select = $wpdb->prepare( "SELECT COUNT(id) FROM `$tablename` WHERE recipe_id = %s;", $recipe_ID );
-
-			$sql_results = $wpdb->get_row( $sql_select, ARRAY_N );
-
-			return (int)$sql_results[0];
+			$ratings = WPZOOM_Rating_DB::get_ratings( array(
+				'where' => 'recipe_id = '. $recipe_ID .' OR post_id = '. $recipe_ID .' AND approved = 1'
+			) );
+			
+			return $ratings['total'];
 		}
 
 		/**
