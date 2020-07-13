@@ -194,7 +194,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     self::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' ) || 
                     self::has_reusable_block( 'wpzoom-recipe-card/block-nutrition' );
 
-                if ( $should_enqueue || $has_reusable_block ) {
+                $posts_loop_page = is_home() || is_archive() || is_search();
+
+                if ( $should_enqueue || $has_reusable_block || $posts_loop_page ) {
 
                     // Scripts.
                     wp_enqueue_script(
@@ -255,7 +257,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     
                 }
 
-                if ( has_block( 'wpzoom-recipe-card/block-recipe-card' ) || self::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' ) ) {
+                if ( has_block( 'wpzoom-recipe-card/block-recipe-card' ) || self::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' ) || $posts_loop_page ) {
                     wp_enqueue_script(
                         self::$_slug . '-adjustable-servings',
                         $this->asset_source( 'js', 'adjustable-servings.js' ),
@@ -386,6 +388,15 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     WPZOOM_RCB_VERSION
                 );
 
+            }
+
+            if ( is_home() || is_archive() || is_search() ) {
+                wp_enqueue_style(
+                    self::$_slug . '-icon-fonts-css', // Handle.
+                    $this->asset_source( 'css', 'icon-fonts.build.css' ), // Block editor CSS.
+                    $this->get_dependencies( self::$_slug . '-icon-fonts-css' ), // Dependency to include the CSS after it.
+                    WPZOOM_RCB_VERSION
+                );
             }
 		}
 
