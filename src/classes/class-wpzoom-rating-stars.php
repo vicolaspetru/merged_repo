@@ -258,6 +258,10 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @return number The average number of sql results.
 		 */
 		public function get_rating_average( $recipe_ID ) {
+			if ( ! $recipe_ID ) {
+				return;
+			}
+
 			$rating_average = WPZOOM_Rating_DB::get_rating_average( array(
 				'where' => 'recipe_id = '. $recipe_ID .' OR post_id = '. $recipe_ID .' AND approved = 1'
 			) );
@@ -273,6 +277,10 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @return number The total number of sql results.
 		 */
 		public function get_total_votes( $recipe_ID ) {
+			if ( ! $recipe_ID ) {
+				return;
+			}
+			
 			$ratings = WPZOOM_Rating_DB::get_ratings( array(
 				'where' => 'recipe_id = '. $recipe_ID .' OR post_id = '. $recipe_ID .' AND approved = 1'
 			) );
