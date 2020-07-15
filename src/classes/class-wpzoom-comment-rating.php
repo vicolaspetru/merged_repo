@@ -28,8 +28,11 @@ class WPZOOM_Comment_Rating {
         add_filter( 'comment_text', array( __CLASS__, 'add_rating_stars_to_comment' ), 10, 3 );
         add_filter( 'comment_form_field_comment', array( __CLASS__, 'add_rating_stars_to_comment_form' ), 10, 1 );
 
-        add_action( 'comment_post', array( __CLASS__, 'save_comment_rating' ) );
         add_action( 'enqueue_block_assets', array( __CLASS__, 'block_assets' ) );
+        add_action( 'add_meta_boxes_comment', array( __CLASS__, 'add_rating_field_to_comments_edit_page' ) );
+
+        add_action( 'comment_post', array( __CLASS__, 'save_comment_rating' ) );
+        add_action( 'edit_comment', array( __CLASS__, 'save_admin_comment_rating' ) );
 
         add_action( 'trashed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
         add_action( 'spammed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
@@ -103,8 +106,14 @@ class WPZOOM_Comment_Rating {
      * @param string $args_comment_field The content of the comment textarea field.
      */
     public static function add_rating_stars_to_comment_form( $args_comment_field ) {
+        global $post, $comment;
+
         $rating_stars_html = '';
-        $rating = 0;
+
+        // Pass variables to comment-rating-form template
+        $post_ID = $post->ID;
+        $rating = self::get_rating_by_comment_id( $comment->comment_ID );
+
         $comment_rating_template = apply_filters( 'wpzoom_rcb_comment_rating_form_template', WPZOOM_RCB_PLUGIN_DIR . 'templates/public/comment-rating-form.php' );
 
         ob_start();
@@ -151,6 +160,50 @@ class WPZOOM_Comment_Rating {
         }
 
         return $rating;
+    }
+
+    /**
+     * Add comment rating meta box to the comment edit page.
+     */
+    public static function add_rating_field_to_comments_edit_page() {
+        add_meta_box(
+            'wpzoom-rcb-comment-rating',
+            __( 'Change comment rating', 'wpzoom-recipe-card' ),
+            array( __CLASS__, 'add_rating_field_to_admin_comments_form' ),
+            'comment',
+            'normal',
+            'high'
+        );
+    }
+
+    /**
+     * Add rating field to the admin comment form.
+     * 
+     * @param object $comment The comment being edited.
+     */
+    public static function add_rating_field_to_admin_comments_form( $comment ) {
+        $post_ID = $comment->comment_post_ID;
+        $rating = self::get_rating_by_comment_id( $comment->comment_ID );
+
+        wp_nonce_field( 'comment-rating-' . $comment->comment_ID, 'wpzoom-rcb-comment-rating-nonce', false );
+
+        $template = apply_filters( 'wpzoom_rcb_comment_rating_form_template', WPZOOM_RCB_PLUGIN_DIR . 'templates/public/comment-rating-form.php' );
+
+        require( $template );
+    }
+
+    /**
+     * Save the comment rating from admin edit page.
+     * 
+     * @param  int $comment_id The comment id being saved.
+     */
+    public static function save_admin_comment_rating( $comment_id ) {
+        $wpzoom_rcb_comment_rating_nonce = isset( $_POST['wpzoom-rcb-comment-rating-nonce'] ) ? $_POST['wpzoom-rcb-comment-rating-nonce'] : false;
+
+        if ( $wpzoom_rcb_comment_rating_nonce && wp_verify_nonce( sanitize_key( $wpzoom_rcb_comment_rating_nonce ), 'comment-rating-' . $comment_id ) ) {
+            $rating = isset( $_POST['wpzoom-rcb-comment-rating'] ) ? intval( $_POST['wpzoom-rcb-comment-rating'] ) : 0;
+            self::update_comment_rating( $comment_id, $rating );
+        }
     }
 
     /**
