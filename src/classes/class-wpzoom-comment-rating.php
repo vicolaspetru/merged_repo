@@ -166,6 +166,16 @@ class WPZOOM_Comment_Rating {
      * Add comment rating meta box to the comment edit page.
      */
     public static function add_rating_field_to_comments_edit_page() {
+        global $comment;
+
+        if ( ! $comment ) {
+            return;
+        }
+
+        if ( ! has_block( 'wpzoom-recipe-card/block-recipe-card', $comment->comment_post_ID ) ) {
+            return;
+        }
+
         add_meta_box(
             'wpzoom-rcb-comment-rating',
             __( 'Change comment rating', 'wpzoom-recipe-card' ),
