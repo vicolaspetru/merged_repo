@@ -172,18 +172,16 @@ class WPZOOM_Comment_Rating {
             return;
         }
 
-        if ( ! has_block( 'wpzoom-recipe-card/block-recipe-card', $comment->comment_post_ID ) ) {
-            return;
+        if ( has_block( 'wpzoom-recipe-card/block-recipe-card', $comment->comment_post_ID ) || WPZOOM_Assets_Manager::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card', $comment->comment_post_ID ) ) {
+            add_meta_box(
+                'wpzoom-rcb-comment-rating',
+                __( 'Change comment rating', 'wpzoom-recipe-card' ),
+                array( __CLASS__, 'add_rating_field_to_admin_comments_form' ),
+                'comment',
+                'normal',
+                'high'
+            );
         }
-
-        add_meta_box(
-            'wpzoom-rcb-comment-rating',
-            __( 'Change comment rating', 'wpzoom-recipe-card' ),
-            array( __CLASS__, 'add_rating_field_to_admin_comments_form' ),
-            'comment',
-            'normal',
-            'high'
-        );
     }
 
     /**

@@ -7,15 +7,15 @@
  * @package     WPZOOM_Recipe_Card_Blocks
  * @subpackage  WPZOOM_Recipe_Card_Blocks/templates/public
  */
-$should_display_comment_rating_form = true;
+$should_display_comment_rating_form = false;
 
 if ( isset( $post_ID ) ) {
-    if ( ! has_block( 'wpzoom-recipe-card/block-recipe-card', $post_ID ) ) {
-        $should_display_comment_rating_form = false;
+    if ( has_block( 'wpzoom-recipe-card/block-recipe-card', $post_ID ) || WPZOOM_Assets_Manager::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card', $post_ID ) ) {
+        $should_display_comment_rating_form = true;
     }
 } else {
-    if ( ! has_block( 'wpzoom-recipe-card/block-recipe-card' ) ) {
-        $should_display_comment_rating_form = false;
+    if ( has_block( 'wpzoom-recipe-card/block-recipe-card' ) || WPZOOM_Assets_Manager::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' ) ) {
+        $should_display_comment_rating_form = true;
     }
 }
 
