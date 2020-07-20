@@ -1134,80 +1134,6 @@ class WPZOOM_Settings {
 						)
 					),
 					array(
-						'id' 		=> 'wpzoom_section_rating_features',
-						'title' 	=> __( 'Rating Feature', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-miscellaneous',
-						'callback' 	=> array( $this, 'section_rating_feature_cb' ),
-						'fields' 	=> array(
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_user_ratings',
-								'title' 	=> __( 'User Rating', 'wpzoom-recipe-card' ),
-								'type'		=> 'checkbox',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_user_ratings',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Allow visitors to vote your recipes.', 'wpzoom-recipe-card' ),
-									'default'		=> true,
-									'disabled'		=> false,
-									'preview'       => true,
-									'preview_pos'	=> 'top',
-								)
-							),
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_comment_ratings',
-								'title' 	=> __( 'Comment Ratings', 'wpzoom-recipe-card' ),
-								'type'		=> 'checkbox',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_comment_ratings',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Allow visitors to vote your recipes when add a comment.', 'wpzoom-recipe-card' ),
-									'default'		=> false,
-									'disabled'		=> false,
-									'preview'       => true,
-									'preview_pos'	=> 'top',
-								)
-							),
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_who_can_rate',
-								'title' 	=> __( 'Who can rate?', 'wpzoom-recipe-card' ),
-								'type'		=> 'select',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_who_can_rate',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Select who can rate your recipes.', 'wpzoom-recipe-card' ),
-									'default'		=> 'everyone',
-									'options' 		=> array(
-										'loggedin' 	=> __( 'Only logged in users can rate recipes', 'wpzoom-recipe-card' ),
-										'everyone' 	=> __( 'Everyone can rate recipes', 'wpzoom-recipe-card' ),
-									)
-								)
-							),
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_rating_stars_color',
-								'title' 	=> __( 'Rating Stars Color', 'wpzoom-recipe-card' ),
-								'type'		=> 'colorpicker',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_rating_stars_color',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Change rating stars color of Recipe Card.', 'wpzoom-recipe-card' ),
-									'default'		=> '#F2A123',
-								)
-							),
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_reset_ratings',
-								'title' 	=> __( 'Reset Ratings', 'wpzoom-recipe-card' ),
-								'type'		=> 'button',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_reset_ratings',
-									'type'			=> 'button',
-									'button_type'	=> 'secondary',
-									'text' 			=> esc_html__( 'Reset Ratings', 'wpzoom-recipe-card' ),
-									'description' 	=> esc_html__( 'Be careful, this action will reset all ratings to zero! NOTE: This action can\'t be reversed.', 'wpzoom-recipe-card' ),
-								)
-							),
-						)
-					),
-					array(
 						'id' 		=> 'wpzoom_section_lightbox',
 						'title' 	=> __( 'Lightbox', 'wpzoom-recipe-card' ),
 						'page' 		=> 'wpzoom-recipe-card-settings-miscellaneous',
@@ -1254,6 +1180,88 @@ class WPZOOM_Settings {
 						),
 					)
 				)
+			),
+			'ratings' => array(
+				'tab_id' 		=> 'tab-ratings',
+				'tab_title'		=> __( 'Ratings', 'wpzoom-recipe-card' ),
+				'option_group'	=> 'wpzoom-recipe-card-settings-ratings',
+				'option_name'	=> self::$option,
+				'sections'		=> array(
+					array(
+						'id' 		=> 'wpzoom_section_rating_features',
+						'title' 	=> __( 'Rating Feature', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-ratings',
+						'callback' 	=> array( $this, 'section_rating_feature_cb' ),
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_user_ratings',
+								'title' 	=> __( 'User Rating', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_user_ratings',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Allow visitors to vote your recipes.', 'wpzoom-recipe-card' ),
+									'default'		=> true,
+									'disabled'		=> false,
+									'preview'       => true,
+									'preview_pos'	=> 'bottom',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_comment_ratings',
+								'title' 	=> __( 'Comment Ratings', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_comment_ratings',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Allow visitors to vote your recipes when add a comment.', 'wpzoom-recipe-card' ),
+									'default'		=> true,
+									'disabled'		=> false,
+									'preview'       => true,
+									'preview_pos'	=> 'top',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_who_can_rate',
+								'title' 	=> __( 'Who can rate?', 'wpzoom-recipe-card' ),
+								'type'		=> 'select',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_who_can_rate',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Select who can rate your recipes.', 'wpzoom-recipe-card' ),
+									'default'		=> 'everyone',
+									'options' 		=> array(
+										'loggedin' 	=> __( 'Only logged in users can rate recipes', 'wpzoom-recipe-card' ),
+										'everyone' 	=> __( 'Everyone can rate recipes', 'wpzoom-recipe-card' ),
+									)
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_rating_stars_color',
+								'title' 	=> __( 'Rating Stars Color', 'wpzoom-recipe-card' ),
+								'type'		=> 'colorpicker',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_rating_stars_color',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'Change rating stars color of Recipe Card.', 'wpzoom-recipe-card' ),
+									'default'		=> '#F2A123',
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_reset_ratings',
+								'title' 	=> __( 'Reset Ratings', 'wpzoom-recipe-card' ),
+								'type'		=> 'button',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_reset_ratings',
+									'type'			=> 'button',
+									'button_type'	=> 'secondary',
+									'text' 			=> esc_html__( 'Reset Ratings', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Be careful, this action will reset all ratings to zero! NOTE: This action can\'t be reversed.', 'wpzoom-recipe-card' ),
+								)
+							),
+						)
+					),
+				),
 			),
 			'metadata' => array(
 				'tab_id' 		=> 'tab-metadata',
