@@ -29,7 +29,7 @@ import {
  * Module constants
  */
 const coursesToken = [
-    __( 'Appetizer & Snaks', 'wpzoom-recipe-card' ),
+    __( 'Appetizer & Snacks', 'wpzoom-recipe-card' ),
     __( 'Breakfast & Brunch', 'wpzoom-recipe-card' ),
     __( 'Dessert', 'wpzoom-recipe-card' ),
     __( 'Drinks', 'wpzoom-recipe-card' ),
