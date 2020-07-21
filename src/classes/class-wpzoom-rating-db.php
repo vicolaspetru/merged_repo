@@ -69,7 +69,7 @@ class WPZOOM_Rating_DB {
         $drop_deprecated_indexes = get_option( 'wpzoom_rcb_rating_db_drop_deprecated_indexes', false );
 
         if ( ! $drop_deprecated_indexes ) {
-            self::drop_deprecated_indexes( $table_name, array( 'post_user' ) );
+            self::drop_deprecated_indexes();
         }
 
         $sql = "CREATE TABLE `$table_name` (
@@ -86,8 +86,8 @@ class WPZOOM_Rating_DB {
             PRIMARY KEY (id),
             KEY recipe_id (recipe_id),
             KEY post_id (post_id),
-            KEY comment_id (comment_id)
-            KEY rate_date (rate_date),
+            KEY comment_id (comment_id),
+            KEY rate_date (rate_date)
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -96,28 +96,18 @@ class WPZOOM_Rating_DB {
         update_option( 'wpzoom_rcb_rating_db_version', self::$version );
     }
 
-    public static function drop_deprecated_indexes( $table_name, $indexes ) {
+    public static function drop_deprecated_indexes() {
         global $wpdb;
 
-        $drop_index = '';
-        $loop = 1;
-
-        foreach ( $indexes as $index ) {
-            if ( $loop < count( $indexes ) ) {
-                $drop_index .= "DROP INDEX `$index`, ";
-            } else {
-                $drop_index .= "DROP INDEX `$index`";
-            }
-            $loop++;
-        }
-
-        if ( empty( $drop_index ) ) {
-            return false;
-        }
+        $table_name = self::get_table_name();
 
         $sql = $wpdb->prepare(
-            "ALTER TABLE %s $drop_index",
-            $table_name
+            "ALTER TABLE `$table_name`
+            DROP INDEX post_user,
+            CHANGE `rate_date` `rate_date` datetime NOT NULL DEFAULT %s,
+            CHANGE `update_date` `update_date` datetime NOT NULL DEFAULT %s;",
+            current_time( 'mysql' ),
+            current_time( 'mysql' )
         );
         $result = $wpdb->query( $sql );
 
