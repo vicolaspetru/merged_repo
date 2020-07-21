@@ -109,10 +109,11 @@ class WPZOOM_Comment_Rating {
         global $post, $comment;
 
         $rating_stars_html = '';
+        $comment_id = is_object( $comment ) && isset( $comment->comment_ID ) ? $comment->comment_ID : 0;
 
         // Pass variables to comment-rating-form template
         $post_ID = $post->ID;
-        $rating = self::get_rating_by_comment_id( $comment->comment_ID );
+        $rating = self::get_rating_by_comment_id( $comment_id );
 
         $comment_rating_template = apply_filters( 'wpzoom_rcb_comment_rating_form_template', WPZOOM_RCB_PLUGIN_DIR . 'templates/public/comment-rating-form.php' );
 

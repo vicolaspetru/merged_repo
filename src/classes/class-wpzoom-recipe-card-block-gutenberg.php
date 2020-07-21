@@ -139,9 +139,10 @@ final class WPZOOM_Recipe_Card_Block_Gutenberg {
 	 * @return array                The array with custom passed attributes
 	 */
 	public static function pinterest_nopin_images( $args, $attachment, $size ) {
+		$settings = WPZOOM_Premium_Recipe_Card_Block::$settings;
 		$nopin = WPZOOM_Settings::get('wpzoom_rcb_settings_nopin_images');
 		$pin_custom_image = WPZOOM_Settings::get('wpzoom_rcb_settings_pin_image');
-		$block_has_pin_custom_image = WPZOOM_Premium_Recipe_Card_Block::$settings['pin_has_custom_image'];
+		$block_has_pin_custom_image = isset( $settings['pin_has_custom_image'] ) ? $settings['pin_has_custom_image'] : false;
 
 		if ( '1' === $nopin ) {
 			// We don't need to add `data-pin-nopin` attribute to recipe card image

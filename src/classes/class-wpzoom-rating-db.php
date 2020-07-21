@@ -116,8 +116,8 @@ class WPZOOM_Rating_DB {
         }
 
         $sql = $wpdb->prepare(
-            "ALTER TABLE `$table_name` %s",
-            $drop_index
+            "ALTER TABLE %s $drop_index",
+            $table_name
         );
         $result = $wpdb->query( $sql );
 
