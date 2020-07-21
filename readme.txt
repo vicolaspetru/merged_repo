@@ -63,11 +63,14 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
-= 2.9.1
+= 2.9.2 =
+* Fixed a conflict with Tasty Links plugin
+
+= 2.9.1 =
 * Fixed issue with undefined index on print page
 * Ingredients display in one column on print page
 
-= 2.9.0
+= 2.9.0 =
 * 🆕 Added new design: Accent Color Header
 * Added AMP support
 * Added Block Alignment
@@ -82,7 +85,7 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 * Fixed issue when gallery image isSelected and action to move step up/down is triggered
 * Fixed issue "The behavior of unparenthesized expressions containing both '.' and '+'/'-'"
 
-= 2.8.3
+= 2.8.3 =
 * Fixed issue with Jump to Recipe and Print Recipe that are showing up on homepage as part of the excerpt
 
 = 2.8.2 =
