@@ -111,7 +111,14 @@ class WPZOOM_Rating_DB {
             $loop++;
         }
 
-        $sql = $wpdb->prepare( "ALTER TABLE `$table_name` $drop_index" );
+        if ( empty( $drop_index ) ) {
+            return false;
+        }
+
+        $sql = $wpdb->prepare(
+            "ALTER TABLE `$table_name` %s",
+            $drop_index
+        );
         $result = $wpdb->query( $sql );
 
         update_option( 'wpzoom_rcb_rating_db_drop_deprecated_indexes', $result );
