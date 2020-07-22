@@ -44,16 +44,15 @@ final class WPZOOM_Recipe_Card_Block_Gutenberg {
 	 * @return void
 	 */
 	private static function action_hooks() {
-		add_filter( 'block_categories', 				__CLASS__ . '::add_custom_category', 10, 2 );
-		add_filter( 'image_size_names_choose', 			__CLASS__ . '::custom_image_sizes_choose' );
-		add_filter( 'wp_get_attachment_image_attributes', __CLASS__.'::pinterest_nopin_images', 10, 3 );
-		add_filter( 'get_avatar', 						__CLASS__ . '::pinterest_nopin_author_avatar', 10, 6 );
+		add_filter( 'block_categories', array( __CLASS__, 'add_custom_category' ), 10, 2 );
+		add_filter( 'image_size_names_choose', array( __CLASS__, 'custom_image_sizes_choose' ) );
+		add_filter( 'wp_get_attachment_image_attributes', array( __CLASS__, 'pinterest_nopin_images' ), 10, 3 );
+		add_filter( 'get_avatar', array( __CLASS__, 'pinterest_nopin_author_avatar' ), 10, 6 );
 
-		add_action( 'after_setup_theme', 				__CLASS__ . '::register_custom_image_sizes' );
-		add_action( 'init', 							__CLASS__ . '::register_block_types' );
-		add_action( 'init', 							__CLASS__ . '::load_textdomain' );
-		add_action( 'init', 							'WPZOOM_Rating_Stars::create_table' );
-		add_action( 'init', 							'WPZOOM_Rating_Stars::set_user_ID' );
+		add_action( 'after_setup_theme', array( __CLASS__, 'register_custom_image_sizes' ) );
+		add_action( 'init', array( __CLASS__, 'register_block_types' ) );
+		add_action( 'init', array( __CLASS__, 'load_textdomain' ) );
+		add_action( 'init', 'WPZOOM_Rating_Stars::set_user_ID' );
 
 		WPZOOM_Taxonomies::init();
 	}
@@ -140,9 +139,10 @@ final class WPZOOM_Recipe_Card_Block_Gutenberg {
 	 * @return array                The array with custom passed attributes
 	 */
 	public static function pinterest_nopin_images( $args, $attachment, $size ) {
+		$settings = WPZOOM_Premium_Recipe_Card_Block::$settings;
 		$nopin = WPZOOM_Settings::get('wpzoom_rcb_settings_nopin_images');
 		$pin_custom_image = WPZOOM_Settings::get('wpzoom_rcb_settings_pin_image');
-		$block_has_pin_custom_image = WPZOOM_Premium_Recipe_Card_Block::$settings['pin_has_custom_image'];
+		$block_has_pin_custom_image = isset( $settings['pin_has_custom_image'] ) ? $settings['pin_has_custom_image'] : false;
 
 		if ( '1' === $nopin ) {
 			// We don't need to add `data-pin-nopin` attribute to recipe card image

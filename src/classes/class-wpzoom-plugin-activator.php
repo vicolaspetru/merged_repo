@@ -21,10 +21,10 @@ final class WPZOOM_Plugin_Activator {
 	 */
 	static public function init() {
 		// Activation
-		register_activation_hook( WPZOOM_RCB_PLUGIN_FILE, __CLASS__ . '::activate' );
+		register_activation_hook( WPZOOM_RCB_PLUGIN_FILE, array( __CLASS__, 'activate' ) );
 
 		// Deactivation
-		register_deactivation_hook( WPZOOM_RCB_PLUGIN_FILE, __CLASS__ . '::deactivate' );
+		register_deactivation_hook( WPZOOM_RCB_PLUGIN_FILE, array( __CLASS__, 'deactivate' ) );
 	}
 
 	/**

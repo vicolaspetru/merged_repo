@@ -79,6 +79,40 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
             add_action( 'amp_post_template_css', array( $this, 'amp_for_wp_include_css_template' ) );
 		}
 
+        /**
+         * Check the post content has reusable block
+         * 
+         * @since  2.9.3
+         * @param  string  $block_name      The block name
+         * @param  boolean|int $post_ID     The post ID
+         * @return boolean                  Return true if post content has provided block name as reusable block, else return false
+         */
+        public static function has_reusable_block( $block_name, $post_ID = false ){
+            $post_ID = !$post_ID ? get_the_ID() : $post_ID;
+
+            if( $post_ID ){
+                if ( has_block( 'block', $post_ID ) ){
+                    // Check reusable blocks
+                    $content = get_post_field( 'post_content', $post_ID );
+                    $blocks = parse_blocks( $content );
+
+                    if ( ! is_array( $blocks ) || empty( $blocks ) ) {
+                        return false;
+                    }
+
+                    foreach ( $blocks as $block ) {
+                        if ( $block['blockName'] === 'core/block' && ! empty( $block['attrs']['ref'] ) ) {
+                            if( has_block( $block_name, $block['attrs']['ref'] ) ){
+                               return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
 		/**
 		 * Get array of dependencies.
 		 *
@@ -104,6 +138,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 			elseif ( 'wpzoom-rating-stars-script' === $handle ) {
 				$dependencies = array( 'jquery' );
 			}
+            elseif ( 'wpzoom-comment-rating-script' === $handle ) {
+                $dependencies = array( 'jquery' );
+            }
             elseif ( self::$_slug . '-masonry-gallery' === $handle ) {
                 $dependencies = array( 'jquery-masonry', 'imagesloaded' );
             }
@@ -139,14 +176,27 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 
             } else {
 
-                if ( has_block( 'wpzoom-recipe-card/block-details' ) || 
-                     has_block( 'wpzoom-recipe-card/block-ingredients' ) || 
-                     has_block( 'wpzoom-recipe-card/block-directions' ) || 
-                     has_block( 'wpzoom-recipe-card/block-print-recipe' ) || 
-                     has_block( 'wpzoom-recipe-card/block-jump-to-recipe' ) || 
-                     has_block( 'wpzoom-recipe-card/block-recipe-card' ) ||
-                     has_block( 'wpzoom-recipe-card/block-nutrition' )
-                ) {
+                $should_enqueue = 
+                    has_block( 'wpzoom-recipe-card/block-details' ) || 
+                    has_block( 'wpzoom-recipe-card/block-ingredients' ) || 
+                    has_block( 'wpzoom-recipe-card/block-directions' ) || 
+                    has_block( 'wpzoom-recipe-card/block-print-recipe' ) || 
+                    has_block( 'wpzoom-recipe-card/block-jump-to-recipe' ) || 
+                    has_block( 'wpzoom-recipe-card/block-recipe-card' ) || 
+                    has_block( 'wpzoom-recipe-card/block-nutrition' );
+
+                $has_reusable_block = 
+                    self::has_reusable_block( 'wpzoom-recipe-card/block-details' ) || 
+                    self::has_reusable_block( 'wpzoom-recipe-card/block-ingredients' ) || 
+                    self::has_reusable_block( 'wpzoom-recipe-card/block-directions' ) || 
+                    self::has_reusable_block( 'wpzoom-recipe-card/block-print-recipe' ) || 
+                    self::has_reusable_block( 'wpzoom-recipe-card/block-jump-to-recipe' ) || 
+                    self::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' ) || 
+                    self::has_reusable_block( 'wpzoom-recipe-card/block-nutrition' );
+
+                $posts_loop_page = is_home() || is_archive() || is_search();
+
+                if ( $should_enqueue || $has_reusable_block || $posts_loop_page ) {
 
                     // Scripts.
                     wp_enqueue_script(
@@ -207,7 +257,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     
                 }
 
-                if ( has_block( 'wpzoom-recipe-card/block-recipe-card' ) ) {
+                if ( has_block( 'wpzoom-recipe-card/block-recipe-card' ) || self::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' ) || $posts_loop_page ) {
                     wp_enqueue_script(
                         self::$_slug . '-adjustable-servings',
                         $this->asset_source( 'js', 'adjustable-servings.js' ),
@@ -326,7 +376,10 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 
             }
 
-            if ( ! is_admin() && ( has_block( 'wpzoom-recipe-card/block-details' ) || has_block( 'wpzoom-recipe-card/block-recipe-card' ) ) ) {
+            if (
+                ! is_admin() && 
+                ( has_block( 'wpzoom-recipe-card/block-details' ) || has_block( 'wpzoom-recipe-card/block-recipe-card' ) || self::has_reusable_block( 'wpzoom-recipe-card/block-details' ) || self::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' ) )
+            ) {
 
                 wp_enqueue_style(
                     self::$_slug . '-icon-fonts-css', // Handle.
@@ -335,6 +388,15 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     WPZOOM_RCB_VERSION
                 );
 
+            }
+
+            if ( is_home() || is_archive() || is_search() ) {
+                wp_enqueue_style(
+                    self::$_slug . '-icon-fonts-css', // Handle.
+                    $this->asset_source( 'css', 'icon-fonts.build.css' ), // Block editor CSS.
+                    $this->get_dependencies( self::$_slug . '-icon-fonts-css' ), // Dependency to include the CSS after it.
+                    WPZOOM_RCB_VERSION
+                );
             }
 		}
 
@@ -587,7 +649,9 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
 
             if ( ! empty( $rating_stars_color ) ) {
                 $custom_css .= "
-                    .wp-block-wpzoom-recipe-card-block-recipe-card ul.wpzoom-rating-stars>li.fa-star {
+                    .wp-block-wpzoom-recipe-card-block-recipe-card ul.wpzoom-rating-stars>li.fa-star,
+                    .wpzoom-rcb-comment-rating-form .wpzoom-rcb-comment-rating-stars label span.fa-star,
+                    .wpzoom-rcb-comment-rating .wpzoom-rcb-comment-rating-stars span.fa-star {
                         color: {$rating_stars_color};
                     }";
             }

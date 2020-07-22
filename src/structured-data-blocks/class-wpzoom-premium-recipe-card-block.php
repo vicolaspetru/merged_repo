@@ -701,7 +701,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$json_ld['recipeInstructions'] = $groups_section;
 		}
 
-		return apply_filters( 'wpzoom_rcb_block_json_ld', $json_ld );
+		return apply_filters( 'wpzoom_rcb_block_json_ld', $json_ld, self::$recipe->ID, $attributes );
 	}
 
 	/**
