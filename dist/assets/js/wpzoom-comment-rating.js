@@ -1,4 +1,3 @@
-
 jQuery( document ).ready( function( $ ) {
     const ratings = $( '.wpzoom-rcb-comment-rating-stars' );
     const selectedClass = 'fas';
