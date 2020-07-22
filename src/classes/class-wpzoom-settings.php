@@ -1214,7 +1214,7 @@ class WPZOOM_Settings {
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_comment_ratings',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Allow visitors to vote your recipes when add a comment.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Allow visitors to vote recipes when adding a comment', 'wpzoom-recipe-card' ),
 									'default'		=> true,
 									'disabled'		=> false,
 									'preview'       => true,

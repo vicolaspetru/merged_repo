@@ -63,6 +63,11 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 3.0.0 =
+* Added Recipe Rating in Comments
+* Fixed a bug with block styles for reusable blocks on front-end
+* Fixed a bug when block styles are missed on home or archive page
+
 = 2.9.2 =
 * Fixed a conflict with Tasty Links plugin
 
