@@ -1379,9 +1379,11 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$dataMasonryGrid = ' data-gallery-masonry-grid="false"';
 
 		if ( $hasGalleryImages ) {
+			$initMasonry = count( $step['gallery']['images'] ) > $gridColumns;
 
-			if ( count( $step['gallery']['images'] ) > $gridColumns ) {
+			if ( $initMasonry ) {
 				$dataMasonryGrid = ' data-gallery-masonry-grid="true"';
+				$galleryColumns .= ' is-loading';
 			}
 
 			$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
@@ -1429,8 +1431,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			}
 
 			$output .= '</ul>';
-			$output .= '</div><!-- /.direction-step-gallery -->';
 
+			if ( $initMasonry ) {
+				$output .= '<div class="direction-step-gallery-preloader">'. __( 'Loading gallery media', 'wpzoom-recipe-card' ) .'...</div>';
+			}
+
+			$output .= '</div><!-- /.direction-step-gallery -->';
 		}
 
 		return $output;
