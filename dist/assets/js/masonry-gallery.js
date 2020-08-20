@@ -7,6 +7,7 @@
 
     let $gridGallery = $( '.direction-step-gallery' ),
         $grid = $( '.direction-step-gallery-grid' ),
+        shouldEnableMasonryGrid = $grid.attr( 'data-gallery-masonry-grid' ) === 'true',
         desktopGridCol = $gridGallery.data( 'grid-columns' ),
         tabletGridCol = desktopGridCol > 2 ? 3 : 2,
         mobileGridCol = 2,
@@ -43,6 +44,10 @@
      * all the images in the grid are completely loaded.
      */
     function rebuildMasonry( event ) {
+        if ( ! shouldEnableMasonryGrid ) {
+            return;
+        }
+
         const columnWidth = '.direction-step-gallery-item';
 
         if ( event === 'ready' ) {

@@ -337,6 +337,10 @@
                     position: relative;
                     box-sizing: border-box;
                 }
+
+                &[data-gallery-masonry-grid="false"] .direction-step-gallery-item:not(:last-child) {
+                    margin-right: $grid-unit;
+                }
             }
 
             &.is-loading {

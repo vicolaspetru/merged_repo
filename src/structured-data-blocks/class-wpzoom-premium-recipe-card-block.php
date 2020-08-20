@@ -1376,14 +1376,19 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$hasGalleryImages = isset( $step['gallery'] ) && isset( $step['gallery']['images'] ) && ! empty( $step['gallery']['images'] );
 		$gridColumns = WPZOOM_Settings::get( 'wpzoom_rcb_settings_gallery_columns' );
 		$galleryColumns = 'columns-'. $gridColumns .'';
+		$dataMasonryGrid = ' data-gallery-masonry-grid="false"';
 
 		if ( $hasGalleryImages ) {
+
+			if ( count( $step['gallery']['images'] ) > $gridColumns ) {
+				$dataMasonryGrid = ' data-gallery-masonry-grid="true"';
+			}
 
 			$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
 			$clickableDirectionImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instruction_images_lightbox' );
 
 			$output .= '<div class="direction-step-gallery '. $galleryColumns .'" data-grid-columns="'. $gridColumns .'">';
-			$output .= '<ul class="direction-step-gallery-grid">';
+			$output .= '<ul class="direction-step-gallery-grid"'. $dataMasonryGrid .'>';
 
 			foreach ( $step['gallery']['images'] as $image ) {
 
