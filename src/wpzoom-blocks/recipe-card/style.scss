@@ -328,6 +328,7 @@
                 &:not(.masonry) {
                     display: flex;
                     flex-wrap: wrap;
+                    align-items: flex-start;
                 }
 
                 .direction-step-gallery-item {

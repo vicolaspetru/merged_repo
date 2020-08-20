@@ -256,7 +256,8 @@ body.wpzoom-rcb-print {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
-    flex-wrap:wrap
+    flex-wrap:wrap;
+    align-items: flex-start;
 }
 .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item {
     margin: 0;
