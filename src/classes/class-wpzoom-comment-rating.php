@@ -35,10 +35,10 @@ class WPZOOM_Comment_Rating {
         add_action( 'edit_comment', array( __CLASS__, 'save_admin_comment_rating' ) );
 
         add_action( 'trashed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
+        add_action( 'untrashed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
         add_action( 'spammed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
         add_action( 'unspammed_comment', array( __CLASS__, 'update_comment_rating_on_change' ) );
-        add_action( 'comment_unapproved_', array( __CLASS__, 'update_comment_rating_on_change' ) );
-        add_action( 'comment_approved_', array( __CLASS__, 'update_comment_rating_on_change' ) );
+        add_action( 'wp_set_comment_status', array( __CLASS__, 'update_comment_rating_on_change' ) );
     }
 
     /**
