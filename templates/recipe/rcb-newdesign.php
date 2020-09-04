@@ -119,6 +119,10 @@
             <p><?php _e( 'Recipe Card plugin by ', 'wpzoom-recipe-card' ) ?><a href="https://www.wpzoom.com/plugins/recipe-card-blocks/" target="_blank" rel="nofollow noopener noreferrer">WPZOOM</a></p>
         </div>
     <?php endif ?>
+
+    <?php if ( ! empty( $json_ld ) ): ?>
+        <script type="application/ld+json"><?php echo wp_json_encode( $json_ld ) ?></script>
+    <?php endif ?>
 </div><!-- /.wp-block-wpzoom-recipe-card-block-recipe-card -->
 
 <style id="wpzoom-rcb-block-template-<?php echo esc_attr( $style ) ?>-inline-css" type="text/css">

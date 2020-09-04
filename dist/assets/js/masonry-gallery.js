@@ -6,7 +6,7 @@
     const D = $( document );
 
     let $gridGallery = $( '.direction-step-gallery' ),
-        $grid = $( '.direction-step-gallery-grid' ),
+        $grid = $( '.direction-step-gallery-grid[data-gallery-masonry-grid="true"]' ),
         desktopGridCol = $gridGallery.data( 'grid-columns' ),
         tabletGridCol = desktopGridCol > 2 ? 3 : 2,
         mobileGridCol = 2,
@@ -16,7 +16,7 @@
     const breakXLarge = 1080;
     const breakMobile = 480;
 
-    function masonry( event, itemSelector, columnWidth ) {
+    function masonry( itemSelector, columnWidth ) {
         $grid.imagesLoaded( function() {
             const Masonry = $grid.masonry( {
                 itemSelector,
@@ -42,13 +42,8 @@
      * Rebuild the masonry grid on every resize and load event after making sure
      * all the images in the grid are completely loaded.
      */
-    function rebuildMasonry( event ) {
+    function rebuildMasonry() {
         const columnWidth = '.direction-step-gallery-item';
-
-        if ( event === 'ready' ) {
-            $gridGallery.addClass( 'is-loading' );
-            $gridGallery.append( `<div class="direction-step-gallery-preloader">${ wpzoomRecipeCard.strings[ 'loading-gallery-media' ] }...</div>` );
-        }
 
         /**
          * Change `columns` class name for parent element based on the columns
@@ -71,12 +66,12 @@
             }
         }
 
-        masonry( event, '.direction-step-gallery-item', columnWidth );
+        masonry( '.direction-step-gallery-item', columnWidth );
     }
 
     window.rebuildPrintMasonry = ( print_window ) => {
         let $gridGallery = $( document ).find( '.direction-step-gallery' ),
-            $grid = $( document ).find( '.direction-step-gallery-grid' ),
+            $grid = $( '.direction-step-gallery-grid[data-gallery-masonry-grid="true"]' ),
             gridCol = $gridGallery.data( 'grid-columns' );
 
         if ( ! $gridGallery.length ) {
@@ -105,7 +100,13 @@
             } );
 
             // bind event
-            PrintMasonry.masonry( 'on', 'layoutComplete', function() {
+            PrintMasonry.on( 'layoutComplete', function() {
+                // Remove class `is-loading` and preloader div
+                if ( $gridGallery.hasClass( 'is-loading' ) ) {
+                    $gridGallery.removeClass( 'is-loading' );
+                    $gridGallery.find( '.direction-step-gallery-preloader' ).remove();
+                }
+
                 setTimeout( function() {
                     print_window.print();
                 }, 500 );
@@ -125,10 +126,10 @@
     };
 
     W.on( 'resize load', function() {
-        rebuildMasonry( 'resize load' );
+        rebuildMasonry();
     } );
 
     D.ready( function() {
-        rebuildMasonry( 'ready' );
+        rebuildMasonry();
     } );
 }( jQuery, wpzoomRecipeCard ) );

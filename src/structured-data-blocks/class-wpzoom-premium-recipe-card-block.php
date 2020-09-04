@@ -377,14 +377,11 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			'notes_items' => $notes_items,
 			'food_labels_content_top' => $food_labels_content_top,
 			'food_labels_content_bottom' => $food_labels_content_bottom,
+			'json_ld' => $json_ld,
 		);
 		$block_template = WPZOOM_Template_Manager::get_template( self::$style, $variables );
 
-		if ( ! empty( $json_ld ) ) {
-			return '<script type="application/ld+json">' . wp_json_encode( $json_ld ) . '</script>' . $block_template;
-		} else {
-			return $block_template;
-		}
+		return $block_template;
 	}
 
 	/**
@@ -1376,14 +1373,21 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$hasGalleryImages = isset( $step['gallery'] ) && isset( $step['gallery']['images'] ) && ! empty( $step['gallery']['images'] );
 		$gridColumns = WPZOOM_Settings::get( 'wpzoom_rcb_settings_gallery_columns' );
 		$galleryColumns = 'columns-'. $gridColumns .'';
+		$dataMasonryGrid = ' data-gallery-masonry-grid="false"';
 
 		if ( $hasGalleryImages ) {
+			$initMasonry = count( $step['gallery']['images'] ) > $gridColumns;
+
+			if ( $initMasonry ) {
+				$dataMasonryGrid = ' data-gallery-masonry-grid="true"';
+				$galleryColumns .= ' is-loading';
+			}
 
 			$clickableImageSize = WPZOOM_Settings::get( 'wpzoom_rcb_settings_image_size_lightbox' );
 			$clickableDirectionImages = WPZOOM_Settings::get( 'wpzoom_rcb_settings_instruction_images_lightbox' );
 
 			$output .= '<div class="direction-step-gallery '. $galleryColumns .'" data-grid-columns="'. $gridColumns .'">';
-			$output .= '<ul class="direction-step-gallery-grid">';
+			$output .= '<ul class="direction-step-gallery-grid"'. $dataMasonryGrid .'>';
 
 			foreach ( $step['gallery']['images'] as $image ) {
 
@@ -1424,8 +1428,12 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			}
 
 			$output .= '</ul>';
-			$output .= '</div><!-- /.direction-step-gallery -->';
 
+			if ( $initMasonry ) {
+				$output .= '<div class="direction-step-gallery-preloader">'. __( 'Loading gallery media', 'wpzoom-recipe-card' ) .'...</div>';
+			}
+
+			$output .= '</div><!-- /.direction-step-gallery -->';
 		}
 
 		return $output;

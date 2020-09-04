@@ -256,7 +256,8 @@ body.wpzoom-rcb-print {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
-    flex-wrap:wrap
+    flex-wrap:wrap;
+    align-items: flex-start;
 }
 .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid .direction-step-gallery-item {
     margin: 0;
@@ -265,6 +266,9 @@ body.wpzoom-rcb-print {
     position: relative;
     -webkit-box-sizing: border-box;
     box-sizing:border-box
+}
+.wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery .direction-step-gallery-grid[data-gallery-masonry-grid="false"] .direction-step-gallery-item:not(:last-child) {
+    margin-right: 8px;
 }
 .wpzoom-print-recipe-card-block .recipe-card-directions .direction-step .direction-step-gallery.is-loading .direction-step-gallery-grid {
     visibility: hidden;

@@ -328,6 +328,7 @@
                 &:not(.masonry) {
                     display: flex;
                     flex-wrap: wrap;
+                    align-items: flex-start;
                 }
 
                 .direction-step-gallery-item {
@@ -336,6 +337,10 @@
                     list-style-type: none;
                     position: relative;
                     box-sizing: border-box;
+                }
+
+                &[data-gallery-masonry-grid="false"] .direction-step-gallery-item:not(:last-child) {
+                    margin-right: $grid-unit;
                 }
             }
 
