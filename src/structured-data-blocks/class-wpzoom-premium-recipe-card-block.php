@@ -377,14 +377,11 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			'notes_items' => $notes_items,
 			'food_labels_content_top' => $food_labels_content_top,
 			'food_labels_content_bottom' => $food_labels_content_bottom,
+			'json_ld' => $json_ld,
 		);
 		$block_template = WPZOOM_Template_Manager::get_template( self::$style, $variables );
 
-		if ( ! empty( $json_ld ) ) {
-			return '<script type="application/ld+json">' . wp_json_encode( $json_ld ) . '</script>' . $block_template;
-		} else {
-			return $block_template;
-		}
+		return $block_template;
 	}
 
 	/**
