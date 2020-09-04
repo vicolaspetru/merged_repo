@@ -64,6 +64,7 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 == Changelog ==
 
 = 3.0.1 =
+* Fixed issue with Recipe Card block to not display on front-end after Gutenberg update
 * Fixed hook when comment status is changed to update recipe card rating
 * Added some improvements and fixes to recipe card direction gallery
 
