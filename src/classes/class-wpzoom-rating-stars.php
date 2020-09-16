@@ -93,6 +93,15 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				return false;
 			}
 
+			/**
+			 * Load Assets only on single page if option is unchecked
+			 * 
+			 * @since 3.0.2
+			 */
+			if ( '1' !== WPZOOM_Settings::get( 'wpzoom_rcb_settings_load_assets_on_all_pages' ) && ! is_single() ) {
+			    return false;
+			}
+
 			$localize_data = $this->get_localize_data();
 
 			wp_enqueue_script(

@@ -108,6 +108,10 @@ class WPZOOM_Comment_Rating {
     public static function add_rating_stars_to_comment_form( $args_comment_field ) {
         global $post, $comment;
 
+        if ( 'loggedin' === WPZOOM_Settings::get('wpzoom_rcb_settings_who_can_rate') && ! is_user_logged_in() ) {
+            return $args_comment_field;
+        }
+
         $rating_stars_html = '';
         $comment_id = is_object( $comment ) && isset( $comment->comment_ID ) ? $comment->comment_ID : 0;
 
@@ -260,6 +264,10 @@ class WPZOOM_Comment_Rating {
      */
     public static function block_assets() {
         if ( is_admin() ) {
+            return false;
+        }
+
+        if ( ! is_single() ) {
             return false;
         }
 

@@ -1263,6 +1263,33 @@ class WPZOOM_Settings {
 					),
 				),
 			),
+			'performance' => array(
+				'tab_id' 		=> 'tab-performance',
+				'tab_title' 	=> __( 'Performance', 'wpzoom-recipe-card' ),
+				'option_group' 	=> 'wpzoom-recipe-card-settings-performance',
+				'option_name' 	=> self::$option,
+				'sections' 		=> array(
+					array(
+						'id' 		=> 'wpzoom_section_load_assets',
+						'title' 	=> __( 'Assets', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-performance',
+						'callback' 	=> '__return_false',
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_load_assets_on_all_pages',
+								'title' 	=> __( 'Load Assets on all pages?', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_load_assets_on_all_pages',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> sprintf( '%s </br><strong>%s</strong>', esc_html__( 'Load JS and CSS files on all pages in case you display the Recipe Card Block on Homepage, Archive, Category or Search.', 'wpzoom-recipe-card' ), esc_html__( 'NOTE: Disable this option to load assets only on single page.', 'wpzoom-recipe-card' )),
+									'default'		=> true,
+								)
+							),
+						)
+					)
+				)
+			),
 			'metadata' => array(
 				'tab_id' 		=> 'tab-metadata',
 				'tab_title' 	=> __( 'Metadata', 'wpzoom-recipe-card' ),
