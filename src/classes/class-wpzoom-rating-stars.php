@@ -383,9 +383,9 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 1.1.0
 		 */
 		public function set_user_rate( $recipe_ID, $rating ) {
-			if ( false === ( $user_rating_recipe = get_transient( 'wpzoom_user_rating_recipe_' . $recipe_ID ) ) ) {
+			if ( false === ( $user_rating_recipe = get_transient( 'wpzoom_user_rating_recipe_' . self::$user_ID .'_'. $recipe_ID ) ) ) {
 				// expires in one year
-				set_transient( 'wpzoom_user_rating_recipe_' . $recipe_ID, $rating, YEAR_IN_SECONDS );
+				set_transient( 'wpzoom_user_rating_recipe_' . self::$user_ID .'_'. $recipe_ID, $rating, YEAR_IN_SECONDS );
 			}
 		}
 
@@ -397,7 +397,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @return boolean
 		 */
 		public function check_user_rate( $recipe_ID ) {
-			return (bool)get_transient( 'wpzoom_user_rating_recipe_' . $recipe_ID );
+			return (bool)get_transient( 'wpzoom_user_rating_recipe_' . self::$user_ID .'_'. $recipe_ID );
 		}
 
 		/**
