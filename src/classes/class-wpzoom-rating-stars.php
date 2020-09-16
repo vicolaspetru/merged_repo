@@ -172,7 +172,6 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			// Get the average vote number and check if user has voted for this post
 			$average = $this->get_rating_average( $recipe_ID );
 			$total_votes = $this->get_total_votes( $recipe_ID );
-			$user_rate = $this->check_user_rate( $recipe_ID );
 
 			for ( $i = 1; $i <= 5; $i++ ) {
 				if ( $i <= $average ) {
@@ -357,36 +356,37 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				return $current_user_id;
 			}
 
-			if ( isset( $_COOKIE[ "wpzoom-not-logged-user-id" ] ) ) {
-				$user_ID = $_COOKIE[ "wpzoom-not-logged-user-id" ];
+			if ( false !== ( $not_logged_in_user_ID = get_transient( 'wpzoom_not_logged_user_id' ) ) ) {
+				$user_ID = $not_logged_in_user_ID;
 			}
 
 			return esc_attr( $user_ID );
 		}
 
 		/**
-		 * Set user ID as cookie.
+		 * Set user ID as transient.
 		 *
 		 * @since 1.1.0
 		 */
 		public static function set_user_ID() {
-			$cookie_name = "wpzoom-not-logged-user-id";
-			$cookie_value = self::$user_ID;
+			$current_user_id = (int)get_current_user_id();
 
-			if ( ! isset( $_COOKIE[ $cookie_name ] ) ) {
-				return setcookie( $cookie_name, $cookie_value, time() + (86400 * 7), "/" ); // expires in 7 days
+			if ( 0 !== $current_user_id && false === ( $not_logged_user_ID = get_transient( 'wpzoom_not_logged_user_id' ) ) ) {
+				// expires in 7 days
+				set_transient( 'wpzoom_not_logged_user_id', self::$user_ID, 7 * DAY_IN_SECONDS );
 			}
 		}
 
 		/**
-		 * Set user rate as cookie.
+		 * Set user rate as transient.
 		 *
 		 * @since 1.1.0
 		 */
 		public function set_user_rate( $recipe_ID, $rating ) {
-			$cookie_name = "wpzoom-user-rating-recipe-$recipe_ID";
-			$cookie_value = $rating;
-			return setcookie( $cookie_name, $cookie_value, time() + (365 * 24 * 60 * 60), "/" ); // expires in one year
+			if ( false === ( $user_rating_recipe = get_transient( 'wpzoom_user_rating_recipe_' . $recipe_ID ) ) ) {
+				// expires in one year
+				set_transient( 'wpzoom_user_rating_recipe_' . $recipe_ID, $rating, YEAR_IN_SECONDS );
+			}
 		}
 
 		/**
@@ -397,11 +397,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @return boolean
 		 */
 		public function check_user_rate( $recipe_ID ) {
-			if ( ! isset( $_COOKIE[ "wpzoom-user-rating-recipe" ] ) ) {
-				return false;
-			} else {
-				return isset($_COOKIE[ "wpzoom-user-rating-recipe-$recipe_ID" ]);
-			}
+			return (bool)get_transient( 'wpzoom_user_rating_recipe_' . $recipe_ID );
 		}
 
 		/**
