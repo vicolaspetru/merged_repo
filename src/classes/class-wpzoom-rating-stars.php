@@ -356,7 +356,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				return $current_user_id;
 			}
 
-			if ( false !== ( $not_logged_in_user_ID = get_transient( 'wpzoom_not_logged_user_id' ) ) ) {
+			if ( false !== ( $not_logged_in_user_ID = get_transient( 'wpzoom_not_logged_user_id_' . $user_ID ) ) ) {
 				$user_ID = $not_logged_in_user_ID;
 			}
 
@@ -371,9 +371,9 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		public static function set_user_ID() {
 			$current_user_id = (int)get_current_user_id();
 
-			if ( 0 !== $current_user_id && false === ( $not_logged_user_ID = get_transient( 'wpzoom_not_logged_user_id' ) ) ) {
+			if ( 0 !== $current_user_id && false === ( $not_logged_user_ID = get_transient( 'wpzoom_not_logged_user_id_' . self::$user_ID ) ) ) {
 				// expires in 7 days
-				set_transient( 'wpzoom_not_logged_user_id', self::$user_ID, 7 * DAY_IN_SECONDS );
+				set_transient( 'wpzoom_not_logged_user_id_' . self::$user_ID, self::$user_ID, 7 * DAY_IN_SECONDS );
 			}
 		}
 
