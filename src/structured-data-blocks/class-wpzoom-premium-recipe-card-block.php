@@ -874,9 +874,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 				$icon = sprintf(
 					'<span class="%s"></span>',
-					$itemIconClasses,
-					$icon,
-					$iconSet
+					$itemIconClasses
 				);
 			}
 
