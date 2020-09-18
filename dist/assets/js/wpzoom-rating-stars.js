@@ -13,6 +13,7 @@ jQuery( document ).ready( function() {
                     rating: this.$el.parent().data( 'rating' ),
                     rating_total: this.$el.parent().data( 'rating-total' ),
                     recipe_id: this.$el.parent().data( 'recipe-id' ),
+                    user_rating: void 0,
                     numStars: 5,
                     change: function( e, value ) { },
                 };
@@ -54,14 +55,18 @@ jQuery( document ).ready( function() {
                 // prevent user multiple votes with same rating value
                 if (
                     element.parent().hasClass( 'wpzoom-recipe-user-rated' ) &&
-                    parseInt( this.options.rating ) === rating
+                    parseInt( this.options.user_rating ) === rating
                 ) {
                     return false;
                 }
+
                 let _this = this,
                     rating_avg = this.options.rating,
                     rating_total = this.options.rating_total,
                     recipe_id = this.options.recipe_id;
+
+                // store user rating
+                this.options.user_rating = rating;
 
                 const data = {
                     action: 'wpzoom_user_rate_recipe',
@@ -69,6 +74,7 @@ jQuery( document ).ready( function() {
                     recipe_id: recipe_id,
                     security: wpzoomRatingStars.ajax_nonce,
                 };
+
                 element
                     .parents( '.wpzoom-rating-stars-container' )
                     .addClass( 'is-loading' );
