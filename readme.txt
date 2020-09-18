@@ -63,6 +63,12 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 3.0.2 =
+* Added option in Recipe Card -> Performance to load assets when needed (only on single pages or on all pages)
+* Added improvements to rating and fixed some issues
+* Removed call of function `setcookie` and use `set_transient` instead to prevent the warning: "Cannot modify header information - headers already sent by"
+* Removed unneeded attributes "icon-name" & "iconset" from HTML markup to prevent AMP errors
+
 = 3.0.1 =
 * Fixed issue with Recipe Card block to not display on front-end after Gutenberg update
 * Fixed hook when comment status is changed to update recipe card rating
