@@ -8,23 +8,21 @@ jQuery( document ).ready( function() {
                     _,
                     _ref,
                     _this = this;
+                this.$el = $el;
                 this.defaults = {
-                    rating: void 0,
-                    rating_total: void 0,
+                    rating: this.$el.parent().data( 'rating' ),
+                    rating_total: this.$el.parent().data( 'rating-total' ),
+                    recipe_id: this.$el.parent().data( 'recipe-id' ),
                     numStars: 5,
                     change: function( e, value ) { },
                 };
                 this.options = $.extend( {}, this.defaults, options );
-                this.$el = $el;
                 _ref = this.defaults;
                 for ( i in _ref ) {
                     _ = _ref[ i ];
                     if ( this.$el.data( i ) != null ) {
                         this.options[ i ] = this.$el.data( i );
                     }
-                }
-                if ( wpzoomRatingStars.user_rated ) {
-                    this.$el.addClass( 'wpzoom-recipe-user-rated' );
                 }
                 this.$el
                     .next()
@@ -55,23 +53,26 @@ jQuery( document ).ready( function() {
             setRating( rating, element ) {
                 // prevent user multiple votes with same rating value
                 if (
-                    wpzoomRatingStars.user_rated &&
+                    element.parent().hasClass( 'wpzoom-recipe-user-rated' ) &&
                     parseInt( this.options.rating ) === rating
                 ) {
                     return false;
                 }
                 let _this = this,
-                    rating_avg = wpzoomRatingStars.rating_average,
-                    rating_total = wpzoomRatingStars.rating_total;
+                    rating_avg = this.options.rating,
+                    rating_total = this.options.rating_total,
+                    recipe_id = this.options.recipe_id;
+
                 const data = {
                     action: 'wpzoom_user_rate_recipe',
                     rating: rating,
-                    recipe_id: wpzoomRatingStars.recipe_ID,
+                    recipe_id: recipe_id,
                     security: wpzoomRatingStars.ajax_nonce,
                 };
                 element
                     .parents( '.wpzoom-rating-stars-container' )
                     .addClass( 'is-loading' );
+
                 $.post( wpzoomRatingStars.ajaxurl, data, function( response ) {
                     const data = response.data;
                     if ( response.success ) {
@@ -84,12 +85,24 @@ jQuery( document ).ready( function() {
                             .html( rating_avg );
                         element
                             .parent()
+                            .data( 'rating', rating_avg );
+                        element
+                            .parent()
                             .next()
                             .find( 'small.wpzoom-rating-total-votes' )
                             .html( rating_total );
                         element
+                            .parent()
+                            .data( 'rating-total', rating_total );
+                        element
                             .parents( '.wpzoom-rating-stars-container' )
                             .removeClass( 'is-loading' );
+
+                        if ( ! element.parent().hasClass( 'wpzoom-recipe-user-rated' ) ) {
+                            element
+                                .parent()
+                                .addClass( 'wpzoom-recipe-user-rated' );
+                        }
                     } else {
                         element
                             .parents( '.wpzoom-rating-stars-container' )
@@ -120,13 +133,9 @@ jQuery( document ).ready( function() {
                 } else {
                     rating = parseFloat( this.options.rating );
                 }
-                // add class if user has rated
-                if ( wpzoomRatingStars.user_rated ) {
-                    this.$el.addClass( 'wpzoom-recipe-user-rated' );
-                }
                 if ( rating ) {
                     for (
-                        i = _i = 0, _ref = rating;
+                        i = _i = 0, _ref = Math.round( rating );
                         0 <= _ref ? _i <= _ref : _i >= _ref;
                         i = 0 <= _ref ? ++_i : --_i
                     ) {
@@ -139,9 +148,9 @@ jQuery( document ).ready( function() {
                 }
                 if ( rating && rating < 5 ) {
                     for (
-                        i = _j = rating;
-                        rating <= 4 ? _j <= 4 : _j >= 4;
-                        i = rating <= 4 ? ++_j : --_j
+                        _ref = Math.round( rating ), i = _j = _ref;
+                        _ref <= 4 ? _j <= 4 : _j >= 4;
+                        i = _ref <= 4 ? ++_j : --_j
                     ) {
                         this.$el
                             .find( 'li' )
@@ -183,8 +192,5 @@ jQuery( document ).ready( function() {
         } );
     }( jQuery, wpzoomRatingStars ) );
 
-    jQuery( 'ul.wpzoom-rating-stars' ).starrr( {
-        rating: wpzoomRatingStars.rating_average,
-        rating_total: wpzoomRatingStars.rating_total,
-    } );
+    jQuery( 'ul.wpzoom-rating-stars' ).starrr();
 } );

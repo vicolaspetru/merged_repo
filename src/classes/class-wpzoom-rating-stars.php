@@ -181,6 +181,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			// Get the average vote number and check if user has voted for this post
 			$average = $this->get_rating_average( $recipe_ID );
 			$total_votes = $this->get_total_votes( $recipe_ID );
+			$user_rated = $this->check_user_rate( $recipe_ID );
 
 			for ( $i = 1; $i <= 5; $i++ ) {
 				if ( $i <= $average ) {
@@ -192,10 +193,10 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 
 			$average_content = sprintf(
 				'<small class="wpzoom-rating-average">%d</small> <small>%s</small> <small class="wpzoom-rating-total-votes">%d</small> <small>%s</small>',
-				number_format( $average, 2 ),
+				$average,
 				__( "from", "wpzoom-recipe-card" ), 
-				(int)$total_votes,
-				_n( "vote", "votes", (int)$total_votes, "wpzoom-recipe-card" )
+				intval( $total_votes ),
+				_n( "vote", "votes", intval( $total_votes ), "wpzoom-recipe-card" )
 			);
 
 			if ( 'loggedin' === $this->who_can_rate && ! is_user_logged_in() ) {
@@ -203,13 +204,26 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				$tooltip_message = __( 'Only logged in users can rate recipes', 'wpzoom-recipe-card' );
 			}
 
+			$rating_stars_classnames = 'wpzoom-rating-stars';
+
+			if ( $user_rated ) {
+				$rating_stars_classnames .= ' wpzoom-recipe-user-rated';
+			}
+
 			$output = sprintf(
-				'<div class="%1$s-container" %4$s><ul class="%1$s">%2$s</ul><span class="%1$s-average">%3$s</span><em class="%1$s-tooltip">%5$s</em></div>',
+				'<div class="%1$s-container" data-rating="%6$s" data-rating-total="%7$d" data-recipe-id="%8$d" %4$s>
+					<ul class="%9$s">%2$s</ul><span class="%1$s-average">%3$s</span>
+					<em class="%1$s-tooltip">%5$s</em>
+				</div>',
 				'wpzoom-rating-stars',
 				$rating_stars_items,
 				$average_content,
 				$data_user_can_rate,
-				$tooltip_message
+				$tooltip_message,
+				$average,
+				intval( $total_votes ),
+				intval( $recipe_ID ),
+				esc_attr( $rating_stars_classnames )
 			);
 
 			// Display only average content for AMP template
@@ -369,7 +383,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				$user_ID = $not_logged_in_user_ID;
 			}
 
-			return esc_attr( $user_ID );
+			return intval( $user_ID );
 		}
 
 		/**
@@ -378,11 +392,11 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 1.1.0
 		 */
 		public static function set_user_ID() {
-			$current_user_id = (int)get_current_user_id();
+			$user_ID = self::get_user_ID();
 
-			if ( 0 !== $current_user_id && false === ( $not_logged_user_ID = get_transient( 'wpzoom_not_logged_user_id_' . self::$user_ID ) ) ) {
+			if ( 0 !== $user_ID && false === ( $not_logged_user_ID = get_transient( 'wpzoom_not_logged_user_id_' . $user_ID ) ) ) {
 				// expires in 7 days
-				set_transient( 'wpzoom_not_logged_user_id_' . self::$user_ID, self::$user_ID, 7 * DAY_IN_SECONDS );
+				set_transient( 'wpzoom_not_logged_user_id_' . $user_ID, $user_ID, 7 * DAY_IN_SECONDS );
 			}
 		}
 
@@ -392,9 +406,11 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 1.1.0
 		 */
 		public function set_user_rate( $recipe_ID, $rating ) {
-			if ( false === ( $user_rating_recipe = get_transient( 'wpzoom_user_rating_recipe_' . self::$user_ID .'_'. $recipe_ID ) ) ) {
+			$user_ID = self::get_user_ID();
+
+			if ( false === ( $user_rating_recipe = get_transient( 'wpzoom_user_rating_recipe_' . $user_ID .'_'. $recipe_ID ) ) ) {
 				// expires in one year
-				set_transient( 'wpzoom_user_rating_recipe_' . self::$user_ID .'_'. $recipe_ID, $rating, YEAR_IN_SECONDS );
+				set_transient( 'wpzoom_user_rating_recipe_' . $user_ID .'_'. $recipe_ID, $rating, YEAR_IN_SECONDS );
 			}
 		}
 
@@ -406,7 +422,8 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @return boolean
 		 */
 		public function check_user_rate( $recipe_ID ) {
-			return (bool)get_transient( 'wpzoom_user_rating_recipe_' . self::$user_ID .'_'. $recipe_ID );
+			$user_ID = self::get_user_ID();
+			return (bool)get_transient( 'wpzoom_user_rating_recipe_' . $user_ID .'_'. $recipe_ID );
 		}
 
 		/**
@@ -419,14 +436,14 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			global $post;
 
 			$localize_data = array(
-				'recipe_ID'    	   	=> $post->ID,
-				'user_ID'    	   	=> self::get_user_ID(),
+				// 'recipe_ID'    	   	=> $post->ID,
+				// 'user_ID'    	   	=> self::get_user_ID(),
 				'ajaxurl'    	   	=> admin_url('admin-ajax.php'),
 				'ajax_nonce' 	   	=> wp_create_nonce( "wpzoom-rating-stars-nonce" ),
-				'user_rated'		=> $this->check_user_rate( $post->ID ),
-				'rating_average'	=> $this->get_rating_average( $post->ID ),
-				'rating_total'		=> $this->get_total_votes( $post->ID ),
-				'top_rated'			=> $this->get_toprated_recipes(),
+				// 'user_rated'		=> $this->check_user_rate( $post->ID ),
+				// 'rating_average'	=> $this->get_rating_average( $post->ID ),
+				// 'rating_total'		=> $this->get_total_votes( $post->ID ),
+				// 'top_rated'			=> $this->get_toprated_recipes(),
 				'strings'			=> array(
 					'recipe_rating'	=> __( "Recipe rating", "wpzoom-recipe-card" ),
 					'top_rated'		=> __( "Top rated", "wpzoom-recipe-card" ),
