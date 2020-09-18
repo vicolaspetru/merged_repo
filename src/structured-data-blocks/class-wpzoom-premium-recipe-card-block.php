@@ -1229,7 +1229,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 							if ( $attachment_id ) {
 								$attachment = wp_get_attachment_image(
 									$attachment_id,
-									'wpzoom_rcb_block_step_image',
+									'medium_large',
 									false,
 									array(
 										'title' => $title,
@@ -1243,7 +1243,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 						else {
 							$attachment = wp_get_attachment_image(
 								$attachment_id,
-								'wpzoom_rcb_block_step_image',
+								'medium_large',
 								false, array(
 									'title' => $title,
 									'alt' => $alt,
@@ -1399,7 +1399,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$clickableImageSrc = wp_get_attachment_image_src( $image['id'], $clickableImageSize );
 				$attachment = wp_get_attachment_image(
 					$image['id'],
-					'wpzoom_rcb_block_step_image',
+					'medium_large',
 					false,
 					array(
 						'title' => isset( $image['caption'] ) ? $image['caption'] : '',
