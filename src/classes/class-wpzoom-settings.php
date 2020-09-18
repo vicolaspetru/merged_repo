@@ -480,12 +480,12 @@ class WPZOOM_Settings {
 							),
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_footer_copyright',
-								'title' 	=> __( 'Footer Copyright', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Footer Credit', 'wpzoom-recipe-card' ),
 								'type'		=> 'checkbox',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_footer_copyright',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'Hide footer copyright text.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Hide footer credit.', 'wpzoom-recipe-card' ),
 									'default'		=> true,
 									'disabled'		=> false,
                                     'preview'       => true,
@@ -1282,7 +1282,7 @@ class WPZOOM_Settings {
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_load_assets_on_all_pages',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> sprintf( '%s </br><strong>%s</strong>', esc_html__( 'Load JS and CSS files on all pages in case you display the Recipe Card Block on Homepage, Archive, Category or Search.', 'wpzoom-recipe-card' ), esc_html__( 'NOTE: Disable this option to load assets only on single page.', 'wpzoom-recipe-card' )),
+                                    'description'   => sprintf( '%s </br><strong>%s</strong>', esc_html__( 'Enabling this option will load JavaScript and CSS files on archive pages that include posts with recipe cards.', 'wpzoom-recipe-card' ), esc_html__( 'NOTE: Disable this option to load assets only on the single post pages.', 'wpzoom-recipe-card' )),
 									'default'		=> true,
 								)
 							),
