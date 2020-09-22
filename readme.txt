@@ -63,6 +63,9 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 3.0.3 =
+* Fixed issue with disallowed attribute `classname` present in HTML tag
+
 = 3.0.2 =
 * Added option in Recipe Card -> Performance to load assets when needed (only on single pages or on all pages)
 * Added improvements to rating and fixed some issues
