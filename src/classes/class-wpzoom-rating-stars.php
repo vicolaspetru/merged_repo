@@ -102,8 +102,19 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			    return false;
 			}
 
+			$should_enqueue = has_block( 'wpzoom-recipe-card/block-recipe-card' ) || WPZOOM_Assets_Manager::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' );
+
+			if ( ! $should_enqueue ) {
+			    return false;
+			}
+
 			$localize_data = $this->get_localize_data();
 
+			/**
+			 * Load if recipe card block is present in post
+			 * 
+			 * @since 3.0.3
+			 */
 			wp_enqueue_script(
 			    'wpzoom-rating-stars-script',
 			    $this->assets_manager->asset_source( 'js', 'wpzoom-rating-stars.js' ),

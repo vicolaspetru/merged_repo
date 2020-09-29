@@ -271,6 +271,17 @@ class WPZOOM_Comment_Rating {
             return false;
         }
 
+        $should_enqueue = has_block( 'wpzoom-recipe-card/block-recipe-card' ) || WPZOOM_Assets_Manager::has_reusable_block( 'wpzoom-recipe-card/block-recipe-card' );
+
+        if ( ! $should_enqueue ) {
+            return false;
+        }
+
+        /**
+         * Load only on single page and if recipe card block is present in post
+         * 
+         * @since 3.0.3
+         */
         wp_enqueue_script(
             'wpzoom-comment-rating-script',
             self::$assets_manager->asset_source( 'js', 'wpzoom-comment-rating.js' ),
