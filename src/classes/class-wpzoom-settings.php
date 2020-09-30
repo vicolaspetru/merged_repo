@@ -1274,7 +1274,7 @@ class WPZOOM_Settings {
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_load_pinterest_script',
 									'class' 		=> 'wpzoom-rcb-field',
-                                    'description'   => __( 'In case you do not want to load Pinterest script on your website or you do not use the Pin It button in the Recipe Card, please disable this option.', 'wpzoom-recipe-card' ),
+                                    'description'   => __( 'In case you don\'t want to load Pinterest script on your website or you don\'t use the Pin It button in the Recipe Card, please disable this option.', 'wpzoom-recipe-card' ),
 									'default'		=> true,
 								)
 							),
