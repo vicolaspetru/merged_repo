@@ -267,6 +267,11 @@ class WPZOOM_Comment_Rating {
             return false;
         }
 
+        // Don't load scripts if the comment rating is not allowed
+        if ( '1' !== WPZOOM_Settings::get('wpzoom_rcb_settings_comment_ratings') ) {
+            return false;
+        }
+
         if ( ! is_single() ) {
             return false;
         }

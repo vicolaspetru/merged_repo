@@ -93,6 +93,11 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				return false;
 			}
 
+			// Don't load scripts if the user voting is not allowed
+			if ( '1' !== WPZOOM_Settings::get('wpzoom_rcb_settings_user_ratings') ) {
+				return false;
+			}
+
 			/**
 			 * Load Assets only on single page if option is unchecked
 			 * 

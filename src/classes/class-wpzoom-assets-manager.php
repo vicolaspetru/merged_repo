@@ -216,13 +216,27 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                         true
                     );
 
-                    wp_enqueue_script(
-                        self::$_slug . '-pinit',
-                        'https://assets.pinterest.com/js/pinit.js',
-                        array(),
-                        false,
-                        true
-                    );
+                    // Load Pinterest script
+                    if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_load_pinterest_script') ) {
+                        wp_enqueue_script(
+                            self::$_slug . '-pinit',
+                            'https://assets.pinterest.com/js/pinit.js',
+                            array(),
+                            false,
+                            true
+                        );
+                    }
+
+                    // Load FitVids.js
+                    if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_load_fitvids_script') ) {
+                        wp_enqueue_script(
+                            'fitvids',
+                            $this->asset_source( 'js', 'jquery.fitvids.js' ),
+                            array('jquery'),
+                            '1.1',
+                            true
+                        );
+                    }
 
                     // Styles.
                     wp_enqueue_style(

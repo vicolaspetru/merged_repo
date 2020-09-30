@@ -922,25 +922,6 @@ class WPZOOM_Settings {
 							),
 						)
 					),
-					array(
-						'id' 		=> 'wpzoom_rcb_settings_google_fonts',
-						'title' 	=> __( 'Google Fonts', 'wpzoom-recipe-card' ),
-						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
-						'callback' 	=> '__return_false',
-						'fields' 	=> array(
-							array(
-								'id' 		=> 'wpzoom_rcb_settings_enable_google_fonts',
-								'title' 	=> __( 'Enable Google Fonts', 'wpzoom-recipe-card' ),
-								'type'		=> 'checkbox',
-								'args' 		=> array(
-									'label_for' 	=> 'wpzoom_rcb_settings_enable_google_fonts',
-									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'If you check this field, then it means that plugin will load Google Fonts to use them into blocks.', 'wpzoom-recipe-card' ),
-									'default'		=> true
-								)
-							),
-						)
-					),
 				)
 			),
 			'miscellaneous' => array(
@@ -1286,8 +1267,49 @@ class WPZOOM_Settings {
 									'default'		=> true,
 								)
 							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_load_pinterest_script',
+								'title' 	=> __( 'Load script for Pinterest?', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_load_pinterest_script',
+									'class' 		=> 'wpzoom-rcb-field',
+                                    'description'   => __( 'In case you do not want to load Pinterest script on your website or you do not use the Pin It button in the Recipe Card, please disable this option.', 'wpzoom-recipe-card' ),
+									'default'		=> true,
+								)
+							),
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_load_fitvids_script',
+								'title' 	=> __( 'Load FitVids.js?', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_load_fitvids_script',
+									'class' 		=> 'wpzoom-rcb-field',
+                                    'description'   => __( 'FitVids.js helps to achieve fluid width videos in your responsive web design. If the video in the recipe surpasses the boundaries of the Recipe Card, this script will fix this issue.', 'wpzoom-recipe-card' ),
+									'default'		=> true,
+								)
+							),
 						)
-					)
+					),
+					array(
+						'id' 		=> 'wpzoom_rcb_settings_google_fonts',
+						'title' 	=> __( 'Google Fonts', 'wpzoom-recipe-card' ),
+						'page' 		=> 'wpzoom-recipe-card-settings-performance',
+						'callback' 	=> '__return_false',
+						'fields' 	=> array(
+							array(
+								'id' 		=> 'wpzoom_rcb_settings_enable_google_fonts',
+								'title' 	=> __( 'Enable Google Fonts', 'wpzoom-recipe-card' ),
+								'type'		=> 'checkbox',
+								'args' 		=> array(
+									'label_for' 	=> 'wpzoom_rcb_settings_enable_google_fonts',
+									'class' 		=> 'wpzoom-rcb-field',
+									'description' 	=> esc_html__( 'If you check this field, then it means that plugin will load Google Fonts to use them into blocks.', 'wpzoom-recipe-card' ),
+									'default'		=> true
+								)
+							),
+						)
+					),
 				)
 			),
 			'metadata' => array(
