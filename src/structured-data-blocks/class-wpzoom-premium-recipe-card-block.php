@@ -1914,7 +1914,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
     		return '';
     	}
 
-    	$iconsSVG = FOOD_LABELS_SVG; // constant defined in class-wpzoom-plugin-loader.php
+    	$iconsSVG = unserialize( FOOD_LABELS_SVG ); // constant defined in class-wpzoom-plugin-loader.php
     	$drawLabels = '';
 
 		foreach ( $foodLabels as $index => $label ) {

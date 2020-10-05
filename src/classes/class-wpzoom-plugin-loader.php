@@ -82,7 +82,7 @@ if ( ! class_exists( 'WPZOOM_Plugin_Loader' ) ) {
 			define( 'WPZOOM_RCB_ITEM_ID', 197189 );
 			define( 'WPZOOM_RCB_ITEM_NAME', 'Recipe Card Block PRO' );
 
-			define( 'FOOD_LABELS_SVG', self::food_labels_svg() );
+			define( 'FOOD_LABELS_SVG', serialize( self::food_labels_svg() ) );
 		}
 
 		/**
