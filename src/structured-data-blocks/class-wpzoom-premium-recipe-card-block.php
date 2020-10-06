@@ -1604,6 +1604,10 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$attributes = array_merge( $attributes, array( 'data-recipe-id' => self::$recipe->ID ) );
 		}
 
+		if ( WPZOOM_Recipe_Card_Block_Gutenberg::is_AMP() ) {
+			$attributes = array_merge( $attributes, array( 'on' => 'tap:AMP.print()' ) );
+		}
+
 		$atts = self::$helpers->render_attributes( $attributes );
 
 		$output = sprintf(
