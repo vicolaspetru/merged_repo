@@ -66,6 +66,8 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 = 3.0.3 =
 * Added FitVids.js for fluid width videos in your responsive web design (Recipe Card Settings -> Performance)
 * Added option to disable the load of Pinterest script on your website (Recipe Card Settings -> Performance)
+* Allowed print from Recipe Card on AMP page
+* Fixed issue "Constants may only evaluate to scalar values" in PHP 5.6
 * Fixed issue with disallowed attribute `classname` present in HTML tag
 * Removed some assets to not load on single page if Recipe Card is not present in the post
 
