@@ -1646,12 +1646,16 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	 * 									 string 'style="color: red; font-size: inherit"'
 	 * @return string
 	 */
-	public static function get_pinterest_button( $media, $url, $description = '', $attributes = '' ) {
+	public static function get_pinterest_button( $media, $url, $description = '', $attributes = array() ) {
 		if ( ! isset(  $media['url'] ) )
 			return '';
 
 		$PinterestClasses = implode( ' ', array( "wpzoom-recipe-card-pinit" ) );
 		$pinitURL 		  = 'https://www.pinterest.com/pin/create/button/?url=' . esc_url( $url ) .'&media='. esc_url( $media['url'] ) .'&description='. esc_html( $description ) .'';
+
+		if ( WPZOOM_Recipe_Card_Block_Gutenberg::is_AMP() ) {
+			$attributes = array_merge( $attributes, array( 'target' => '_blank' ) );
+		}
 
 		$atts = self::$helpers->render_attributes( $attributes );
 
