@@ -1269,12 +1269,12 @@ class WPZOOM_Settings {
 							),
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_load_pinterest_script',
-								'title' 	=> __( 'Load script for Pinterest?', 'wpzoom-recipe-card' ),
+								'title' 	=> __( 'Load Pinterest script', 'wpzoom-recipe-card' ),
 								'type'		=> 'checkbox',
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_load_pinterest_script',
 									'class' 		=> 'wpzoom-rcb-field',
-                                    'description'   => __( 'In case you don\'t want to load Pinterest script on your website or you don\'t use the Pin It button in the Recipe Card, please disable this option.', 'wpzoom-recipe-card' ),
+                                    'description'   => __( 'Disable this option if you don\'t want to load Pinterest script on your website or you don\'t use the Pin It button in the Recipe Card block.', 'wpzoom-recipe-card' ),
 									'default'		=> true,
 								)
 							),
@@ -1285,7 +1285,7 @@ class WPZOOM_Settings {
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_load_fitvids_script',
 									'class' 		=> 'wpzoom-rcb-field',
-                                    'description'   => __( 'FitVids.js helps to achieve fluid width videos in your responsive web design. If the video in the recipe surpasses the boundaries of the Recipe Card, this script will fix this issue.', 'wpzoom-recipe-card' ),
+                                    'description'   => __( 'FitVids.js is lightweight script for fluid width video embeds.', 'wpzoom-recipe-card' ),
 									'default'		=> true,
 								)
 							),
@@ -1304,7 +1304,7 @@ class WPZOOM_Settings {
 								'args' 		=> array(
 									'label_for' 	=> 'wpzoom_rcb_settings_enable_google_fonts',
 									'class' 		=> 'wpzoom-rcb-field',
-									'description' 	=> esc_html__( 'If you check this field, then it means that plugin will load Google Fonts to use them into blocks.', 'wpzoom-recipe-card' ),
+									'description' 	=> esc_html__( 'Roboto Condensed font from Google Fonts is used for section titles in the Recipe Card Block. Disable this option if you don\'t want the plugin to load any Google Fonts.', 'wpzoom-recipe-card' ),
 									'default'		=> true
 								)
 							),
