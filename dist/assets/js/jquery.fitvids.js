@@ -83,5 +83,9 @@
     // Internal counter for unique video names.
     $.fn.fitVids._count = 0;
 
+    $( document ).ready( function() {
+        $( '.wp-block-wpzoom-recipe-card-block-recipe-card' ).fitVids();
+    } );
+
 // Works with either jQuery or Zepto
 }( window.jQuery || window.Zepto ) );
