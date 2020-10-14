@@ -656,7 +656,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				$isGroup = isset( $ingredient['isGroup'] ) ? $ingredient['isGroup'] : false;
 
 				if ( ! $isGroup ) {
-					$json_ld['recipeIngredient'][] = self::$structured_data_helpers->get_ingredient_json_ld( $ingredient );
+					if ( ! empty( $ingredient['jsonName'] ) ) {
+						$json_ld['recipeIngredient'][] = self::$structured_data_helpers->get_ingredient_json_ld( $ingredient );
+					}
 				}
 
 			}
@@ -692,7 +694,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 						$groups_section[ $last_key ]['itemListElement'][] = self::$structured_data_helpers->get_step_json_ld( $step, $parent_permalink );
 					}
 				} else {
-					$instructions[] = self::$structured_data_helpers->get_step_json_ld( $step, $parent_permalink );
+					if ( ! empty( $step['jsonText'] ) ) {
+						$instructions[] = self::$structured_data_helpers->get_step_json_ld( $step, $parent_permalink );
+					}
 				}
 			}
 
