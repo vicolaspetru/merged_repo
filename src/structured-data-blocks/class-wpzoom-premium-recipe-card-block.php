@@ -691,7 +691,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					$last_key = key( $groups_section );
 
 					if ( ! $isGroup && $key > $last_key ) {
-						$groups_section[ $last_key ]['itemListElement'][] = self::$structured_data_helpers->get_step_json_ld( $step, $parent_permalink );
+						if ( ! empty( $step['jsonText'] ) ) {
+							$groups_section[ $last_key ]['itemListElement'][] = self::$structured_data_helpers->get_step_json_ld( $step, $parent_permalink );
+						}
 					}
 				} else {
 					if ( ! empty( $step['jsonText'] ) ) {
@@ -1056,31 +1058,36 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					$text = self::wrap_direction_text( $step['text'] );
 					$gallery = self::direction_gallery( $step );
 
-					$output .= sprintf(
-						'<li id="%s" class="direction-step">%s</li>',
-						esc_attr( $step_id ),
-						$text . $gallery
-					);
+					if ( ! empty( $text ) || ! empty( $gallery ) ) {
+						$output .= sprintf(
+							'<li id="%s" class="direction-step">%s</li>',
+							esc_attr( $step_id ),
+							$text . $gallery
+						);
+					}
 				}
 				elseif ( empty( $step['text'] ) && isset( $step['gallery'] ) ) {
 					$gallery = self::direction_gallery( $step );
-					$output .= sprintf(
-						'<li id="%s" class="direction-step">%s</li>',
-						esc_attr( $step_id ),
-						$gallery
-					);
+
+					if ( ! empty( $gallery ) ) {
+						$output .= sprintf(
+							'<li id="%s" class="direction-step">%s</li>',
+							esc_attr( $step_id ),
+							$gallery
+						);
+					}
 				}
 			} else {
 				if ( ! empty( $step['text'] ) ) {
-					$text = sprintf(
-						'<strong class="direction-step-group-title">%s</strong>',
-						self::wrap_direction_text( $step['text'] )
-					);
-					$output .= sprintf(
-						'<li id="%s" class="direction-step direction-step-group">%s</li>',
-						esc_attr( $step_id ),
-						$text
-					);
+					$text = self::wrap_direction_text( $step['text'] );
+					
+					if ( ! empty( $text ) ) {
+						$output .= sprintf(
+							'<li id="%s" class="direction-step direction-step-group"><strong class="direction-step-group-title">%s</strong></li>',
+							esc_attr( $step_id ),
+							$text
+						);
+					}
 				}
 			}
 		}
@@ -1701,7 +1708,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
         return sprintf(
         	'<a href="%s" target="%s" %s>%s</a>',
-        	esc_url( $url ) .'/'. esc_attr( trim( $attr ) ),
+        	esc_url( $url ) .'/'. esc_attr( trim( $attr ) ) .'/',
         	( 1 == $target ? '_blank' : '_self' ),
         	( 1 == $nofollow ? 'rel="nofollow"' : '' ),
         	trim( $symbol . $attr )
