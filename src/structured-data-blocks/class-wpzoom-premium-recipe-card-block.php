@@ -1708,7 +1708,14 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
         $attr = preg_replace( '/^@|#/', '', $attr ); // remove @ or # if it's found
         $url = esc_url( $url ) .'/'. esc_attr( trim( $attr ) ) .'/';
-        $new_URL = preg_replace( '/(\/+)/', '/', $url ); // remove multiple slashes from URL
+        $parse_URL = wp_parse_url( $url );
+
+        if ( ! $parse_URL ) {
+        	return '';
+        }
+
+        $url_path = preg_replace( '/(\/+)/', '/', $parse_URL['path'] ); // remove multiple slashes from URL path
+        $new_URL = str_replace( $parse_URL['path'], $url_path, $url );
 
         return sprintf(
         	'<a href="%s" target="%s" %s>%s</a>',
