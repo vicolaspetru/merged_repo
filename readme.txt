@@ -64,8 +64,8 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 == Changelog ==
 
 = 3.1.1 =
-* Fixed JSON-LD error caused by a empty recipe step
-* Added trailing slash at the end of a Pinterest & Instagram URLs
+* Fixed JSON-LD error caused by empty recipe steps
+* Added trailing slash at the end of Pinterest & Instagram URLs
 
 = 3.1.0 =
 * Added FitVids.js to make videos responsive (Recipe Card Settings -> Performance)
