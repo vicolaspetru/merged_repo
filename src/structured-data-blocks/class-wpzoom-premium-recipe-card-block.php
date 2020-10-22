@@ -1706,9 +1706,13 @@ class WPZOOM_Premium_Recipe_Card_Block {
         	return '';
         }
 
+        $attr = preg_replace( '/^@|#/', '', $attr ); // remove @ or # if it's found
+        $url = esc_url( $url ) .'/'. esc_attr( trim( $attr ) ) .'/';
+        $new_URL = preg_replace( '/(\/+)/', '/', $url ); // remove multiple slashes from URL
+
         return sprintf(
         	'<a href="%s" target="%s" %s>%s</a>',
-        	esc_url( $url ) .'/'. esc_attr( trim( $attr ) ) .'/',
+        	esc_url( $new_URL ),
         	( 1 == $target ? '_blank' : '_self' ),
         	( 1 == $nofollow ? 'rel="nofollow"' : '' ),
         	trim( $symbol . $attr )
