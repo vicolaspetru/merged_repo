@@ -33,14 +33,6 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		private $assets_manager;
 
 		/**
-		 * Current user ID.
-		 * If user is logged in, set current user ID, otherwise generate new random ID
-		 *
-		 * @since 1.1.0
-		 */
-		public static $user_ID;
-
-		/**
 		 * Who can rate recipes
 		 *
 		 * @since 2.3.1
@@ -55,7 +47,6 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			global $wpdb;
 
 			self::$tablename = $wpdb->prefix . 'wpzoom_rating_stars';
-			self::$user_ID 	 = self::random_number();
 
 			$this->who_can_rate 	= WPZOOM_Settings::get('wpzoom_rcb_settings_who_can_rate');
 			$this->assets_manager 	= WPZOOM_Assets_Manager::instance();
@@ -63,24 +54,8 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			add_action( 'enqueue_block_assets', array( $this, 'block_assets' ) );
 
 			// Do ajax request
-			add_action( 'wp_ajax_wpzoom_user_rate_recipe', array( &$this, 'set_rating'), 10, 2 );
-			add_action( 'wp_ajax_nopriv_wpzoom_user_rate_recipe', array( &$this, 'set_rating'), 10, 2 );
-		}
-
-		/**
-		 * Generate random number.
-		 *
-		 * @param number $length The length of returned value.
-		 * @since 1.1.0
-		 */
-		public static function random_number( $length = 10 ) {
-		    $characters = '0123456789';
-		    $charactersLength = strlen($characters);
-		    $randomNumber = '';
-		    for ($i = 0; $i < $length; $i++) {
-		        $randomNumber .= $characters[rand(0, $charactersLength - 1)];
-		    }
-		    return $randomNumber;
+			add_action( 'wp_ajax_wpzoom_user_vote_recipe', array( &$this, 'set_rating'), 10, 2 );
+			add_action( 'wp_ajax_nopriv_wpzoom_user_vote_recipe', array( &$this, 'set_rating'), 10, 2 );
 		}
 
 		/**
@@ -113,7 +88,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			    return false;
 			}
 
-			$localize_data = $this->get_localize_data();
+			$localize_data = self::get_localize_data();
 
 			/**
 			 * Load if recipe card block is present in post
@@ -145,7 +120,8 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 
 			$rating['recipe_id'] = isset( $_POST['recipe_id'] ) ? intval( $_POST['recipe_id'] ) : 0;
 			$rating['rating'] = isset( $_POST['rating'] ) ? intval( $_POST['rating'] ) : 0;
-			$rating['user_id'] = self::get_user_ID();
+			$rating['user_id'] = get_current_user_id();
+			$rating['ip'] = self::get_user_ip();
 
 			if ( 0 >= $rating['rating'] && 5 < $rating['rating'] ) {
 				$response = array(
@@ -171,15 +147,39 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 				$response = array(
 					'status' => '200',
 					'message' => 'OK',
-					'rating_avg' => $this->get_rating_average( $rating['recipe_id'] ),
-					'rating_total' => $this->get_total_votes( $rating['recipe_id'] ),
+					'rating_avg' => self::get_rating_average( $rating['recipe_id'] ),
+					'rating_total' => self::get_total_votes( $rating['recipe_id'] ),
 				);
 
-				// set cookie
-				$this->set_user_rate( $rating['recipe_id'], $rating['rating'] );
+				// Set or update cookie for easy access.
+				setcookie( 'wpzoom-user-rating-recipe-' . $rating['recipe_id'], $rating['rating'], time() + 60 * 60 * 24 * 30, '/' );
 
 				wp_send_json_success( $response );
 			}
+		}
+
+		/**
+		 * Get user ratings for a specific recipe.
+		 *
+		 * @since	3.2.0
+		 * @param	int $recipe_ID ID of the recipe.
+		 */
+		public static function get_ratings_for( $recipe_ID ) {
+			$recipe_ID = intval( $recipe_ID );
+
+			$ratings = array();
+
+			if ( $recipe_ID ) {
+				$user_ratings = WPZOOM_Rating_DB::get_ratings(
+					array(
+						'where' => 'recipe_id = ' . $recipe_ID,
+					)
+				);
+
+				$ratings = $user_ratings['ratings'];
+			}
+
+			return $ratings;
 		}
 
 		/**
@@ -195,9 +195,9 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			$data_user_can_rate = 'data-user-can-rate="1"';
 
 			// Get the average vote number and check if user has voted for this post
-			$average = $this->get_rating_average( $recipe_ID );
-			$total_votes = $this->get_total_votes( $recipe_ID );
-			$user_rated = $this->check_user_rate( $recipe_ID );
+			$average = self::get_rating_average( $recipe_ID );
+			$total_votes = self::get_total_votes( $recipe_ID );
+			$user_voted = self::check_user_rating( $recipe_ID );
 
 			for ( $i = 1; $i <= 5; $i++ ) {
 				if ( $i <= $average ) {
@@ -222,7 +222,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 
 			$rating_stars_classnames = 'wpzoom-rating-stars';
 
-			if ( $user_rated ) {
+			if ( $user_voted ) {
 				$rating_stars_classnames .= ' wpzoom-recipe-user-rated';
 			}
 
@@ -260,16 +260,16 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 */
 		public function get_rating_star( $recipe_ID, $label = '', $container = false ) {
 			// Check if user voted, use the full icon or outline icon if not
-			$user_rate = $this->check_user_rate( $recipe_ID );
+			$user_vote = self::check_user_rating( $recipe_ID );
 
-			if ( $user_rate ) {
+			if ( $user_vote ) {
 				$rate_icon = ' icon-star-full';
 			} else {
 				$rate_icon = ' icon-star';
 			}
 
-			$average = $this->get_rating_average( $recipe_ID );
-			$total_votes = $this->get_total_votes( $recipe_ID );
+			$average = self::get_rating_average( $recipe_ID );
+			$total_votes = self::get_total_votes( $recipe_ID );
 			$average_content = $average > 0 ? sprintf( __( "%s from %s votes", "wpzoom-recipe-card" ), "<i class=\"wpzoom-rating-average\">{$average}</i>", "<i class=\"wpzoom-rating-total-votes\">{$total_votes}</i>" ) : 'N/A';
 
 			$output = sprintf( '<span class="%s-average %s">%s</span>',
@@ -295,7 +295,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 1.1.0
 		 * @return number The average number of sql results.
 		 */
-		public function get_rating_average( $recipe_ID ) {
+		public static function get_rating_average( $recipe_ID ) {
 			if ( ! $recipe_ID ) {
 				return;
 			}
@@ -314,7 +314,7 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 1.1.0
 		 * @return number The total number of sql results.
 		 */
-		public function get_total_votes( $recipe_ID ) {
+		public static function get_total_votes( $recipe_ID ) {
 			if ( ! $recipe_ID ) {
 				return;
 			}
@@ -381,65 +381,33 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		}
 
 		/**
-		 * Get user ID.
-		 *
-		 * @since 1.1.0
-		 * @return string|number Current user ID or new generated ID.
-		 */
-		public static function get_user_ID() {
-			$user_ID = self::$user_ID;
-			$current_user_id = (int)get_current_user_id();
-
-			// Check for logged in users
-			if ( $current_user_id !== 0 ) {
-				return $current_user_id;
-			}
-
-			if ( false !== ( $not_logged_in_user_ID = get_transient( 'wpzoom_not_logged_user_id_' . $user_ID ) ) ) {
-				$user_ID = $not_logged_in_user_ID;
-			}
-
-			return intval( $user_ID );
-		}
-
-		/**
-		 * Set user ID as transient.
-		 *
-		 * @since 1.1.0
-		 */
-		public static function set_user_ID() {
-			$user_ID = self::get_user_ID();
-
-			if ( 0 !== $user_ID && false === ( $not_logged_user_ID = get_transient( 'wpzoom_not_logged_user_id_' . $user_ID ) ) ) {
-				// expires in 7 days
-				set_transient( 'wpzoom_not_logged_user_id_' . $user_ID, $user_ID, 7 * DAY_IN_SECONDS );
-			}
-		}
-
-		/**
-		 * Set user rate as transient.
-		 *
-		 * @since 1.1.0
-		 */
-		public function set_user_rate( $recipe_ID, $rating ) {
-			$user_ID = self::get_user_ID();
-
-			if ( false === ( $user_rating_recipe = get_transient( 'wpzoom_user_rating_recipe_' . $user_ID .'_'. $recipe_ID ) ) ) {
-				// expires in one year
-				set_transient( 'wpzoom_user_rating_recipe_' . $user_ID .'_'. $recipe_ID, $rating, YEAR_IN_SECONDS );
-			}
-		}
-
-		/**
 		 * Check if user has rated recipe.
 		 *
 		 * @param string|number $recipe_ID The recipe id.
 		 * @since 1.1.0
 		 * @return boolean
 		 */
-		public function check_user_rate( $recipe_ID ) {
-			$user_ID = self::get_user_ID();
-			return (bool)get_transient( 'wpzoom_user_rating_recipe_' . $user_ID .'_'. $recipe_ID );
+		public static function check_user_rating( $recipe_ID ) {
+			if ( isset ( $_COOKIE[ 'wpzoom-user-rating-recipe-' . $recipe_ID ] ) ) {
+				return intval( $_COOKIE[ 'wpzoom-user-rating-recipe-' . $recipe_ID ] );
+			}
+
+			$rating = false;
+
+			$ip = self::get_user_ip();
+			$user = get_current_user_id();
+
+			$user_ratings = self::get_ratings_for( $recipe_ID );
+
+			foreach ( $user_ratings as $user_rating ) {
+				if ( ! $user && 'unknown' !== $ip && $ip === $user_rating->ip ) {
+					$rating = $user_rating->rating;
+				} elseif ( $user && $user === $user_rating->user_id ) {
+					$rating = $user_rating->rating;
+				}
+			}
+
+			return $rating;
 		}
 
 		/**
@@ -448,18 +416,12 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 		 * @since 2.3.1
 		 * @return array
 		 */
-		public function get_localize_data() {
+		public static function get_localize_data() {
 			global $post;
 
 			$localize_data = array(
-				// 'recipe_ID'    	   	=> $post->ID,
-				// 'user_ID'    	   	=> self::get_user_ID(),
 				'ajaxurl'    	   	=> admin_url('admin-ajax.php'),
 				'ajax_nonce' 	   	=> wp_create_nonce( "wpzoom-rating-stars-nonce" ),
-				// 'user_rated'		=> $this->check_user_rate( $post->ID ),
-				// 'rating_average'	=> $this->get_rating_average( $post->ID ),
-				// 'rating_total'		=> $this->get_total_votes( $post->ID ),
-				// 'top_rated'			=> $this->get_toprated_recipes(),
 				'strings'			=> array(
 					'recipe_rating'	=> __( "Recipe rating", "wpzoom-recipe-card" ),
 					'top_rated'		=> __( "Top rated", "wpzoom-recipe-card" ),
@@ -467,6 +429,25 @@ if ( ! class_exists( 'WPZOOM_Rating_Stars' ) ):
 			);
 
 			return $localize_data;
+		}
+
+		/**
+		 * Get the IP address of the current user.
+		 * Source: http://stackoverflow.com/questions/6717926/function-to-get-user-ip-address
+		 *
+		 * @since    3.2.0
+		 */
+		public static function get_user_ip() {
+			foreach ( array( 'REMOTE_ADDR', 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED' ) as $key ) {
+				if ( array_key_exists( $key, $_SERVER ) === true ) {
+					foreach ( array_map( 'trim', explode( ',', $_SERVER[ $key ] ) ) as $ip ) { // Input var ok.
+						if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) !== false ) {
+							return $ip;
+						}
+					}
+				}
+			}
+			return 'unknown';
 		}
 	}
 

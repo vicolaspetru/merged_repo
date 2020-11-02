@@ -69,7 +69,7 @@ jQuery( document ).ready( function() {
                 this.options.user_rating = rating;
 
                 const data = {
-                    action: 'wpzoom_user_rate_recipe',
+                    action: 'wpzoom_user_vote_recipe',
                     rating: rating,
                     recipe_id: recipe_id,
                     security: wpzoomRatingStars.ajax_nonce,

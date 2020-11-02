@@ -39,14 +39,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	public static $helpers;
 
 	/**
-	 * Class instance WPZOOM Rating Stars.
-	 *
-	 * @var WPZOOM_Rating_Stars
-	 * @since 1.1.0
-	 */
-	public static $wpzoom_rating;
-
-	/**
 	 * Recipe Block ID.
 	 *
 	 * @since 1.2.0
@@ -87,7 +79,6 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	public function __construct() {
 		self::$structured_data_helpers = new WPZOOM_Structured_Data_Helpers();
 		self::$helpers = new WPZOOM_Helpers();
-		self::$wpzoom_rating = new WPZOOM_Rating_Stars();
 	}
 
 	/**
@@ -393,8 +384,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		$attributes = self::$attributes;
 		$tag_list  	= wp_get_post_terms( self::$recipe->ID, 'post_tag', array( 'fields' => 'names' ) );
 		$cat_list 	= wp_get_post_terms( self::$recipe->ID, 'category', array( 'fields' => 'names' ) );
-		$rating_average = self::$wpzoom_rating->get_rating_average( self::$recipe->ID );
-		$rating_count = self::$wpzoom_rating->get_total_votes( self::$recipe->ID );
+
+		$rating_average = WPZOOM_Rating_Stars::get_rating_average( self::$recipe->ID );
+		$rating_count = WPZOOM_Rating_Stars::get_total_votes( self::$recipe->ID );
 
 		$json_ld = array(
 			'@context' 		=> 'https://schema.org',

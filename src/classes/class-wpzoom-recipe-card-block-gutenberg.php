@@ -52,7 +52,6 @@ final class WPZOOM_Recipe_Card_Block_Gutenberg {
 		add_action( 'after_setup_theme', array( __CLASS__, 'register_custom_image_sizes' ) );
 		add_action( 'init', array( __CLASS__, 'register_block_types' ) );
 		add_action( 'init', array( __CLASS__, 'load_textdomain' ) );
-		add_action( 'init', 'WPZOOM_Rating_Stars::set_user_ID' );
 
 		WPZOOM_Taxonomies::init();
 	}
