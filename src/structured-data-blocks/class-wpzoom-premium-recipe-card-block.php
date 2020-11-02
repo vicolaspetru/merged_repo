@@ -564,7 +564,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 			foreach ( $details as $key => $detail ) {
 				if ( $key === 0 ) {
-					if ( ! empty( $detail[ 'value' ] ) && self::$settings['displayServings'] ) {
+					if ( isset( $detail[ 'value' ] ) && self::$settings['displayServings'] ) {
 						if ( !is_array( $detail['value'] ) ) {
 							$yield = array(
 								$detail['value']
@@ -590,7 +590,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					}
 				}
 				elseif ( $key === 3 ) {
-					if ( ! empty( $detail[ 'value' ] ) && self::$settings['displayCalories'] ) {
+					if ( isset( $detail[ 'value' ] ) && self::$settings['displayCalories'] ) {
 						if ( !is_array( $detail['value'] ) ) {
 							$json_ld['nutrition']['calories'] = $detail['value'] .' cal';
 						}
@@ -600,7 +600,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					}
 				}
 				elseif ( $key === 1 ) {
-					if ( ! empty( $detail[ 'value' ] ) && self::$settings['displayPrepTime'] ) {
+					if ( isset( $detail[ 'value' ] ) && self::$settings['displayPrepTime'] ) {
 						if ( !is_array( $detail['value'] ) ) {
 							$prepTime = self::$structured_data_helpers->get_number_from_string( $detail['value'] );
 						    $json_ld['prepTime'] = self::$structured_data_helpers->get_period_time( $detail['value'] );
@@ -612,7 +612,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					}
 				}
 				elseif ( $key === 2 ) {
-					if ( ! empty( $detail[ 'value' ] ) && self::$settings['displayCookingTime'] ) {
+					if ( isset( $detail[ 'value' ] ) && self::$settings['displayCookingTime'] ) {
 						if ( !is_array( $detail['value'] ) ) {
 							$cookTime = self::$structured_data_helpers->get_number_from_string( $detail['value'] );
 						    $json_ld['cookTime'] = self::$structured_data_helpers->get_period_time( $detail['value'] );
@@ -624,7 +624,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					}
 				}
 				elseif ( $key === 8 ) {
-					if ( ! empty( $detail[ 'value' ] ) && self::$settings['displayTotalTime'] ) {
+					if ( isset( $detail[ 'value' ] ) && self::$settings['displayTotalTime'] ) {
 						if ( !is_array( $detail['value'] ) ) {
 							$json_ld['totalTime'] = self::$structured_data_helpers->get_period_time( $detail['value'] );
 						}
@@ -883,7 +883,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				);
 			}
 
-			if ( ! empty( $detail[ 'value' ] ) ) {
+			if ( isset( $detail[ 'value' ] ) ) {
 				if ( !is_array( $detail['value'] ) ) {
 					$value = sprintf(
 						'<p class="detail-item-value">%s</p>',
@@ -896,6 +896,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 					);
 				}
 			}
+
 			if ( ! empty( $detail[ 'unit' ] ) ) {
 				$unit = sprintf(
 					'<span class="detail-item-unit">%s</span>',
@@ -918,7 +919,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 
 			// convert minutes to hours for 'prep time', 'cook time' and 'total time'
 			if ( 1 === $index || 2 === $index || $isRestingTimeField || 8 === $index ) {
-				if ( ! empty( $detail['value'] ) ) {
+				if ( isset( $detail['value'] ) ) {
 					$converts = self::$helpers->convertMinutesToHours( $detail['value'], true );
 					if ( ! empty( $converts ) ) {
 						$value = $unit = '';
