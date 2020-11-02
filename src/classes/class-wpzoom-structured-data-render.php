@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// TODO: Deprecate this PHP class?
+
 /**
  * Class to load assets required for structured data blocks.
  */
@@ -30,7 +32,7 @@ class WPZOOM_Structured_Data_Render {
 		$this->load_dependencies();
 		self::$structured_data_helpers = new WPZOOM_Structured_Data_Helpers();
 
-		add_filter( 'the_content', array( $this, 'filter_content_blocks' ) );
+		// add_filter( 'the_content', array( $this, 'filter_content_blocks' ) );
 	}
 
 	/**
