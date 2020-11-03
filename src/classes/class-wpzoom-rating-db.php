@@ -210,7 +210,7 @@ class WPZOOM_Rating_DB {
      *
      * @param mixed $args Arguments for the query.
      */
-    public static function get_ratings( $args ) {
+    public static function get_ratings( $args = array() ) {
         global $wpdb;
 
         $table_name = self::get_table_name();

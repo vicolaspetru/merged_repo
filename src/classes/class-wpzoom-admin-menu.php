@@ -50,6 +50,15 @@ class WPZOOM_Admin_Menu {
 			WPZOOM_RCB_SETTINGS_PAGE,
 			array( $this, 'admin_page' )
 		);
+
+		add_submenu_page(
+			WPZOOM_RCB_SETTINGS_PAGE,
+			esc_html__( 'Manage Ratings', 'wpzoom-recipe-card' ),
+			esc_html__( 'Manage Ratings', 'wpzoom-recipe-card' ),
+			'manage_options',
+			'wpzoom-manage-ratings',
+			array( $this, 'manage_ratings' )
+		);
 	}
 
 	/**
@@ -59,6 +68,15 @@ class WPZOOM_Admin_Menu {
 	 */
 	public function admin_page() {
 		do_action( 'wpzoom_rcb_admin_page' );
+	}
+
+	/**
+	 * Wrapper for the hook to render manage ratings page.
+	 *
+	 * @since 3.2.0
+	 */
+	public function manage_ratings() {
+		do_action( 'wpzoom_rcb_admin_manage_ratings' );
 	}
 }
 
