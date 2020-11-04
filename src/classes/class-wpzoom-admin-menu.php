@@ -33,7 +33,7 @@ class WPZOOM_Admin_Menu {
 
 		add_menu_page(
 			$page_title,
-			esc_html__( 'Recipe Card', 'wpzoom-recipe-card' ),
+			apply_filters( 'wpzoom_manage_ratings_submenu_item', esc_html__( 'Recipe Card', 'wpzoom-recipe-card' ) ),
 			'manage_options',
 			WPZOOM_RCB_SETTINGS_PAGE,
 			array( $this, 'admin_page' ),
@@ -54,7 +54,7 @@ class WPZOOM_Admin_Menu {
 		add_submenu_page(
 			WPZOOM_RCB_SETTINGS_PAGE,
 			esc_html__( 'Manage Ratings', 'wpzoom-recipe-card' ),
-			esc_html__( 'Manage Ratings', 'wpzoom-recipe-card' ),
+			apply_filters( 'wpzoom_manage_ratings_submenu_item', esc_html__( 'Manage Ratings', 'wpzoom-recipe-card' ) ),
 			'manage_options',
 			'wpzoom-manage-ratings',
 			array( $this, 'manage_ratings' )
