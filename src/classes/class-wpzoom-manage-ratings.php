@@ -510,7 +510,7 @@ class WPZOOM_Manage_Ratings {
                         </tr>
                     </thead>
 
-                    <tbody id="the-comment-list">
+                    <tbody id="the-comment-list" data-wp-lists="list:comment">
                         <?php foreach ( $this->ratings['ratings'] as $rating ): ?>
                             <?php
                                 $comment = $post = $user = false;
@@ -528,7 +528,7 @@ class WPZOOM_Manage_Ratings {
                                     $post = get_post( $rating->recipe_id );
                                 }
 
-                                $row_classes = array( 'wpzoom-recipe-rating' );
+                                $row_classes = array();
                                 if ( $rating->comment_id ) {
                                     $row_classes[] = 'comment-rating';
                                 }
@@ -543,7 +543,7 @@ class WPZOOM_Manage_Ratings {
                                     $row_classes[] = 'odd';
                                 }
                             ?>
-                            <tr id="rating-for-post-<?php echo $post->ID ?>" class="<?php echo implode(' ', $row_classes ) ?>">
+                            <tr id="<?php echo ( $comment ? 'comment-'. $comment->comment_ID : ( $post ? 'post-'. $post->ID : 'recipe-rating' ) ); ?>" class="wpzoom-recipe-rating <?php echo implode(' ', $row_classes ) ?>">
                                 <td class="column-author" data-colname="Author">
                                     <?php
                                         if ( $user ) {
