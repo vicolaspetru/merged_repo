@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WPZOOM_Manage_Ratings {
 
+    public $page_slug = 'wpzoom-manage-ratings';
+
     public $pending_count = 0;
 
     private $ratings;
@@ -26,23 +28,70 @@ class WPZOOM_Manage_Ratings {
     public function __construct() {
         $page = isset( $_GET['page'] ) ? $_GET['page'] : '';
 
-        $this->pending_count = WPZOOM_Rating_DB::get_ratings(array(
-            'where' => 'approved = 0'
-        ));
-        $this->ratings = WPZOOM_Rating_DB::get_ratings();
+        // Run only on Manage Ratings page
+        if ( $this->page_slug === $page ) {
+            $this->set_pending_count();
+            $this->build_query();
 
-        if ( get_option( 'show_avatars' ) ) {
-            add_filter( 'wpzoom_manage_ratings_comment_author', array( $this, 'floated_comment_author_avatar' ), 10, 2 );
-            add_filter( 'wpzoom_manage_ratings_author', array( $this, 'floated_rating_author_avatar' ), 10, 2 );
-        }
+            if ( get_option( 'show_avatars' ) ) {
+                add_filter( 'wpzoom_manage_ratings_comment_author', array( $this, 'floated_comment_author_avatar' ), 10, 2 );
+                add_filter( 'wpzoom_manage_ratings_author', array( $this, 'floated_rating_author_avatar' ), 10, 2 );
+            }
 
-        if ( is_admin() ) {
-            // Only for Manage Ratings page
-            add_action( 'wpzoom_rcb_admin_manage_ratings', array( $this, 'manage_ratings' ) );
-            add_filter( 'wpzoom_manage_ratings_submenu_item', array( $this, 'submenu_item_bubble' ), 1 );
+            if ( is_admin() ) {
+                // Only for Manage Ratings page
+                add_action( 'wpzoom_rcb_admin_manage_ratings', array( $this, 'display' ) );
+                add_filter( 'wpzoom_manage_ratings_submenu_item', array( $this, 'submenu_item_bubble' ), 1 );
+            }
         }
     }
 
+    /**
+     * Set pending ratings count.
+     */
+    public function set_pending_count() {
+        $this->pending_count = WPZOOM_Rating_DB::get_ratings(array(
+            'where' => 'approved = 0'
+        ));
+    }
+
+    /**
+     * Build ratings query depending on url arguments.
+     */
+    public function build_query() {
+        $query_args = array();
+
+        $search = isset( $_GET['s'] ) ? $_GET['s'] : '';
+        $order = isset( $_GET['order'] ) ? $_GET['order'] : 'desc';
+        $orderby = isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'rate_date';
+
+        $query_args['where'] = "( ( approved = '0' OR approved = '1' ) )";
+
+        if ( ! empty( $search ) ) {
+            $query_args['where'] .= " AND (ip LIKE '%$search%')";
+        }
+        if ( empty( $search ) && ( $order || $orderby ) ) {
+            $query_args['order'] = $order;
+            $query_args['orderby'] = $orderby;
+        }
+
+        $this->ratings = WPZOOM_Rating_DB::get_ratings( $query_args );
+    }
+
+    public function subtitle_search_results() {
+        $search = isset( $_GET['s'] ) ? $_GET['s'] : '';
+
+        if ( ! empty( $search ) ) {
+            printf( '<span class="subtitle">%s “%s”</span>', __( 'Search results for' ), esc_html( $search ) );
+        }
+    }
+
+    /**
+     * Displays admin menu item bubble with pending count total value.
+     * 
+     * @param  string $menu_title The menu item title.
+     * @return string             The menu item bubble.
+     */
     public function submenu_item_bubble( $menu_title ) {
         if ( ! $this->pending_count['total'] ) {
             return $menu_title;
@@ -78,12 +127,15 @@ class WPZOOM_Manage_Ratings {
     /**
      * Generate and display row actions links.
      *
+     * @global string $comment_status Status for the current listed comments.
+     * 
      * @param WP_Comment $comment     The comment object.
-     * @param string $comment_status  Status for the current listed comments.
      * @return string Row actions output for comments. An empty string
      *                if the current user cannot edit the comment.
      */
-    protected function handle_comment_row_actions( $comment, $comment_status = null ) {
+    protected function handle_comment_row_actions( $comment ) {
+        global $comment_status;
+
         if ( ! current_user_can( 'edit_comment', $comment->comment_ID ) ) {
             return '';
         }
@@ -256,6 +308,116 @@ class WPZOOM_Manage_Ratings {
     }
 
     /**
+     * @see https://github.com/WordPress/WordPress/blob/0e3147c40e91f6eb1f57585724be173e3c04a719/wp-admin/includes/class-wp-comments-list-table.php#L452
+     * 
+     * @return array
+     */
+    public function get_columns() {
+        $columns = array();
+
+        $columns['author']  = __( 'Author' );
+        $columns['type']  = _x( 'Type', 'column name' );
+        $columns['ip']  = _x( 'IP', 'column name' );
+        $columns['comment'] = _x( 'Rating or Comment', 'column name' );
+        $columns['response'] = __( 'Post' );
+        $columns['date'] = _x( 'Submitted on', 'column name' );
+
+        return $columns;
+    }
+
+    /**
+     * @see https://github.com/WordPress/WordPress/blob/0e3147c40e91f6eb1f57585724be173e3c04a719/wp-admin/includes/class-wp-comments-list-table.php#L527
+     * 
+     * @return array
+     */
+    protected function get_sortable_columns() {
+        return array(
+            'comment'  => array( 'rating', false ),
+            'date'     => array( 'rate_date', false ),
+        );
+    }
+
+    /**
+     * Prints column headers, accounting for hidden and sortable columns.
+     *
+     * @see https://github.com/WordPress/WordPress/blob/727922c8eb60c6011888d6700052090a9de43286/wp-admin/includes/class-wp-list-table.php#L1172
+     *
+     * @param bool $with_id Whether to set the ID attribute or not
+     */
+    public function print_column_headers( $with_id = true ) {
+        $columns = $this->get_columns();
+        $sortable = $this->get_sortable_columns();
+
+        $current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+        $current_url = remove_query_arg( 'paged', $current_url );
+
+        if ( isset( $_GET['orderby'] ) ) {
+            $current_orderby = $_GET['orderby'];
+        } else {
+            $current_orderby = '';
+        }
+
+        if ( isset( $_GET['order'] ) && 'desc' === $_GET['order'] ) {
+            $current_order = 'desc';
+        } else {
+            $current_order = 'asc';
+        }
+
+        if ( ! empty( $columns['cb'] ) ) {
+            static $cb_counter = 1;
+            $columns['cb']     = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All' ) . '</label>'
+                . '<input id="cb-select-all-' . $cb_counter . '" type="checkbox" />';
+            $cb_counter++;
+        }
+
+        foreach ( $columns as $column_key => $column_display_name ) {
+            $class = array( 'manage-column', "column-$column_key" );
+
+            if ( 'cb' === $column_key ) {
+                $class[] = 'check-column';
+            } elseif ( in_array( $column_key, array( 'posts', 'comments', 'links' ), true ) ) {
+                $class[] = 'num';
+            }
+
+            if ( isset( $sortable[ $column_key ] ) ) {
+                list( $orderby, $desc_first ) = $sortable[ $column_key ];
+
+                if ( $current_orderby === $orderby ) {
+                    $order = 'asc' === $current_order ? 'desc' : 'asc';
+
+                    $class[] = 'sorted';
+                    $class[] = $current_order;
+                } else {
+                    $order = strtolower( $desc_first );
+
+                    if ( ! in_array( $order, array( 'desc', 'asc' ), true ) ) {
+                        $order = $desc_first ? 'desc' : 'asc';
+                    }
+
+                    $class[] = 'sortable';
+                    $class[] = 'desc' === $order ? 'asc' : 'desc';
+                }
+
+                $column_display_name = sprintf(
+                    '<a href="%s"><span>%s</span><span class="sorting-indicator"></span></a>',
+                    esc_url( add_query_arg( compact( 'orderby', 'order' ), $current_url ) ),
+                    $column_display_name
+                );
+            }
+
+            $tag   = ( 'cb' === $column_key ) ? 'td' : 'th';
+            $scope = ( 'th' === $tag ) ? 'scope="col"' : '';
+            $id    = $with_id ? "id='$column_key'" : '';
+
+            if ( ! empty( $class ) ) {
+                $class = "class='" . implode( ' ', $class ) . "'";
+            }
+
+            echo "<$tag $scope $id $class>$column_display_name</$tag>";
+        }
+    }
+
+    /**
      * @param WP_Comment $comment The comment object.
      */
     public function column_author_comment( $comment ) {
@@ -330,16 +492,20 @@ class WPZOOM_Manage_Ratings {
      * @param Object $rating The rating object.
      */
     public function column_ip( $comment, $rating ) {
+        $current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+        $current_url = remove_query_arg( 'paged', $current_url );
+
         if ( $comment ) {
             $comment_status = wp_get_comment_status( $comment );
             $author_ip = get_comment_author_IP( $comment );
+
             if ( $author_ip ) {
                 $author_ip_url = add_query_arg(
                     array(
+                        'page' => $this->page_slug,
                         's'    => $author_ip,
-                        'mode' => 'detail',
                     ),
-                    admin_url( 'edit-comments.php' )
+                    $current_url
                 );
                 if ( 'spam' === $comment_status ) {
                     $author_ip_url = add_query_arg( 'comment_status', 'spam', $author_ip_url );
@@ -347,7 +513,14 @@ class WPZOOM_Manage_Ratings {
                 printf( '<a href="%1$s">%2$s</a>', esc_url( $author_ip_url ), esc_html( $author_ip ) );
             }
         } else if ( $rating->ip ) {
-            echo esc_html( $rating->ip );
+            $author_ip_url = add_query_arg(
+                array(
+                    'page' => $this->page_slug,
+                    's'    => $rating->ip,
+                ),
+                $current_url
+            );
+            printf( '<a href="%1$s">%2$s</a>', esc_url( $author_ip_url ), esc_html( $rating->ip ) );
         } else {
             _e( 'n/a', 'wpzoom-recipe-card' );
         }
@@ -362,7 +535,7 @@ class WPZOOM_Manage_Ratings {
         if ( $comment ) {
             printf( '<span class="notice notice-info"><strong>%s</strong></span>', esc_html( 'Comment Rating', 'wpzoom-recipe-card' ) );
         } else {
-            printf( '<span class="notice notice-warning"><strong>%s</strong></span>', esc_html( 'User Rating', 'wpzoom-recipe-card' ) );
+            printf( '<span class="notice notice-success"><strong>%s</strong></span>', esc_html( 'User Rating', 'wpzoom-recipe-card' ) );
         }
     }
 
@@ -373,8 +546,7 @@ class WPZOOM_Manage_Ratings {
      */
     public function column_comment( $comment ) {
         comment_text( $comment );
-        $comment_status = wp_get_comment_status( $comment );
-        echo $this->handle_comment_row_actions( $comment, $comment_status );
+        echo $this->handle_comment_row_actions( $comment );
     }
 
     /**
@@ -474,7 +646,7 @@ class WPZOOM_Manage_Ratings {
      * 
      * @return string Ratings table
      */
-    public function manage_ratings() {
+    public function display() {
         // check user capabilities
         if ( ! current_user_can( 'edit_posts' ) ) {
             wp_die(
@@ -488,6 +660,7 @@ class WPZOOM_Manage_Ratings {
     ?>
         <div class="wrap">
             <h1 class="wp-heading-inline"><?php _e( 'Ratings', 'wpzoom-recipe-card' ); ?></h1>
+            <?php $this->subtitle_search_results(); ?>
             <hr class="wp-header-end">
 
             <?php
@@ -501,12 +674,7 @@ class WPZOOM_Manage_Ratings {
                 <table class="wp-list-table widefat fixed striped table-view-list wpzoom-ratings">
                     <thead>
                         <tr>
-                            <th scope="col" id="author"><?php _e( 'Author', 'wpzoom-recipe-card' ); ?></th>
-                            <th scope="col" id="type"><?php _e( 'Type', 'wpzoom-recipe-card' ); ?></th>
-                            <th scope="col" id="ip"><?php _e( 'IP', 'wpzoom-recipe-card' ); ?></th>
-                            <th scope="col" id="comment" class="column-comment"><?php _e( 'Rating or Comment', 'wpzoom-recipe-card' ); ?></th>
-                            <th scope="col" id="post"><?php _e( 'Post', 'wpzoom-recipe-card' ); ?></th>
-                            <th scope="col" id="date" class="manage-column column-date"><?php _e( 'Submitted on', 'wpzoom-recipe-card' ); ?></th>
+                            <?php $this->print_column_headers(); ?>
                         </tr>
                     </thead>
 
