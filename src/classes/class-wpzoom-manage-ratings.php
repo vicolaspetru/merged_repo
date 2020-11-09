@@ -16,11 +16,40 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class WPZOOM_Manage_Ratings {
 
-    public $page_slug = 'wpzoom-manage-ratings';
+    /**
+     * The Manage Ratings page slug.
+     *
+     * @var string
+     */
+    public $_page_slug = 'wpzoom-manage-ratings';
 
+    /**
+     * The number of unapproved ratings.
+     *
+     * @var integer
+     */
     public $pending_count = 0;
 
+    /**
+     * The current list of rating items.
+     *
+     * @var array
+     */
     private $ratings;
+
+    /**
+     * Various information needed for displaying the pagination.
+     * 
+     * @var array
+     */
+    protected $_pagination_args = array();
+
+    /**
+     * Cached pagination output.
+     *
+     * @var string
+     */
+    private $_pagination;
 
     /**
      * The Constructor.
@@ -28,22 +57,80 @@ class WPZOOM_Manage_Ratings {
     public function __construct() {
         $page = isset( $_GET['page'] ) ? $_GET['page'] : '';
 
+        add_filter( 'wpzoom_manage_ratings_submenu_item', array( $this, 'submenu_item_bubble' ), 1 );
+
         // Run only on Manage Ratings page
-        if ( $this->page_slug === $page ) {
-            $this->set_pending_count();
-            $this->build_query();
+        if ( $this->_page_slug === $page ) {
+            add_action( 'admin_init', array( $this, 'build_query' ) );
+            add_action( 'current_screen', array( $this, 'add_screen_options' ) );
+            add_action( 'wpzoom_rcb_admin_manage_ratings', array( $this, 'display' ) );
+
+            add_filter( 'set-screen-option', array( $this, 'set_screen_options' ), 10, 3 );
 
             if ( get_option( 'show_avatars' ) ) {
                 add_filter( 'wpzoom_manage_ratings_comment_author', array( $this, 'floated_comment_author_avatar' ), 10, 2 );
                 add_filter( 'wpzoom_manage_ratings_author', array( $this, 'floated_rating_author_avatar' ), 10, 2 );
             }
-
-            if ( is_admin() ) {
-                // Only for Manage Ratings page
-                add_action( 'wpzoom_rcb_admin_manage_ratings', array( $this, 'display' ) );
-                add_filter( 'wpzoom_manage_ratings_submenu_item', array( $this, 'submenu_item_bubble' ), 1 );
-            }
         }
+    }
+
+    /**
+     * Add screen options.
+     */
+    public function add_screen_options() {
+        add_screen_option(
+            'per_page',
+            array(
+                'option'  => str_replace( '-', '_', $this->_page_slug ) . '_per_page',
+                'default' => 20,
+                'label'   => esc_html__( 'Ratings per page', 'wpzoom-recipe-card' ),
+            )
+        );
+
+        get_current_screen()->add_help_tab(
+            array(
+                'id'      => $this->_page_slug . '-overview',
+                'title'   => __( 'Overview' ),
+                'content' =>
+                        '<p>' . __( 'You can manage ratings made on your site similar to the way you manage posts and other content. This screen is customizable in the same ways as other management screens, and you can act on ratings using the on-hover action links or the bulk actions.' ) . '</p>',
+            )
+        );
+        get_current_screen()->add_help_tab(
+            array(
+                'id'      => $this->_page_slug . '-moderating-comments',
+                'title'   => __( 'Moderating Ratings' ),
+                'content' =>
+                            '<p>' . __( 'A red bar on the left means the comment is waiting for you to moderate it.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>Author</strong> column, in addition to the author&#8217;s name, email address, and blog URL, the commenter&#8217;s IP address is shown. Clicking on this link will show you all the comments made from this IP address.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>Comment</strong> column, hovering over any comment gives you options to approve, reply (and approve), quick edit, edit, spam mark, or trash that comment.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>In response to</strong> column, there are three elements. The text is the name of the post that inspired the comment, and links to the post editor for that entry. The View Post link leads to that post on your live site. The small bubble with the number in it shows the number of approved comments that post has received. If there are pending comments, a red notification circle with the number of pending comments is displayed. Clicking the notification circle will filter the comments screen to show only pending comments on that post.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>Submitted on</strong> column, the date and time the comment was left on your site appears. Clicking on the date/time link will take you to that comment on your live site.' ) . '</p>' .
+                            '<p>' . __( 'Many people take advantage of keyboard shortcuts to moderate their comments more quickly. Use the link to the side to learn more.' ) . '</p>',
+            )
+        );
+
+        get_current_screen()->set_help_sidebar(
+            '<p><strong>' . __( 'For more information:' ) . '</strong></p>' .
+            '<p>' . sprintf( '<a href="https://www.wpzoom.com/documentation/recipe-card-blocks">%s</a>', __( 'Documentation on Ratings', 'wpzoom-recipe-card' ) ) . '</p>' .
+            '<p>' . sprintf( '<a href="https://wordpress.org/support/">%s</a>', __( 'Support', 'wpzoom-recipe-card' ) ) . '</p>'
+        );
+    }
+
+    /**
+     * Set screen options.
+     *
+     * @param bool|int $status Screen option value. Default false to skip.
+     * @param string   $option The option name.
+     * @param int      $value  The number of rows to use.
+     */
+    public function set_screen_options( $status, $option, $value ) {
+        $screen_option_id_per_page = str_replace( '-', '_', $this->_page_slug ) . '_per_page';
+
+        if ( $screen_option_id_per_page === $option ) {
+            return min( $value, 999 );
+        }
+
+        return $status;
     }
 
     /**
@@ -53,6 +140,36 @@ class WPZOOM_Manage_Ratings {
         $this->pending_count = WPZOOM_Rating_DB::get_ratings(array(
             'where' => 'approved = 0'
         ));
+    }
+
+    /**
+     * An internal method that sets all the necessary pagination arguments
+     * 
+     * @see https://github.com/WordPress/WordPress/blob/727922c8eb60c6011888d6700052090a9de43286/wp-admin/includes/class-wp-list-table.php#L276
+     *
+     * @param array|string $args Array or string of arguments with information about the pagination.
+     */
+    protected function set_pagination_args( $args ) {
+        $args = wp_parse_args(
+            $args,
+            array(
+                'total_items' => 0,
+                'total_pages' => 0,
+                'per_page'    => 0,
+            )
+        );
+
+        if ( ! $args['total_pages'] && $args['per_page'] > 0 ) {
+            $args['total_pages'] = ceil( $args['total_items'] / $args['per_page'] );
+        }
+
+        // Redirect if page number is invalid and headers are not already sent.
+        if ( ! headers_sent() && $args['total_pages'] > 0 && $this->get_pagenum() > $args['total_pages'] ) {
+            wp_redirect( add_query_arg( 'paged', $args['total_pages'] ) );
+            exit;
+        }
+
+        $this->_pagination_args = $args;
     }
 
     /**
@@ -75,7 +192,26 @@ class WPZOOM_Manage_Ratings {
             $query_args['orderby'] = $orderby;
         }
 
+        $ratings_per_page = $this->get_per_page();
+        $page = $this->get_pagenum();
+
+        if ( isset( $_GET['start'] ) ) {
+            $start = $_GET['start'];
+        } else {
+            $start = ( $page - 1 ) * $ratings_per_page;
+        }
+
+        $query_args['offset'] = $start;
+        $query_args['limit'] = $ratings_per_page;
+
         $this->ratings = WPZOOM_Rating_DB::get_ratings( $query_args );
+
+        $this->set_pagination_args(
+            array(
+                'total_items' => $this->ratings['total'],
+                'per_page'    => $ratings_per_page,
+            )
+        );
     }
 
     public function subtitle_search_results() {
@@ -93,6 +229,7 @@ class WPZOOM_Manage_Ratings {
      * @return string             The menu item bubble.
      */
     public function submenu_item_bubble( $menu_title ) {
+        $this->set_pending_count();
         if ( ! $this->pending_count['total'] ) {
             return $menu_title;
         }
@@ -308,6 +445,135 @@ class WPZOOM_Manage_Ratings {
     }
 
     /**
+     * Displays the pagination.
+     *
+     * @see https://github.com/WordPress/WordPress/blob/727922c8eb60c6011888d6700052090a9de43286/wp-admin/includes/class-wp-list-table.php#L858
+     *
+     * @param string $which
+     */
+    protected function pagination( $which ) {
+        if ( empty( $this->_pagination_args ) ) {
+            return;
+        }
+
+        $total_items     = $this->_pagination_args['total_items'];
+        $total_pages     = $this->_pagination_args['total_pages'];
+
+        $output = '<span class="displaying-num">' . sprintf(
+            /* translators: %s: Number of items. */
+            _n( '%s item', '%s items', $total_items ),
+            number_format_i18n( $total_items )
+        ) . '</span>';
+
+        $current              = $this->get_pagenum();
+        $removable_query_args = wp_removable_query_args();
+
+        $current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+
+        $current_url = remove_query_arg( $removable_query_args, $current_url );
+
+        $page_links = array();
+
+        $total_pages_before = '<span class="paging-input">';
+        $total_pages_after  = '</span></span>';
+
+        $disable_first = false;
+        $disable_last  = false;
+        $disable_prev  = false;
+        $disable_next  = false;
+
+        if ( 1 == $current ) {
+            $disable_first = true;
+            $disable_prev  = true;
+        }
+        if ( 2 == $current ) {
+            $disable_first = true;
+        }
+        if ( $total_pages == $current ) {
+            $disable_last = true;
+            $disable_next = true;
+        }
+        if ( $total_pages - 1 == $current ) {
+            $disable_last = true;
+        }
+
+        if ( $disable_first ) {
+            $page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo;</span>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='first-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+                esc_url( remove_query_arg( 'paged', $current_url ) ),
+                __( 'First page' ),
+                '&laquo;'
+            );
+        }
+
+        if ( $disable_prev ) {
+            $page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='prev-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+                esc_url( add_query_arg( 'paged', max( 1, $current - 1 ), $current_url ) ),
+                __( 'Previous page' ),
+                '&lsaquo;'
+            );
+        }
+
+        if ( 'bottom' === $which ) {
+            $html_current_page  = $current;
+            $total_pages_before = '<span class="screen-reader-text">' . __( 'Current Page' ) . '</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">';
+        } else {
+            $html_current_page = sprintf(
+                "%s<input class='current-page' id='current-page-selector' type='text' name='paged' value='%s' size='%d' aria-describedby='table-paging' /><span class='tablenav-paging-text'>",
+                '<label for="current-page-selector" class="screen-reader-text">' . __( 'Current Page' ) . '</label>',
+                $current,
+                strlen( $total_pages )
+            );
+        }
+        $html_total_pages = sprintf( "<span class='total-pages'>%s</span>", number_format_i18n( $total_pages ) );
+        $page_links[]     = $total_pages_before . sprintf(
+            /* translators: 1: Current page, 2: Total pages. */
+            _x( '%1$s of %2$s', 'paging' ),
+            $html_current_page,
+            $html_total_pages
+        ) . $total_pages_after;
+
+        if ( $disable_next ) {
+            $page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='next-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+                esc_url( add_query_arg( 'paged', min( $total_pages, $current + 1 ), $current_url ) ),
+                __( 'Next page' ),
+                '&rsaquo;'
+            );
+        }
+
+        if ( $disable_last ) {
+            $page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='last-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+                esc_url( add_query_arg( 'paged', $total_pages, $current_url ) ),
+                __( 'Last page' ),
+                '&raquo;'
+            );
+        }
+
+        $pagination_links_class = 'pagination-links';
+        $output .= "\n<span class='$pagination_links_class'>" . implode( "\n", $page_links ) . '</span>';
+
+        if ( $total_pages ) {
+            $page_class = $total_pages < 2 ? ' one-page' : '';
+        } else {
+            $page_class = ' no-pages';
+        }
+        $this->_pagination = "<div class='tablenav-pages{$page_class}'>$output</div>";
+
+        echo $this->_pagination;
+    }
+
+    /**
      * @see https://github.com/WordPress/WordPress/blob/0e3147c40e91f6eb1f57585724be173e3c04a719/wp-admin/includes/class-wp-comments-list-table.php#L452
      * 
      * @return array
@@ -335,6 +601,59 @@ class WPZOOM_Manage_Ratings {
             'comment'  => array( 'rating', false ),
             'date'     => array( 'rate_date', false ),
         );
+    }
+
+    /**
+     * Gets the current page number.
+     *
+     * @see https://github.com/WordPress/WordPress/blob/727922c8eb60c6011888d6700052090a9de43286/wp-admin/includes/class-wp-list-table.php#L799
+     *
+     * @return int
+     */
+    public function get_pagenum() {
+        $pagenum = isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 0;
+
+        if ( isset( $this->_pagination_args['total_pages'] ) && $pagenum > $this->_pagination_args['total_pages'] ) {
+            $pagenum = $this->_pagination_args['total_pages'];
+        }
+
+        return max( 1, $pagenum );
+    }
+
+    /**
+     * @return int
+     */
+    public function get_per_page() {
+        $ratings_per_page = $this->get_items_per_page( 'wpzoom_manage_ratings_per_page' );
+        return $ratings_per_page;
+    }
+
+    /**
+     * Gets the number of items to display on a single page.
+     *
+     * @see https://github.com/WordPress/WordPress/blob/727922c8eb60c6011888d6700052090a9de43286/wp-admin/includes/class-wp-list-table.php#L818
+     *
+     * @param string $option
+     * @param int    $default
+     * @return int
+     */
+    protected function get_items_per_page( $option, $default = 20 ) {
+        $per_page = (int) get_user_option( $option );
+        if ( empty( $per_page ) || $per_page < 1 ) {
+            $per_page = $default;
+        }
+
+        /**
+         * Filters the number of items to be displayed on each page of the list table.
+         *
+         * The dynamic hook name, `$option`, refers to the `per_page` option depending
+         * on the type of list table in use. Possible filter names include:
+         *
+         *  - `wpzoom_manage_ratings_per_page`
+         *
+         * @param int $per_page Number of items to be displayed. Default 20.
+         */
+        return (int) apply_filters( "{$option}", $per_page );
     }
 
     /**
@@ -502,7 +821,7 @@ class WPZOOM_Manage_Ratings {
             if ( $author_ip ) {
                 $author_ip_url = add_query_arg(
                     array(
-                        'page' => $this->page_slug,
+                        'page' => $this->_page_slug,
                         's'    => $author_ip,
                     ),
                     $current_url
@@ -515,7 +834,7 @@ class WPZOOM_Manage_Ratings {
         } else if ( $rating->ip ) {
             $author_ip_url = add_query_arg(
                 array(
-                    'page' => $this->page_slug,
+                    'page' => $this->_page_slug,
                     's'    => $rating->ip,
                 ),
                 $current_url
@@ -750,10 +1069,26 @@ class WPZOOM_Manage_Ratings {
                     </tbody>
                 </table>
 
+                <?php $this->display_tablenav( 'bottom' ); ?>
 
             </form>
         </div>
         <?php
+    }
+
+    /**
+     * Generates the table navigation above or below the table
+     *
+     * @see https://github.com/WordPress/WordPress/blob/727922c8eb60c6011888d6700052090a9de43286/wp-admin/includes/class-wp-list-table.php#L1313
+     * @param string $which
+     */
+    protected function display_tablenav( $which ) {
+    ?>
+        <div class="tablenav <?php echo esc_attr( $which ); ?>">
+            <?php $this->pagination( $which ); ?>
+            <br class="clear" />
+        </div>
+    <?php
     }
 
 }
