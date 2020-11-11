@@ -360,6 +360,11 @@ class WPZOOM_Manage_Ratings {
             );
         }
 
+        if ( 'trash' === $the_comment_status || 'untrash' === $the_comment_status || 'spam' === $the_comment_status || 'unspam' === $the_comment_status ) {
+            $actions['approve'] = '';
+            $actions['unapprove'] = '';
+        }
+
         if ( 'spam' !== $the_comment_status ) {
             $actions['spam'] = sprintf(
                 '<a href="%s" data-wp-lists="%s" class="vim-s vim-destructive aria-button-if-js" aria-label="%s">%s</a>',
@@ -1024,6 +1029,7 @@ class WPZOOM_Manage_Ratings {
                                 }
                                 if ( $rating->comment_id ) {
                                     $comment = get_comment( $rating->comment_id );
+                                    $comment_status = wp_get_comment_status( $comment );
                                 }
                                 if ( $rating->post_id ) {
                                     $post = get_post( $rating->post_id );
@@ -1037,9 +1043,12 @@ class WPZOOM_Manage_Ratings {
                                     $row_classes[] = 'comment-rating';
                                 }
                                 if ( $rating->approved ) {
-                                    $row_classes[] = 'approved';
+                                    $row_classes['status'] = 'approved';
                                 } else {
-                                    $row_classes[] = 'unapproved';
+                                    $row_classes['status'] = 'unapproved';
+                                }
+                                if ( isset( $comment_status ) ) {
+                                    $row_classes['status'] = $comment_status;
                                 }
                                 if ( $total_ratings % 2 === 0 ) {
                                     $row_classes[] = 'even';
