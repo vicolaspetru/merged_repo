@@ -64,6 +64,7 @@ class WPZOOM_Manage_Ratings {
             add_action( 'admin_init', array( $this, 'build_query' ) );
             add_action( 'current_screen', array( $this, 'add_screen_options' ) );
             add_action( 'wpzoom_rcb_admin_manage_ratings', array( $this, 'display' ) );
+            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
             add_filter( 'set-screen-option', array( $this, 'set_screen_options' ), 10, 3 );
 
@@ -72,6 +73,10 @@ class WPZOOM_Manage_Ratings {
                 add_filter( 'wpzoom_manage_ratings_author', array( $this, 'floated_rating_author_avatar' ), 10, 2 );
             }
         }
+    }
+
+    public function enqueue_scripts() {
+        wp_enqueue_script( 'admin-comments' );
     }
 
     /**
@@ -229,11 +234,23 @@ class WPZOOM_Manage_Ratings {
      * @return string             The menu item bubble.
      */
     public function submenu_item_bubble( $menu_title ) {
-        $this->set_pending_count();
-        if ( ! $this->pending_count['total'] ) {
-            return $menu_title;
+        if ( current_user_can( 'edit_posts' ) ) {
+            $this->set_pending_count();
+
+            if ( ! $this->pending_count['total'] ) {
+                return $menu_title;
+            }
+
+            $awaiting_mod      = $this->pending_count['total'];
+            $awaiting_mod_i18n = number_format_i18n( $awaiting_mod );
+            /* translators: %s: Number of ratings. */
+            $awaiting_mod_text = sprintf( _n( '%s Rating in moderation', '%s Ratings in moderation', $awaiting_mod ), $awaiting_mod_i18n );
+
+            /* translators: %s: Number of ratings. */
+            $output = sprintf( '%s %s', $menu_title, '<span class="awaiting-mod count-' . absint( $awaiting_mod ) . '"><span class="pending-count" aria-hidden="true">' . $awaiting_mod_i18n . '</span><span class="comments-in-moderation-text screen-reader-text">' . $awaiting_mod_text . '</span></span>' );
+
+            return $output;
         }
-        return sprintf( '%s <span class="awaiting-mod">%d</span>', $menu_title, $this->pending_count['total'] );
     }
 
     /**
@@ -970,7 +987,7 @@ class WPZOOM_Manage_Ratings {
         if ( ! current_user_can( 'edit_posts' ) ) {
             wp_die(
                 '<h1>' . __( 'You need a higher level of permission.' ) . '</h1>' .
-                '<p>' . __( 'Sorry, you are not allowed to edit comments.' ) . '</p>',
+                '<p>' . __( 'Sorry, you are not allowed to manage ratings.' ) . '</p>',
                 403
             );
         }
@@ -1031,7 +1048,7 @@ class WPZOOM_Manage_Ratings {
                                 }
                             ?>
                             <tr id="<?php echo ( $comment ? 'comment-'. $comment->comment_ID : ( $post ? 'post-'. $post->ID : 'recipe-rating' ) ); ?>" class="wpzoom-recipe-rating <?php echo implode(' ', $row_classes ) ?>">
-                                <td class="column-author" data-colname="Author">
+                                <td class="author column-author" data-colname="Author">
                                     <?php
                                         if ( $user ) {
                                             $this->column_author_user( $user );
@@ -1073,7 +1090,9 @@ class WPZOOM_Manage_Ratings {
 
             </form>
         </div>
+        <div id="ajax-response"></div>
         <?php
+        wp_comment_trashnotice();
     }
 
     /**
