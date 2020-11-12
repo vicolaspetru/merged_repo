@@ -131,7 +131,7 @@ class WPZOOM_Rating_DB {
         $rating['rate_date'] = isset( $rating_data['rate_date'] ) && $rating_data['rate_date'] ? $rating_data['rate_date'] : current_time( 'mysql' );
         $rating['update_date'] = isset( $rating_data['update_date'] ) && $rating_data['update_date'] ? $rating_data['update_date'] : current_time( 'mysql' );
         $rating['ip'] = isset( $rating_data['ip'] ) && $rating_data['ip'] ? esc_attr( $rating_data['ip'] ) : '';
-        $rating['approved'] = 1;
+        $rating['approved'] = isset( $rating_data['approved'] ) ? $rating_data['approved'] : 1;
 
         // We have comment ID
         if ( $rating['comment_id'] ) {
@@ -157,6 +157,8 @@ class WPZOOM_Rating_DB {
                     $where = 'recipe_id = ' . $rating['recipe_id'] . ' AND user_id = ' . $rating['user_id'];
                 } elseif ( $rating['ip'] ) {
                     $where = 'recipe_id = ' . $rating['recipe_id'] . ' AND ip = "' . $rating['ip'] . '"';
+                } else {
+                    $where = 'recipe_id = ' . $rating['recipe_id'] . ' AND rate_date = "'. $rating['rate_date'] .'" AND ip = "' . $rating['ip'] . '"';
                 }
             } elseif ( $rating['comment_id'] ) {
                 $where = 'comment_id = ' . $rating['comment_id'];

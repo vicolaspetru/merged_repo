@@ -59,14 +59,25 @@ class WPZOOM_Manage_Ratings {
 
         add_filter( 'wpzoom_manage_ratings_submenu_item', array( $this, 'submenu_item_bubble' ), 1 );
 
+        // Do ajax request
+        add_action( 'wp_ajax_approverating', array( $this, 'approve_rating') );
+        add_action( 'wp_ajax_unapproverating', array( $this, 'unapprove_rating') );
+        add_action( 'wp_ajax_deleterating', array( $this, 'delete_rating') );
+
         // Run only on Manage Ratings page
         if ( $this->_page_slug === $page ) {
+            // Build Ratings query
             add_action( 'admin_init', array( $this, 'build_query' ) );
-            add_action( 'current_screen', array( $this, 'add_screen_options' ) );
-            add_action( 'wpzoom_rcb_admin_manage_ratings', array( $this, 'display' ) );
-            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
+            // Add screen options
+            add_action( 'current_screen', array( $this, 'add_screen_options' ) );
             add_filter( 'set-screen-option', array( $this, 'set_screen_options' ), 10, 3 );
+
+            // Display HTML content for Manage Ratings page
+            add_action( 'wpzoom_rcb_admin_manage_ratings', array( $this, 'display' ) );
+
+            // Include scripts
+            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
             if ( get_option( 'show_avatars' ) ) {
                 add_filter( 'wpzoom_manage_ratings_comment_author', array( $this, 'floated_comment_author_avatar' ), 10, 2 );
@@ -75,8 +86,120 @@ class WPZOOM_Manage_Ratings {
         }
     }
 
+    public function approve_rating() {
+        $post_id = isset( $_POST['postId'] ) && wp_validate_boolean( $_POST['postId'] ) ? absint( $_POST['postId'] ) : 0;
+
+        check_ajax_referer( "approve-rating_$post_id", 'nonce' );
+
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            wp_send_json_error();
+        }
+
+        $user_id = isset( $_POST['userId'] ) && wp_validate_boolean( $_POST['userId'] ) ? absint( $_POST['userId'] ) : 0;
+        $user_ip = isset( $_POST['userIp'] ) && wp_validate_boolean( $_POST['userIp'] ) ? esc_attr( $_POST['userIp'] ) : '';
+        $rating = isset( $_POST['rating'] ) ? absint( $_POST['rating'] ) : 0;
+        $date = isset( $_POST['date'] ) ? $_POST['date'] : current_time( 'mysql' );
+        $time = isset( $_POST['time'] ) ? $_POST['time'] : '';
+
+        $rating_data = [
+            'rating' => $rating,
+            'rate_date' => "$date $time",
+            'update_date' => current_time( 'mysql' ),
+            'approved' => 1,
+            'recipe_id' => $post_id,
+            'user_id' => $user_id,
+            'ip' => $user_ip
+        ];
+
+        $result = WPZOOM_Rating_DB::add_or_update_rating( $rating_data );
+
+        if ( ! $result ) {
+            wp_send_json_error();
+        }
+
+        wp_send_json_success();
+    }
+
+    public function unapprove_rating() {
+        $post_id = isset( $_POST['postId'] ) && wp_validate_boolean( $_POST['postId'] ) ? absint( $_POST['postId'] ) : 0;
+
+        check_ajax_referer( "approve-rating_$post_id", 'nonce' );
+
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            wp_send_json_error();
+        }
+
+        $user_id = isset( $_POST['userId'] ) && wp_validate_boolean( $_POST['userId'] ) ? absint( $_POST['userId'] ) : 0;
+        $user_ip = isset( $_POST['userIp'] ) && wp_validate_boolean( $_POST['userIp'] ) ? esc_attr( $_POST['userIp'] ) : '';
+        $rating = isset( $_POST['rating'] ) ? absint( $_POST['rating'] ) : 0;
+        $date = isset( $_POST['date'] ) ? $_POST['date'] : current_time( 'mysql' );
+        $time = isset( $_POST['time'] ) ? $_POST['time'] : '';
+
+        $rating_data = [
+            'rating' => $rating,
+            'rate_date' => "$date $time",
+            'update_date' => current_time( 'mysql' ),
+            'approved' => 0,
+            'recipe_id' => $post_id,
+            'user_id' => $user_id,
+            'ip' => $user_ip
+        ];
+
+        $result = WPZOOM_Rating_DB::add_or_update_rating( $rating_data );
+
+        if ( ! $result ) {
+            wp_send_json_error();
+        }
+
+        wp_send_json_success();
+    }
+
+    public function delete_rating() {
+        $post_id = isset( $_POST['postId'] ) && wp_validate_boolean( $_POST['postId'] ) ? absint( $_POST['postId'] ) : 0;
+
+        check_ajax_referer( "delete-rating_$post_id", 'nonce' );
+
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            wp_send_json_error();
+        }
+
+        $user_id = isset( $_POST['userId'] ) && wp_validate_boolean( $_POST['userId'] ) ? absint( $_POST['userId'] ) : 0;
+        $user_ip = isset( $_POST['userIp'] ) && wp_validate_boolean( $_POST['userIp'] ) ? esc_attr( $_POST['userIp'] ) : '';
+        $date = isset( $_POST['date'] ) ? $_POST['date'] : current_time( 'mysql' );
+        $time = isset( $_POST['time'] ) ? $_POST['time'] : '';
+
+        if ( $user_id ) {
+            $where = 'recipe_id = ' . $post_id . ' AND user_id = ' . $user_id;
+        } elseif ( $user_ip ) {
+            $where = 'recipe_id = ' . $post_id . ' AND ip = "' . $user_ip . '"';
+        } else {
+            $where = 'recipe_id = ' . $post_id . ' AND rate_date = "'. $date .' '. $time .'" AND ip = "' . $user_ip . '"';
+        }
+
+        // Delete existing ratings
+        $existing_ratings = WPZOOM_Rating_DB::get_ratings(array(
+            'where' => $where,
+        ));
+        $existing_ratings_ids = wp_list_pluck( $existing_ratings['ratings'], 'id' );
+
+        if ( 0 < count( $existing_ratings_ids ) ) {
+            WPZOOM_Rating_DB::delete_ratings( $existing_ratings_ids );
+        } else {
+            wp_send_json_error();
+        }
+
+        wp_send_json_success();
+    }
+
     public function enqueue_scripts() {
         wp_enqueue_script( 'admin-comments' );
+
+        wp_enqueue_script(
+            'wpzoom-manage-ratings',
+            untrailingslashit( WPZOOM_RCB_PLUGIN_URL ) . '/dist/assets/admin/js/manage-ratings.js',
+            array(),
+            WPZOOM_RCB_VERSION
+        );
     }
 
     /**
@@ -219,6 +342,9 @@ class WPZOOM_Manage_Ratings {
         );
     }
 
+    /**
+     * Displays search results subtitle.
+     */
     public function subtitle_search_results() {
         $search = isset( $_GET['s'] ) ? $_GET['s'] : '';
 
@@ -270,16 +396,16 @@ class WPZOOM_Manage_Ratings {
      * Adds avatars to rating author names.
      *
      * @param string $name       User author name.
-     * @param int    $user_ID    User ID.
+     * @param int    $user_id    User ID.
      * @return string Avatar with the user name.
      */
-    public function floated_rating_author_avatar( $name, $user_ID ) {
-        $avatar  = get_avatar( $user_ID, 32, 'mystery' );
+    public function floated_rating_author_avatar( $name, $user_id ) {
+        $avatar  = get_avatar( $user_id, 32, 'mystery' );
         return "$avatar $name";
     }
 
     /**
-     * Generate and display row actions links.
+     * Generate and display row actions links for comment.
      *
      * @global string $comment_status Status for the current listed comments.
      * 
@@ -433,6 +559,120 @@ class WPZOOM_Manage_Ratings {
         }
 
         $out .= '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
+
+        $i = 0;
+
+        foreach ( $actions as $action => $link ) {
+            ++$i;
+
+            if ( ( ( 'approve' === $action || 'unapprove' === $action ) && 2 === $i )
+                || 1 === $i
+            ) {
+                $sep = '';
+            } else {
+                $sep = ' | ';
+            }
+
+            if ( ( 'untrash' === $action && 'trash' === $the_comment_status ) || ( 'unspam' === $action && 'spam' === $the_comment_status )
+            ) {
+                if ( '1' == get_comment_meta( $comment->comment_ID, '_wp_trash_meta_status', true ) ) {
+                    $action .= ' approve';
+                } else {
+                    $action .= ' unapprove';
+                }
+            }
+
+            $out .= "<span class='$action'>$sep$link</span>";
+        }
+
+        $out .= '</div>';
+
+        $out .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>';
+
+        return $out;
+    }
+
+    /**
+     * Generate and display row actions links for user rating.
+     * 
+     * @param Object $rating    The rating object.
+     * @param WP_Post $post     The post object.
+     * @return string Row actions output for user rating. An empty string
+     *                if the current user cannot edit the post.
+     */
+    protected function handle_user_rating_row_actions( $rating, $post ) {
+        if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+            return '';
+        }
+
+        $user_id = $user_ip = '';
+
+        $the_rating_status = $rating->approved ? 'approved' : 'unapproved';
+        $user = $rating->user_id ? get_userdata( $rating->user_id ) : 0;
+
+        $out = '';
+
+        $del_nonce     = esc_html( '_wpnonce=' . wp_create_nonce( "delete-rating_$post->ID" ) );
+        $approve_nonce = esc_html( '_wpnonce=' . wp_create_nonce( "approve-rating_$post->ID" ) );
+
+        $current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+
+        if ( $user ) {
+            $user_id = $user->ID;
+        }
+        if ( $rating->ip ) {
+            $user_ip = $rating->ip;
+        }
+
+        $url = add_query_arg( [
+                'post' => $post->ID,
+                'user' => $user_id,
+                'ip'   => $user_ip,
+                'rating' => absint( $rating->rating ),
+                'date' => date( 'Y-m-d', strtotime( $rating->rate_date ) ),
+                'time' => date( 'g:i:s', strtotime( $rating->rate_date ) ),
+            ],
+            $current_url
+        );
+
+        $approve_url   = esc_url( $url . "&action=approverating&$approve_nonce" );
+        $unapprove_url = esc_url( $url . "&action=unapproverating&$approve_nonce" );
+        $delete_url    = esc_url( $url . "&action=deleterating&$del_nonce" );
+
+        // Preorder it: Approve | Edit | Delete.
+        $actions = array(
+            'approve'   => '',
+            'unapprove' => '',
+            'edit'      => '',
+            'delete'    => '',
+        );
+
+        if ( 'unapproved' === $the_rating_status ) {
+            $actions['approve'] = sprintf(
+                '<a href="%s" class="approve aria-button-if-js" aria-label="%s">%s</a>',
+                $approve_url,
+                esc_attr__( 'Approve this rating', 'wpzoom-recipe-card' ),
+                __( 'Approve' )
+            );
+        } else {
+            $actions['unapprove'] = sprintf(
+                '<a href="%s" class="unapprove aria-button-if-js" aria-label="%s">%s</a>',
+                $unapprove_url,
+                esc_attr__( 'Unapprove this rating', 'wpzoom-recipe-card' ),
+                __( 'Unapprove' )
+            );
+        }
+
+        $actions['delete'] = sprintf(
+            '<a href="%s" class="delete aria-button-if-js" aria-label="%s">%s</a>',
+            $delete_url,
+            esc_attr__( 'Delete this rating permanently', 'wpzoom-recipe-card' ),
+            __( 'Delete Permanently' )
+        );
+
+        $actions = array_filter( $actions );
+
+        $out .= '<div class="row-actions">';
 
         $i = 0;
 
@@ -842,10 +1082,10 @@ class WPZOOM_Manage_Ratings {
 
             if ( $author_ip ) {
                 $author_ip_url = add_query_arg(
-                    array(
+                    [
                         'page' => $this->_page_slug,
                         's'    => $author_ip,
-                    ),
+                    ],
                     $current_url
                 );
                 if ( 'spam' === $comment_status ) {
@@ -855,10 +1095,10 @@ class WPZOOM_Manage_Ratings {
             }
         } else if ( $rating->ip ) {
             $author_ip_url = add_query_arg(
-                array(
+                [
                     'page' => $this->_page_slug,
                     's'    => $rating->ip,
-                ),
+                ],
                 $current_url
             );
             printf( '<a href="%1$s">%2$s</a>', esc_url( $author_ip_url ), esc_html( $rating->ip ) );
@@ -893,9 +1133,10 @@ class WPZOOM_Manage_Ratings {
     /**
      * Displays the type of rating.
      * 
-     * @param WP_Comment $comment The comment object.
+     * @param Object $rating The rating object.
+     * @param WP_Post $post The post object.
      */
-    public function column_rating_stars( $rating ) {
+    public function column_rating_stars( $rating, $post = 0 ) {
         $out = '';
         $rating_stars_items = '';
 
@@ -911,6 +1152,11 @@ class WPZOOM_Manage_Ratings {
 
         $out .= $rating_stars_items;
         $out .= '</div></div>';
+
+        if ( $post ) {
+            $out .= '<p></p>';
+            $out .= $this->handle_user_rating_row_actions( $rating, $post );
+        }
 
         echo $out;
     }
@@ -1023,6 +1269,7 @@ class WPZOOM_Manage_Ratings {
                         <?php foreach ( $this->ratings['ratings'] as $rating ): ?>
                             <?php
                                 $comment = $post = $user = false;
+                                $row_classes = array();
 
                                 if ( $rating->user_id ) {
                                     $user = get_userdata( $rating->user_id );
@@ -1038,9 +1285,10 @@ class WPZOOM_Manage_Ratings {
                                     $post = get_post( $rating->recipe_id );
                                 }
 
-                                $row_classes = array();
-                                if ( $rating->comment_id ) {
-                                    $row_classes[] = 'comment-rating';
+                                if ( $comment ) {
+                                    $row_classes['rating-type'] = 'comment-rating';
+                                } else {
+                                    $row_classes['rating-type'] = 'user-rating';
                                 }
                                 if ( $rating->approved ) {
                                     $row_classes['status'] = 'approved';
@@ -1079,7 +1327,7 @@ class WPZOOM_Manage_Ratings {
                                         if ( $comment ) {
                                             $this->column_comment( $comment );
                                         } else {
-                                            $this->column_rating_stars( $rating );
+                                            $this->column_rating_stars( $rating, $post );
                                         }
                                     ?>
                                 </td>
