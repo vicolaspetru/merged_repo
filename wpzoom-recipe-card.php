@@ -48,3 +48,17 @@ if ( ! function_exists('wpzoom_rcb_block_is_registered') ) {
 		return $WP_Block_Type_Registry->is_registered( $name );
 	}
 }
+
+/**
+ * Function to show the rating form or number
+ */
+function wpzoom_rating_stars( $recipe_ID, $type = 'form', $label = '' ) {
+	if ( '1' !== WPZOOM_Settings::get('wpzoom_rcb_settings_user_ratings') ) {
+		return '';
+	}
+	if ( $type == 'number' ) {
+		return WPZOOM_Rating_Stars::get_rating_star( $recipe_ID, $label );
+	} else {
+		return WPZOOM_Rating_Stars::get_rating_form( $recipe_ID );
+	}
+}

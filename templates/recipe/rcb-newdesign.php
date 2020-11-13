@@ -28,11 +28,7 @@
     <?php endif ?>
     <div class="recipe-card-heading">
         <h2 class="recipe-card-title"><?php echo ! empty( $stored_data['recipeTitle'] ) ? strip_tags( $stored_data['recipeTitle'] ) : strip_tags( $stored_data['recipe_title'] ); ?></h2>
-        <?php
-            if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_user_ratings') ) {
-                echo wpzoom_rating_stars( $stored_data['recipe_ID'] );
-            }
-        ?>
+        <?php echo wpzoom_rating_stars( $stored_data['recipe_ID'] ); ?>
         <?php if ( $settings['displayAuthor'] ): ?>
             <span class="recipe-card-author"><?php echo __( 'Recipe by', 'wpzoom-recipe-card' ) .' '. $custom_author_name ?></span>
         <?php endif ?>

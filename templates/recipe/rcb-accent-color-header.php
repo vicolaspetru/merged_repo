@@ -47,11 +47,7 @@
             <?php if ( $settings['displayAuthor'] ): ?>
                 <span class="recipe-card-author"><?php echo __( 'Recipe by', 'wpzoom-recipe-card' ) .' '. $custom_author_name ?></span>
             <?php endif ?>
-            <?php
-                if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_user_ratings') ) {
-                    echo wpzoom_rating_stars( $stored_data['recipe_ID'] );
-                }
-            ?>
+            <?php echo wpzoom_rating_stars( $stored_data['recipe_ID'] ); ?>
             <?php
                 if ( $settings['displayCourse'] ) {
                     echo WPZOOM_Premium_Recipe_Card_Block::get_recipe_terms( 'wpzoom_rcb_courses' );

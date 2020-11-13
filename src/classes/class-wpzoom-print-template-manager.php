@@ -239,9 +239,7 @@ if ( ! class_exists( 'WPZOOM_Print_Template_Manager' ) ) {
                 <div class="recipe-card-heading">
                     '. sprintf( '<h2 class="%s">%s</h2>', "recipe-card-title", ( $recipeTitle ? strip_tags( $recipeTitle ) : strip_tags( $recipe_title ) ) ) .
                     ( $settings['displayAuthor'] ? '<span class="recipe-card-author">'. __( "Recipe by", "wpzoom-recipe-card" ) . " " . $custom_author_name .'</span>' : '' ) .
-                    ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_user_ratings') ?
-                        wpzoom_rating_stars( $recipe_id, 'number', __( 'Recipe rating: ', 'wpzoom-recipe-card' ) ) : ''
-                    ) .
+                    wpzoom_rating_stars( $recipe_id, 'number', __( 'Recipe rating: ', 'wpzoom-recipe-card' ) ) .
                     '<div class="recipe-card-terms">'.
                     ( $settings['displayCourse'] ? WPZOOM_Premium_Recipe_Card_Block::get_recipe_terms( 'wpzoom_rcb_courses' ) : '' ) .
                     ( $settings['displayCuisine'] ? WPZOOM_Premium_Recipe_Card_Block::get_recipe_terms( 'wpzoom_rcb_cuisines' ) : '' ) .
