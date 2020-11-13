@@ -1,15 +1,57 @@
 /*global ajaxurl*/
 ( function( $ ) {
     unapproveRating = function( el ) {
-        return 1;
+        if ( el.hasClass( 'unapproved' ) ) {
+            el.find( 'span.approve a.approve' ).css( { 'pointer-events': '' } );
+        }
     };
 
     approveRating = function( el ) {
-        return 2;
+        if ( el.hasClass( 'approved' ) ) {
+            el.find( 'span.unapprove a.unapprove' ).css( { 'pointer-events': '' } );
+        }
     };
 
     deleteRating = function( el ) {
-        return 3;
+        el.fadeOut( 300, function() {
+            el.remove();
+        } );
+    };
+
+    getCount = function( el ) {
+        const n = parseInt( el.html().replace( /[^0-9]+/g, '' ), 10 );
+        if ( isNaN( n ) ) {
+            return 0;
+        }
+        return n;
+    };
+
+    updateCount = function( el, count ) {
+        let n1 = '';
+        if ( isNaN( count ) ) {
+            return;
+        }
+        count = count < 1 ? '0' : count.toString();
+        if ( count.length > 3 ) {
+            while ( count.length > 3 ) {
+                n1 = thousandsSeparator + count.substr( count.length - 3 ) + n1;
+                count = count.substr( 0, count.length - 3 );
+            }
+            count = count + n1;
+        }
+        el.html( count );
+    };
+
+    updatePending = function( diff ) {
+        $( '#toplevel_page_wpzoom-recipe-card-settings span.pending-count' ).each( function() {
+            let el = $( this ),
+                count = getCount( el ) + diff;
+            if ( count < 1 ) {
+                count = 0;
+            }
+            el.closest( '.awaiting-mod' )[ 0 === count ? 'addClass' : 'removeClass' ]( 'count-0' );
+            updateCount( el, count );
+        } );
     };
 
     getUrlArg = function( arg, url = '' ) {
@@ -17,9 +59,25 @@
         return ( results !== null ) ? results[ 1 ] || 0 : false;
     };
 
-    ajaxAction = function( data ) {
+    ajaxAction = function( data, el ) {
         $.post( ajaxurl, data, function( r ) {
-            console.log( r );
+            let elementId = el.attr( 'id' ),
+                $element = $( '#' + elementId ),
+                diff;
+
+            if ( r.success ) {
+                if ( data.action === 'approverating' ) {
+                    approveRating( $element );
+                    diff = $element.is( '.approved' ) ? -1 : 1;
+                } else if ( data.action === 'unapproverating' ) {
+                    unapproveRating( $element );
+                    diff = $element.is( '.unapproved' ) ? 1 : -1;
+                } else if ( data.action === 'deleterating' ) {
+                    deleteRating( $element );
+                    diff = -1;
+                }
+                updatePending( diff );
+            }
         } );
     };
 
@@ -39,6 +97,9 @@
                 postName = el.parents( '.column-comment' ).next().find( 'a.comments-edit-item-link' ).html(),
                 nonce = getUrlArg( '_wpnonce', url );
 
+            const $element = el.closest( 'tr.user-rating' );
+            const bg = $element.hasClass( 'unapproved' ) ? '#FFFFE0' : $element.css( 'backgroundColor' );
+
             const data = {
                 action,
                 postId,
@@ -51,10 +112,26 @@
             };
 
             if ( 'deleterating' === action && window.confirm( `Do you really want to Delete rating for ${ postName }?` ) ) {
-                ajaxAction( data );
+                $element.find( 'span.delete a.delete' ).css( { 'pointer-events': 'none' } );
+                $element.removeClass( 'approved unapproved' )
+                    .animate( { backgroundColor: '#FAAFAA' }, 300 );
+                ajaxAction( data, $element );
             }
-            if ( 'approverating' === action || 'unapproverating' === action ) {
-                ajaxAction( data );
+            if ( 'approverating' === action ) {
+                $element.find( 'span.unapprove a.unapprove' ).css( { 'pointer-events': 'none' } );
+                $element.animate( { backgroundColor: '#CCEEBB' }, 300 )
+                    .animate( { backgroundColor: '' }, 300 )
+                    .removeClass( 'unapproved' ).addClass( 'approved' );
+
+                ajaxAction( data, $element );
+            }
+            if ( 'unapproverating' === action ) {
+                $element.find( 'span.approve a.approve' ).css( { 'pointer-events': 'none' } );
+                $element.animate( { backgroundColor: '#CCEEBB' }, 300 )
+                    .animate( { backgroundColor: bg }, 300 )
+                    .removeClass( 'approved' ).addClass( 'unapproved' );
+
+                ajaxAction( data, $element );
             }
         } );
     } );

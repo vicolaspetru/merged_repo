@@ -363,10 +363,6 @@ class WPZOOM_Manage_Ratings {
         if ( current_user_can( 'edit_posts' ) ) {
             $this->set_pending_count();
 
-            if ( ! $this->pending_count['total'] ) {
-                return $menu_title;
-            }
-
             $awaiting_mod      = $this->pending_count['total'];
             $awaiting_mod_i18n = number_format_i18n( $awaiting_mod );
             /* translators: %s: Number of ratings. */
@@ -617,6 +613,11 @@ class WPZOOM_Manage_Ratings {
 
         $current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
+        $current_url = remove_query_arg( [
+            'action',
+            '_wpnonce'
+        ], $current_url);
+
         if ( $user ) {
             $user_id = $user->ID;
         }
@@ -647,21 +648,19 @@ class WPZOOM_Manage_Ratings {
             'delete'    => '',
         );
 
-        if ( 'unapproved' === $the_rating_status ) {
-            $actions['approve'] = sprintf(
-                '<a href="%s" class="approve aria-button-if-js" aria-label="%s">%s</a>',
-                $approve_url,
-                esc_attr__( 'Approve this rating', 'wpzoom-recipe-card' ),
-                __( 'Approve' )
-            );
-        } else {
-            $actions['unapprove'] = sprintf(
-                '<a href="%s" class="unapprove aria-button-if-js" aria-label="%s">%s</a>',
-                $unapprove_url,
-                esc_attr__( 'Unapprove this rating', 'wpzoom-recipe-card' ),
-                __( 'Unapprove' )
-            );
-        }
+        $actions['approve'] = sprintf(
+            '<a href="%s" class="approve aria-button-if-js" aria-label="%s">%s</a>',
+            $approve_url,
+            esc_attr__( 'Approve this rating', 'wpzoom-recipe-card' ),
+            __( 'Approve' )
+        );
+
+        $actions['unapprove'] = sprintf(
+            '<a href="%s" class="unapprove aria-button-if-js" aria-label="%s">%s</a>',
+            $unapprove_url,
+            esc_attr__( 'Unapprove this rating', 'wpzoom-recipe-card' ),
+            __( 'Unapprove' )
+        );
 
         $actions['delete'] = sprintf(
             '<a href="%s" class="delete aria-button-if-js" aria-label="%s">%s</a>',
@@ -1295,7 +1294,7 @@ class WPZOOM_Manage_Ratings {
                                 } else {
                                     $row_classes['status'] = 'unapproved';
                                 }
-                                if ( isset( $comment_status ) ) {
+                                if ( $rating->comment_id && isset( $comment_status ) ) {
                                     $row_classes['status'] = $comment_status;
                                 }
                                 if ( $total_ratings % 2 === 0 ) {
@@ -1304,7 +1303,7 @@ class WPZOOM_Manage_Ratings {
                                     $row_classes[] = 'odd';
                                 }
                             ?>
-                            <tr id="<?php echo ( $comment ? 'comment-'. $comment->comment_ID : ( $post ? 'post-'. $post->ID : 'recipe-rating' ) ); ?>" class="wpzoom-recipe-rating <?php echo implode(' ', $row_classes ) ?>">
+                            <tr id="<?php echo ( $comment ? 'comment-'. $comment->comment_ID : 'rating-'. $rating->id ); ?>" class="wpzoom-recipe-rating <?php echo implode(' ', $row_classes ) ?>">
                                 <td class="author column-author" data-colname="Author">
                                     <?php
                                         if ( $user ) {
