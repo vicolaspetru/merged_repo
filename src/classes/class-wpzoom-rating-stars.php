@@ -298,7 +298,7 @@ class WPZOOM_Rating_Stars {
 		}
 
 		$rating_average = WPZOOM_Rating_DB::get_rating_average( array(
-			'where' => 'recipe_id = '. $recipe_ID .' OR post_id = '. $recipe_ID .' AND approved = 1'
+			'where' => '(recipe_id = '. $recipe_ID .' OR post_id = '. $recipe_ID .') AND approved = 1'
 		) );
 
 		return $rating_average;
@@ -317,7 +317,7 @@ class WPZOOM_Rating_Stars {
 		}
 		
 		$ratings = WPZOOM_Rating_DB::get_ratings( array(
-			'where' => 'recipe_id = '. $recipe_ID .' OR post_id = '. $recipe_ID .' AND approved = 1'
+			'where' => '(recipe_id = '. $recipe_ID .' OR post_id = '. $recipe_ID .') AND approved = 1'
 		) );
 		
 		return $ratings['total'];
