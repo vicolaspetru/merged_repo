@@ -631,7 +631,7 @@ class WPZOOM_Manage_Ratings {
                 'ip'   => $user_ip,
                 'rating' => absint( $rating->rating ),
                 'date' => date( 'Y-m-d', strtotime( $rating->rate_date ) ),
-                'time' => date( 'g:i:s', strtotime( $rating->rate_date ) ),
+                'time' => date( 'H:i:s', strtotime( $rating->rate_date ) ),
             ],
             $current_url
         );
