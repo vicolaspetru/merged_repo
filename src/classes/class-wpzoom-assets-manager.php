@@ -169,7 +169,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                 if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_enable_google_fonts') ) {
                     wp_enqueue_style(
                         self::$_slug . '-google-font',
-                        'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i',
+                        'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i&display=swap',
                         false
                     );
                 }
@@ -250,7 +250,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                     if ( '1' === WPZOOM_Settings::get('wpzoom_rcb_settings_enable_google_fonts') ) {
                         wp_enqueue_style(
                             self::$_slug . '-google-font',
-                            'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i',
+                            'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i&display=swap',
                             false
                         );
                     }
