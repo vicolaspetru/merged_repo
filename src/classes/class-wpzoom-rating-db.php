@@ -79,8 +79,8 @@ class WPZOOM_Rating_DB {
             comment_id bigint(20) unsigned NOT NULL,
             post_id bigint(20) unsigned NOT NULL,
             rating tinyint(1) DEFAULT '0' NOT NULL,
-            rate_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-            update_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            rate_date datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            update_date datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             ip varchar(39) DEFAULT '' NOT NULL,
             approved tinyint(1) DEFAULT '1' NOT NULL,
             PRIMARY KEY (id),
@@ -109,7 +109,9 @@ class WPZOOM_Rating_DB {
             current_time( 'mysql' ),
             current_time( 'mysql' )
         );
+        $wpdb->hide_errors();
         $result = $wpdb->query( $sql );
+        $wpdb->show_errors();
 
         update_option( 'wpzoom_rcb_rating_db_drop_deprecated_indexes', $result );
     }
