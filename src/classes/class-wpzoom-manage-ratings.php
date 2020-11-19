@@ -220,7 +220,7 @@ class WPZOOM_Manage_Ratings {
                 'id'      => $this->_page_slug . '-overview',
                 'title'   => __( 'Overview' ),
                 'content' =>
-                        '<p>' . __( 'You can manage ratings made on your site similar to the way you manage posts and other content. This screen is customizable in the same ways as other management screens, and you can act on ratings using the on-hover action links or the bulk actions.' ) . '</p>',
+                        '<p>' . __( 'You can manage ratings made on your site similar to the way you manage posts and other content. This screen is customizable in the same ways as other management screens, and you can act on ratings using the on-hover action links.' ) . '</p>',
             )
         );
         get_current_screen()->add_help_tab(
@@ -228,19 +228,19 @@ class WPZOOM_Manage_Ratings {
                 'id'      => $this->_page_slug . '-moderating-comments',
                 'title'   => __( 'Moderating Ratings' ),
                 'content' =>
-                            '<p>' . __( 'A red bar on the left means the comment is waiting for you to moderate it.' ) . '</p>' .
-                            '<p>' . __( 'In the <strong>Author</strong> column, in addition to the author&#8217;s name, email address, and blog URL, the commenter&#8217;s IP address is shown. Clicking on this link will show you all the comments made from this IP address.' ) . '</p>' .
-                            '<p>' . __( 'In the <strong>Comment</strong> column, hovering over any comment gives you options to approve, reply (and approve), quick edit, edit, spam mark, or trash that comment.' ) . '</p>' .
-                            '<p>' . __( 'In the <strong>In response to</strong> column, there are three elements. The text is the name of the post that inspired the comment, and links to the post editor for that entry. The View Post link leads to that post on your live site. The small bubble with the number in it shows the number of approved comments that post has received. If there are pending comments, a red notification circle with the number of pending comments is displayed. Clicking the notification circle will filter the comments screen to show only pending comments on that post.' ) . '</p>' .
-                            '<p>' . __( 'In the <strong>Submitted on</strong> column, the date and time the comment was left on your site appears. Clicking on the date/time link will take you to that comment on your live site.' ) . '</p>' .
-                            '<p>' . __( 'Many people take advantage of keyboard shortcuts to moderate their comments more quickly. Use the link to the side to learn more.' ) . '</p>',
+                            '<p>' . __( 'A red bar on the left means the rating is waiting for you to moderate it.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>Author</strong> column, the author&#8217;s name, email address, and blog URL is shown.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>Type</strong> column, are displayed the type of rating. There are two types of ratings available: User Rating and Comment Rating. Near the Type column, the <strong>IP</strong> address is shown in and by clicking on this link will show you all the ratings or comments made from this IP address.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>Rating or Comment</strong> column, hovering over any row item gives you options to approve, edit, spam mark, or trash that record from Database.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>Post</strong> column, there are two elements. The text is the name of the post that inspired the comment, and links to the post editor for that entry. The View Post link leads to that post on your live site.' ) . '</p>' .
+                            '<p>' . __( 'In the <strong>Submitted on</strong> column, the date and time the rating or comment was left on your site appears. Clicking on the date/time link will take you to that comment on your live site.' ) . '</p>',
             )
         );
 
         get_current_screen()->set_help_sidebar(
             '<p><strong>' . __( 'For more information:' ) . '</strong></p>' .
             '<p>' . sprintf( '<a href="https://www.wpzoom.com/documentation/recipe-card-blocks">%s</a>', __( 'Documentation on Ratings', 'wpzoom-recipe-card' ) ) . '</p>' .
-            '<p>' . sprintf( '<a href="https://wordpress.org/support/">%s</a>', __( 'Support', 'wpzoom-recipe-card' ) ) . '</p>'
+            '<p>' . sprintf( '<a href="https://www.wpzoom.com/support/">%s</a>', __( 'Support', 'wpzoom-recipe-card' ) ) . '</p>'
         );
     }
 
@@ -1062,7 +1062,9 @@ class WPZOOM_Manage_Ratings {
      * Displays only avatar for unknown user.
      */
     public function column_author_unknown() {
-        echo get_avatar(0, 32, 'gravatar_default');
+        $avatar = get_avatar(0, 32, 'gravatar_default');
+        $name   = __( 'Guest', 'wpzoom-recipe-card' );
+        echo "$avatar $name";
     }
 
     /**
@@ -1257,7 +1259,7 @@ class WPZOOM_Manage_Ratings {
             ?>
 
             <form id="wpzoom-ratings-form" method="get">
-                <table class="wp-list-table widefat fixed striped table-view-list wpzoom-ratings">
+                <table class="wp-list-table widefat striped table-view-list wpzoom-ratings">
                     <thead>
                         <tr>
                             <?php $this->print_column_headers(); ?>
