@@ -2,7 +2,7 @@
 Tags: gutenberg, food recipe, blocks, recipe, card, food, directions, ingredients, recipe card
 Requires at least: 5.0
 Requires PHP: 5.6
-Tested up to: 5.5.1
+Tested up to: 5.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -62,6 +62,11 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 
 == Changelog ==
+
+= 3.2.0 =
+* Added a new section in the Dashboard to display and manage user ratings (Recipe Card > Manage Ratings)
+* Multiple performance optimization
+* Minor bug fixes
 
 = 3.1.1 =
 * Fixed JSON-LD error caused by empty recipe steps
