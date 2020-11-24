@@ -95,6 +95,7 @@ class WPZOOM_Manage_Ratings {
             wp_send_json_error();
         }
 
+        $id = isset( $_POST['id'] ) && wp_validate_boolean( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
         $user_id = isset( $_POST['userId'] ) && wp_validate_boolean( $_POST['userId'] ) ? absint( $_POST['userId'] ) : 0;
         $user_ip = isset( $_POST['userIp'] ) && wp_validate_boolean( $_POST['userIp'] ) ? esc_attr( $_POST['userIp'] ) : '';
         $rating = isset( $_POST['rating'] ) ? absint( $_POST['rating'] ) : 0;
@@ -102,9 +103,9 @@ class WPZOOM_Manage_Ratings {
         $time = isset( $_POST['time'] ) ? $_POST['time'] : '';
 
         $rating_data = [
+            'id' => $id,
             'rating' => $rating,
             'rate_date' => "$date $time",
-            'update_date' => current_time( 'mysql' ),
             'approved' => 1,
             'recipe_id' => $post_id,
             'user_id' => $user_id,
@@ -129,6 +130,7 @@ class WPZOOM_Manage_Ratings {
             wp_send_json_error();
         }
 
+        $id = isset( $_POST['id'] ) && wp_validate_boolean( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
         $user_id = isset( $_POST['userId'] ) && wp_validate_boolean( $_POST['userId'] ) ? absint( $_POST['userId'] ) : 0;
         $user_ip = isset( $_POST['userIp'] ) && wp_validate_boolean( $_POST['userIp'] ) ? esc_attr( $_POST['userIp'] ) : '';
         $rating = isset( $_POST['rating'] ) ? absint( $_POST['rating'] ) : 0;
@@ -136,9 +138,9 @@ class WPZOOM_Manage_Ratings {
         $time = isset( $_POST['time'] ) ? $_POST['time'] : '';
 
         $rating_data = [
+            'id' => $id,
             'rating' => $rating,
             'rate_date' => "$date $time",
-            'update_date' => current_time( 'mysql' ),
             'approved' => 0,
             'recipe_id' => $post_id,
             'user_id' => $user_id,
@@ -163,27 +165,10 @@ class WPZOOM_Manage_Ratings {
             wp_send_json_error();
         }
 
-        $user_id = isset( $_POST['userId'] ) && wp_validate_boolean( $_POST['userId'] ) ? absint( $_POST['userId'] ) : 0;
-        $user_ip = isset( $_POST['userIp'] ) && wp_validate_boolean( $_POST['userIp'] ) ? esc_attr( $_POST['userIp'] ) : '';
-        $date = isset( $_POST['date'] ) ? $_POST['date'] : current_time( 'mysql' );
-        $time = isset( $_POST['time'] ) ? $_POST['time'] : '';
+        $id = isset( $_POST['id'] ) && wp_validate_boolean( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
 
-        if ( $user_id ) {
-            $where = 'recipe_id = ' . $post_id . ' AND user_id = ' . $user_id;
-        } elseif ( $user_ip ) {
-            $where = 'recipe_id = ' . $post_id . ' AND ip = "' . $user_ip . '"';
-        } else {
-            $where = 'recipe_id = ' . $post_id . ' AND rate_date = "'. $date .' '. $time .'" AND ip = "' . $user_ip . '"';
-        }
-
-        // Delete existing ratings
-        $existing_ratings = WPZOOM_Rating_DB::get_ratings(array(
-            'where' => $where,
-        ));
-        $existing_ratings_ids = wp_list_pluck( $existing_ratings['ratings'], 'id' );
-
-        if ( 0 < count( $existing_ratings_ids ) ) {
-            WPZOOM_Rating_DB::delete_ratings( $existing_ratings_ids );
+        if ( $id ) {
+            WPZOOM_Rating_DB::delete_ratings( $id );
         } else {
             wp_send_json_error();
         }
@@ -626,6 +611,7 @@ class WPZOOM_Manage_Ratings {
         }
 
         $url = add_query_arg( [
+                'id'   => $rating->id,
                 'post' => $post->ID,
                 'user' => $user_id,
                 'ip'   => $user_ip,
@@ -1291,12 +1277,12 @@ class WPZOOM_Manage_Ratings {
                                 } else {
                                     $row_classes['rating-type'] = 'user-rating';
                                 }
-                                if ( $rating->approved ) {
+                                if ( wp_validate_boolean( $rating->approved ) ) {
                                     $row_classes['status'] = 'approved';
                                 } else {
                                     $row_classes['status'] = 'unapproved';
                                 }
-                                if ( $rating->comment_id && isset( $comment_status ) ) {
+                                if ( $rating->comment_id && ( isset( $comment_status ) && false !== $comment_status ) ) {
                                     $row_classes['status'] = $comment_status;
                                 }
                                 if ( $total_ratings % 2 === 0 ) {

@@ -74,7 +74,7 @@
                     diff = $element.is( '.unapproved' ) ? 1 : -1;
                 } else if ( data.action === 'deleterating' ) {
                     deleteRating( $element );
-                    diff = -1;
+                    diff = $element.is( '.negative-diff' ) ? -1 : 0;
                 }
                 updatePending( diff );
             }
@@ -87,6 +87,7 @@
 
             let el = $( this ),
                 url = el.attr( 'href' ),
+                id = getUrlArg( 'id', url ),
                 action = getUrlArg( 'action', url ),
                 postId = getUrlArg( 'post', url ),
                 userId = getUrlArg( 'user', url ),
@@ -102,6 +103,7 @@
 
             const data = {
                 action,
+                id,
                 postId,
                 userId,
                 userIp,
@@ -113,6 +115,9 @@
 
             if ( 'deleterating' === action && window.confirm( `Do you really want to Delete rating for ${ postName }?` ) ) {
                 $element.find( 'span.delete a.delete' ).css( { 'pointer-events': 'none' } );
+                if ( $element.is( '.unapproved' ) ) {
+                    $element.addClass( 'negative-diff' );
+                }
                 $element.removeClass( 'approved unapproved' )
                     .animate( { backgroundColor: '#FAAFAA' }, 300 );
                 ajaxAction( data, $element );

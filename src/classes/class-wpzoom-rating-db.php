@@ -125,11 +125,12 @@ class WPZOOM_Rating_DB {
         $rating = array();
 
         // Sanitize rating data
-        $rating['recipe_id'] = isset( $rating_data['recipe_id'] ) ? intval( $rating_data['recipe_id'] ) : 0;
-        $rating['user_id'] = isset( $rating_data['user_id'] ) ? intval( $rating_data['user_id'] ) : 0;
-        $rating['comment_id'] = isset( $rating_data['comment_id'] ) ? intval( $rating_data['comment_id'] ) : 0;
-        $rating['post_id'] = isset( $rating_data['post_id'] ) ? intval( $rating_data['post_id'] ) : 0;
-        $rating['rating'] = isset( $rating_data['rating'] ) ? intval( $rating_data['rating'] ) : 0;
+        $rating['id'] = isset( $rating_data['id'] ) ? absint( $rating_data['id'] ) : 0;
+        $rating['recipe_id'] = isset( $rating_data['recipe_id'] ) ? absint( $rating_data['recipe_id'] ) : 0;
+        $rating['user_id'] = isset( $rating_data['user_id'] ) ? absint( $rating_data['user_id'] ) : 0;
+        $rating['comment_id'] = isset( $rating_data['comment_id'] ) ? absint( $rating_data['comment_id'] ) : 0;
+        $rating['post_id'] = isset( $rating_data['post_id'] ) ? absint( $rating_data['post_id'] ) : 0;
+        $rating['rating'] = isset( $rating_data['rating'] ) ? absint( $rating_data['rating'] ) : 0;
         $rating['rate_date'] = isset( $rating_data['rate_date'] ) && $rating_data['rate_date'] ? $rating_data['rate_date'] : current_time( 'mysql' );
         $rating['update_date'] = isset( $rating_data['update_date'] ) && $rating_data['update_date'] ? $rating_data['update_date'] : current_time( 'mysql' );
         $rating['ip'] = isset( $rating_data['ip'] ) && $rating_data['ip'] ? esc_attr( $rating_data['ip'] ) : '';
@@ -154,7 +155,9 @@ class WPZOOM_Rating_DB {
             $where = false;
 
             // Check for existing ratings from this user/ip for this recipe/comment
-            if ( $rating['recipe_id'] ) {
+            if ( $rating['id'] ) {
+                $where = 'id = ' . $rating['id'] .' AND ip = "' . $rating['ip'] . '"';
+            } elseif ( $rating['recipe_id'] ) {
                 if ( $rating['user_id'] ) {
                     $where = 'recipe_id = ' . $rating['recipe_id'] . ' AND user_id = ' . $rating['user_id'];
                 } elseif ( $rating['ip'] ) {
@@ -171,15 +174,19 @@ class WPZOOM_Rating_DB {
                 global $wpdb;
 
                 // Delete existing ratings
-                $existing_ratings = self::get_ratings(array(
-                    'where' => $where,
-                ));
-                $existing_ratings_ids = wp_list_pluck( $existing_ratings['ratings'], 'id' );
+                if ( ! $rating['id'] ) {
+                    $existing_ratings = self::get_ratings(array(
+                        'where' => $where,
+                    ));
+                    $existing_ratings_ids = wp_list_pluck( $existing_ratings['ratings'], 'id' );
 
-                if ( 0 < count( $existing_ratings_ids ) ) {
-                    self::delete_ratings( $existing_ratings_ids );
+                    if ( 0 < count( $existing_ratings_ids ) ) {
+                        self::delete_ratings( $existing_ratings_ids );
+                    }
+                } else {
+                    self::delete_ratings( $rating['id'] );
                 }
-
+                
                 // Insert new rating
                 $wpdb->insert( $table_name, $rating );
 
@@ -295,6 +302,9 @@ class WPZOOM_Rating_DB {
             // Delete all these rating IDs.
             $ids = implode( ',', array_map( 'intval', $ids ) );
             $wpdb->query( 'DELETE FROM ' . $table_name . ' WHERE ID IN (' . $ids . ')' );
+        } else {
+            // Delete only one rating ID.
+            $wpdb->query( 'DELETE FROM ' . $table_name . ' WHERE id = ' . $ids );
         }
     }
 }
