@@ -49,6 +49,7 @@ registerBlockType( `${ category }/block-jump-to-recipe`, {
     supports: {
         multiple: false,
         html: false,
+        inserter: false,
     },
     keywords,
     /**

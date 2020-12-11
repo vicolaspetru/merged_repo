@@ -628,7 +628,7 @@ class WPZOOM_Settings {
 						'id' 		=> 'wpzoom_section_recipe_template',
 						'title' 	=> __( 'Recipe Template', 'wpzoom-recipe-card' ),
 						'page' 		=> 'wpzoom-recipe-card-settings-appearance',
-						'callback' 	=> array( $this, 'section_recipe_template_cb' ),
+						'callback' 	=> '__return_false',
 						'fields' 	=> array(
 							array(
 								'id' 		=> 'wpzoom_rcb_settings_template',
@@ -2142,12 +2142,6 @@ class WPZOOM_Settings {
 	public function section_lightbox_cb( $args ) {
 	?>
 	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'With Lightbox, when a user clicks on the recipe and/or directions images, the image opens in a lightbox popup.', 'wpzoom-recipe-card' ) ?></p>
-	<?php
-	}
-
-	public function section_recipe_template_cb( $args ) {
-	?>
-	 	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'You will get access to more Recipe Templates with the Premium version.', 'wpzoom-recipe-card' ) ?></p>
 	<?php
 	}
 

@@ -29,7 +29,7 @@ import {
     Button,
     SelectControl,
 } from '@wordpress/components';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, RichText } from '@wordpress/block-editor';
 
 /**
  * Module constants
@@ -185,9 +185,23 @@ class Nutrition extends Component {
     }
 
     drawVerticalLayout() {
+        const {
+            attributes: {
+                title,
+            },
+            setAttributes,
+        } = this.props;
+
         return (
             <Fragment>
-                <h2>{ __( 'Nutrition Facts', 'wpzoom-recipe-card' ) }</h2>
+                <RichText
+                    className="nutrition-facts-title"
+                    tagName="h2"
+                    value={ title }
+                    onChange={ ( title ) => setAttributes( { title } ) }
+                    placeholder={ __( 'Nutrition Facts Title', 'wpzoom-recipe-card' ) }
+                    keepPlaceholderOnFocus={ true }
+                />
                 <p>
                     {
                         this.getValue( 'servings' ) &&
@@ -331,10 +345,24 @@ class Nutrition extends Component {
     }
 
     drawHorizontalLayout() {
+        const {
+            attributes: {
+                title,
+            },
+            setAttributes,
+        } = this.props;
+
         return (
             <Fragment>
                 <div className="horizontal-column-1">
-                    <h2>{ __( 'Nutrition Facts', 'wpzoom-recipe-card' ) }</h2>
+                    <RichText
+                        className="nutrition-facts-title"
+                        tagName="h2"
+                        value={ title }
+                        onChange={ ( title ) => setAttributes( { title } ) }
+                        placeholder={ __( 'Nutrition Facts Title', 'wpzoom-recipe-card' ) }
+                        keepPlaceholderOnFocus={ true }
+                    />
                     <p>
                         {
                             this.getValue( 'servings' ) &&

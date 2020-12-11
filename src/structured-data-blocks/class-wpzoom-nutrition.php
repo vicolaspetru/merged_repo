@@ -95,6 +95,11 @@ class WPZOOM_Nutrition_Block {
 			    'type' => 'string',
 			    'default' => 'wpzoom-recipe-nutrition'
 			),
+			'title' => array(
+			    'type' => 'string',
+			    'selector' => '.nutrition-facts-title',
+			    'default' => __( 'Nutrition Facts', 'wpzoom-recipe-card' ),
+			),
 			'data' => array(
 			    'type' => 'object'
 			),
@@ -187,7 +192,7 @@ class WPZOOM_Nutrition_Block {
 			'serving-size-unit' => isset( self::$data['serving-size-unit'] ) ? self::$data['serving-size-unit'] : __('g', 'wpzoom-recipe-card')
 		);
 
-		$output .= '<h2>'. esc_html__( 'Nutrition Facts', 'wpzoom-recipe-card' ) .'</h2>';
+		$output .= '<h2 class="nutrition-facts-title">'. self::$attributes['title'] .'</h2>';
 
 		if ( isset( self::$data['servings'] ) && ! empty( self::$data['servings'] ) ) {
 			$output .= '<p><span class="nutrition-facts-serving">'. sprintf( __( '%s servings per container', 'wpzoom-recipe-card' ), self::$data['servings'] ) .'</span></p>';
@@ -308,7 +313,7 @@ class WPZOOM_Nutrition_Block {
 
 		$output .= '<div class="horizontal-column-1">';
 
-		$output .= '<h2>'. esc_html__( 'Nutrition Facts', 'wpzoom-recipe-card' ) .'</h2>';
+		$output .= '<h2 class="nutrition-facts-title">'. self::$attributes['title'] .'</h2>';
 
 		if ( isset( self::$data['servings'] ) && ! empty( self::$data['servings'] ) ) {
 			$output .= '<p><span class="nutrition-facts-serving">'. sprintf( __( '%s servings per container', 'wpzoom-recipe-card' ), self::$data['servings'] ) .'</span></p>';
