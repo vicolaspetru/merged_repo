@@ -537,7 +537,9 @@ class Nutrition extends Component {
             attributes: {
                 id,
                 settings,
+                title,
             },
+            setAttributes,
         } = this.props;
 
         const blockClassName = parseClassName( className );
@@ -550,7 +552,13 @@ class Nutrition extends Component {
         return (
             <div id={ id } className={ `layout-orientation-${ layout_orientation }` }>
                 <div className={ `${ blockClassName }-information` }>
-                    <h3>{ __( 'Nutrition Information', 'wpzoom-recipe-card' ) }</h3>
+                    <RichText
+                        tagName="h3"
+                        value={ title }
+                        onChange={ ( title ) => setAttributes( { title } ) }
+                        placeholder={ __( 'Nutrition Facts Title', 'wpzoom-recipe-card' ) }
+                        keepPlaceholderOnFocus={ true }
+                    />
                     { this.drawNutritionLabels() }
                 </div>
                 <div className={ blockClassName }>
