@@ -63,6 +63,11 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 == Changelog ==
 
+= 3.2.1 =
+* Added possibility to change Nutrition Facts title
+* Removed "Jump to Recipe" and "Print Recipe" blocks from inserter
+* Fixed issue with row actions (approve | unapprove | delete) for Manage Ratings
+
 = 3.2.0 =
 * Added a new section in the Dashboard to display and manage user ratings (Recipe Card > Manage Ratings)
 * Multiple performance optimization
