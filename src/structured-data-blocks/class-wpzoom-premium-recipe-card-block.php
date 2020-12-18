@@ -1507,6 +1507,18 @@ class WPZOOM_Premium_Recipe_Card_Block {
 	 */
 	public function filter_the_content( $content ) {
 		$content = self::$helpers->fix_content_tasty_links_conflict( $content );
+
+		/**
+		 * Don't append snippets buttons to content if page is built with Elementor
+		 * 
+		 * @since 3.2.2
+		 */
+		$elemntor_is_active = class_exists( '\Elementor\Plugin' );
+		$is_built_with_elementor = $elemntor_is_active && \Elementor\Plugin::$instance->db->is_built_with_elementor( get_the_ID() );
+
+		if ( $is_built_with_elementor ) {
+			return $content;
+		}
 		
 		if ( ! in_the_loop() ) {
 			return $content;
@@ -1520,7 +1532,9 @@ class WPZOOM_Premium_Recipe_Card_Block {
 				'wpzoom-recipe-card/block-jump-to-recipe',
 				'wpzoom-recipe-card/block-print-recipe'
 			);
+
 			$output .= '<div class="wpzoom-recipe-card-buttons">';
+
 			foreach ( $custom_blocks as $block_name ) {
 				if ( $block_name == 'wpzoom-recipe-card/block-jump-to-recipe' ) {
 		    		$attrs = array(
@@ -1551,6 +1565,7 @@ class WPZOOM_Premium_Recipe_Card_Block {
 		    		$output .= render_block( $block );
 				}
 			}
+
 			$output .= '</div>';
 		}
 
