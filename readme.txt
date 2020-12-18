@@ -65,6 +65,7 @@ You can view the Recipe Card Block live [here](http://demo.wpzoom.com/recipe-car
 
 = 3.2.1 =
 * Added possibility to change Nutrition Facts block title
+* Added compatibility with Reusable Blocks Extended to display Recipe Card Blocks in Other Page Builders (Elementor, Divi)
 * Fixed an issue with the Ratings feature
 
 = 3.2.0 =

@@ -112,7 +112,7 @@ if ( ! class_exists( 'WPZOOM_Assets_Manager' ) ) {
                 /**
                  * Compatibility with Reusable Blocks Extended
                  * 
-                 * @since 3.2.2
+                 * @since 3.2.1
                  */
                 elseif ( has_shortcode( $content, 'reblex' ) ) {
                     return true;
