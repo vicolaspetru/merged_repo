@@ -1046,6 +1046,19 @@ class WPZOOM_Premium_Recipe_Card_Block {
 			$isGroup = isset( $step['isGroup'] ) ? $step['isGroup'] : false;
 			$step_id = isset( $step['id'] ) ? 'wpzoom-rcb-' . $step['id'] : '';
 
+			if ( empty( $step_id ) ) {
+				if ( ! empty( $step['jsonText'] ) ) {
+					$text = $step['jsonText'];
+					$text = wp_strip_all_tags( $text );
+				} else {
+					$text = self::$structured_data_helpers->step_text_to_JSON( $step['text'] );
+					$text = wp_strip_all_tags( $text );
+				}
+
+				$step['id'] = 'direction-step-' . substr( hash( 'ripemd160', $text ), 0, 13 );
+				$step_id = 'wpzoom-rcb-' . $step['id'];
+			}
+
 			if ( !$isGroup ) {
 				if ( ! empty( $step['text'] ) ) {
 					$text = self::wrap_direction_text( $step['text'] );

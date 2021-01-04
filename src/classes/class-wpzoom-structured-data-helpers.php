@@ -104,6 +104,10 @@ class WPZOOM_Structured_Data_Helpers {
 		if ( isset( $step['id'] ) ) {
 			$url .= '#wpzoom-rcb-'. $step['id'];
 			$step_json_ld['url'] = $url;
+		} else {
+			$step['id'] = 'direction-step-' . substr( hash( 'ripemd160', $step_json_ld['text'] ), 0, 13 );
+			$url .= '#wpzoom-rcb-'. $step['id'];
+			$step_json_ld['url'] = $url;
 		}
 
 		if ( ! empty( $image ) ) {

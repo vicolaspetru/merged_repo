@@ -19,7 +19,7 @@ import ReactHtmlParser from 'react-html-parser';
 /**
  * Internal dependencies
  */
-import { stripHTML } from '@wpzoom/helpers';
+import { stripHTML, generateId } from '@wpzoom/helpers';
 import { blockCategory as category } from '../../../../block-category';
 
 /**
@@ -213,6 +213,7 @@ function ExtraOptionsModal(
 
                     directions[ index ] = {
                         ...steps[ index ],
+                        id: get( steps, [ index, 'id' ] ) || generateId( 'direction-step' ),
                         text: ParserHTML,
                         jsonText: stripHTML( renderToString( trim( match ) ) ),
                         isGroup,
