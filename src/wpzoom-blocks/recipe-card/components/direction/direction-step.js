@@ -421,7 +421,7 @@ DirectionStep.propTypes = {
     editorRef: PropTypes.func.isRequired,
     onMoveUp: PropTypes.func.isRequired,
     onMoveDown: PropTypes.func.isRequired,
-    subElement: PropTypes.string.isRequired,
+    subElement: PropTypes.string,
     isSelected: PropTypes.bool.isRequired,
     isRecipeCardSelected: PropTypes.bool.isRequired,
     isFirst: PropTypes.bool.isRequired,

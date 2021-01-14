@@ -354,7 +354,7 @@ IngredientItem.propTypes = {
     editorRef: PropTypes.func.isRequired,
     onMoveUp: PropTypes.func.isRequired,
     onMoveDown: PropTypes.func.isRequired,
-    subElement: PropTypes.string.isRequired,
+    subElement: PropTypes.string,
     isSelected: PropTypes.bool.isRequired,
     isFirst: PropTypes.bool.isRequired,
     isLast: PropTypes.bool.isRequired,

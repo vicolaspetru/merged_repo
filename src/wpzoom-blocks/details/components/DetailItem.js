@@ -283,7 +283,7 @@ DetailItem.propTypes = {
     removeDetail: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
     editorRef: PropTypes.func.isRequired,
-    subElement: PropTypes.string.isRequired,
+    subElement: PropTypes.string,
     isSelected: PropTypes.bool.isRequired,
     isFirst: PropTypes.bool.isRequired,
     isLast: PropTypes.bool.isRequired,
