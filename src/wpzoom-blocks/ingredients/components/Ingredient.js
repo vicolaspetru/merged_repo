@@ -424,7 +424,6 @@ export default class Ingredient extends Component {
                     isSelected={ this.state.focus === 'title' }
                     setFocusedElement={ this.setFocusToTitle }
                     onChange={ this.onChangeTitle }
-                    unstableOnSetup={ this.setTitleRef }
                     placeholder={ __( 'Write Ingredients title', 'wpzoom-recipe-card' ) }
                     keepPlaceholderOnFocus={ true }
                 />

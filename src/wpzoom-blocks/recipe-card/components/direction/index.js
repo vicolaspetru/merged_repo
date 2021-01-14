@@ -434,7 +434,6 @@ export default class Direction extends Component {
                     value={ directionsTitle }
                     unstableOnFocus={ this.setFocusToTitle }
                     onChange={ this.onChangeTitle }
-                    unstableOnSetup={ this.setTitleRef }
                     placeholder={ __( 'Write Directions title', 'wpzoom-recipe-card' ) }
                     keepPlaceholderOnFocus={ true }
                 />

@@ -307,7 +307,6 @@ export default class IngredientItem extends Component {
                             />
                             <RichText
                                 tagName="p"
-                                unstableOnSetup={ this.setNameRef }
                                 key={ `${ id }-${ index }-name` }
                                 value={ name }
                                 onChange={ this.onChangeName }
@@ -323,7 +322,6 @@ export default class IngredientItem extends Component {
                     <RichText
                         className="ingredient-item-group-title"
                         tagName="p"
-                        unstableOnSetup={ this.setNameRef }
                         key={ `${ id }-${ index }-group-title` }
                         value={ name }
                         onChange={ this.onChangeGroupTitle }

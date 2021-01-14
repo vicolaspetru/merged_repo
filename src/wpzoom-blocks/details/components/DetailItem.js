@@ -245,7 +245,6 @@ export default class DetailItem extends Component {
                 <RichText
                     className="detail-item-label"
                     tagName="p"
-                    unstableOnSetup={ this.setLabelRef }
                     key={ `${ id }-label` }
                     value={ label }
                     onChange={ this.onChangeLabel }
@@ -257,7 +256,6 @@ export default class DetailItem extends Component {
                 <RichText
                     className="detail-item-value"
                     tagName="p"
-                    unstableOnSetup={ this.setValueRef }
                     key={ `${ id }-value` }
                     value={ value }
                     onChange={ this.onChangeValue }

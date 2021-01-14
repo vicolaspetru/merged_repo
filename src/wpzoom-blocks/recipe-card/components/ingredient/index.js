@@ -597,7 +597,6 @@ export default class Ingredient extends Component {
                     value={ ingredientsTitle }
                     unstableOnFocus={ this.setFocusToTitle }
                     onChange={ this.onChangeTitle }
-                    unstableOnSetup={ this.setTitleRef }
                     placeholder={ __( 'Write Ingredients title', 'wpzoom-recipe-card' ) }
                     keepPlaceholderOnFocus={ true }
                 />

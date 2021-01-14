@@ -310,7 +310,6 @@ export default class DirectionStep extends Component {
                     <RichText
                         className="direction-step-text"
                         tagName="p"
-                        unstableOnSetup={ this.setTextRef }
                         key={ `${ id }-text` }
                         value={ text }
                         onChange={ this.onChangeText }
@@ -324,7 +323,6 @@ export default class DirectionStep extends Component {
                     <RichText
                         className="direction-step-group-title"
                         tagName="p"
-                        unstableOnSetup={ this.setTextRef }
                         key={ `${ id }-group-title` }
                         value={ text }
                         onChange={ this.onChangeGroupTitle }
