@@ -196,7 +196,7 @@ export default class DetailItem extends Component {
                 }
                 <p className="detail-item-label">{ this.getPlaceholder( index, 'label' ) }</p>
                 <TextControl
-                    instanceId={ `${ id }-${ index }-item-amount` }
+                    id={ `${ id }-${ index }-item-amount` }
                     type="text"
                     placeholder={ this.getPlaceholder( index, 'value' ) }
                     value={ value }

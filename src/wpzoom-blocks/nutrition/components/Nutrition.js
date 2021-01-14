@@ -152,7 +152,6 @@ class Nutrition extends Component {
                 <TextControl
                     key={ index }
                     id={ `${ id }-${ label.id }` }
-                    instanceId={ `${ id }-${ label.id }` }
                     type="number"
                     label={ label.label }
                     value={ get( data, label.id ) }

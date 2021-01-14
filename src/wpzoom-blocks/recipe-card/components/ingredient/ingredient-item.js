@@ -290,7 +290,7 @@ export default class IngredientItem extends Component {
                         <span className="tick-circle" style={ tickStyles }></span>
                         <div className="ingredient-item-name">
                             <TextControl
-                                instanceId={ `${ id }-${ index }-amount` }
+                                id={ `${ id }-${ index }-amount` }
                                 type="text"
                                 placeholder={ __( 'amount', 'wpzoom-recipe-card' ) }
                                 value={ amount }
@@ -298,7 +298,7 @@ export default class IngredientItem extends Component {
                                 onFocus={ this.onFocusAmount }
                             />
                             <TextControl
-                                instanceId={ `${ id }-${ index }-unit` }
+                                id={ `${ id }-${ index }-unit` }
                                 type="text"
                                 placeholder={ __( 'unit', 'wpzoom-recipe-card' ) }
                                 value={ unit }

@@ -363,7 +363,6 @@ class VideoSettings extends Component {
                     <Fragment>
                         <TextControl
                             id={ `${ id }-video-title` }
-                            instanceId={ `${ id }-video-title` }
                             type="text"
                             label={ __( 'Video Title', 'wpzoom-recipe-card' ) }
                             value={ get( video, 'title' ) }
@@ -371,7 +370,6 @@ class VideoSettings extends Component {
                         />
                         <TextareaControl
                             id={ `${ id }-video-description` }
-                            instanceId={ `${ id }-video-description` }
                             type="text"
                             label={ __( 'Video Description', 'wpzoom-recipe-card' ) }
                             value={ get( video, 'description' ) }

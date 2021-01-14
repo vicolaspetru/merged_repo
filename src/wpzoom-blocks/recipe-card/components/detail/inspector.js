@@ -75,7 +75,6 @@ const DetailsSettings = ( props ) => {
                     <Fragment>
                         <TextControl
                             id={ `${ id }-yield-label` }
-                            instanceId={ `${ id }-yield-label` }
                             type="text"
                             label={ __( 'Servings Label', 'wpzoom-recipe-card' ) }
                             placeholder={ __( 'Servings', 'wpzoom-recipe-card' ) }
@@ -84,7 +83,6 @@ const DetailsSettings = ( props ) => {
                         />
                         <TextControl
                             id={ `${ id }-yield-value` }
-                            instanceId={ `${ id }-yield-value` }
                             type="number"
                             label={ __( 'Servings Value', 'wpzoom-recipe-card' ) }
                             value={ get( details, [ 0, 'value' ] ) }
@@ -92,7 +90,6 @@ const DetailsSettings = ( props ) => {
                         />
                         <TextControl
                             id={ `${ id }-yield-unit` }
-                            instanceId={ `${ id }-yield-unit` }
                             type="text"
                             label={ __( 'Servings Unit', 'wpzoom-recipe-card' ) }
                             value={ get( details, [ 0, 'unit' ] ) }
@@ -112,7 +109,6 @@ const DetailsSettings = ( props ) => {
                     <Fragment>
                         <TextControl
                             id={ `${ id }-preptime-label` }
-                            instanceId={ `${ id }-preptime-label` }
                             type="text"
                             label={ __( 'Prep Time Label', 'wpzoom-recipe-card' ) }
                             placeholder={ __( 'Prep Time', 'wpzoom-recipe-card' ) }
@@ -121,7 +117,6 @@ const DetailsSettings = ( props ) => {
                         />
                         <TextControl
                             id={ `${ id }-preptime-value` }
-                            instanceId={ `${ id }-preptime-value` }
                             type="number"
                             label={ __( 'Prep Time Value', 'wpzoom-recipe-card' ) }
                             value={ get( details, [ 1, 'value' ] ) }
@@ -142,7 +137,6 @@ const DetailsSettings = ( props ) => {
                     <Fragment>
                         <TextControl
                             id={ `${ id }-cookingtime-label` }
-                            instanceId={ `${ id }-cookingtime-label` }
                             type="text"
                             label={ __( 'Cook Time Label', 'wpzoom-recipe-card' ) }
                             placeholder={ __( 'Cooking Time', 'wpzoom-recipe-card' ) }
@@ -151,7 +145,6 @@ const DetailsSettings = ( props ) => {
                         />
                         <TextControl
                             id={ `${ id }-cookingtime-value` }
-                            instanceId={ `${ id }-cookingtime-value` }
                             type="number"
                             label={ __( 'Cook Time Value', 'wpzoom-recipe-card' ) }
                             value={ get( details, [ 2, 'value' ] ) }
@@ -172,7 +165,6 @@ const DetailsSettings = ( props ) => {
                     <Fragment>
                         <TextControl
                             id={ `${ id }-totaltime-label` }
-                            instanceId={ `${ id }-totaltime-label` }
                             type="text"
                             label={ __( 'Total Time Label', 'wpzoom-recipe-card' ) }
                             placeholder={ __( 'Total Time', 'wpzoom-recipe-card' ) }
@@ -181,7 +173,6 @@ const DetailsSettings = ( props ) => {
                         />
                         <TextControl
                             id={ `${ id }-totaltime-value` }
-                            instanceId={ `${ id }-totaltime-value` }
                             type="number"
                             label={ __( 'Total Time Value', 'wpzoom-recipe-card' ) }
                             value={ get( details, [ 8, 'value' ] ) }
@@ -210,7 +201,6 @@ const DetailsSettings = ( props ) => {
                     <Fragment>
                         <TextControl
                             id={ `${ id }-calories-label` }
-                            instanceId={ `${ id }-calories-label` }
                             type="text"
                             label={ __( 'Calories Label', 'wpzoom-recipe-card' ) }
                             placeholder={ __( 'Calories', 'wpzoom-recipe-card' ) }
@@ -219,7 +209,6 @@ const DetailsSettings = ( props ) => {
                         />
                         <TextControl
                             id={ `${ id }-calories-value` }
-                            instanceId={ `${ id }-calories-value` }
                             type="number"
                             label={ __( 'Calories Value', 'wpzoom-recipe-card' ) }
                             value={ get( details, [ 3, 'value' ] ) }

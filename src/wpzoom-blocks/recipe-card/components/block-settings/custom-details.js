@@ -35,7 +35,6 @@ const CustomDetailsSettings = ( props ) => {
             <PanelRow>
                 <TextControl
                     id={ `${ id }-custom-detail-1-label` }
-                    instanceId={ `${ id }-custom-detail-1-label` }
                     type="text"
                     label={ __( 'Custom Label 1', 'wpzoom-recipe-card' ) }
                     placeholder={ __( 'Resting Time', 'wpzoom-recipe-card' ) }
@@ -44,7 +43,6 @@ const CustomDetailsSettings = ( props ) => {
                 />
                 <TextControl
                     id={ `${ id }-custom-detail-1-value` }
-                    instanceId={ `${ id }-custom-detail-1-value` }
                     type="text"
                     label={ __( 'Custom Value 1', 'wpzoom-recipe-card' ) }
                     value={ get( details, [ 4, 'value' ] ) }
@@ -52,7 +50,6 @@ const CustomDetailsSettings = ( props ) => {
                 />
                 <TextControl
                     id={ `${ id }-custom-detail-1-unit` }
-                    instanceId={ `${ id }-custom-detail-1-unit` }
                     type="text"
                     label={ __( 'Custom Unit 1', 'wpzoom-recipe-card' ) }
                     value={ get( details, [ 4, 'unit' ] ) }
@@ -68,7 +65,6 @@ const CustomDetailsSettings = ( props ) => {
             <PanelRow>
                 <TextControl
                     id={ `${ id }-custom-detail-2-label` }
-                    instanceId={ `${ id }-custom-detail-2-label` }
                     type="text"
                     label={ __( 'Custom Label 2', 'wpzoom-recipe-card' ) }
                     placeholder={ __( 'Baking Time', 'wpzoom-recipe-card' ) }
@@ -77,7 +73,6 @@ const CustomDetailsSettings = ( props ) => {
                 />
                 <TextControl
                     id={ `${ id }-custom-detail-2-value` }
-                    instanceId={ `${ id }-custom-detail-2-value` }
                     type="text"
                     label={ __( 'Custom Value 2', 'wpzoom-recipe-card' ) }
                     value={ get( details, [ 5, 'value' ] ) }
@@ -85,7 +80,6 @@ const CustomDetailsSettings = ( props ) => {
                 />
                 <TextControl
                     id={ `${ id }-custom-detail-2-unit` }
-                    instanceId={ `${ id }-custom-detail-2-unit` }
                     type="text"
                     label={ __( 'Custom Unit 2', 'wpzoom-recipe-card' ) }
                     value={ get( details, [ 5, 'unit' ] ) }
@@ -95,7 +89,6 @@ const CustomDetailsSettings = ( props ) => {
             <PanelRow>
                 <TextControl
                     id={ `${ id }-custom-detail-3-label` }
-                    instanceId={ `${ id }-custom-detail-3-label` }
                     type="text"
                     label={ __( 'Custom Label 3', 'wpzoom-recipe-card' ) }
                     placeholder={ __( 'Serving Size', 'wpzoom-recipe-card' ) }
@@ -104,7 +97,6 @@ const CustomDetailsSettings = ( props ) => {
                 />
                 <TextControl
                     id={ `${ id }-custom-detail-3-value` }
-                    instanceId={ `${ id }-custom-detail-3-value` }
                     type="text"
                     label={ __( 'Custom Value 3', 'wpzoom-recipe-card' ) }
                     value={ get( details, [ 6, 'value' ] ) }
@@ -112,7 +104,6 @@ const CustomDetailsSettings = ( props ) => {
                 />
                 <TextControl
                     id={ `${ id }-custom-detail-3-unit` }
-                    instanceId={ `${ id }-custom-detail-3-unit` }
                     type="text"
                     label={ __( 'Custom Unit 3', 'wpzoom-recipe-card' ) }
                     value={ get( details, [ 6, 'unit' ] ) }
@@ -122,7 +113,6 @@ const CustomDetailsSettings = ( props ) => {
             <PanelRow>
                 <TextControl
                     id={ `${ id }-custom-detail-4-label` }
-                    instanceId={ `${ id }-custom-detail-4-label` }
                     type="text"
                     label={ __( 'Custom Label 4', 'wpzoom-recipe-card' ) }
                     placeholder={ __( 'Net Carbs', 'wpzoom-recipe-card' ) }
@@ -131,7 +121,6 @@ const CustomDetailsSettings = ( props ) => {
                 />
                 <TextControl
                     id={ `${ id }-custom-detail-4-value` }
-                    instanceId={ `${ id }-custom-detail-4-value` }
                     type="text"
                     label={ __( 'Custom Value 4', 'wpzoom-recipe-card' ) }
                     value={ get( details, [ 7, 'value' ] ) }
@@ -139,7 +128,6 @@ const CustomDetailsSettings = ( props ) => {
                 />
                 <TextControl
                     id={ `${ id }-custom-detail-4-unit` }
-                    instanceId={ `${ id }-custom-detail-4-unit` }
                     type="text"
                     label={ __( 'Custom Unit 4', 'wpzoom-recipe-card' ) }
                     value={ get( details, [ 7, 'unit' ] ) }

@@ -219,7 +219,6 @@ const MainSettings = ( props ) => {
                 'custom_text' === get( settingOptions, 'wpzoom_rcb_settings_pin_description' ) &&
                 <TextareaControl
                     id={ `${ id }-pinit-custom-text` }
-                    instanceId={ `${ id }-pinit-custom-text` }
                     type="text"
                     label={ __( 'Pinterest Custom Description', 'wpzoom-recipe-card' ) }
                     value={ pin_custom_text }
@@ -295,7 +294,6 @@ const MainSettings = ( props ) => {
                     displayAuthor &&
                     <TextControl
                         id={ `${ id }-custom-author-name` }
-                        instanceId={ `${ id }-custom-author-name` }
                         type="text"
                         label={ __( 'Custom author name', 'wpzoom-recipe-card' ) }
                         help={ __( 'Default: Post author name', 'wpzoom-recipe-card' ) }
