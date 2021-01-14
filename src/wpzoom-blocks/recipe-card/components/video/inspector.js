@@ -347,7 +347,6 @@ class VideoSettings extends Component {
                                 render={ ( { open } ) => (
                                     <Button
                                         isSecondary
-                                        isLarge
                                         onClick={ open }
                                     >
                                         { __( 'Replace Video', 'wpzoom-recipe-card' ) }
@@ -424,7 +423,6 @@ class VideoSettings extends Component {
                                 render={ ( { open } ) => (
                                     <Button
                                         isSecondary
-                                        isLarge
                                         onClick={ open }
                                         ref={ this.posterImageButton }
                                     >

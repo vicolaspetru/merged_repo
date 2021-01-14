@@ -132,7 +132,6 @@ const MainSettings = ( props ) => {
                             render={ ( { open } ) => (
                                 <Button
                                     isSecondary
-                                    isLarge
                                     onClick={ open }
                                 >
                                     { __( 'Replace Image', 'wpzoom-recipe-card' ) }

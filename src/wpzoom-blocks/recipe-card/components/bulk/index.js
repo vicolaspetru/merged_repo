@@ -263,7 +263,6 @@ function ExtraOptionsModal(
                         className="wpzoom-recipe-card__extra-options"
                         label={ __( 'Recipe Card extra options', 'wpzoom-recipe-card' ) }
                         isPrimary={ true }
-                        isLarge={ true }
                         onClick={ ( event ) => {
                             event.stopPropagation();
                             setState( { isOpen: true, isDataSet: false, _ingredients: '', _directions: '', hasBlocks: wpzoomBlocksFilter.length > 0 } );
