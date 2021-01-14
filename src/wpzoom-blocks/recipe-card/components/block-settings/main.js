@@ -226,7 +226,7 @@ const MainSettings = ( props ) => {
                 />
             }
             {
-                'simple' === activeStyle &&
+                'simple' === activeStyle.name &&
                 <BaseControl
                     id={ `${ id }-heading-align` }
                     label={ __( 'Header Content Align', 'wpzoom-recipe-card' ) }
@@ -250,8 +250,8 @@ const MainSettings = ( props ) => {
                 </BaseControl>
              }
             {
-                'simple' !== activeStyle &&
-                'accent-color-header' !== activeStyle &&
+                'simple' !== activeStyle.name &&
+                'accent-color-header' !== activeStyle.name &&
                 <BaseControl
                     id={ `${ id }-heading-align` }
                     label={ __( 'Header Content Align', 'wpzoom-recipe-card' ) }
@@ -303,7 +303,7 @@ const MainSettings = ( props ) => {
                 }
             </BaseControl>
             {
-                ( 'newdesign' === activeStyle || 'accent-color-header' === activeStyle ) &&
+                ( 'newdesign' === activeStyle.name || 'accent-color-header' === activeStyle.name ) &&
                     <BaseControl
                         id={ `${ id }-ingredients-layout` }
                         label={ __( 'Ingredients Layout', 'wpzoom-recipe-card' ) }

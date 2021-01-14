@@ -22,7 +22,6 @@ import icon from './icon';
 import {
     blockKeywords as keywords,
     blockExample as example,
-    blockStyles as styles,
 } from './attributes';
 import { blockCategory as category } from '../../block-category';
 
@@ -64,7 +63,6 @@ registerBlockType( `${ category }/block-recipe-card`, {
     },
     keywords,
     example,
-    styles,
     /**
      * The edit function describes the structure of your block in the context of the editor.
      * This represents what the editor will render when the block is used.

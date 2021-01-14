@@ -82,8 +82,8 @@ class SkinDefault extends Component {
         }
 
         const styles = {
-            [ getCSSSelector( activeStyle, '.btn-print-link' ) ]: `background-color: ${ primary_color };`,
-            [ `${ getCSSSelector( activeStyle, '.recipe-card-notes-list' ) } > li::before` ]: `background-color: ${ primary_color }`,
+            [ getCSSSelector( activeStyle.name, '.btn-print-link' ) ]: `background-color: ${ primary_color };`,
+            [ `${ getCSSSelector( activeStyle.name, '.recipe-card-notes-list' ) } > li::before` ]: `background-color: ${ primary_color }`,
         };
 
         return (
@@ -191,7 +191,7 @@ class SkinDefault extends Component {
                 <Ingredient
                     generateId={ generateId }
                     isRecipeCardSelected={ isRecipeCardSelected }
-                    { ...{ attributes, setAttributes, className } }
+                    { ...{ attributes, setAttributes, className, activeStyle } }
                 />
                 <Direction
                     generateId={ generateId }

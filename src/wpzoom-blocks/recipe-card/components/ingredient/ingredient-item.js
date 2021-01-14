@@ -266,7 +266,7 @@ export default class IngredientItem extends Component {
         let tickStyles = [];
 
         if ( '' !== primary_color ) {
-            if ( 'newdesign' === activeStyle || 'simple' === activeStyle ) {
+            if ( 'newdesign' === activeStyle.name || 'simple' === activeStyle.name ) {
                 tickStyles = { border: `2px solid ${ primary_color }` };
             }
         }

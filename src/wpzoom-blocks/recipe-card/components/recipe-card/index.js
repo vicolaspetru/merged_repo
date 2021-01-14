@@ -6,6 +6,7 @@
 import {
     get,
     map,
+    find,
     invoke,
     isEmpty,
     isUndefined,
@@ -22,10 +23,7 @@ import SkinAccentColorHeader from '../../skins/accent-color-header';
 import loadingSpinnerPlaceholder from '../../skins/shared/spinner';
 import Inspector from '../block-settings';
 import ExtraOptionsModal from '../bulk';
-import {
-    pickRelevantMediaFiles,
-    getBlockStyle,
-} from '@wpzoom/helpers';
+import { pickRelevantMediaFiles } from '@wpzoom/helpers';
 
 /**
  * WordPress dependencies
@@ -46,16 +44,25 @@ import { withSelect } from '@wordpress/data';
 import { withNotices } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 import { positionLeft, positionRight, positionCenter } from '@wordpress/icons';
+import TokenList from '@wordpress/token-list';
 
 /**
  * Module Constants
  */
+const {
+    setting_options,
+    license_status,
+    pluginURL,
+} = wpzoomRecipeCard;
+const { wpzoom_rcb_settings_template } = setting_options;
+
 const DEFAULT_QUERY = {
     per_page: -1,
     orderby: 'name',
     order: 'asc',
     _fields: 'id,name,parent',
 };
+
 const BLOCK_ALIGNMENT_CONTROLS = [
     {
         icon: positionLeft,
@@ -73,6 +80,75 @@ const BLOCK_ALIGNMENT_CONTROLS = [
         align: 'right',
     },
 ];
+
+const layoutOptions = [
+    {
+        name: 'default',
+        label: __( 'Default', 'wpzoom-recipe-card' ),
+        isDefault: wpzoom_rcb_settings_template === 'default',
+    },
+    {
+        name: 'simple',
+        label: __( 'Simple', 'wpzoom-recipe-card' ),
+        isDefault: wpzoom_rcb_settings_template === 'simple',
+    },
+    {
+        name: 'newdesign',
+        label: __( 'New Design', 'wpzoom-recipe-card' ),
+        isDefault: wpzoom_rcb_settings_template === 'newdesign',
+    },
+    {
+        name: 'accent-color-header',
+        label: __( 'Accent Header', 'wpzoom-recipe-card' ),
+        isDefault: wpzoom_rcb_settings_template === 'accent-color-header',
+    },
+];
+
+/**
+ * Returns the active style from the given className.
+ *
+ * @param {Array} styles Block style variations.
+ * @param {string} className  Class name
+ *
+ * @return {Object?} The active style.
+ */
+function getActiveStyle( styles, className ) {
+    for ( const style of new TokenList( className ).values() ) {
+        if ( style.indexOf( 'is-style-' ) === -1 ) {
+            continue;
+        }
+
+        const potentialStyleName = style.substring( 9 );
+        const activeStyle = find( styles, { name: potentialStyleName } );
+
+        if ( activeStyle ) {
+            return activeStyle;
+        }
+    }
+
+    return find( styles, { isDefault: true } );
+}
+
+/**
+ * Replaces the active style in the block's className.
+ *
+ * @param {string}  className   Class name.
+ * @param {Object?} activeStyle The replaced style.
+ * @param {Object}  newStyle    The replacing style.
+ *
+ * @return {string} The updated className.
+ */
+function replaceActiveStyle( className, activeStyle, newStyle ) {
+    const list = new TokenList( className );
+
+    if ( activeStyle ) {
+        list.remove( 'is-style-' + activeStyle.name );
+    }
+
+    list.add( 'is-style-' + newStyle.name );
+
+    return list.value;
+}
 
 /**
  * Import Styles
@@ -100,6 +176,7 @@ class RecipeCard extends Component {
         this.onUploadError = this.onUploadError.bind( this );
         this.renderTerms = this.renderTerms.bind( this );
         this.onChangeAlignment = this.onChangeAlignment.bind( this );
+        this.updateStyle = this.updateStyle.bind( this );
 
         this.editorRefs = {};
         this.state = {
@@ -126,10 +203,22 @@ class RecipeCard extends Component {
 
     componentDidUpdate( prevProps, prevState ) {
         const {
+            attributes,
             coursesTaxonomy,
             cuisinesTaxonomy,
             difficultiesTaxonomy,
         } = this.props;
+        const activeStyle = getActiveStyle( layoutOptions, attributes.className );
+        const lastActiveStyle = getActiveStyle(
+            layoutOptions,
+            prevProps.attributes.className
+        );
+
+        if ( activeStyle !== lastActiveStyle ) {
+            // if ('circle' === activeStyle.name && (typeof attributes.alignment === 'undefined' || attributes.alignment === 'none')) {
+            //     this.onChangeAlignment('center');
+            // }
+        }
 
         if ( coursesTaxonomy !== prevProps.coursesTaxonomy ) {
             this.setState( { isLoading: true } );
@@ -158,6 +247,19 @@ class RecipeCard extends Component {
             this.setState( { isLoading: true } );
             this.fetchTags();
         }
+    }
+
+    updateStyle( style ) {
+        const { className, attributes } = this.props;
+
+        const activeStyle = getActiveStyle( layoutOptions, className );
+        const updatedClassName = replaceActiveStyle(
+            attributes.className,
+            activeStyle,
+            style
+        );
+
+        this.props.setAttributes( { className: updatedClassName } );
     }
 
     fetchTerms( taxonomy ) {
@@ -320,10 +422,10 @@ class RecipeCard extends Component {
     }
 
     onSelectImage( media ) {
-        const { activeStyle } = this.props;
+        const activeStyle = getActiveStyle( layoutOptions, this.props.className );
         let sizeSlug = 'wpzoom-rcb-block-header';
 
-        if ( 'simple' === activeStyle || 'accent-color-header' === activeStyle ) {
+        if ( 'simple' === activeStyle.name || 'accent-color-header' === activeStyle.name ) {
             sizeSlug = 'wpzoom-rcb-block-header-square';
         }
 
@@ -395,7 +497,7 @@ class RecipeCard extends Component {
             },
         } = this.props;
         const { 0: { headerAlign } } = settings;
-        const style = getBlockStyle( className );
+        const activeStyle = getActiveStyle( layoutOptions, className );
 
         const newSettings = settings ? settings.slice() : [];
 
@@ -404,7 +506,7 @@ class RecipeCard extends Component {
             headerAlign: newAlignment === undefined ? headerAlign : newAlignment,
         };
 
-        if ( 'simple' === style && 'center' === newAlignment ) {
+        if ( 'simple' === activeStyle.name && 'center' === newAlignment ) {
             newSettings[ 0 ] = {
                 ...newSettings[ 0 ],
                 headerAlign: 'left',
@@ -426,8 +528,9 @@ class RecipeCard extends Component {
             },
             isRecipeCardSelected,
             noticeUI,
-            activeStyle,
         } = this.props;
+
+        const activeStyle = getActiveStyle( layoutOptions, className );
 
         const {
             id,
@@ -447,7 +550,7 @@ class RecipeCard extends Component {
         if ( isUndefined( headerAlign ) ) {
             headerContentAlign = wpzoom_rcb_settings_heading_content_align;
         }
-        if ( 'simple' === activeStyle && 'center' === blockAlignment ) {
+        if ( 'simple' === activeStyle.name && 'center' === blockAlignment ) {
             headerContentAlign = 'left';
         }
 
@@ -457,7 +560,7 @@ class RecipeCard extends Component {
                 'is-loading-block': this.state.isLoading,
                 'recipe-card-noimage': hide_header_image,
                 [ `header-content-align-${ headerContentAlign }` ]: ! isEmpty( headerContentAlign ),
-                [ `is-style-${ activeStyle }` ]: m === null,
+                [ `is-style-${ activeStyle.name }` ]: m === null,
             }
         );
 
@@ -465,6 +568,9 @@ class RecipeCard extends Component {
             <Fragment>
                 { isRecipeCardSelected && (
                     <Inspector
+                        activeStyle={ activeStyle }
+                        layoutOptions={ layoutOptions }
+                        onUpdateStyle={ this.updateStyle }
                         { ...this.props }
                     />
                 ) }
@@ -490,42 +596,46 @@ class RecipeCard extends Component {
 
                     { this.state.isLoading && loadingSpinnerPlaceholder }
 
-                    { 'default' === activeStyle && (
+                    { 'default' === activeStyle.name && (
                         <SkinDefault
                             setFocus={ this.setFocus }
                             renderTerms={ this.renderTerms }
                             onUploadError={ this.onUploadError }
                             onSelectImage={ this.onSelectImage }
+                            activeStyle={ activeStyle }
                             { ...this.props }
                         />
                     ) }
 
-                    { 'simple' === activeStyle && (
+                    { 'simple' === activeStyle.name && (
                         <SkinSimple
                             setFocus={ this.setFocus }
                             renderTerms={ this.renderTerms }
                             onUploadError={ this.onUploadError }
                             onSelectImage={ this.onSelectImage }
+                            activeStyle={ activeStyle }
                             { ...this.props }
                         />
                     ) }
 
-                    { 'newdesign' === activeStyle && (
+                    { 'newdesign' === activeStyle.name && (
                         <SkinNewDesign
                             setFocus={ this.setFocus }
                             renderTerms={ this.renderTerms }
                             onUploadError={ this.onUploadError }
                             onSelectImage={ this.onSelectImage }
+                            activeStyle={ activeStyle }
                             { ...this.props }
                         />
                     ) }
 
-                    { 'accent-color-header' === activeStyle && (
+                    { 'accent-color-header' === activeStyle.name && (
                         <SkinAccentColorHeader
                             setFocus={ this.setFocus }
                             renderTerms={ this.renderTerms }
                             onUploadError={ this.onUploadError }
                             onSelectImage={ this.onSelectImage }
+                            activeStyle={ activeStyle }
                             { ...this.props }
                         />
                     ) }
@@ -544,7 +654,6 @@ const applyWithSelect = withSelect( ( select, props ) => {
         },
         clientId,
         isSelected,
-        className,
     } = props;
 
     const {
@@ -569,11 +678,6 @@ const applyWithSelect = withSelect( ( select, props ) => {
         isRTL,
         imageSizes,
     } = getEditorSettings();
-
-    const {
-        license_status,
-        setting_options,
-    } = wpzoomRecipeCard;
 
     const getAuthorData = ( authors, path = '' ) => {
         const postAuthor = getEditedPostAttribute( 'author' );
@@ -647,7 +751,6 @@ const applyWithSelect = withSelect( ( select, props ) => {
         postTitle,
         postType,
         postAuthor,
-        activeStyle: getBlockStyle( className ),
         settingOptions: setting_options,
         licenseStatus: license_status,
         coursesTaxonomy,

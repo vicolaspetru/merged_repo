@@ -11,6 +11,7 @@ import {
     uniqueId,
     isUndefined,
 } from 'lodash';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -32,6 +33,9 @@ import {
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
+import { PanelBody } from '@wordpress/components';
+import { ENTER, SPACE } from '@wordpress/keycodes';
 import { isShallowEqualObjects } from '@wordpress/is-shallow-equal';
 import { Component, renderToString } from '@wordpress/element';
 import { RichText, InspectorControls } from '@wordpress/block-editor';
@@ -122,7 +126,7 @@ export default class Inspector extends Component {
 
         let sizeSlug = 'wpzoom-rcb-block-header';
 
-        if ( 'simple' === activeStyle || 'accent-color-header' === activeStyle ) {
+        if ( 'simple' === activeStyle.name || 'accent-color-header' === activeStyle.name ) {
             sizeSlug = 'wpzoom-rcb-block-header-square';
         }
 
@@ -145,7 +149,7 @@ export default class Inspector extends Component {
 
         let sizeSlug = 'wpzoom-rcb-block-header';
 
-        if ( 'simple' === activeStyle || 'accent-color-header' === activeStyle ) {
+        if ( 'simple' === activeStyle.name || 'accent-color-header' === activeStyle.name ) {
             sizeSlug = 'wpzoom-rcb-block-header-square';
         }
 
@@ -502,6 +506,8 @@ export default class Inspector extends Component {
             setAttributes,
             settingOptions,
             activeStyle,
+            layoutOptions,
+            onUpdateStyle,
         } = this.props;
 
         const {
@@ -511,6 +517,39 @@ export default class Inspector extends Component {
 
         return (
             <InspectorControls>
+                <PanelBody title={ __( 'Styles', 'wpzoom-recipe-card' ) } initialOpen={ false }>
+                    <div className={ classnames(
+                        'block-editor-block-styles',
+                        'wpzoom-recipe-card-editor-block-styles'
+                    ) }>
+                        { layoutOptions.map( ( style ) => (
+                            <div
+                                key={ `style-${ style.name }` }
+                                className={ classnames(
+                                    'block-editor-block-styles__item',
+                                    { 'is-active': activeStyle === style },
+                                ) }
+                                onClick={ () => onUpdateStyle( style ) }
+                                onKeyDown={ ( event ) => {
+                                    if ( ENTER === event.keyCode || SPACE === event.keyCode ) {
+                                        event.preventDefault();
+                                        onUpdateStyle( style );
+                                    }
+                                } }
+                                role="button"
+                                tabIndex="0"
+                                aria-label={ style.label || style.name }
+                            >
+                                <div className="block-editor-block-styles__item-preview">
+                                    Here will be thumbnail image
+                                </div>
+                                <div className="block-editor-block-styles__item-label">
+                                    { style.label || style.name }
+                                </div>
+                            </div>
+                        ) ) }
+                    </div>
+                </PanelBody>
                 <ColorScheme
                     onChangeSettings={ this.onChangeSettings }
                     { ...{ attributes, className, settingOptions, activeStyle } }

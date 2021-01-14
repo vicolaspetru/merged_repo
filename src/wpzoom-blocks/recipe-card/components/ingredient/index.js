@@ -289,7 +289,7 @@ export default class Ingredient extends Component {
                 const obj = ReactHtmlParser( trim( stringName ) );
 
                 // remove unneded property keys
-                removeKeys( obj, [ '_owner', '$$typeof', 'key' ] );
+                // removeKeys( obj, [ '_owner', '$$typeof', 'key' ] );
 
                 const newName = obj;
 

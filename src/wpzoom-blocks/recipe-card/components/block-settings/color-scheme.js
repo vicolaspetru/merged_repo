@@ -65,7 +65,7 @@ const ColorScheme = ( props ) => {
 
     return (
         <PanelBody className="wpzoom-recipe-card-color-scheme" initialOpen={ true } title={ PANEL_TITLE }>
-            { 'accent-color-header' !== activeStyle &&
+            { 'accent-color-header' !== activeStyle.name &&
                 <BaseControl
                     id={ `${ id }-primary-color` }
                     label={ __( 'Primary Color', 'wpzoom-recipe-card' ) }
@@ -77,7 +77,7 @@ const ColorScheme = ( props ) => {
                     />
                 </BaseControl>
             }
-            { 'accent-color-header' === activeStyle &&
+            { 'accent-color-header' === activeStyle.name &&
                 <Fragment>
                     <BaseControl
                         id={ `${ id }-bg-accent-color-header` }
@@ -145,7 +145,7 @@ const ColorScheme = ( props ) => {
             {
                 ! hide_header_image &&
                 <Fragment>
-                    { 'accent-color-header' === activeStyle && print_btn &&
+                    { 'accent-color-header' === activeStyle.name && print_btn &&
                         <Fragment>
                             <BaseControl
                                 id={ `${ id }-bg-color-print-button` }
@@ -169,7 +169,7 @@ const ColorScheme = ( props ) => {
                             </BaseControl>
                         </Fragment>
                     }
-                    { 'accent-color-header' === activeStyle && pin_btn &&
+                    { 'accent-color-header' === activeStyle.name && pin_btn &&
                         <Fragment>
                             <BaseControl
                                 id={ `${ id }-bg-pin-button` }
