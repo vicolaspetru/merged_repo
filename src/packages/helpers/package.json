@@ -2,23 +2,23 @@
   "name": "helpers",
   "version": "1.0.0",
   "description": "A set of helpers functions for plugin.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro.git"
-  },
+  "author": "Vicolas Petru",
+  "license": "GPL-2.0-or-later",
   "keywords": [
     "wpzoom",
     "helper functions",
     "recipe card"
   ],
-  "author": "Vicolas Petru",
-  "license": "MIT",
+  "homepage": "https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro.git"
+  },
   "bugs": {
     "url": "https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro/issues"
   },
-  "homepage": "https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro#readme"
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
