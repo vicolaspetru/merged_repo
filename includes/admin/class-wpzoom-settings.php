@@ -245,10 +245,16 @@ class WPZOOM_Settings {
 	 *
 	 * @since 1.2.0
 	 * @param string $option  Option name
+	 * @param string $prefix  The setting option prefix
 	 * @return string|boolean
 	 */
-	public static function get( $option ) {
-		return isset(self::$options[ $option ]) ? self::$options[ $option ] : false;
+	public static function get( $option, $prefix = 'wpzoom_rcb_settings_' ) {
+		if ( isset( self::$options[ $option ] ) ) {
+			return self::$options[ $option ];
+		} elseif ( isset( self::$options[ $prefix . $option ] ) ) {
+			return self::$options[ $prefix . $option ];
+		}
+		return false;
 	}
 
 	/**
@@ -1616,7 +1622,7 @@ class WPZOOM_Settings {
 						<h2 class="headline"><?php _e( 'Activate Your License Key', 'wpzoom-recipe-card' ) ?></h2>
 						<?php if ( ! self::$license_key || ! self::$license_status ): ?>
 							<p>
-							    <?php echo sprintf( __( 'Your license key provides access to <strong>Automatic Updates and Premium addons</strong>. You can find your license in <a href="https://www.wpzoom.com/account/licenses/" target="_blank">WPZOOM Members Area &rarr; Licenses</a>.', 'wpzoom' ) );
+							    <?php echo sprintf( __( 'Your license key provides access to <strong>Automatic Updates and Premium addons</strong>. You can find your license in <a href="https://www.wpzoom.com/account/licenses/" target="_blank">WPZOOM Members Area &rarr; Licenses</a>.', 'wpzoom-recipe-card' ) );
 							     ?>
 							</p>
 						<?php endif ?>
@@ -1809,7 +1815,7 @@ class WPZOOM_Settings {
 		    $message = __( 'License key is disabled.', 'wpzoom-recipe-card' );
 		}
 		else if ( $license_data->license == 'site_inactive' ) {
-		    $message = __( 'This license is inactive on this website. Click on the <strong>Activate License</strong> button to activate it.', 'wpzoom' );
+		    $message = __( 'This license is inactive on this website. Click on the <strong>Activate License</strong> button to activate it.', 'wpzoom-recipe-card' );
 		}
 		else {
 		    $message = __( 'Incorrect license key.', 'wpzoom-recipe-card' );

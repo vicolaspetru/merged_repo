@@ -85,8 +85,8 @@ final class WPZOOM_Taxonomies {
 	public static function get_taxonomies_to_register() {
 		$taxonomies = apply_filters( 'wpzoom_recipe_taxonomies', array(
 			'wpzoom_rcb_courses' => array(
-				'name' 				=> _x( 'Courses', 'taxonomy general name' ),
-			    'singular_name' 	=> _x( 'Course', 'taxonomy singular name' ),
+				'name' 				=> _x( 'Courses', 'taxonomy general name', 'wpzoom-recipe-card' ),
+			    'singular_name' 	=> _x( 'Course', 'taxonomy singular name', 'wpzoom-recipe-card' ),
 			    'search_items' 		=> __( 'Search Courses', 'wpzoom-recipe-card' ),
 			    'popular_items' 	=> __( 'Popular Courses', 'wpzoom-recipe-card' ),
 			    'all_items' 		=> __( 'All Courses', 'wpzoom-recipe-card' ),
@@ -102,8 +102,8 @@ final class WPZOOM_Taxonomies {
 			    'menu_name' 		=> __( 'Courses', 'wpzoom-recipe-card' ),
 			),
 			'wpzoom_rcb_cuisines' => array(
-				'name' 				=> _x( 'Cuisines', 'taxonomy general name' ),
-				'singular_name' 	=> _x( 'Cuisine', 'taxonomy singular name' ),
+				'name' 				=> _x( 'Cuisines', 'taxonomy general name', 'wpzoom-recipe-card' ),
+				'singular_name' 	=> _x( 'Cuisine', 'taxonomy singular name', 'wpzoom-recipe-card' ),
 				'search_items' 		=> __( 'Search Cuisines', 'wpzoom-recipe-card' ),
 				'popular_items' 	=> __( 'Popular Cuisines', 'wpzoom-recipe-card' ),
 				'all_items' 		=> __( 'All Cuisines', 'wpzoom-recipe-card' ),
@@ -119,8 +119,8 @@ final class WPZOOM_Taxonomies {
 				'menu_name' 		=> __( 'Cuisines', 'wpzoom-recipe-card' ),
 			),
 			'wpzoom_rcb_difficulties' => array(
-				'name' 				=> _x( 'Difficulties', 'taxonomy general name' ),
-				'singular_name' 	=> _x( 'Difficulty', 'taxonomy singular name' ),
+				'name' 				=> _x( 'Difficulties', 'taxonomy general name', 'wpzoom-recipe-card' ),
+				'singular_name' 	=> _x( 'Difficulty', 'taxonomy singular name', 'wpzoom-recipe-card' ),
 				'search_items' 		=>  __( 'Search Difficulties', 'wpzoom-recipe-card' ),
 				'popular_items' 	=> __( 'Popular Difficulties', 'wpzoom-recipe-card' ),
 				'all_items' 		=> __( 'All Difficulties', 'wpzoom-recipe-card' ),

@@ -298,5 +298,3 @@ class WPZOOM_Comment_Rating {
 }
 
 WPZOOM_Comment_Rating::init();
-
-?>
