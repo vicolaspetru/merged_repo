@@ -5,7 +5,7 @@
   "description": "A set of Gutenberg Blocks (Recipe Card, details, ingredients, directions, nutrition ...) for recipe blogs.",
   "tested_up_to": "5.6",
   "textdomain": "wpzoom-recipe-card",
-  "author": "WPZOOM, Vicolas Petru",
+  "author": "WPZOOM",
   "license": "GPL-2.0-or-later",
   "private": true,
   "keywords": [
@@ -74,8 +74,10 @@
     "webpack-merge-and-include-globally": "^2.3.3"
   },
   "scripts": {
+    "setup": "composer install && yarn install && yarn run build && wp-scripts env install",
     "start": "wp-scripts start --config .dev/config/webpack.config.js --progress",
     "build": "wp-scripts build --config .dev/config/webpack.config.js",
+    "clean": "wp-scripts env stop && rm -rf build dist/assets/*.* dist/assets/css dist/assets/js node_modules vendor",
     "version": "versionBump() { grunt version-bump --ver=\"$1\" && git add -A .; }; versionBump",
     "postversion": "git push && git push --tags",
     "makepot": "grunt update-pot",

@@ -3,3 +3,4 @@
 *.sublime-workspace
 *.cache
 **/.DS_Store
+/vendor/
