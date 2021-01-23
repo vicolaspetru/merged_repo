@@ -1,0 +1,55 @@
+.wpzoom-rcb-comment-rating-form {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: block;
+    > label {
+        display: block;
+    }
+    fieldset {
+        border-width: 0;
+        padding: 0;
+    }
+    .hidden {
+        display: none !important;
+    }
+    .wpzoom-rcb-comment-rating-stars {
+        label {
+            cursor: pointer;
+            display: inline-block;
+            margin: 0;
+            > span {
+                color: inherit;
+            }
+            &[for="wpzoom-rcb-comment-rating-0"] {
+                display: none;
+            }
+        }
+    }
+}
+
+.comment-respond .comment-form {
+    .wpzoom-rcb-comment-rating-form {
+        > label {
+            display: block;
+        }
+        .wpzoom-rcb-comment-rating-stars {
+            label {
+                display: inline-block;
+                &[for="wpzoom-rcb-comment-rating-0"] {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+.wpzoom-rcb-comment-rating {
+    margin-bottom: 10px !important;
+    .wpzoom-rcb-comment-rating-stars {
+        padding: 0;
+        margin: 0;
+        > span {
+            font-size: 14px;
+        }
+    }
+}
