@@ -30,10 +30,11 @@
     "@wordpress/block-library": "2.8.0",
     "@wordpress/blocks": "^6.10.0",
     "@wordpress/edit-post": "3.7.0",
+    "@wordpress/eslint-plugin": "^8.0.0",
     "@wordpress/i18n": "3.6.0",
     "@wordpress/plugins": "2.6.0",
     "@wordpress/postcss-themes": "^2.2.0",
-    "@wordpress/scripts": "^12.6.1",
+    "@wordpress/scripts": "^13.0.0",
     "@wpzoom/helpers": "file:packages/helpers",
     "@wpzoom/utils": "file:packages/utils",
     "astroturf": "^0.10.5",
@@ -41,6 +42,8 @@
     "css-loader": "^3.2.1",
     "eslint": "^7.18.0",
     "eslint-plugin-chai-friendly": "^0.6.0",
+    "eslint-plugin-cypress": "^2.11.2",
+    "eslint-plugin-import": "^2.22.1",
     "fitvids": "^2.1.1",
     "grunt": "^1.3.0",
     "grunt-bumpup": "^0.6.3",
@@ -74,13 +77,14 @@
     "webpack-merge-and-include-globally": "^2.3.3"
   },
   "scripts": {
-    "setup": "composer install && yarn install && yarn run build && wp-scripts env install",
+    "setup": "composer install && yarn install && yarn run build && wp-scripts wp-env install",
     "start": "wp-scripts start --config .dev/config/webpack.config.js --progress",
     "build": "wp-scripts build --config .dev/config/webpack.config.js",
-    "clean": "wp-scripts env stop && rm -rf build dist/assets/*.* dist/assets/css dist/assets/js node_modules vendor",
+    "clean": "wp-scripts wp-env stop && rm -rf build dist/assets/*.* dist/assets/css dist/assets/js node_modules vendor",
     "version": "versionBump() { grunt version-bump --ver=\"$1\" && git add -A .; }; versionBump",
     "postversion": "git push && git push --tags",
     "makepot": "grunt update-pot",
+    "env": "wp-scripts wp-env",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
     "format:js": "wp-scripts format-js",
@@ -92,5 +96,6 @@
     "packages-update": "wp-scripts packages-update",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js"
-  }
+  },
+  "prettier": "@wordpress/prettier-config"
 }
