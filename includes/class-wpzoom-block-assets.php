@@ -3,7 +3,7 @@
  * Load assets for our blocks.
  *
  * @since 3.2.1
- * 
+ *
  * @see https://github.com/godaddy-wordpress/coblocks/blob/master/includes/class-coblocks-block-assets.php
  * @package WPZOOM_Recipe_Card_Blocks
  */
@@ -171,7 +171,7 @@ class WPZOOM_Block_Assets {
             'wpzoomRecipeCard',
             array(
                 'pluginURL'             => WPZOOM_RCB_PLUGIN_URL,
-                'assetsDir'             => WPZOOM_RCB_PLUGIN_DIR . '/dist/assets';
+                'assetsDir'             => WPZOOM_RCB_PLUGIN_DIR . '/dist/assets',
                 'licenseStatus'         => WPZOOM_Settings::get_license_status(),
                 'settingOptions'        => ( !empty( $options ) ? $options : WPZOOM_Settings::get_defaults() ),
                 'nutritionFactsLabel'   => WPZOOM_Nutrition_Block::$labels
