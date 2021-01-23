@@ -5,12 +5,12 @@
  * that are used across the project.
 */
 
-@import './colors';
-@import "~@wordpress/base-styles/variables";
-@import "~@wordpress/base-styles/mixins";
-@import "~@wordpress/base-styles/breakpoints";
-@import "~@wordpress/base-styles/animations";
-@import "~@wordpress/base-styles/z-index";
+@import './styles/style/colors';
+@import "node_modules/@wordpress/base-styles/variables";
+@import "node_modules/@wordpress/base-styles/mixins";
+@import "node_modules/@wordpress/base-styles/breakpoints";
+@import "node_modules/@wordpress/base-styles/animations";
+@import "node_modules/@wordpress/base-styles/z-index";
 
 /**
  * Fonts & basic variables.
@@ -34,6 +34,4 @@ $radius-round-rectangle-x3: 30px;
 $radius-round-rectangle-x35: 35px;
 $radius-round-rectangle-x4: 40px;
 
-@import './__mixins';
-@import './comment-rating';
-@import './amp';
+@import './styles/mixins';
