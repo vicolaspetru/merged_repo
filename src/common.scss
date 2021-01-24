@@ -4,8 +4,7 @@
  * Can include things like variables and mixins
  * that are used across the project.
 */
-
-@import './styles/style/colors';
+@import "./styles/style/colors";
 @import "node_modules/@wordpress/base-styles/variables";
 @import "node_modules/@wordpress/base-styles/mixins";
 @import "node_modules/@wordpress/base-styles/breakpoints";
@@ -34,4 +33,4 @@ $radius-round-rectangle-x3: 30px;
 $radius-round-rectangle-x35: 35px;
 $radius-round-rectangle-x4: 40px;
 
-@import './styles/mixins';
+@import "./styles/mixins";

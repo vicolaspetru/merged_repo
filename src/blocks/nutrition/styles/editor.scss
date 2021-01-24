@@ -5,63 +5,63 @@
  * which makes it higher in priority.
  */
 #wpzoom-recipe-nutrition {
-    @include clear-after;
+	@include clear-after;
 
-    .wp-block-wpzoom-recipe-card-block-nutrition-information {
-        @include clear-after;
-    }
+	.wp-block-wpzoom-recipe-card-block-nutrition-information {
+		@include clear-after;
+	}
 
-    &.layout-orientation-vertical {
-        .wp-block-wpzoom-recipe-card-block-nutrition-information,
-        .wp-block-wpzoom-recipe-card-block-nutrition {
-            float: left;
-            width: 50%;
-            box-sizing: border-box;
-        }
-        .wp-block-wpzoom-recipe-card-block-nutrition-information {
-            padding-right: 40px;
+	&.layout-orientation-vertical {
+		.wp-block-wpzoom-recipe-card-block-nutrition-information,
+		.wp-block-wpzoom-recipe-card-block-nutrition {
+			box-sizing: border-box;
+			float: left;
+			width: 50%;
+		}
+		.wp-block-wpzoom-recipe-card-block-nutrition-information {
+			padding-right: 40px;
 
-            > .components-base-control {
-                float: left;
-                width: 50%;
-                padding-right: 20px;
-                box-sizing: border-box;
+			> .components-base-control {
+				box-sizing: border-box;
+				float: left;
+				padding-right: 20px;
+				width: 50%;
 
-                .components-base-control__label {
-                    font-size: .7em;
-                    letter-spacing: .03em;
-                    font-weight: 700;
-                    text-transform: uppercase;
-                    line-height: 1;
-                }
+				.components-base-control__label {
+					font-size: 0.7em;
+					font-weight: 700;
+					letter-spacing: 0.03em;
+					line-height: 1;
+					text-transform: uppercase;
+				}
 
-                &:nth-child(2n+1) {
-                    padding-right: 0;
-                    clear: right;
-                }
-            }
-        }
-    }
+				&:nth-child(2n+1) {
+					clear: right;
+					padding-right: 0;
+				}
+			}
+		}
+	}
 
-    &.layout-orientation-horizontal {
-        .wp-block-wpzoom-recipe-card-block-nutrition-information,
-        .wp-block-wpzoom-recipe-card-block-nutrition {
-            float: none;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .wp-block-wpzoom-recipe-card-block-nutrition-information {
-            > .components-base-control {
-                float: left;
-                width: 25%;
-                padding-right: 20px;
-                box-sizing: border-box;
+	&.layout-orientation-horizontal {
+		.wp-block-wpzoom-recipe-card-block-nutrition-information,
+		.wp-block-wpzoom-recipe-card-block-nutrition {
+			box-sizing: border-box;
+			float: none;
+			width: 100%;
+		}
+		.wp-block-wpzoom-recipe-card-block-nutrition-information {
+			> .components-base-control {
+				box-sizing: border-box;
+				float: left;
+				padding-right: 20px;
+				width: 25%;
 
-                &:nth-child(4n+1) {
-                    padding-right: 0;
-                    clear: right;
-                }
-            }
-        }
-    }
+				&:nth-child(4n+1) {
+					clear: right;
+					padding-right: 0;
+				}
+			}
+		}
+	}
 }

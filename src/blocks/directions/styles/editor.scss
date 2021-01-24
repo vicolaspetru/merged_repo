@@ -5,7 +5,7 @@
  * which makes it higher in priority.
  */
 
-.wp-block-wpzoom-recipe-card-block-directions p.help, 
+.wp-block-wpzoom-recipe-card-block-directions p.help,
 .wp-block-wpzoom-recipe-card-block-directions p.description {
 	font-size: 13px !important;
 	margin-top: 0;
@@ -17,14 +17,14 @@
 		right: 0;
 	}
 	.direction-step {
-		position: relative;
-	    margin: 4px 0;
-		padding: 10px 4px 10px;
 		border: 1px solid #d3d3d3;
 		list-style-type: none;
+		margin: 4px 0;
+		padding: 10px 4px 10px;
+		position: relative;
 
 		.direction-step-group-title {
-			font-weight: bold;
+			font-weight: 700;
 		}
 	}
 	.directions-list > li {
@@ -44,12 +44,12 @@
 			display: inline-flex;
 		}
 	}
-	.direction-buttons button.components-icon-button:not(:disabled):not([aria-disabled=true]):not(.is-default):hover,
-	.direction-step-button-container button.components-icon-button:not(:disabled):not([aria-disabled=true]):not(.is-default):hover {
-	    color: #007cba;
-	    box-shadow: none
+	.direction-buttons button.components-icon-button:not(:disabled):not([aria-disabled="true"]):not(.is-default):hover,
+	.direction-step-button-container button.components-icon-button:not(:disabled):not([aria-disabled="true"]):not(.is-default):hover {
+		box-shadow: none;
+		color: #007cba;
 	}
-	.direction-step-button-container button.direction-step-button-delete:not(:disabled):not([aria-disabled=true]):not(.is-default):hover {
+	.direction-step-button-container button.direction-step-button-delete:not(:disabled):not([aria-disabled="true"]):not(.is-default):hover {
 		color: #a00;
 	}
 
@@ -61,10 +61,12 @@
 #wpwrap .edit-post-visual-editor .wp-block-wpzoom-recipe-card-block-directions .wpzoom-recipe-card-print-link a {
 	color: #a0a0a0;
 }
+
 #wpwrap .edit-post-visual-editor .wp-block-wpzoom-recipe-card-block-directions p {
-	margin-top: 0;
 	margin-bottom: 0;
+	margin-top: 0;
 }
+
 #wpwrap .edit-post-visual-editor .wp-block-wpzoom-recipe-card-block-directions ul,
 #wpwrap .edit-post-visual-editor .wp-block-wpzoom-recipe-card-block-directions ol {
 	margin: 0;

@@ -1,372 +1,375 @@
 .wp-block-wpzoom-recipe-card-block-recipe-card {
 
-    &.is-style-simple {
-        padding: 20px;
-        margin: 50px 0;
-        background: #ffffff;
-        border: 1px solid rgba(0,0,0,.1);
+	&.is-style-simple {
+		background: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		margin: 50px 0;
+		padding: 20px;
 
-        .recipe-card-header-wrap {
-            @include clear-after;
-            
-            margin: -20px -20px 10px -20px;
-            padding: 20px;
-            background-color: $coconut-cream;
-        }
+		.recipe-card-header-wrap {
+			@include clear-after;
+			background-color: $coconut-cream;
 
-        &.header-content-align-right {
-            .recipe-card-image {
-                float: right;
-                text-align: right;
-            }
-            .recipe-card-along-image {
-                float: left;
-                text-align: right;
-            }
-            .recipe-card-heading,
-            .recipe-card-details {
-                margin-right: 20px;
-                margin-left: 0;
-            }
-            .details-items .detail-item {
-                margin-right: 0;
-                margin-left: 15px;
-            }
-        }
+			margin: -20px -20px 10px -20px;
+			padding: 20px;
+		}
 
-        .recipe-card-image {
-            float: left;
-            width: 40%;
+		&.header-content-align-right {
+			.recipe-card-image {
+				float: right;
+				text-align: right;
+			}
+			.recipe-card-along-image {
+				float: left;
+				text-align: right;
+			}
+			.recipe-card-heading,
+			.recipe-card-details {
+				margin-left: 0;
+				margin-right: 20px;
+			}
+			.details-items .detail-item {
+				margin-left: 15px;
+				margin-right: 0;
+			}
+		}
 
-            figure {
-                position: relative;
-                margin: 0;
-                line-height: 0;
+		.recipe-card-image {
+			float: left;
+			width: 40%;
 
-                img {
-                    max-width: 100%;
-                    width: 100%;
-                    height: auto;
-                    margin: 0;
-                }
-                figcaption {
-                    margin-top: 10px;
-                    line-height: 1.8;
-                }
-            }
-            .wpzoom-recipe-card-pinit,
-            .wpzoom-recipe-card-print-link {
-                display: inline-block;
-                vertical-align: middle;
-            }
-            .wpzoom-recipe-card-pinit {
-                margin-right: $grid-unit-15;
-                .btn-pinit-link {
-                    display: block;
-                    border-radius: 3px;
-                    padding: $grid-unit $grid-unit-10;
-                    font-style: normal;
-                    text-decoration: none;
-                    font-size: $ultra-small-font-size;
-                    color: #fff;
-                    line-height: $default-line-height;
-                    border: none;
-                    box-shadow: none;
-                    cursor: pointer;
-                    background-color: #C62122;
-                    .wpzoom-rcb-icon-pinit-link {
-                        display: inline-block;
-                        margin-right: $grid-unit;
-                        width: 16px;
-                        height: 16px;
-                        vertical-align: middle;
-                        fill: #fff;
-                    }
-                    .wpzoom-rcb-pinit-icon {
-                        font-size: $ultra-font-size;
-                        margin-right: calc(#{ $grid-unit-15 / 2 });
-                        vertical-align: middle;
-                    }
-                    .wpzoom-rcb-pinit-icon + span {
-                        font-size: $small-font-size;
-                        vertical-align: middle;
-                    }
-                }
-            }
-            .wpzoom-recipe-card-print-link {
-                .btn-print-link {
-                    display: block;
-                    border-radius: 3px;
-                    padding: $grid-unit $grid-unit-10;
-                    font-style: normal;
-                    text-decoration: none;
-                    font-size: $ultra-small-font-size;
-                    color: #fff;
-                    line-height: $default-line-height;
-                    border: none;
-                    box-shadow: none;
-                    cursor: pointer;
-                    color: $simple-primary-text-color;
-                    background-color: $simple-primary-color;
-                    .wpzoom-rcb-icon-print-link {
-                        display: inline-block;
-                        margin-right: $grid-unit;
-                        width: 16px;
-                        height: 16px;
-                        vertical-align: middle;
-                        fill: $simple-primary-text-color;
-                    }
-                    .wpzoom-rcb-print-icon {
-                        font-size: $ultra-font-size;
-                        margin-right: calc(#{ $grid-unit-15 / 2 });
-                        vertical-align: middle;
-                    }
-                    .wpzoom-rcb-print-icon + span {
-                        font-size: $small-font-size;
-                        vertical-align: middle;
-                    }
-                }
-            }
-        }
-        .recipe-card-along-image {
-            float: right;
-            width: 60%;
-        }
+			figure {
+				line-height: 0;
+				margin: 0;
+				position: relative;
 
-        .recipe-card-heading {
-            margin-bottom: 5px;
-            margin-left: 20px;
+				img {
+					height: auto;
+					margin: 0;
+					max-width: 100%;
+					width: 100%;
+				}
+				figcaption {
+					line-height: 1.8;
+					margin-top: 10px;
+				}
+			}
+			.wpzoom-recipe-card-pinit,
+			.wpzoom-recipe-card-print-link {
+				display: inline-block;
+				vertical-align: middle;
+			}
+			.wpzoom-recipe-card-pinit {
+				margin-right: $grid-unit-15;
+				.btn-pinit-link {
+					background-color: #c62122;
+					border: none;
+					border-radius: 3px;
+					box-shadow: none;
+					color: #fff;
+					cursor: pointer;
+					display: block;
+					font-size: $ultra-small-font-size;
+					font-style: normal;
+					line-height: $default-line-height;
+					padding: $grid-unit $grid-unit-10;
+					text-decoration: none;
+					.wpzoom-rcb-icon-pinit-link {
+						display: inline-block;
+						fill: #fff;
+						height: 16px;
+						margin-right: $grid-unit;
+						vertical-align: middle;
+						width: 16px;
+					}
+					.wpzoom-rcb-pinit-icon {
+						font-size: $ultra-font-size;
+						margin-right: calc(#{ $grid-unit-15 / 2 });
+						vertical-align: middle;
+					}
+					.wpzoom-rcb-pinit-icon + span {
+						font-size: $small-font-size;
+						vertical-align: middle;
+					}
+				}
+			}
+			.wpzoom-recipe-card-print-link {
+				.btn-print-link {
+					background-color: $simple-primary-color;
+					border: none;
+					border-radius: 3px;
+					box-shadow: none;
+					color: #fff;
+					color: $simple-primary-text-color;
+					cursor: pointer;
+					display: block;
+					font-size: $ultra-small-font-size;
+					font-style: normal;
+					line-height: $default-line-height;
+					padding: $grid-unit $grid-unit-10;
+					text-decoration: none;
+					.wpzoom-rcb-icon-print-link {
+						display: inline-block;
+						fill: $simple-primary-text-color;
+						height: 16px;
+						margin-right: $grid-unit;
+						vertical-align: middle;
+						width: 16px;
+					}
+					.wpzoom-rcb-print-icon {
+						font-size: $ultra-font-size;
+						margin-right: calc(#{ $grid-unit-15 / 2 });
+						vertical-align: middle;
+					}
+					.wpzoom-rcb-print-icon + span {
+						font-size: $small-font-size;
+						vertical-align: middle;
+					}
+				}
+			}
+		}
+		.recipe-card-along-image {
+			float: right;
+			width: 60%;
+		}
 
-            .recipe-card-title {
-                @include recipe-title( 24px );
-            }
-            .recipe-card-author {
-                @include recipe-author( $simple-meta-color, 0 0 6px, 0 0 12px );
-            }
+		.recipe-card-heading {
+			margin-bottom: 5px;
+			margin-left: 20px;
 
-            @include recipe-heading-metadata( $simple-meta-color, $simple-heading-color );
+			.recipe-card-title {
+				@include recipe-title( 24px );
+			}
+			.recipe-card-author {
+				@include recipe-author( $simple-meta-color, 0 0 6px, 0 0 12px );
+			}
 
-            .recipe-card-course,
-            .recipe-card-cuisine,
-            .recipe-card-difficulty {
-                font-size: 14px;
-                color: $simple-meta-color;
-                display: inline-block;
-                margin-bottom: 5px;
+			@include recipe-heading-metadata( $simple-meta-color, $simple-heading-color );
 
-                mark {
-                    color: $simple-heading-color;
-                    font-weight: 600;
-                    background: transparent;
-                    padding: 0;
-                }
-            }
+			.recipe-card-course,
+			.recipe-card-cuisine,
+			.recipe-card-difficulty {
+				color: $simple-meta-color;
+				display: inline-block;
+				font-size: 14px;
+				margin-bottom: 5px;
 
-            span:not(.recipe-card-author) + span:not(.recipe-card-author):before {
-                @include heading-meta-delimiter;
-            }
+				mark {
+					background: transparent;
+					color: $simple-heading-color;
+					font-weight: 600;
+					padding: 0;
+				}
+			}
 
-        }
-        .recipe-card-details {
-            margin-left: 20px;
-            margin-bottom: 0;
-            padding-top: 5px;
-            border-top: 1px dashed rgba(0,0,0,.1);
-        }
-        .details-items {
+			span:not(.recipe-card-author) + span:not(.recipe-card-author)::before {
+				@include heading-meta-delimiter;
+			}
 
-            .detail-item {
-                color: #333;
-                display: inline-block;
-                vertical-align: middle;
-                margin-right: 15px;
+		}
+		.recipe-card-details {
+			border-top: 1px dashed rgba(0, 0, 0, 0.1);
+			margin-bottom: 0;
+			margin-left: 20px;
+			padding-top: 5px;
+		}
+		.details-items {
 
-                .detail-item-label {
-                    font-weight: bold;
-                    margin-right: 5px;
-                }
-                .detail-item-label, .detail-item-value, .detail-item-unit {
-                    font-size: 14px;
-                }
-                .detail-item-icon, .detail-item-label {
-                    display: inline-block;
-                }
-                .detail-item-value {
-                    font-weight: 500;
-                    margin: 0 5px 0 0;
-                }
-                .detail-item-value, .detail-item-unit {
-                    display: inline-block;
-                    line-height: 1.4;
-                }
+			.detail-item {
+				color: #333;
+				display: inline-block;
+				margin-right: 15px;
+				vertical-align: middle;
 
-                .detail-item-icon {
-                    opacity: .7;
-                    margin: 0;
-                    margin-right: 10px;
-                    height: 35px;
-                    line-height: 35px;
-                    font-size: 16px;
-                    color: $simple-detail-icon-color;
-                    display: inline-block;
+				.detail-item-label {
+					font-weight: 700;
+					margin-right: 5px;
+				}
+				.detail-item-label,
+				.detail-item-value,
+				.detail-item-unit {
+					font-size: 14px;
+				}
+				.detail-item-icon,
+				.detail-item-label {
+					display: inline-block;
+				}
+				.detail-item-value {
+					font-weight: 500;
+					margin: 0 5px 0 0;
+				}
+				.detail-item-value,
+				.detail-item-unit {
+					display: inline-block;
+					line-height: 1.4;
+				}
 
-                    .components-icon-button {
-                        margin: 0 auto !important;
-                    }
-                }
+				.detail-item-icon {
+					color: $simple-detail-icon-color;
+					display: inline-block;
+					font-size: 16px;
+					height: 35px;
+					line-height: 35px;
+					margin: 0;
+					margin-right: 10px;
+					opacity: 0.7;
 
-                .detail-item-icon span {
-                    color: $simple-detail-icon-color;
+					.components-icon-button {
+						margin: 0 auto !important;
+					}
+				}
 
-                    &::before {
-                        font-size: 16px;
-                    }
-                }
-                .detail-item-icon svg {
-                    fill: $simple-detail-icon-color;
-                }
+				.detail-item-icon span {
+					color: $simple-detail-icon-color;
 
-            }
-        }
+					&::before {
+						font-size: 16px;
+					}
+				}
+				.detail-item-icon svg {
+					fill: $simple-detail-icon-color;
+				}
 
-        .recipe-card-summary {
-            margin-bottom: 20px !important;
-        }
+			}
+		}
 
-        $selectors: 'ingredients-title', 'directions-title', 'video-title', 'notes-title';
+		.recipe-card-summary {
+			margin-bottom: 20px !important;
+		}
 
-        @include recipe-sections-title( $simple-heading-color, uppercase, $selectors... );
+		$selectors: "ingredients-title", "directions-title", "video-title", "notes-title";
 
-        .directions-title {
-            margin-bottom: 25px;
-        }
+		@include recipe-sections-title( $simple-heading-color, uppercase, $selectors... );
 
-        .recipe-card-ingredients {
-            position: relative;
-            margin: 0 0 30px;
-            text-align: left;
-        }
+		.directions-title {
+			margin-bottom: 25px;
+		}
 
-        .ingredients-list {
-            @include reset-list;
+		.recipe-card-ingredients {
+			margin: 0 0 30px;
+			position: relative;
+			text-align: left;
+		}
 
-            > li {
-                list-style: none;
-                margin: 0 0 13px;
-                position: relative;
-                cursor: pointer;
-                line-height: 1.6;
+		.ingredients-list {
+			@include reset-list;
 
-                &.ingredient-item-group {
-                    cursor: initial;
-                }
+			> li {
+				cursor: pointer;
+				line-height: 1.6;
+				list-style: none;
+				margin: 0 0 13px;
+				position: relative;
 
-                &:last-child {
-                    border-bottom: none;
-                }
+				&.ingredient-item-group {
+					cursor: initial;
+				}
 
-                @include clear-after;
-                @include ingredient-tick( $simple-tick-color, $simple-ticked-color );
-            }
-        }
+				&:last-child {
+					border-bottom: none;
+				}
 
-        .directions-list {
-            counter-reset: count;
-            line-height: normal;
-            list-style: none;
-            margin: 0;
-            padding: 0;
+				@include clear-after;
+				@include ingredient-tick( $simple-tick-color, $simple-ticked-color );
+			}
+		}
 
-            > li {
-                position: relative;
-                line-height: 1.8;
-                list-style: none;
-                padding-left: 40px;
-                margin: 0 0 $grid-unit-20;
+		.directions-list {
+			counter-reset: count;
+			line-height: normal;
+			list-style: none;
+			margin: 0;
+			padding: 0;
 
-                &.direction-step-group {
-                    min-height: 0;
-                    font-size: 18px;
-                }
+			> li {
+				line-height: 1.8;
+				list-style: none;
+				margin: 0 0 $grid-unit-20;
+				padding-left: 40px;
+				position: relative;
 
-                &::before {
-                    @include direction-counter;
-                }
+				&.direction-step-group {
+					font-size: 18px;
+					min-height: 0;
+				}
 
-                &:last-child {
-                    margin: 0;
-                }
-                .direction-step-text {
-                    margin-bottom: 20px;
-                    font-size: 14px;
-                    img {
-                        max-width: 100%;
-                        height: auto;
-                        display: block;
-                    }
-                }
-                &:last-child .direction-step-text {
-                    margin-bottom: 0;
-                }
-            }
+				&::before {
+					@include direction-counter;
+				}
 
-        }
+				&:last-child {
+					margin: 0;
+				}
+				.direction-step-text {
+					font-size: 14px;
+					margin-bottom: 20px;
+					img {
+						display: block;
+						height: auto;
+						max-width: 100%;
+					}
+				}
+				&:last-child .direction-step-text {
+					margin-bottom: 0;
+				}
+			}
 
-        .direction-step img {
-            margin: 10px 0;
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+		}
 
-        .recipe-card-notes {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px dashed rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+		.direction-step img {
+			display: block;
+			height: auto;
+			margin: 10px 0;
+			max-width: 100%;
+		}
 
-            .recipe-card-notes-list {
-                @include recipe-notes-list( $coconut-cream, $coffee, $simple-primary-color, $simple-primary-text-color );
-            }
-        }
+		.recipe-card-notes {
+			border-top: 1px dashed rgba(0, 0, 0, 0.1);
+			margin-bottom: 30px;
+			margin-top: 30px;
+			padding-top: 20px;
 
-        &.recipe-card-noimage {
-            .recipe-card-image-preview,
-            .recipe-card-image {
-                display: none;
-            }
-            .recipe-card-along-image {
-                float: none;
-                width: 100%;
-            }
-            .recipe-card-heading,
-            .recipe-card-details {
-                margin-left: 0;
-            }
-        }
-    }
+			.recipe-card-notes-list {
+				@include recipe-notes-list( $coconut-cream, $coffee, $simple-primary-color, $simple-primary-text-color );
+			}
+		}
+
+		&.recipe-card-noimage {
+			.recipe-card-image-preview,
+			.recipe-card-image {
+				display: none;
+			}
+			.recipe-card-along-image {
+				float: none;
+				width: 100%;
+			}
+			.recipe-card-heading,
+			.recipe-card-details {
+				margin-left: 0;
+			}
+		}
+	}
 }
-
 
 
 @media screen and (max-width: 768px) {
 
-    .wp-block-wpzoom-recipe-card-block-recipe-card {
-        &.is-style-simple {
-            .recipe-card-image {
-                margin-bottom: 15px;
-                float: none;
-                width: 100%;
-            }
-            .recipe-card-along-image {
-                float: none;
-                width: 100%;
-            }
-            .recipe-card-heading,
-            .recipe-card-details {
-                margin-left: 0;
-            }
-        }
-    }
+	.wp-block-wpzoom-recipe-card-block-recipe-card {
+		&.is-style-simple {
+			.recipe-card-image {
+				float: none;
+				margin-bottom: 15px;
+				width: 100%;
+			}
+			.recipe-card-along-image {
+				float: none;
+				width: 100%;
+			}
+			.recipe-card-heading,
+			.recipe-card-details {
+				margin-left: 0;
+			}
+		}
+	}
 
 }

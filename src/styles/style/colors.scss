@@ -1,23 +1,23 @@
 /**
  * Colors
  */
-$white: #ffffff;
-$dark-gray: #222222;
+$white: #fff;
+$dark-gray: #222;
 $coffee: #736458;
-$coconut-cream: #FBF9E7;
-$silver-sand: #B6BABB;
-$de-york: #9AD093;
+$coconut-cream: #fbf9e7;
+$silver-sand: #b6babb;
+$de-york: #9ad093;
 $pale-sky: #6d767f;
 $mid-gray: #5b5d61;
 
-@import "~@wordpress/base-styles/colors";
+@import "node_modules/@wordpress/base-styles/colors";
 
 /**
  * @style: Default
 */
 $default-primary-color: $dark-gray;
 $default-primary-text-color: $white;
-$default-tick-color: #DEDAB6;
+$default-tick-color: #dedab6;
 $default-ticked-color: $de-york;
 $default-detail-icon-color: $pale-sky;
 $default-meta-color: $mid-gray;
@@ -26,7 +26,7 @@ $default-heading-color: $dark-gray;
 /**
  * @style: Newdesign
 */
-$newdesign-primary-color: #FFA921;
+$newdesign-primary-color: #ffa921;
 $newdesign-primary-text-color: $white;
 $newdesign-tick-color: $newdesign-primary-color;
 $newdesign-ticked-color: $de-york;
@@ -48,7 +48,7 @@ $simple-heading-color: $dark-gray;
 /**
  * @style: Accent Color Header
 */
-$accent-color-header-bg-color: #86C7A7;
+$accent-color-header-bg-color: #86c7a7;
 $accent-color-header-text-color: $white;
 $accent-color-header-tick-color: $accent-color-header-bg-color;
 $accent-color-header-ticked-color: $accent-color-header-bg-color;
