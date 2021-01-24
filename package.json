@@ -54,8 +54,10 @@
     "grunt-text-replace": "^0.4.0",
     "grunt-wp-i18n": "^1.0.3",
     "grunt-wp-readme-to-markdown": "^2.0.1",
+    "husky": "^4.3.8",
     "ingredients-parser": "^1.4.0",
     "jquery": "^3.5.1",
+    "lint-staged": "^10.5.3",
     "magnific-popup": "^1.1.0",
     "matchdep": "^2.0.0",
     "mini-css-extract-plugin": "^0.8.0",
@@ -97,5 +99,15 @@
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js"
   },
-  "prettier": "@wordpress/prettier-config"
+	"prettier": "@wordpress/prettier-config",
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.scss": [
+			"stylelint src/**/*.scss --fix"
+		]
+	}
 }
