@@ -25,20 +25,28 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@godaddy-wordpress/stylelint-config": "^0.2.0",
+    "@wordpress/api-fetch": "^3.21.2",
     "@wordpress/base-styles": "2.0.1",
     "@wordpress/block-editor": "3.1.0",
     "@wordpress/block-library": "2.8.0",
     "@wordpress/blocks": "^6.10.0",
+    "@wordpress/components": "^12.0.2",
+    "@wordpress/compose": "^3.24.0",
+    "@wordpress/data": "^4.26.2",
     "@wordpress/edit-post": "3.7.0",
+    "@wordpress/element": "^2.19.0",
+    "@wordpress/env": "^3.0.1",
     "@wordpress/eslint-plugin": "^8.0.0",
     "@wordpress/i18n": "3.6.0",
     "@wordpress/plugins": "2.6.0",
     "@wordpress/postcss-themes": "^2.2.0",
     "@wordpress/scripts": "^13.0.0",
+    "@wordpress/url": "^2.21.1",
     "@wpzoom/helpers": "file:packages/helpers",
     "@wpzoom/utils": "file:packages/utils",
     "astroturf": "^0.10.5",
     "autoprefixer": "^9.7.5",
+    "classnames": "^2.2.6",
     "css-loader": "^3.2.1",
     "eslint": "^7.18.0",
     "eslint-plugin-chai-friendly": "^0.6.0",
@@ -58,6 +66,7 @@
     "ingredients-parser": "^1.4.0",
     "jquery": "^3.5.1",
     "lint-staged": "^10.5.3",
+    "lodash": "^4.17.20",
     "magnific-popup": "^1.1.0",
     "matchdep": "^2.0.0",
     "mini-css-extract-plugin": "^0.8.0",
@@ -79,14 +88,14 @@
     "webpack-merge-and-include-globally": "^2.3.3"
   },
   "scripts": {
-    "setup": "composer install && yarn install && yarn run build && wp-scripts wp-env install",
+    "setup": "composer install && yarn install && yarn run build && wp-env install",
     "start": "wp-scripts start --config .dev/config/webpack.config.js --progress",
     "build": "wp-scripts build --config .dev/config/webpack.config.js",
-    "clean": "wp-scripts wp-env stop && rm -rf build dist/assets/*.* dist/assets/css dist/assets/js node_modules vendor",
+    "clean": "wp-env stop && rm -rf build dist/assets/*.* dist/assets/css dist/assets/js node_modules vendor",
     "version": "versionBump() { grunt version-bump --ver=\"$1\" && git add -A .; }; versionBump",
     "postversion": "git push && git push --tags",
     "makepot": "grunt update-pot",
-    "env": "wp-scripts wp-env",
+    "wp-env": "wp-env",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
     "format:js": "wp-scripts format-js",
@@ -99,15 +108,15 @@
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js"
   },
-	"prettier": "@wordpress/prettier-config",
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"lint-staged": {
-		"*.scss": [
-			"stylelint src/**/*.scss --fix"
-		]
-	}
+  "prettier": "@wordpress/prettier-config",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.scss": [
+      "stylelint src/**/*.scss --fix"
+    ]
+  }
 }
