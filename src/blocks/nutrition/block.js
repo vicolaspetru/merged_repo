@@ -32,41 +32,44 @@ import { registerBlockType } from '@wordpress/blocks';
  *                             registered; otherwise `undefined`.
  */
 registerBlockType( `${ category }/block-nutrition`, {
-    // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( 'Nutrition', 'wpzoom-recipe-card' ), // Block title.
-    description: __( 'Display Nutrition Facts for your recipe.', 'wpzoom-recipe-card' ),
-    icon: {
-        // Specifying a background color to appear with the icon e.g.: in the inserter.
-        // background: '#FDA921',
-        // Specifying a color for the icon (optional: if not set, a readable color will be automatically defined)
-        foreground: '#FDA921',
-        // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-        src: 'analytics',
-    },
-    category, // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-    // Allow only one Premium Recipe Card block per post.
-    supports: {
-        multiple: false,
-    },
-    keywords,
-    /**
-     * The edit function describes the structure of your block in the context of the editor.
-     * This represents what the editor will render when the block is used.
-     *
-     * The "edit" property must be a valid function.
-     *
-     * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-     *
-     * @param {Object} attributes        The main attributes of block
-     * @param {method} setAttributes     The function that helps to set attributes for block
-     * @param {string} className         The string of class names
-     * @returns {Component}              Nutrition Component
-     */
-    edit: ( { attributes, setAttributes, className, clientId } ) => {
-        return <Nutrition { ...{ attributes, setAttributes, className, clientId } } />;
-    },
-    save() {
-        // Rendering in PHP
-        return null;
-    },
+	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
+	title: __( 'Nutrition', 'wpzoom-recipe-card' ), // Block title.
+	description: __( 'Display Nutrition Facts for your recipe.', 'wpzoom-recipe-card' ),
+	icon: {
+		// Specifying a background color to appear with the icon e.g.: in the inserter.
+		// background: '#FDA921',
+		// Specifying a color for the icon (optional: if not set, a readable color will be automatically defined)
+		foreground: '#FDA921',
+		// Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
+		src: 'analytics',
+	},
+	category, // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	// Allow only one Premium Recipe Card block per post.
+	supports: {
+		multiple: false,
+	},
+	keywords,
+	/**
+	 * The edit function describes the structure of your block in the context of the editor.
+	 * This represents what the editor will render when the block is used.
+	 *
+	 * The "edit" property must be a valid function.
+	 *
+	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+	 * @param attributes.attributes
+	 * @param {Object} attributes        The main attributes of block
+	 * @param {method} setAttributes     The function that helps to set attributes for block
+	 * @param attributes.setAttributes
+	 * @param attributes.className
+	 * @param attributes.clientId
+	 * @param {string} className         The string of class names
+	 * @return {Component}              Nutrition Component
+	 */
+	edit: ( { attributes, setAttributes, className, clientId } ) => {
+		return <Nutrition { ...{ attributes, setAttributes, className, clientId } } />;
+	},
+	save() {
+		// Rendering in PHP
+		return null;
+	},
 } );

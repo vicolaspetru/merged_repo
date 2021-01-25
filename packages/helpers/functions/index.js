@@ -3,24 +3,20 @@
  */
 export { generateId } from './generateId';
 export { removeKeys } from './removeKeys';
-export { getBlockStyle, availableStyles } from './getBlockStyle';
 export {
-    getNumberFromString,
-    convertMinutesToHours,
+	getNumberFromString,
+	convertMinutesToHours,
 } from './convertMinutesToHours';
+export { excludeClassNames, parseClassName } from './parseClassName';
 export {
-    excludeClassNames,
-    parseClassName,
-} from './parseClassName';
-export {
-    parseValue,
-    parseObjectStyle,
-    convertObjectToString,
+	parseValue,
+	parseObjectStyle,
+	convertObjectToString,
 } from './parseHelpers';
 export {
-    firstToUpperCase,
-    stripHTML,
-    humanize,
-    matchIMGsrc,
+	firstToUpperCase,
+	stripHTML,
+	humanize,
+	matchIMGsrc,
 } from './stringHelpers';
 export { pickRelevantMediaFiles } from './pickRelevantMediaFiles';

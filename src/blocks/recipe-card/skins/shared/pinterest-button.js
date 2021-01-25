@@ -9,20 +9,20 @@ import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 
 const pinterestClasses = classnames(
-    'wpzoom-recipe-card-pinit'
+	'wpzoom-recipe-card-pinit'
 );
 
 const PinterestButton = ( props ) => {
-    const { icon } = props;
+	const { icon } = props;
 
-    return (
-        <div className={ pinterestClasses }>
-            <a className="btn-pinit-link no-print" data-pin-do="buttonPin" href="#" data-pin-custom="true">
-                { icon }
-                <span>{ __( 'Pin', 'wpzoom-recipe-card' ) }</span>
-            </a>
-        </div>
-    );
+	return (
+		<div className={ pinterestClasses }>
+			<a className="btn-pinit-link no-print" data-pin-do="buttonPin" href="#" data-pin-custom="true">
+				{ icon }
+				<span>{ __( 'Pin', 'wpzoom-recipe-card' ) }</span>
+			</a>
+		</div>
+	);
 };
 
 export default PinterestButton;

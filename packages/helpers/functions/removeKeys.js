@@ -4,30 +4,30 @@
  * This function has no limit so circular objects will probably crash the browser
  *
  * @param {Object} obj The object from where you want to remove the keys
- * @param {array} keys An array of property names (strings) to remove
+ * @param {Array} keys An array of property names (strings) to remove
  */
 export function removeKeys( obj, keys ) {
-    let index;
-    for ( const prop in obj ) {
-        // important check that this is objects own property
-        // not from prototype prop inherited
-        if ( obj.hasOwnProperty( prop ) ) {
-            switch ( typeof( obj[ prop ] ) ) {
-            case 'string':
-                index = keys.indexOf( prop );
-                if ( index > -1 ) {
-                    delete obj[ prop ];
-                }
-                break;
-            case 'object':
-                index = keys.indexOf( prop );
-                if ( index > -1 ) {
-                    delete obj[ prop ];
-                } else {
-                    removeKeys( obj[ prop ], keys );
-                }
-                break;
-            }
-        }
-    }
+	let index;
+	for ( const prop in obj ) {
+		// important check that this is objects own property
+		// not from prototype prop inherited
+		if ( obj.hasOwnProperty( prop ) ) {
+			switch ( typeof obj[ prop ] ) {
+				case 'string':
+					index = keys.indexOf( prop );
+					if ( index > -1 ) {
+						delete obj[ prop ];
+					}
+					break;
+				case 'object':
+					index = keys.indexOf( prop );
+					if ( index > -1 ) {
+						delete obj[ prop ];
+					} else {
+						removeKeys( obj[ prop ], keys );
+					}
+					break;
+			}
+		}
+	}
 }

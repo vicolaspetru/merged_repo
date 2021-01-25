@@ -1,4 +1,4 @@
-/*global ajaxurl*/
+/*global ajaxurl, thousandsSeparator*/
 
 import jQuery from 'jquery';
 

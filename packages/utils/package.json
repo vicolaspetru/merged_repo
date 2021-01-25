@@ -19,6 +19,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint:js": "wp-scripts lint-js"
+  },
+  "dependencies": {
+    "@wordpress/scripts": "^13.0.0",
+    "lodash": "^4.17.20"
   }
 }

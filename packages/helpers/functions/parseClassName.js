@@ -1,38 +1,37 @@
 /**
  * External dependencies
  */
-import {
-    trim,
-    split,
-    includes,
-} from 'lodash';
+import trim from 'lodash/trim';
+import split from 'lodash/split';
+import includes from 'lodash/includes';
 
 /**
  * Exclude uneeded class names.
  *
- * @param {array} className  	The block classname.
- * @param {array} exclude  		The classnames to exclude.
+ * @param {Array} className  	The block classname.
+ * @param {Array} exclude  		The classnames to exclude.
  *
- * @returns {string} className.
+ * @return {string} className.
  */
 export function excludeClassNames( className, exclude ) {
-    let classname = className;
-    exclude.map( ( item ) => {
-        if ( includes( classname, item ) ) {
-            classname = trim( classname, item );
-        }
-    } );
-    return classname;
+	let classname = className;
+	exclude.map( ( item ) => {
+		if ( includes( classname, item ) ) {
+			classname = trim( classname, item );
+		}
+		return classname;
+	} );
+	return classname;
 }
 
 /**
  * Get block className without additions class names (e.g. is-style-).
  *
- * @param {array} className     The block classname.
+ * @param {Array} className     The block classname.
  *
- * @returns {string} Block style.
+ * @return {string} Block style.
  */
 export function parseClassName( className ) {
-    const m = split( className, ' ' );
-    return m ? m[ 0 ] : className;
+	const m = split( className, ' ' );
+	return m ? m[ 0 ] : className;
 }

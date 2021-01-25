@@ -2,20 +2,20 @@
  * External dependencies
  */
 import {
-    get,
-    isEmpty,
+	get,
+	isEmpty,
 } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import {
-    dairyFree,
-    glutenFree,
-    palmOilFree,
-    phosphateFree,
-    sugarFree,
-    vegan,
+	dairyFree,
+	glutenFree,
+	palmOilFree,
+	phosphateFree,
+	sugarFree,
+	vegan,
 } from './library';
 
 /**
@@ -24,51 +24,51 @@ import {
 import { Fragment } from '@wordpress/element';
 
 const iconsSVG = {
-    vegan: vegan,
-    'gluten-free': glutenFree,
-    'dairy-free': dairyFree,
-    'palm-oil-free': palmOilFree,
-    'sugar-free': sugarFree,
-    'phosphate-free': phosphateFree,
+	vegan,
+	'gluten-free': glutenFree,
+	'dairy-free': dairyFree,
+	'palm-oil-free': palmOilFree,
+	'sugar-free': sugarFree,
+	'phosphate-free': phosphateFree,
 };
 
 const FoodLabels = ( props ) => {
-    const {
-        attributes: {
-            settings,
-        },
-        location,
-    } = props;
-    const displayFoodLabels = get( settings, [ 1, 'displayFoodLabels' ] ) || false;
+	const {
+		attributes: {
+			settings,
+		},
+		location,
+	} = props;
+	const displayFoodLabels = get( settings, [ 1, 'displayFoodLabels' ] ) || false;
 
-    const drawIconLabel = () => {
-        const foodLabels = get( settings, [ 1, 'foodLabels' ] ) || [];
-        const foodLabelsLocation = get( settings, [ 1, 'locationToShowFoodLabels' ] ) || 'top';
+	const drawIconLabel = () => {
+		const foodLabels = get( settings, [ 1, 'foodLabels' ] ) || [];
+		const foodLabelsLocation = get( settings, [ 1, 'locationToShowFoodLabels' ] ) || 'top';
 
-        if ( isEmpty( foodLabels ) || location !== foodLabelsLocation ) {
-            return null;
-        }
+		if ( isEmpty( foodLabels ) || location !== foodLabelsLocation ) {
+			return null;
+		}
 
-        let drawLabels = [];
+		let drawLabels = [];
 
-        drawLabels = foodLabels.map( ( label ) => {
-            if ( iconsSVG[ label ] ) {
-                return ( <li>{ iconsSVG[ label ] }</li> );
-            }
-        } );
+		drawLabels = foodLabels.map( ( label ) => {
+			if ( iconsSVG[ label ] ) {
+				return ( <li>{ iconsSVG[ label ] }</li> );
+			}
+		} );
 
-        return <ul className="food-labels-list">{ drawLabels }</ul>;
-    };
+		return <ul className="food-labels-list">{ drawLabels }</ul>;
+	};
 
-    return (
-        <Fragment>
-            { displayFoodLabels &&
-                <div className="recipe-card-food-labels">
-                    { drawIconLabel() }
-                </div>
-            }
-        </Fragment>
-    );
+	return (
+		<Fragment>
+			{ displayFoodLabels &&
+			<div className="recipe-card-food-labels">
+				{ drawIconLabel() }
+			</div>
+			}
+		</Fragment>
+	);
 };
 
 export default FoodLabels;

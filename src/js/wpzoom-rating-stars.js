@@ -10,8 +10,7 @@ jQuery( document ).ready( function() {
 		class WPZOOM_Rating_Star {
 			constructor( $el, options ) {
 				let i,
-					_,
-					_ref;
+					_;
 				const _this = this;
 
 				this.$el = $el;
@@ -21,12 +20,12 @@ jQuery( document ).ready( function() {
 					recipe_id: this.$el.parent().data( 'recipe-id' ),
 					user_rating: void 0,
 					numStars: 5,
-					change( e, value ) { },
+					change( e, value ) { }, // eslint-disable-line no-unused-vars
 				};
 				this.options = $.extend( {}, this.defaults, options );
-				_ref = this.defaults;
+				const _ref = this.defaults;
 				for ( i in _ref ) {
-					_ = _ref[ i ];
+					_ = _ref[ i ]; // eslint-disable-line no-unused-vars
 					if ( this.$el.data( i ) !== null ) {
 						this.options[ i ] = this.$el.data( i );
 					}

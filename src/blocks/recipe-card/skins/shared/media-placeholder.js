@@ -2,8 +2,8 @@
  * External dependencies
  */
 import {
-    get,
-    isUndefined,
+	get,
+	isUndefined,
 } from 'lodash';
 
 /**
@@ -25,44 +25,44 @@ import { compose } from '@wordpress/compose';
  */
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 const PLACEHOLDER_TEXT = Platform.select( {
-    web: __( 'Drag image, upload new one or select file from your library.', 'wpzoom-recipe-card' ),
-    native: __( 'ADD MEDIA', 'wpzoom-recipe-card' ),
+	web: __( 'Drag image, upload new one or select file from your library.', 'wpzoom-recipe-card' ),
+	native: __( 'ADD MEDIA', 'wpzoom-recipe-card' ),
 } );
 
 class UploadMediaPlaceholder extends Component {
-    render() {
-        const {
-            image,
-            hasImage,
-            onSelectImage,
-            onUploadError,
-            isRecipeCardSelected,
-            noticeUI,
-        } = this.props;
+	render() {
+		const {
+			image,
+			hasImage,
+			onSelectImage,
+			onUploadError,
+			isRecipeCardSelected,
+			noticeUI,
+		} = this.props;
 
-        const hasImageWithId = hasImage && ! isUndefined( get( image, 'id' ) );
+		const hasImageWithId = hasImage && ! isUndefined( get( image, 'id' ) );
 
-        return (
-            <MediaPlaceholder
-                addToGallery={ false }
-                disableMediaButtons={ hasImage && ! isRecipeCardSelected }
-                className="recipe-card-image-placeholder"
-                icon={ ! hasImage && imageIcon }
-                labels={ {
-                    title: ! hasImage && __( 'Recipe Card Image', 'wpzoom-recipe-card' ),
-                    instructions: ! hasImage && PLACEHOLDER_TEXT,
-                } }
-                accept="image/*"
-                allowedTypes={ ALLOWED_MEDIA_TYPES }
-                value={ hasImageWithId ? image : undefined }
-                onSelect={ onSelectImage }
-                onError={ onUploadError }
-                notices={ hasImage ? undefined : noticeUI }
-            />
-        );
-    }
+		return (
+			<MediaPlaceholder
+				addToGallery={ false }
+				disableMediaButtons={ hasImage && ! isRecipeCardSelected }
+				className="recipe-card-image-placeholder"
+				icon={ ! hasImage && imageIcon }
+				labels={ {
+					title: ! hasImage && __( 'Recipe Card Image', 'wpzoom-recipe-card' ),
+					instructions: ! hasImage && PLACEHOLDER_TEXT,
+				} }
+				accept="image/*"
+				allowedTypes={ ALLOWED_MEDIA_TYPES }
+				value={ hasImageWithId ? image : undefined }
+				onSelect={ onSelectImage }
+				onError={ onUploadError }
+				notices={ hasImage ? undefined : noticeUI }
+			/>
+		);
+	}
 }
 
 export default compose(
-    withNotices
+	withNotices
 )( UploadMediaPlaceholder );
