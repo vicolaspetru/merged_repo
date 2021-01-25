@@ -3,4 +3,6 @@
 *.sublime-workspace
 *.cache
 **/.DS_Store
-/vendor/
+**/vendor/**
+**/build/**
+.vscode/
