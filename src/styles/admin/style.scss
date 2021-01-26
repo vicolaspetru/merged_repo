@@ -3,12 +3,12 @@
 	font-family: "wpzoom-recipe-card";
 	font-style: normal;
 	font-weight: normal; // stylelint-disable-line font-weight-notation
-	src: url(../fonts/recipe-card.eot?91gbyv);
+	src: url(./fonts/recipe-card.eot?91gbyv);
 	src:
-		url(../fonts/recipe-card.eot?91gbyv#iefix) format("embedded-opentype"),
-		url(../fonts/recipe-card.ttf?91gbyv) format("truetype"),
-		url(../fonts/recipe-card.woff?91gbyv) format("woff"),
-		url(../fonts/recipe-card.svg?91gbyv#recipe-card) format("svg");
+		url(./fonts/recipe-card.eot?91gbyv#iefix) format("embedded-opentype"),
+		url(./fonts/recipe-card.ttf?91gbyv) format("truetype"),
+		url(./fonts/recipe-card.woff?91gbyv) format("woff"),
+		url(./fonts/recipe-card.svg?91gbyv#recipe-card) format("svg");
 }
 
 #toplevel_page_wpzoom-recipe-card-settings .wp-menu-image::before {
