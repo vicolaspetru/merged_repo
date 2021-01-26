@@ -2,9 +2,9 @@
 
 import jQuery from 'jquery';
 
-jQuery( document ).ready( function() {
+jQuery( ( function() {
 	( function( $, Settings ) {
-		$( '.wp-tab-bar a' ).click( function( event ) {
+		$( '.wp-tab-bar a' ).on( 'click', function( event ) {
 			event.preventDefault();
 
 			const href = $( this ).attr( 'href' );
@@ -23,14 +23,14 @@ jQuery( document ).ready( function() {
 		// Make setting wp-tab-active optional.
 		$( '.wp-tab-bar' ).each( function() {
 			if ( $( '.wp-tab-active', this ).length ) {
-				$( '.wp-tab-active', this ).click();
+				$( '.wp-tab-active', this ).trigger( 'click' );
 			} else {
-				$( 'a', this ).first().click();
+				$( 'a', this ).first().trigger( 'click' );
 			}
 		} );
 
 		// reset settings to defaults
-		$( '#wpzoom_rcb_reset_settings' ).click( function() {
+		$( '#wpzoom_rcb_reset_settings' ).on( 'click', function() {
 			const data = {
 				security: Settings.ajax_nonce,
 				action: 'wpzoom_reset_settings',
@@ -56,7 +56,7 @@ jQuery( document ).ready( function() {
 		} );
 
 		// Reset Ratings to zero
-		$( '#wpzoom_rcb_settings_reset_ratings' ).click( function() {
+		$( '#wpzoom_rcb_settings_reset_ratings' ).on( 'click', function() {
 			const data = {
 				security: Settings.ajax_nonce,
 				action: 'wpzoom_reset_ratings',
@@ -78,7 +78,7 @@ jQuery( document ).ready( function() {
 		} );
 
 		// close Welcome banner
-		$( '.wpzoom-rcb-welcome-close' ).click( function( e ) {
+		$( '.wpzoom-rcb-welcome-close' ).on( 'click', function( e ) {
 			e.preventDefault();
 
 			const banner = $( this ).attr( 'href' );
@@ -149,4 +149,4 @@ jQuery( document ).ready( function() {
 			palettes: [ '#222222', '#FFA921', '#FF4E6A', '#B7C662' ],
 		} );
 	}( jQuery, WPZOOM_Settings ) );
-} );
+} ) );
