@@ -166,7 +166,7 @@ module.exports = function( grunt ) {
 		},
 
 		shell: {
-			build: [ 'npm run build' ].join( ' && ' ),
+			build: [ 'yarn run build' ].join( ' && ' ),
 		},
 
 	} );
@@ -175,9 +175,10 @@ module.exports = function( grunt ) {
 
 	grunt.registerTask( 'build', [ 'shell:build', 'update-pot', 'replace', 'clean:build', 'copy:build' ] );
 	grunt.registerTask( 'update-pot', [ 'addtextdomain', 'makepot', 'replace:languages' ] );
+	grunt.registerTask( 'readme', [ 'wp_readme_to_markdown' ] );
 
 	// Bump Version - `grunt version-bump --ver=<version-number>`
-	grunt.registerTask( 'version-bump', function( ver ) {
+	grunt.registerTask( 'version-bump', function() {
 		let newVersion = grunt.option( 'ver' );
 
 		if ( newVersion ) {
