@@ -20,12 +20,15 @@
     "url": "https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro/issues"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.2"
+    "@fortawesome/fontawesome-free": "^5.15.2",
+    "@wpzoom/helpers": "file:packages/helpers",
+    "@wpzoom/utils": "file:packages/utils"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@godaddy-wordpress/stylelint-config": "^0.2.0",
     "@wordpress/api-fetch": "^3.21.2",
+    "@wordpress/babel-preset-default": "^5.0.0",
     "@wordpress/base-styles": "2.0.1",
     "@wordpress/block-editor": "3.1.0",
     "@wordpress/block-library": "2.8.0",
@@ -40,14 +43,16 @@
     "@wordpress/i18n": "3.6.0",
     "@wordpress/plugins": "2.6.0",
     "@wordpress/postcss-themes": "^2.2.0",
+    "@wordpress/prettier-config": "^1.0.0",
     "@wordpress/scripts": "^13.0.0",
     "@wordpress/url": "^2.21.1",
-    "@wpzoom/helpers": "file:packages/helpers",
-    "@wpzoom/utils": "file:packages/utils",
     "astroturf": "^0.10.5",
     "autoprefixer": "^9.7.5",
+    "babel-loader": "^8.2.2",
     "classnames": "^2.2.6",
-    "css-loader": "^3.2.1",
+    "clean-css": "^4.2.3",
+    "copy-webpack-plugin": "6.4.1",
+    "css-loader": "^5.0.1",
     "eslint": "^7.18.0",
     "eslint-plugin-chai-friendly": "^0.6.0",
     "eslint-plugin-cypress": "^2.11.2",
@@ -81,7 +86,7 @@
     "react-player": "^1.15.3",
     "rtlcss-webpack-plugin": "^4.0.4",
     "sass-loader": "^8.0.0",
-    "style-loader": "^0.19.1",
+    "thread-loader": "^3.0.1",
     "webpack": "^4.42.0",
     "webpack-cli": "^4.4.0",
     "webpack-fix-style-only-entries": "^0.6.1",
@@ -91,7 +96,7 @@
     "setup": "composer install && yarn install && yarn run build && wp-env install",
     "start": "wp-scripts start --config .dev/config/webpack.config.js --progress",
     "build": "wp-scripts build --config .dev/config/webpack.config.js",
-    "clean": "wp-env stop && rm -rf build dist/assets/*.* dist/assets/css dist/assets/js node_modules vendor",
+    "clean": "wp-env stop && rm -rf build dist/*.* dist/assets/*.* dist/assets/css dist/assets/js node_modules vendor",
     "version": "versionBump() { grunt version-bump --ver=\"$1\" && git add -A .; }; versionBump",
     "postversion": "git push && git push --tags",
     "makepot": "grunt update-pot",
@@ -108,7 +113,6 @@
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js"
   },
-  "prettier": "@wordpress/prettier-config",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
