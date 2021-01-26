@@ -96,7 +96,7 @@
     "setup": "composer install && yarn install && yarn run build && wp-env install",
     "start": "wp-scripts start --config .dev/config/webpack.config.js --progress",
     "build": "wp-scripts build --config .dev/config/webpack.config.js",
-    "clean": "wp-env stop && rm -rf build dist/*.* dist/assets/*.* dist/assets/css dist/assets/js node_modules vendor",
+    "clean": "wp-env stop && rm -rf build dist/*.* dist/js node_modules vendor",
     "version": "versionBump() { grunt version-bump --ver=\"$1\" && git add -A .; }; versionBump",
     "postversion": "git push && git push --tags",
     "makepot": "grunt update-pot",
