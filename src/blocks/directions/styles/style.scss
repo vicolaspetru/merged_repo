@@ -1,0 +1,79 @@
+/**
+ * #.# Styles
+ *
+ * CSS for both Frontend+Backend.
+ */
+.wp-block-wpzoom-recipe-card-block-directions {
+	margin: 0 0 20px;
+	max-width: 750px;
+	padding: 30px 0 15px;
+	position: relative;
+	text-align: left;
+
+	.wpzoom-recipe-card-print-link {
+		position: absolute;
+		right: 30px;
+		text-align: right;
+		top: 30px;
+		z-index: 1;
+
+		a {
+			color: #a0a0a0;
+			display: inline-block;
+			text-decoration: none;
+		}
+
+		.icon-print-link {
+			display: inline-block;
+			margin-right: 5px;
+			vertical-align: text-top;
+			width: 18px;
+		}
+
+		&.hidden {
+			display: none;
+		}
+		&.visible {
+			display: block;
+		}
+	}
+
+	@include recipe-sections-title( inherit, uppercase, "directions-title" );
+
+	.directions-list {
+		counter-reset: count;
+		line-height: normal;
+		list-style: none;
+		margin: 0;
+
+		> li {
+			line-height: 1.8;
+			list-style: none;
+			margin: 0 0 30px;
+			min-height: 44px;
+			padding-left: 40px;
+			position: relative;
+
+			&::before {
+				@include direction-counter;
+			}
+
+			&:last-child {
+				margin: 0;
+			}
+		}
+
+		.direction-step-group::before {
+			content: "";
+			counter-increment: none;
+		}
+	}
+
+	.direction-step img {
+		display: block;
+		height: auto;
+		margin: 10px 0;
+		max-width: 100%;
+	}
+}
+

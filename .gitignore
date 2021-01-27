@@ -3,7 +3,15 @@
 *.sublime-workspace
 *.cache
 **/.DS_Store
+<<<<<<< HEAD
 
 #Ignore Custom Components
 /src/components/food-icons/index.js
 /src/components/food-icons/svg/*.svg
+=======
+**/vendor/**
+**/build/**
+.vscode/
+dist/*
+!dist/assets/
+>>>>>>> version_pro/try/improve-plugin-performance

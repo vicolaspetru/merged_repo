@@ -1,0 +1,23 @@
+.wpzoom-recipe-card-buttons {
+	text-align: center;
+}
+
+.wpzoom-recipe-card-buttons a.wpzoom-recipe-snippet-button {
+	background-color: #222;
+	border: none;
+	border-radius: 3px;
+	box-shadow: none;
+	color: #fff;
+	display: inline-block;
+	font-size: 12px;
+	font-style: normal;
+	line-height: 1.2;
+	margin-bottom: 15px;
+	margin-right: 10px;
+	padding: 10px;
+	text-decoration: none;
+	&:hover {
+		background-color: #444;
+		color: #fff;
+	}
+}

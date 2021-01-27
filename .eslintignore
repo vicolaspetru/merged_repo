@@ -1,5 +1,23 @@
+<<<<<<< HEAD
 **/*.min.js
 **/*.build.js
 **/node_modules/**
 node_modules
 dist
+=======
+build
+dist
+node_modules
+vendor
+wordpress*
+**/test/*
+
+#  allow lint for tests
+*.spec.js.snap
+!**.spec.js
+!*.cypress.js
+
+# lint top level dot files
+!.*
+/node_modules/.*
+>>>>>>> version_pro/try/improve-plugin-performance

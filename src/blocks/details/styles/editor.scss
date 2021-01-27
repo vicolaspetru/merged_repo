@@ -1,0 +1,153 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+
+.wp-block-wpzoom-recipe-card-block-details p.help,
+.wp-block-wpzoom-recipe-card-block-details p.description {
+	clear: both;
+	float: left;
+	font-size: 13px !important;
+	margin: 10px 0;
+	margin-top: 0;
+	opacity: 0.7;
+	width: 100%;
+}
+
+.wp-block-wpzoom-recipe-card-block-details p.help + p.help,
+.wp-block-wpzoom-recipe-card-block-details p.description + p.description {
+	margin-top: 0;
+}
+
+.wp-block-wpzoom-recipe-card-block-details {
+	.placeholder {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+	.details-title {
+		float: none;
+	}
+	.detail-buttons {
+		clear: both;
+		text-align: center;
+		width: 100%;
+	}
+	.detail-item-controls-container {
+		background-color: #fff;
+		border: 1px solid #e2e4e7;
+		left: -52px;
+		padding: 2px;
+		position: absolute;
+		top: 0;
+		z-index: 10;
+		.detail-item-button {
+			display: block;
+		}
+	}
+	.detail-item .detail-item-value {
+		padding: 0;
+		text-align: left;
+	}
+
+	.components-icon-button .dashicon + .components-icon-button-text {
+		margin-left: 5px;
+	}
+}
+
+.wpzoom-recipe-card-modal-form {
+	.form-group {
+		margin-left: -10px;
+		margin-right: -10px;
+
+		@include clear-after;
+
+		> .components-base-control {
+			float: left;
+			margin-bottom: 0;
+			padding-left: 10px;
+			padding-right: 10px;
+			width: 50%;
+
+			.components-base-control__label {
+				display: block;
+			}
+		}
+	}
+	.modal-icons_kit-tab-panel {
+		.components-button {
+			background: transparent;
+			border: none;
+			box-shadow: none;
+			color: #191e23;
+			cursor: pointer;
+			font-weight: 400;
+			height: 40px;
+			margin-left: 0;
+			outline-offset: -1px;
+			padding: 3px 15px;
+			transition: box-shadow 0.1s linear;
+
+			&.active-tab {
+				box-shadow: inset 0 -3px #007cba;
+				font-weight: 600;
+				position: relative;
+			}
+		}
+	}
+}
+
+.wpzoom-recipe-card-icon_kit {
+	border-top: 1px solid #ededed;
+	margin-top: 10px;
+	padding: 15px 0;
+
+	@include clear-after;
+
+	.wpzoom-recipe-card-icons__single-element {
+		background-color: #f0f0f0;
+		border-radius: 2px;
+		cursor: pointer;
+		float: left;
+		height: 40px;
+		line-height: 30px;
+		margin: 1%;
+		padding: 5px;
+		text-align: center;
+		width: 8%;
+		&::before {
+			font-size: 20px;
+			margin: 0;
+		}
+		&:hover {
+			background-color: #fff;
+			box-shadow: inset 0 0 0 1px #e2e4e7, inset 0 0 0 2px #fff, 0 1px 1px rgba(25, 30, 35, 0.2);
+			color: #191e23;
+		}
+		&.icon-element-active {
+			background-color: #007cba;
+			box-shadow: inset 0 0 0 1px #007cba, inset 0 0 0 2px #fff;
+			color: #fff;
+		}
+	}
+}
+
+
+#wpwrap .edit-post-visual-editor .wp-block-wpzoom-recipe-card-block-details .detail-item-label {
+	font-weight: bold; // stylelint-disable-line font-weight-notation
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+#wpwrap .edit-post-visual-editor .wp-block-wpzoom-recipe-card-block-details p {
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+#wpwrap .edit-post-visual-editor .wp-block-wpzoom-recipe-card-block-details ul,
+#wpwrap .edit-post-visual-editor .wp-block-wpzoom-recipe-card-block-details ol {
+	margin: 0;
+	padding: 0;
+}
+
