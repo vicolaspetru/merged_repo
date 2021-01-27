@@ -3337,20 +3337,6 @@
     "@babel/runtime" "^7.12.5"
     lodash "^4.17.19"
 
-"@wpzoom/helpers@file:packages/helpers":
-  version "1.0.0"
-  dependencies:
-    "@wordpress/element" "^2.19.0"
-    "@wordpress/i18n" "^3.17.0"
-    "@wordpress/scripts" "^13.0.0"
-    lodash "^4.17.20"
-
-"@wpzoom/utils@file:packages/utils":
-  version "1.0.0"
-  dependencies:
-    "@wordpress/scripts" "^13.0.0"
-    lodash "^4.17.20"
-
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"

@@ -20,9 +20,8 @@
     "url": "https://github.com/wpzoom/recipe-card-blocks-by-wpzoom-pro/issues"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.2",
-    "@wpzoom/helpers": "file:packages/helpers",
-    "@wpzoom/utils": "file:packages/utils"
+		"@fortawesome/fontawesome-free": "^5.15.2",
+		"magnific-popup": "^1.1.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "7.10.4",
@@ -72,7 +71,6 @@
     "jquery": "^3.5.1",
     "lint-staged": "^10.5.3",
     "lodash": "^4.17.20",
-    "magnific-popup": "^1.1.0",
     "matchdep": "^2.0.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.14.1",
