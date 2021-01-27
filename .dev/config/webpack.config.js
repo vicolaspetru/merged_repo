@@ -65,6 +65,14 @@ module.exports = {
 		path: path.resolve( process.cwd(), 'dist/' ),
 	},
 
+	resolve: {
+		alias: {
+			...defaultConfig.resolve.alias,
+			'@wpzoom/helpers': path.resolve( process.cwd(), 'src/helpers' ),
+			'@wpzoom/utils': path.resolve( process.cwd(), 'src/utils' ),
+		},
+	},
+
 	module: {
 		// Rewrite defaultConfig module rules
 		rules: [
@@ -81,14 +89,6 @@ module.exports = {
 							// to enable more persistent caching.
 							cacheDirectory:
 								process.env.BABEL_CACHE_DIRECTORY || true,
-
-							babelrc: false,
-							configFile: false,
-							presets: [
-								require.resolve(
-									'@wordpress/babel-preset-default'
-								),
-							],
 						},
 					},
 				],
